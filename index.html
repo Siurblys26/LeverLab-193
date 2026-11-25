@@ -11,7 +11,7 @@
   <link rel="manifest" href="./manifest.json">
   <link id="pwa-favicon" rel="icon" type="image/svg+xml" href="./icon.svg">
   <link id="pwa-apple-icon" rel="apple-touch-icon" sizes="192x192" href="./icon-192.png">
-  <title>LeverLab 193 (v8.3) – Sporto Salės Programa</title>
+  <title>LeverLab 193 (v8.4) – Sporto Salės Programa</title>
   <style>
     /* ==========================================================================
        1. DESIGN TOKENS & 4 SELECTABLE THEMES (ROUND 5 NATIVE HIERARCHY)
@@ -488,15 +488,22 @@
     .ex-strip.done-strip .ex-num,
     .ex-active-card.completed-card .ex-num { background: var(--green-bg); color: var(--green); }
 
-    /* Active Focused Exercise Card (Round 5 Borderless Elevated Surface + v8.2 Specular Rim) */
+    /* Active Focused Exercise Card (#9 Frosted Specular Glass Rim + v8.4 Physics) */
     .ex-active-card {
-      background: var(--bg-card);
-      border: 1px solid var(--card-rim);
+      position: relative;
+      background: linear-gradient(150deg, color-mix(in srgb, var(--accent) 11%, var(--bg-card)), var(--bg-card) 52%);
+      border: 1.5px solid color-mix(in srgb, var(--accent) 68%, rgba(255, 255, 255, 0.55));
       border-radius: var(--radius-lg);
       padding: 13px 12px 12px;
       margin-bottom: 10px;
-      box-shadow: var(--shadow), var(--shadow-active);
+      box-shadow: var(--shadow), var(--shadow-active), inset 0 1.5px 0 rgba(255, 255, 255, 0.22), inset 0 0 22px var(--accent-soft);
       scroll-margin-top: 64px;
+      overflow: hidden;
+    }
+    [data-theme="nordic"] .ex-active-card {
+      background: linear-gradient(150deg, color-mix(in srgb, var(--accent) 8%, #ffffff), #ffffff 56%);
+      border-color: color-mix(in srgb, var(--accent) 60%, #93c5fd);
+      box-shadow: var(--shadow), var(--shadow-active), inset 0 1.5px 0 rgba(255, 255, 255, 0.95);
     }
     .ex-active-card.completed-card { box-shadow: var(--shadow), inset 0 0 0 1.5px rgba(34, 197, 94, 0.45); }
 
@@ -578,13 +585,14 @@
       display: inline-flex; align-items: center; justify-content: center; gap: 4px;
     }
 
-    /* State 2: Active Focus Set ("Kitas žingsnis" – Glow + 22px Tabular + 48px Thumb Targets) */
+    /* State 2: Active Focus Set (#9 Frosted Specular Glass Rim + 22px Tabular + 48px Thumb Targets) */
     .set-active-focus {
       position: relative;
       border-radius: 16px;
-      background: var(--bg-surface);
+      background: linear-gradient(145deg, color-mix(in srgb, var(--accent) 14%, var(--bg-surface)), var(--bg-surface) 58%);
+      border: 1.5px solid color-mix(in srgb, var(--accent) 72%, rgba(255, 255, 255, 0.6));
       padding: 11px 10px 11px 13px;
-      box-shadow: var(--shadow-active), inset 0 0 0 1.5px var(--accent-glow);
+      box-shadow: var(--shadow-active), inset 0 1.5px 0 rgba(255, 255, 255, 0.24), inset 0 0 20px var(--accent-soft);
       overflow: hidden;
       transition: var(--transition);
     }
@@ -749,28 +757,49 @@
     /* ==========================================================================
        8. FLOATING REST TIMER (±15s + SHRINKING BAR) & BOTTOM NAV
        ========================================================================== */
-    .rest-timer-bar {
-      position: fixed; left: 50%;
-      transform: translateX(-50%) translateY(160%);
+    /* Unified Bottom Floating Stack (Zero overlap between Undo & Rest Timer on any screen) */
+    .bottom-float-stack {
+      position: fixed; left: 50%; transform: translateX(-50%);
       bottom: calc(var(--nav-height) + var(--safe-bottom) + 10px);
       width: calc(100% - 22px); max-width: 538px;
+      z-index: 48;
+      display: flex; flex-direction: column; gap: 8px;
+      pointer-events: none;
+    }
+    .rest-timer-bar {
+      width: 100%;
       background: var(--glass-bg);
       backdrop-filter: blur(20px) saturate(165%);
       -webkit-backdrop-filter: blur(20px) saturate(165%);
       box-shadow: 0 14px 32px rgba(0, 0, 0, 0.55), 0 0 0 1.5px var(--accent);
-      border-radius: var(--radius-lg); padding: 10px 13px; z-index: 45;
-      transition: transform 0.22s cubic-bezier(0.2, 0.8, 0.2, 1);
+      border-radius: var(--radius-lg); padding: 10px 12px;
+      display: none; pointer-events: auto;
+      animation: floatSlideUp 0.22s cubic-bezier(0.2, 0.8, 0.2, 1);
     }
-    .rest-timer-bar.visible { transform: translateX(-50%) translateY(0); }
+    @keyframes floatSlideUp {
+      from { opacity: 0; transform: translateY(14px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .rest-timer-bar.visible { display: block; }
     .rest-timer-bar.finished { box-shadow: 0 14px 32px rgba(0, 0, 0, 0.55), 0 0 0 2px var(--green); }
-    .rest-time-readout { font-size: 25px; font-weight: 900; font-family: var(--font-mono); font-variant-numeric: tabular-nums; color: var(--accent); line-height: 1; }
+    .rest-time-readout { font-size: 24px; font-weight: 900; font-family: var(--font-mono); font-variant-numeric: tabular-nums; color: var(--accent); line-height: 1; flex-shrink: 0; }
     .rest-timer-bar.finished .rest-time-readout { color: var(--green); }
+    .rest-timer-top { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+    .rest-timer-meta { display: flex; align-items: center; gap: 10px; min-width: 0; flex: 1; }
+    .rest-timer-lbl {
+      font-size: 12px; color: var(--text-muted); font-weight: 600;
+      white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+    }
+    .rest-controls-row {
+      display: grid; grid-template-columns: 1fr 1.25fr 1fr; gap: 6px; margin-top: 8px;
+    }
     .rest-progress { width: 100%; height: 4px; background: var(--bg-surface); border-radius: 4px; overflow: hidden; margin-top: 8px; }
     .rest-progress-fill { height: 100%; background: var(--accent); width: 100%; transition: width 0.25s linear; }
     .rest-btn {
-      height: 38px; padding: 0 10px; border-radius: var(--radius-sm);
-      background: var(--bg-surface);
+      height: 36px; padding: 0 10px; border-radius: var(--radius-sm);
+      background: var(--bg-surface); border: 1px solid var(--card-rim);
       font-size: 12.5px; font-weight: 800; color: var(--text);
+      white-space: nowrap; flex-shrink: 0;
     }
 
     .bottom-nav {
@@ -1210,19 +1239,20 @@
     }
     .note-textarea:focus { border-color: var(--accent); }
 
-    /* Floating Undo Bar */
+    /* Floating Undo Bar (Stacked cleanly above Rest Timer inside .bottom-float-stack) */
     .undo-float-bar {
-      position: fixed; left: 50%; transform: translateX(-50%) translateY(150%);
-      bottom: calc(var(--nav-height) + var(--safe-bottom) + 12px);
-      width: calc(100% - 22px); max-width: 538px; z-index: 48;
-      background: var(--bg-card); border: 1.5px solid var(--yellow);
-      border-radius: 14px; padding: 9px 12px;
-      box-shadow: 0 12px 28px rgba(0, 0, 0, 0.55);
-      display: flex; align-items: center; justify-content: space-between; gap: 10px;
-      transition: transform 0.22s cubic-bezier(0.2, 0.8, 0.2, 1), bottom 0.22s ease;
+      width: 100%;
+      background: var(--glass-bg);
+      backdrop-filter: blur(18px) saturate(165%);
+      -webkit-backdrop-filter: blur(18px) saturate(165%);
+      border: 1.5px solid var(--yellow);
+      border-radius: 14px; padding: 8px 12px;
+      box-shadow: 0 10px 26px rgba(0, 0, 0, 0.48);
+      display: none; align-items: center; justify-content: space-between; gap: 10px;
+      pointer-events: auto;
+      animation: floatSlideUp 0.2s cubic-bezier(0.2, 0.8, 0.2, 1);
     }
-    .undo-float-bar.visible { transform: translateX(-50%) translateY(0); }
-    .undo-float-bar.above-timer { bottom: calc(var(--nav-height) + var(--safe-bottom) + 96px); }
+    .undo-float-bar.visible { display: flex; }
 
     /* Landscape Mode Optimization (e.g. Galaxy S26 Ultra Sideways) */
     @media (orientation: landscape) and (max-height: 560px) {
@@ -1238,7 +1268,7 @@
       .nav-item svg { width: 18px; height: 18px; }
       .quick-cues { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
       .qc-item.qc-stop-row { grid-column: 1 / -1; }
-      .rest-timer-bar, .undo-float-bar { max-width: 780px; }
+      .bottom-float-stack { max-width: 780px; }
       .anim-stage { height: 145px; }
     }
 
@@ -1385,6 +1415,113 @@
     }
     .wn-title { font-size: 13px; font-weight: 800; color: var(--text); }
     .wn-sub { font-size: 11.5px; color: var(--text-muted); margin-top: 2px; line-height: 1.35; }
+
+    /* v8.4: 10 Selectable Card-Switch Physics Animations + Settings Demo Modal */
+    :root { --anim-spd: 1; }
+    .anim-pick-grid { display: grid; grid-template-columns: repeat(6, 1fr); gap: 5px; margin-bottom: 9px; }
+    .anim-pick-btn {
+      padding: 7px 3px; border-radius: 9px; background: var(--bg-surface);
+      border: 1.5px solid transparent; font-size: 11.5px; font-weight: 800;
+      font-family: var(--font-mono); color: var(--text-muted); transition: var(--transition);
+    }
+    .anim-pick-btn.active { background: var(--accent-soft); border-color: var(--accent); color: var(--accent); }
+    .anim-spd-row {
+      display: flex; align-items: center; gap: 8px; padding: 7px 10px;
+      border-radius: 11px; background: var(--bg-surface); font-size: 11px; font-weight: 800; margin-bottom: 10px;
+    }
+    .anim-spd-row input[type="range"] { flex: 1; accent-color: var(--accent); height: 22px; }
+    .anim-demo-card {
+      position: relative; overflow: hidden; border-radius: 16px; padding: 11px 12px;
+      background: linear-gradient(150deg, color-mix(in srgb, var(--accent) 12%, var(--bg-card)), var(--bg-card) 55%);
+      border: 1.5px solid color-mix(in srgb, var(--accent) 70%, rgba(255,255,255,0.55));
+      box-shadow: var(--shadow), inset 0 1.5px 0 rgba(255,255,255,0.22), inset 0 0 18px var(--accent-soft);
+      margin-bottom: 10px;
+    }
+    .anim-demo-s { padding: 7px 9px; border-radius: 10px; background: var(--bg-surface); font-size: 11.5px; margin-top: 7px; }
+
+    @keyframes llSpring {
+      0% { transform: scale(0.88) translateY(-16px); opacity: 0.25; }
+      44% { transform: scale(1.035) translateY(3px); opacity: 1; }
+      70% { transform: scale(0.98) translateY(-1px); }
+      88% { transform: scale(1.01) translateY(0); }
+      100% { transform: scale(1) translateY(0); }
+    }
+    @keyframes llLift {
+      0% { transform: translateY(26px) scale(0.96); opacity: 0; }
+      100% { transform: translateY(0) scale(1); opacity: 1; }
+    }
+    @keyframes llCasc {
+      0% { opacity: 0; transform: translateY(28px) scale(0.9); }
+      100% { opacity: 1; transform: translateY(0) scale(1); }
+    }
+    @keyframes llFlip3d {
+      0% { opacity: 0.15; transform: perspective(380px) rotateX(-84deg) translateY(-14px) scale(0.9); filter: brightness(0.48); }
+      58% { opacity: 1; transform: perspective(380px) rotateX(12deg) translateY(3px) scale(1.01); filter: brightness(1.1); }
+      80% { opacity: 1; transform: perspective(380px) rotateX(-4deg) translateY(0) scale(0.996); filter: brightness(1.02); }
+      100% { opacity: 1; transform: perspective(380px) rotateX(0deg) translateY(0) scale(1); filter: brightness(1); }
+    }
+    @keyframes llZoomPop {
+      0% { transform: scale(0.8); opacity: 0.3; }
+      60% { transform: scale(1.035); opacity: 1; }
+      100% { transform: scale(1); opacity: 1; }
+    }
+    @keyframes llCurtain {
+      0% { clip-path: inset(0 0 100% 0); }
+      100% { clip-path: inset(0 0 0% 0); }
+    }
+    @keyframes llScanLine {
+      0% { transform: translateY(-24px); opacity: 0; }
+      12% { opacity: 1; }
+      88% { opacity: 1; }
+      100% { transform: translateY(420px); opacity: 0; }
+    }
+    @keyframes llSideSwipe {
+      0% { opacity: 0; transform: translateX(92%) skewX(-3deg); }
+      72% { opacity: 1; transform: translateX(-8px) skewX(1deg); }
+      100% { opacity: 1; transform: translateX(0) skewX(0); }
+    }
+    @keyframes llCenterSplit {
+      0% { opacity: 0; clip-path: inset(40% 42% 40% 42% round 20px); transform: scale(0.86); }
+      35% { opacity: 1; }
+      100% { opacity: 1; clip-path: inset(0% 0% 0% 0% round 12px); transform: scale(1); }
+    }
+    @keyframes llJelly {
+      0% { transform: scaleX(0.92) scaleY(0.84); animation-timing-function: cubic-bezier(0.22, 1, 0.36, 1); }
+      30% { transform: scaleX(1.04) scaleY(0.96); animation-timing-function: cubic-bezier(0.45, 0, 0.55, 1); }
+      55% { transform: scaleX(0.982) scaleY(1.024); animation-timing-function: cubic-bezier(0.45, 0, 0.55, 1); }
+      78% { transform: scaleX(1.008) scaleY(0.993); animation-timing-function: ease-out; }
+      100% { transform: scaleX(1) scaleY(1); }
+    }
+    @keyframes llFlashSweep {
+      0% { transform: translateX(-140%) skewX(-24deg); opacity: 0; }
+      20% { opacity: 1; }
+      100% { transform: translateX(185%) skewX(-24deg); opacity: 0; }
+    }
+
+    [data-card-anim="1"] .anim-enter { animation: llSpring calc(0.58s * var(--anim-spd)) ease-out both; }
+    [data-card-anim="2"] .anim-enter .anim-pad { animation: llLift calc(0.44s * var(--anim-spd)) cubic-bezier(0.16, 1, 0.3, 1) both; }
+    [data-card-anim="3"] .anim-enter .anim-s1 { opacity: 0; animation: llCasc calc(0.34s * var(--anim-spd)) cubic-bezier(0.2, 1, 0.3, 1) calc(0.04s * var(--anim-spd)) forwards; }
+    [data-card-anim="3"] .anim-enter .anim-s2 { opacity: 0; animation: llCasc calc(0.36s * var(--anim-spd)) cubic-bezier(0.2, 1, 0.3, 1) calc(0.16s * var(--anim-spd)) forwards; }
+    [data-card-anim="3"] .anim-enter .anim-s3 { opacity: 0; animation: llCasc calc(0.36s * var(--anim-spd)) cubic-bezier(0.2, 1, 0.3, 1) calc(0.28s * var(--anim-spd)) forwards; }
+    [data-card-anim="4"] .anim-enter .anim-pad { transform-origin: center top; backface-visibility: hidden; animation: llFlip3d calc(0.64s * var(--anim-spd)) cubic-bezier(0.2, 0.9, 0.3, 1) both; }
+    [data-card-anim="5"] .anim-enter { animation: llZoomPop calc(0.46s * var(--anim-spd)) cubic-bezier(0.22, 1, 0.36, 1) both; }
+    [data-card-anim="6"] .anim-enter .anim-pad { animation: llCurtain calc(0.56s * var(--anim-spd)) cubic-bezier(0.2, 0.85, 0.25, 1) both; }
+    [data-card-anim="6"] .anim-enter::after {
+      content: ""; position: absolute; left: 0; right: 0; top: 0; height: 26px; z-index: 8; pointer-events: none;
+      background: linear-gradient(180deg, transparent 0%, var(--accent-soft) 55%, var(--accent) 88%, #ffffff 100%);
+      border-bottom: 2px solid #ffffff; box-shadow: 0 4px 18px var(--accent);
+      animation: llScanLine calc(0.62s * var(--anim-spd)) cubic-bezier(0.2, 0.85, 0.25, 1) forwards;
+    }
+    [data-card-anim="7"] .anim-enter .anim-s1 { opacity: 0; animation: llSideSwipe calc(0.42s * var(--anim-spd)) cubic-bezier(0.22, 1, 0.36, 1) calc(0.02s * var(--anim-spd)) forwards; }
+    [data-card-anim="7"] .anim-enter .anim-s2 { opacity: 0; animation: llSideSwipe calc(0.46s * var(--anim-spd)) cubic-bezier(0.22, 1, 0.36, 1) calc(0.08s * var(--anim-spd)) forwards; }
+    [data-card-anim="7"] .anim-enter .anim-s3 { opacity: 0; animation: llSideSwipe calc(0.5s * var(--anim-spd)) cubic-bezier(0.22, 1, 0.36, 1) calc(0.14s * var(--anim-spd)) forwards; }
+    [data-card-anim="8"] .anim-enter .anim-pad { transform-origin: center center; animation: llCenterSplit calc(0.48s * var(--anim-spd)) cubic-bezier(0.16, 1, 0.3, 1) both; }
+    [data-card-anim="9"] .anim-enter { transform-origin: top center; animation: llJelly calc(0.72s * var(--anim-spd)) both; }
+    [data-card-anim="10"] .anim-enter::after {
+      content: ""; position: absolute; top: 0; bottom: 0; left: 0; width: 65%; z-index: 8; pointer-events: none;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), var(--accent-soft), transparent);
+      animation: llFlashSweep calc(0.66s * var(--anim-spd)) cubic-bezier(0.22, 1, 0.36, 1) forwards;
+    }
   </style>
 </head>
 <body>
@@ -1835,6 +1972,13 @@
             <div style="font-size:11px;opacity:0.75;">Švari dienos salė + safyras</div>
           </button>
         </div>
+        <div class="setting-toggle-row mt-12" style="margin-bottom:0;" onclick="openCardAnimModal()">
+          <div style="min-width:0;">
+            <div style="font-weight:800;font-size:13.5px;">🎬 Pratimų perjungimo animacija</div>
+            <div id="settings-anim-summary" style="font-size:11.5px;color:var(--accent);font-weight:700;margin-top:2px;">#1 Tikra spyruoklė · 1.0×</div>
+          </div>
+          <span class="btn btn-sm btn-ghost" style="min-height:30px;padding:4px 10px;font-size:11.5px;flex-shrink:0;">Demo ir pasirinkti</span>
+        </div>
       </section>
 
       <!-- Rest Timer Sound & Vibration Controls -->
@@ -1882,18 +2026,18 @@
             <button type="button" class="tone-chip" data-tone="double" onclick="setTimerTone('double')">Dvigubas</button>
             <button type="button" class="tone-chip" data-tone="gong" onclick="setTimerTone('gong')">Gongas</button>
           </div>
-          <button type="button" class="btn btn-sm btn-primary" onclick="testRestTimerSignal()">▶ Patikrinti signalą</button>
-        </div>
-        <div class="row-between" style="flex-wrap:wrap;margin-top:8px;gap:6px;">
-          <span style="font-size:11.5px;color:var(--text-muted);font-weight:700;">🔊 Garsumas:</span>
           <div class="row" style="gap:6px;">
             <button type="button" class="tone-chip vol-chip" data-vol="normal" onclick="setTimerVolume('normal')">Normalus</button>
-            <button type="button" class="tone-chip vol-chip" data-vol="loud" onclick="setTimerVolume('loud')">Garsus (salėje)</button>
+            <button type="button" class="tone-chip vol-chip" data-vol="loud" onclick="setTimerVolume('loud')">Garsus</button>
           </div>
+        </div>
+        <div class="grid-2 mt-8">
+          <button type="button" class="btn btn-sm btn-primary" onclick="testRestTimerSignal()">▶ Patikrinti signalą</button>
+          <button type="button" class="btn btn-sm btn-ghost" onclick="testNotificationDirectly()">⌚ Patikrinti pranešimą</button>
         </div>
         <div class="row" style="margin-top:8px;font-size:11.5px;color:var(--text-muted);">
           <span id="timer-test-dot" class="signal-pulse-dot"></span>
-          <span id="timer-test-status">Paspausk „Patikrinti signalą“ (įsitikink, kad telefono medijos garsas įjungtas).</span>
+          <span id="timer-test-status">Paspausk „Patikrinti signalą“ arba „Patikrinti pranešimą“ (telefonui ir Watch).</span>
         </div>
       </section>
 
@@ -1951,8 +2095,8 @@
       <!-- PWA Home Screen Info & Release Notes Card -->
       <section class="card">
         <div class="section-title">
-          <span>Programėlė (v8.3) ir darbalaukio PWA</span>
-          <button type="button" class="btn btn-sm btn-ghost" style="min-height:28px;padding:3px 9px;font-size:11px;" onclick="openWhatsNewModal()">✨ Kas naujo v8.3</button>
+          <span>Programėlė (v8.4) ir darbalaukio PWA</span>
+          <button type="button" class="btn btn-sm btn-ghost" style="min-height:28px;padding:3px 9px;font-size:11px;" onclick="openWhatsNewModal()">✨ Kas naujo v8.4</button>
         </div>
         <div class="pwa-hint-box" style="align-items:flex-start;">
           <div style="width:46px;height:46px;border-radius:13px;overflow:hidden;border:1px solid rgba(56,189,248,0.45);flex-shrink:0;margin-top:2px;">
@@ -1980,33 +2124,36 @@
         </div>
         <div class="row-between mt-8" style="flex-wrap:wrap;gap:8px;">
           <button type="button" class="btn btn-sm btn-secondary" onclick="checkForPwaUpdates()">🔄 Patikrinti atnaujinimus</button>
-          <span id="pwa-check-status" style="font-size:11.5px;color:var(--text-muted);">Versija: v8.3</span>
+          <span id="pwa-check-status" style="font-size:11.5px;color:var(--text-muted);">Versija: v8.4</span>
         </div>
       </section>
     </main>
   </div>
 
-  <!-- Floating Undo Action Bar -->
-  <div id="undo-float-bar" class="undo-float-bar">
-    <span id="undo-float-text" style="font-size:12.5px;font-weight:700;color:var(--text);">Veiksmas atliktas</span>
-    <button type="button" class="btn btn-sm btn-amber-ghost" onclick="executeUndo()">↩ Atšaukti</button>
-  </div>
+  <!-- Unified Floating Stack (Undo sits cleanly above Rest Timer, never overlapping) -->
+  <div id="bottom-float-stack" class="bottom-float-stack">
+    <!-- Floating Undo Action Bar -->
+    <div id="undo-float-bar" class="undo-float-bar">
+      <span id="undo-float-text" style="font-size:12.5px;font-weight:700;color:var(--text);min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">Veiksmas atliktas</span>
+      <button type="button" class="btn btn-sm btn-amber-ghost" style="flex-shrink:0;" onclick="executeUndo()">↩ Atšaukti</button>
+    </div>
 
-  <!-- Floating System-Clock Rest Timer (±15s + Shrinking Progress Bar) -->
-  <div id="rest-timer-bar" class="rest-timer-bar">
-    <div class="row-between">
-      <div>
-        <div id="rest-time-readout" class="rest-time-readout">02:00</div>
-        <div id="rest-timer-label" style="font-size:11.5px;color:var(--text-muted);margin-top:2px;">Poilsis tarp serijų</div>
-      </div>
-      <div class="row" style="gap:5px;">
-        <button class="rest-btn" onclick="adjustRestTimer(-15)">-15s</button>
-        <button id="rest-pause-btn" class="rest-btn" style="color:var(--yellow);" onclick="toggleRestPause()">⏸ Pauzė</button>
-        <button class="rest-btn" onclick="adjustRestTimer(15)">+15s</button>
+    <!-- Floating System-Clock Rest Timer (±15s + Pause + Shrinking Progress Bar) -->
+    <div id="rest-timer-bar" class="rest-timer-bar">
+      <div class="rest-timer-top">
+        <div class="rest-timer-meta">
+          <div id="rest-time-readout" class="rest-time-readout">02:00</div>
+          <div id="rest-timer-label" class="rest-timer-lbl">Poilsis tarp serijų</div>
+        </div>
         <button class="rest-btn" style="color:var(--accent);" onclick="stopRestTimer()">Praleisti</button>
       </div>
+      <div class="rest-controls-row">
+        <button class="rest-btn" onclick="adjustRestTimer(-15)">−15 s</button>
+        <button id="rest-pause-btn" class="rest-btn" style="color:var(--yellow);" onclick="toggleRestPause()">⏸ Pauzė</button>
+        <button class="rest-btn" onclick="adjustRestTimer(15)">+15 s</button>
+      </div>
+      <div class="rest-progress"><div id="rest-progress-fill" class="rest-progress-fill"></div></div>
     </div>
-    <div class="rest-progress"><div id="rest-progress-fill" class="rest-progress-fill"></div></div>
   </div>
 
   <!-- Fixed Bottom Navigation -->
@@ -2220,17 +2367,74 @@
     </div>
   </div>
 
-  <!-- What's New in v8.3 + Full Release History Modal -->
+  <!-- Card Transition Animation Picker & Live Demo Modal (v8.4) -->
+  <div id="modal-card-anim" class="modal-backdrop" onclick="closeModalOnBackdrop(event, 'modal-card-anim')">
+    <div class="modal-sheet">
+      <div class="row-between" style="margin-bottom:8px;">
+        <div>
+          <span class="pill pill-accent" style="font-size:10px;padding:2px 8px;">GYVA DEMONSTRACIJA</span>
+          <h3 style="margin:4px 0 0 0;font-size:17px;">🎬 Pratimų perjungimo animacija</h3>
+        </div>
+        <button class="btn btn-sm btn-secondary" onclick="closeModal('modal-card-anim')">Uždaryti</button>
+      </div>
+      <div id="anim-pick-grid" class="anim-pick-grid"></div>
+      <div style="margin-bottom:8px;">
+        <div id="anim-pick-title" style="font-size:12.5px;font-weight:800;color:var(--accent);">#1 Tikra spyruoklė</div>
+        <div id="anim-pick-desc" style="font-size:11px;color:var(--text-muted);">Visa kortelė gyvai atšoka ir nusėda su tikra spyruoklės fizika</div>
+      </div>
+      <div class="anim-spd-row">
+        <span>⏱ Greitis:</span>
+        <span style="color:var(--text-muted);font-size:10px;">Lėtai</span>
+        <input id="anim-spd-slider" type="range" min="0.4" max="2.2" step="0.1" value="1.0" oninput="setCardAnimSpeed(this.value)">
+        <span style="color:var(--text-muted);font-size:10px;">Greitai</span>
+        <span id="anim-spd-val" style="min-width:38px;text-align:right;font-family:var(--font-mono);color:var(--accent);">1.0×</span>
+      </div>
+      <div id="anim-demo-stage" class="anim-demo-card" onclick="replayCardAnimDemo()">
+        <div class="row-between">
+          <strong style="font-size:13.5px;">🏋️ Hack Squat · Serija 1/2</strong>
+          <span class="pill pill-accent" style="font-size:10px;">Paspausk = pakartoti</span>
+        </div>
+        <div class="anim-pad">
+          <div class="anim-demo-s anim-s1" style="border-left:3px solid var(--accent);"><strong>Kryptis:</strong> Stumk kulnais įstrižai aukštyn</div>
+          <div class="anim-demo-s anim-s2"><strong>60 kg × 10</strong> · RIR 3</div>
+          <div class="anim-demo-s anim-s3" style="text-align:center;font-weight:900;background:var(--accent-grad);color:var(--accent-text);">✓ Užbaigti 1 / 2 seriją</div>
+        </div>
+      </div>
+      <div class="grid-2">
+        <button type="button" class="btn btn-sm btn-secondary" onclick="replayCardAnimDemo()">▶ Pakartoti</button>
+        <button type="button" class="btn btn-sm btn-primary" onclick="closeModal('modal-card-anim');showToast('Animacija išsaugota!');">✓ Taikyti</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- What's New in v8.4 + Full Release History Modal -->
   <div id="modal-whats-new" class="modal-backdrop" onclick="closeModalOnBackdrop(event, 'modal-whats-new')">
     <div class="modal-sheet">
       <div class="row-between" style="margin-bottom:8px;">
         <div>
-          <span class="pill pill-accent" style="font-size:10px;padding:2px 8px;">ATNAUJINIMAS · v8.3</span>
-          <h3 style="margin:4px 0 0 0;font-size:18px;">✨ Kas naujo LeverLab 193 v8.3?</h3>
+          <span class="pill pill-accent" style="font-size:10px;padding:2px 8px;">ATNAUJINIMAS · v8.4</span>
+          <h3 style="margin:4px 0 0 0;font-size:18px;">✨ Kas naujo LeverLab 193 v8.4?</h3>
         </div>
         <button class="btn btn-sm btn-secondary" onclick="closeWhatsNewModal()">Uždaryti</button>
       </div>
       <div style="max-height:60vh;overflow-y:auto;padding-right:2px;">
+        <div class="wn-item">
+          <div class="wn-ico">✨</div>
+          <div>
+            <div class="wn-title">Stiklinis šviesos kraštas (#9) aktyviam pratimui ir serijai</div>
+            <div class="wn-sub">Aktyvi kortelė ir dabartinė serija dabar išsiskiria įstrižu stiklo atspindžiu, šviesia briauna ir švelniu vidiniu švytėjimu visose 4 temose.</div>
+          </div>
+        </div>
+        <div class="wn-item">
+          <div class="wn-ico">🎬</div>
+          <div>
+            <div class="wn-title">10 pratimų perjungimo animacijų + gyvas demo meniu Nustatymuose</div>
+            <div class="wn-sub"><em>Nustatymuose</em> atsidaryk <strong>Pratimų perjungimo animacija → Demo ir pasirinkti</strong> – išbandyk visus 10 fizikos stilių (spyruoklė, kaskadas, 3D atsivertimas, lazeris, želė, blyksnis ir kt.) su greičio slankikliu!</div>
+          </div>
+        </div>
+
+        <div class="wn-ver-divider">Ankstesni atnaujinimai (v8.3)</div>
+
         <div class="wn-item">
           <div class="wn-ico">⏱</div>
           <div>
@@ -2979,6 +3183,8 @@
         timerVibrate: true,
         timerNotify: false,
         timerLiveShade: false,
+        cardAnim: '10',
+        cardAnimSpeed: 1.0,
         timerTone: 'soft',
         timerVolume: 'loud',
         lastSeenRelease: null,
@@ -3005,6 +3211,7 @@
 
     let state = loadState();
     let activeExId = null;
+    let prevRenderedExId = null;
     let openDrawers = new Set();
     let openNotes = new Set();
     let programBarOpen = true;
@@ -3045,6 +3252,8 @@
         timerVibrate: parsed.timerVibrate !== undefined ? !!parsed.timerVibrate : true,
         timerNotify: parsed.timerNotify !== undefined ? !!parsed.timerNotify : false,
         timerLiveShade: parsed.timerLiveShade !== undefined ? !!parsed.timerLiveShade : false,
+        cardAnim: parsed.cardAnim !== undefined ? String(parsed.cardAnim) : '10',
+        cardAnimSpeed: parsed.cardAnimSpeed ? Math.max(0.4, Math.min(2.2, Number(parsed.cardAnimSpeed))) : 1.0,
         timerTone: ['soft', 'double', 'gong'].includes(parsed.timerTone) ? parsed.timerTone : 'soft',
         timerVolume: ['normal', 'loud'].includes(parsed.timerVolume) ? parsed.timerVolume : 'loud',
         lastSeenRelease: parsed.lastSeenRelease || null,
@@ -3421,6 +3630,50 @@
       if (state.timerVibrate) parts.push('Vibracija');
       if (state.timerNotify) parts.push(notifSent ? '✓ Pranešimas išsiųstas (Watch)' : '⚠️ Pranešimas blokuotas');
       if (status) status.textContent = 'Suveikė: ' + parts.join(' + ');
+    }
+
+    async function testNotificationDirectly() {
+      const dot = document.getElementById('timer-test-dot');
+      const status = document.getElementById('timer-test-status');
+      if (!('Notification' in window) || !window.isSecureContext) {
+        if (status) status.textContent = '⚠️ Pranešimai veikia tik įdiegus per GitHub Pages (HTTPS).';
+        showToast('Atidaryk per GitHub Pages (HTTPS) programėlę');
+        return;
+      }
+      let perm = Notification.permission;
+      if (perm === 'default') {
+        try {
+          perm = await Notification.requestPermission();
+        } catch (e) {}
+      }
+      if (perm === 'denied') {
+        renderTimerSignalControls();
+        if (status) status.textContent = '⚠️ Užblokuota: palaikyk LeverLab 193 ikoną → (i) → Pranešimai → Leisti.';
+        showToast('Pranešimai užblokuoti telefono nustatymuose');
+        return;
+      }
+      if (perm !== 'granted') {
+        renderTimerSignalControls();
+        if (status) status.textContent = 'Leidimas nesuteiktas – paspausk dar kartą ir pasirink „Leisti“.';
+        showToast('Leidimas nesuteiktas');
+        return;
+      }
+      state.timerNotify = true;
+      saveState();
+      renderTimerSignalControls();
+      const reg = await getActiveSwReg();
+      const sent = await sendRestSystemNotification('Testinis pranešimas! Jei matai viršuje – veikia ir su Galaxy Watch 8.');
+      if (dot) {
+        dot.classList.add('ping');
+        setTimeout(() => dot.classList.remove('ping'), 520);
+      }
+      if (sent) {
+        if (status) status.textContent = `✓ Pranešimas išsiųstas! (Leidimas: Leista · ${reg ? 'PWA tarnyba aktyvi' : 'Naršyklė'})`;
+        showToast('⌚ Testinis pranešimas išsiųstas!');
+      } else {
+        if (status) status.textContent = '⚠️ Leidimas yra, bet Android atmetė pranešimą – patikrink sistemos pranešimų kanalą.';
+        showToast('Nepavyko išsiųsti pranešimo');
+      }
     }
 
     function showToast(msg) {
@@ -4182,13 +4435,17 @@
 
       // Render Focus Accordion
       const exIds = getSlotExerciseIds(type);
+      const shouldAnimSwitch = (prevRenderedExId !== null && activeExId !== prevRenderedExId && state.cardAnim !== '0');
+      prevRenderedExId = activeExId;
       const container = document.getElementById('exercises-container');
       container.innerHTML = '';
       exIds.forEach((exId, idx) => {
         const isBaseSlot = idx < WORKOUT_TEMPLATES[type].length;
         const slotKey = isBaseSlot ? `${type}_${idx}` : null;
         if (exId === activeExId) {
-          container.appendChild(buildActiveExerciseCard(exId, idx + 1, slotKey, exIds.length));
+          const activeCard = buildActiveExerciseCard(exId, idx + 1, slotKey, exIds.length);
+          if (shouldAnimSwitch) activeCard.classList.add('anim-enter');
+          container.appendChild(activeCard);
         } else {
           container.appendChild(buildCompactExerciseStrip(exId, idx + 1));
         }
@@ -4426,7 +4683,8 @@
         </div>
 
         <!-- Visual 3-Sec Summary (Action / Target Muscle / Safety Stop) -->
-        <div class="quick-cues">
+        <div class="anim-pad">
+        <div class="quick-cues anim-s1">
           <div class="qc-item">
             <span class="qc-ico dir" aria-hidden="true">
               <svg viewBox="0 0 24 24"><path d="M7 17 17 7"/><path d="M8 7h9v9"/></svg>
@@ -4471,10 +4729,10 @@
           </div>` : ''}
         ${warmupHtml}
 
-        <div class="sets-list">${setsHtml}</div>
+        <div class="sets-list anim-s2">${setsHtml}</div>
 
         <!-- Variant B: Dual High-Contrast Animacija & Pin + Quick Video Buttons -->
-        <div class="guide-dual-row ${ex.yt ? '' : 'single'}">
+        <div class="guide-dual-row anim-s3 ${ex.yt ? '' : 'single'}">
           <button type="button" class="btn-anim-guide" onclick="toggleTechDrawer('${exId}')">
             <span>🦴 Animacija &amp; Pin</span>
             <span>${isDrawerOpen ? '▴' : '▾'}</span>
@@ -4567,6 +4825,7 @@
               </div>
               <textarea id="note-ta-${exId}" class="note-textarea" rows="2" placeholder="${entry.comfort === 'red' ? 'Kur ir kada suskaudo? (pvz., dūris peties priekyje...)' : entry.comfort === 'yellow' ? 'Kur jautėsi įtampa? (pvz., kelis apačioje, kairė alkūnė...)' : 'Įrašyk pastabą šiam pratimui (išsisaugos Progreso istorijoje)...'}" oninput="setExerciseNote('${exId}', this.value)">${escapeAttr(entry.note || '')}</textarea>
             </div>` : ''}
+        </div>
         </div>
       `;
       return card;
@@ -7141,6 +7400,7 @@
 
     function renderSettingsTab() {
       setTheme(state.theme, true);
+      applyCardAnimSettings();
       renderTimerSignalControls();
       const p = state.profile;
       document.getElementById('prof-height').value = p.height;
@@ -7295,11 +7555,77 @@
       if (document.getElementById('view-body').classList.contains('active')) { renderWeightChart(); renderMeasurementChart(); }
     });
 
+    const CARD_ANIM_LIST = [
+      { id: '0', short: 'Išj.', title: 'Animacija išjungta', desc: 'Momentinis perjungimas be judesio (taupo bateriją)' },
+      { id: '1', short: '#1', title: '#1 Tikra spyruoklė', desc: 'Kortelė gyvai atšoka ir nusėda su tikra spyruoklės fizika' },
+      { id: '2', short: '#2', title: '#2 Skystas iškilimas', desc: 'Turinys švelniai iškyla iš apačios (Samsung One UI stilius)' },
+      { id: '3', short: '#3', title: '#3 Ryškus kaskadas', desc: 'Kryptis → Serija → Mygtukai įskrieja eilės tvarka po vieną' },
+      { id: '4', short: '#4', title: '#4 3D kortos atsivertimas', desc: '84° erdvinis 3D atsilenkimas su šviesos atspindžiu' },
+      { id: '5', short: '#5', title: '#5 Gylio fokusas (Zoom)', desc: 'Aktyvi kortelė dinamiškai priartėja į priekį' },
+      { id: '6', short: '#6', title: '#6 Lazerinė užuolaida', desc: 'Švytinti juosta nubėga žemyn atidengdama visą pratimą' },
+      { id: '7', short: '#7', title: '#7 Šoninis įčiuožimas', desc: 'Elementai dinamiškai įslysta iš dešinės su stabdymu' },
+      { id: '8', short: '#8', title: '#8 Išsiskleidimas iš centro', desc: 'Turinys išsiplečia iš vidurio į visus keturis kraštus' },
+      { id: '9', short: '#9', title: '#9 Organiška „Jelly“ fizika', desc: 'Elastinga slopstanti spyruoklė su minkštu nusėdimu' },
+      { id: '10', short: '#10', title: '#10 Šviesos blyksnis (Standartinis)', desc: 'Ryškus įstrižas metalo šviesos blyksnis per visą kortelę' }
+    ];
+
+    function applyCardAnimSettings() {
+      const id = String(state.cardAnim ?? '10');
+      const spd = Math.max(0.4, Math.min(2.2, Number(state.cardAnimSpeed) || 1.0));
+      document.documentElement.setAttribute('data-card-anim', id);
+      document.documentElement.style.setProperty('--anim-spd', String(+(1 / spd).toFixed(3)));
+      const item = CARD_ANIM_LIST.find(x => x.id === id) || CARD_ANIM_LIST[10];
+      const sum = document.getElementById('settings-anim-summary');
+      if (sum) sum.textContent = id === '0' ? 'Išjungta (momentinė)' : `${item.title} · ${spd.toFixed(1)}×`;
+      const sl = document.getElementById('anim-spd-slider');
+      const sv = document.getElementById('anim-spd-val');
+      if (sl) sl.value = spd.toFixed(1);
+      if (sv) sv.textContent = spd.toFixed(1) + '×';
+      const tEl = document.getElementById('anim-pick-title');
+      const dEl = document.getElementById('anim-pick-desc');
+      if (tEl) tEl.textContent = item.title;
+      if (dEl) dEl.textContent = item.desc;
+      const grid = document.getElementById('anim-pick-grid');
+      if (grid) {
+        grid.innerHTML = CARD_ANIM_LIST.map(a =>
+          `<button type="button" class="anim-pick-btn ${a.id === id ? 'active' : ''}" onclick="pickCardAnim('${a.id}')">${a.short}</button>`
+        ).join('');
+      }
+    }
+
+    function openCardAnimModal() {
+      applyCardAnimSettings();
+      openModal('modal-card-anim');
+      setTimeout(replayCardAnimDemo, 60);
+    }
+
+    function pickCardAnim(id) {
+      state.cardAnim = String(id);
+      saveState();
+      applyCardAnimSettings();
+      replayCardAnimDemo();
+    }
+
+    function setCardAnimSpeed(val) {
+      state.cardAnimSpeed = Math.max(0.4, Math.min(2.2, parseFloat(val) || 1.0));
+      saveState();
+      applyCardAnimSettings();
+      replayCardAnimDemo();
+    }
+
+    function replayCardAnimDemo() {
+      const stage = document.getElementById('anim-demo-stage');
+      if (!stage) return;
+      stage.classList.remove('anim-enter');
+      void stage.offsetWidth;
+      if (state.cardAnim !== '0') stage.classList.add('anim-enter');
+    }
+
     function openWhatsNewModal() { openModal('modal-whats-new'); }
     function closeWhatsNewModal() {
       closeModal('modal-whats-new');
-      if (state.lastSeenRelease !== 'v8.3') {
-        state.lastSeenRelease = 'v8.3';
+      if (state.lastSeenRelease !== 'v8.4') {
+        state.lastSeenRelease = 'v8.4';
         saveState();
       }
     }
@@ -7334,7 +7660,7 @@
       try {
         const reg = await navigator.serviceWorker.getRegistration();
         if (!reg) {
-          if (st) st.textContent = 'Naudoji naujausią versiją (v8.3)';
+          if (st) st.textContent = 'Naudoji naujausią versiją (v8.4)';
           return;
         }
         await reg.update();
@@ -7345,7 +7671,7 @@
         } else if (reg.installing) {
           if (st) st.textContent = 'Atsisiunčiama nauja versija...';
         } else {
-          if (st) st.textContent = '✓ Naudoji naujausią versiją (v8.3)';
+          if (st) st.textContent = '✓ Naudoji naujausią versiją (v8.4)';
           showToast('✓ Turi naujausią versiją');
         }
       } catch (e) {
@@ -7381,6 +7707,7 @@
       initPwaManifest();
       document.getElementById('brand-height-badge').textContent = state.profile.height || 193;
       setTheme(state.theme, true);
+      applyCardAnimSettings();
       ensureDraft();
       sanitizeStaleDraftClock();
       if (state.draft && state.draft.startedAt) {
@@ -7391,7 +7718,7 @@
       renderWorkoutView();
       checkBackupReminder();
       setInterval(updateSessionClock, 1000);
-      if (state.lastSeenRelease !== 'v8.3') {
+      if (state.lastSeenRelease !== 'v8.4') {
         setTimeout(() => openWhatsNewModal(), 350);
       }
     };
