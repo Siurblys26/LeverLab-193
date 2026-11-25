@@ -11,7 +11,7 @@
   <link rel="manifest" href="./manifest.json">
   <link id="pwa-favicon" rel="icon" type="image/svg+xml" href="./icon.svg">
   <link id="pwa-apple-icon" rel="apple-touch-icon" sizes="192x192" href="./icon-192.png">
-  <title>LeverLab 193 (v8.5) – Sporto Salės Programa</title>
+  <title>LeverLab 193 (v8.6) – Sporto Salės Programa</title>
   <style>
     /* ==========================================================================
        1. DESIGN TOKENS & 4 SELECTABLE THEMES (ROUND 5 NATIVE HIERARCHY)
@@ -768,20 +768,33 @@
     }
     .rest-timer-bar {
       width: 100%;
-      background: var(--glass-bg);
-      backdrop-filter: blur(20px) saturate(165%);
-      -webkit-backdrop-filter: blur(20px) saturate(165%);
-      box-shadow: 0 14px 32px rgba(0, 0, 0, 0.55), 0 0 0 1.5px var(--accent);
+      background: linear-gradient(155deg, color-mix(in srgb, var(--accent) 16%, var(--glass-bg)), color-mix(in srgb, var(--bg-elevated) 86%, transparent));
+      backdrop-filter: blur(26px) saturate(185%);
+      -webkit-backdrop-filter: blur(26px) saturate(185%);
+      border: 1.5px solid color-mix(in srgb, var(--accent) 70%, rgba(255, 255, 255, 0.35));
+      box-shadow: 0 18px 42px rgba(0, 0, 0, 0.72), 0 0 20px var(--accent-soft), inset 0 1.5px 0 rgba(255, 255, 255, 0.22);
       border-radius: var(--radius-lg); padding: 10px 12px;
       display: none; pointer-events: auto;
       animation: floatSlideUp 0.22s cubic-bezier(0.2, 0.8, 0.2, 1);
+    }
+    [data-theme="nordic"] .rest-timer-bar {
+      background: linear-gradient(155deg, rgba(224, 242, 254, 0.84), rgba(255, 255, 255, 0.9));
+      box-shadow: 0 14px 36px rgba(15, 23, 42, 0.18), 0 0 0 1px rgba(3, 105, 161, 0.25), inset 0 1.5px 0 rgba(255, 255, 255, 0.95);
     }
     @keyframes floatSlideUp {
       from { opacity: 0; transform: translateY(14px); }
       to { opacity: 1; transform: translateY(0); }
     }
     .rest-timer-bar.visible { display: block; }
-    .rest-timer-bar.finished { box-shadow: 0 14px 32px rgba(0, 0, 0, 0.55), 0 0 0 2px var(--green); }
+    .rest-timer-bar.finished {
+      background: linear-gradient(155deg, color-mix(in srgb, var(--green) 22%, var(--glass-bg)), color-mix(in srgb, var(--bg-elevated) 86%, transparent));
+      border-color: var(--green);
+      box-shadow: 0 18px 42px rgba(0, 0, 0, 0.72), 0 0 24px rgba(34, 197, 94, 0.32), inset 0 1.5px 0 rgba(255, 255, 255, 0.26);
+    }
+    [data-theme="nordic"] .rest-timer-bar.finished {
+      background: linear-gradient(155deg, rgba(220, 252, 231, 0.9), rgba(255, 255, 255, 0.92));
+      box-shadow: 0 14px 34px rgba(21, 128, 61, 0.22), inset 0 1.5px 0 rgba(255, 255, 255, 0.95);
+    }
     .rest-time-readout { font-size: 24px; font-weight: 900; font-family: var(--font-mono); font-variant-numeric: tabular-nums; color: var(--accent); line-height: 1; flex-shrink: 0; }
     .rest-timer-bar.finished .rest-time-readout { color: var(--green); }
     .rest-timer-top { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
@@ -1022,21 +1035,51 @@
       text-shadow: 0 1px 2px rgba(0,0,0,0.7); border: 1px solid rgba(255,255,255,0.25); flex-shrink: 0;
     }
 
+    @keyframes modalFadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+    @keyframes modalSheetIn {
+      from { opacity: 0; transform: translateY(20px) scale(0.97); }
+      to { opacity: 1; transform: translateY(0) scale(1); }
+    }
     .modal-backdrop {
-      position: fixed; inset: 0; background: rgba(0, 0, 0, 0.72); z-index: 100;
+      position: fixed; inset: 0;
+      background: rgba(3, 7, 14, 0.58);
+      backdrop-filter: blur(12px) saturate(135%);
+      -webkit-backdrop-filter: blur(12px) saturate(135%);
+      z-index: 100;
       display: none; align-items: flex-end; justify-content: center; padding: 10px;
     }
-    .modal-backdrop.open { display: flex; }
+    [data-theme="nordic"] .modal-backdrop {
+      background: rgba(15, 23, 42, 0.34);
+    }
+    .modal-backdrop.open { display: flex; animation: modalFadeIn 0.2s ease both; }
     @media (min-width: 600px) { .modal-backdrop { align-items: center; } }
     .modal-sheet {
+      position: relative;
       width: 100%; max-width: 520px; max-height: 88vh; overflow-y: auto;
-      background: var(--bg-elevated); border: 1px solid var(--border-strong);
-      border-radius: 22px; padding: 16px; box-shadow: 0 20px 50px rgba(0,0,0,0.65);
+      background: linear-gradient(160deg, color-mix(in srgb, var(--accent) 8%, var(--bg-elevated)) 0%, color-mix(in srgb, var(--bg-elevated) 88%, transparent) 100%);
+      backdrop-filter: blur(28px) saturate(185%);
+      -webkit-backdrop-filter: blur(28px) saturate(185%);
+      border: 1.5px solid color-mix(in srgb, var(--accent) 34%, rgba(255, 255, 255, 0.22));
+      border-radius: 24px; padding: 18px 16px 16px;
+      box-shadow: 0 26px 68px rgba(0, 0, 0, 0.74), inset 0 1.5px 0 rgba(255, 255, 255, 0.2);
+      animation: modalSheetIn 0.26s cubic-bezier(0.22, 1, 0.36, 1) both;
+    }
+    .modal-sheet::before {
+      content: ""; display: block; width: 38px; height: 4px; border-radius: 999px;
+      background: rgba(148, 163, 184, 0.35); margin: -6px auto 12px;
+    }
+    [data-theme="nordic"] .modal-sheet {
+      background: linear-gradient(160deg, rgba(255, 255, 255, 0.92), rgba(244, 248, 253, 0.88));
+      border-color: rgba(3, 105, 161, 0.22);
+      box-shadow: 0 22px 54px rgba(15, 23, 42, 0.2), inset 0 1.5px 0 rgba(255, 255, 255, 0.95);
     }
 
     .toast-wrap {
-      position: fixed; top: calc(env(safe-area-inset-top, 0px) + 64px); left: 50%; transform: translateX(-50%);
-      z-index: 120; width: auto; max-width: min(90vw, 360px);
+      position: fixed; top: calc(env(safe-area-inset-top, 0px) + 58px); left: 50%; transform: translateX(-50%);
+      z-index: 120; width: auto; max-width: min(88vw, 350px);
       pointer-events: none; display: flex; flex-direction: column; align-items: center; gap: 7px;
     }
     @keyframes toastGlassIn {
@@ -1045,23 +1088,23 @@
     }
     .toast {
       width: fit-content; max-width: 100%;
-      background: rgba(15, 23, 38, 0.56);
-      backdrop-filter: blur(18px) saturate(170%);
-      -webkit-backdrop-filter: blur(18px) saturate(170%);
+      background: linear-gradient(150deg, color-mix(in srgb, var(--accent) 20%, var(--glass-bg)), color-mix(in srgb, var(--bg-elevated) 84%, transparent));
+      backdrop-filter: blur(24px) saturate(185%);
+      -webkit-backdrop-filter: blur(24px) saturate(185%);
       color: var(--text);
-      border: 1px solid rgba(255, 255, 255, 0.16);
-      border-radius: 999px;
-      padding: 8px 16px;
-      font-size: 12.5px; font-weight: 700; line-height: 1.3;
-      box-shadow: 0 10px 28px rgba(0, 0, 0, 0.36), inset 0 1px 0 rgba(255, 255, 255, 0.14);
+      border: 1.5px solid color-mix(in srgb, var(--accent) 55%, rgba(255, 255, 255, 0.32));
+      border-radius: 16px;
+      padding: 9px 15px;
+      font-size: 12.5px; font-weight: 800; line-height: 1.32;
+      box-shadow: 0 14px 36px rgba(0, 0, 0, 0.62), 0 0 18px var(--accent-soft), inset 0 1.5px 0 rgba(255, 255, 255, 0.22);
       text-align: center;
       animation: toastGlassIn 0.28s cubic-bezier(0.22, 1, 0.36, 1) forwards;
       transition: opacity 0.24s ease, transform 0.24s cubic-bezier(0.4, 0, 0.2, 1), filter 0.24s ease;
     }
     [data-theme="nordic"] .toast {
-      background: rgba(255, 255, 255, 0.72);
-      border-color: rgba(15, 23, 42, 0.12);
-      box-shadow: 0 8px 24px rgba(15, 23, 42, 0.14), inset 0 1px 0 rgba(255, 255, 255, 0.75);
+      background: linear-gradient(150deg, rgba(224, 242, 254, 0.88), rgba(255, 255, 255, 0.92));
+      border-color: rgba(3, 105, 161, 0.32);
+      box-shadow: 0 12px 30px rgba(15, 23, 42, 0.16), inset 0 1.5px 0 rgba(255, 255, 255, 0.95);
     }
     .toast.leaving {
       opacity: 0;
@@ -1239,18 +1282,23 @@
     }
     .note-textarea:focus { border-color: var(--accent); }
 
-    /* Floating Undo Bar (Stacked cleanly above Rest Timer inside .bottom-float-stack) */
+    /* Floating Undo Bar (Warm Amber Frosted Glass – clearly distinct from Rest Timer below) */
     .undo-float-bar {
       width: 100%;
-      background: var(--glass-bg);
-      backdrop-filter: blur(18px) saturate(165%);
-      -webkit-backdrop-filter: blur(18px) saturate(165%);
-      border: 1.5px solid var(--yellow);
-      border-radius: 14px; padding: 8px 12px;
-      box-shadow: 0 10px 26px rgba(0, 0, 0, 0.48);
+      background: linear-gradient(155deg, rgba(245, 158, 11, 0.24), color-mix(in srgb, var(--bg-elevated) 84%, transparent));
+      backdrop-filter: blur(24px) saturate(185%);
+      -webkit-backdrop-filter: blur(24px) saturate(185%);
+      border: 1.5px solid rgba(251, 191, 36, 0.76);
+      border-radius: 15px; padding: 9px 12px;
+      box-shadow: 0 14px 36px rgba(0, 0, 0, 0.68), 0 0 18px rgba(245, 158, 11, 0.22), inset 0 1.5px 0 rgba(255, 255, 255, 0.24);
       display: none; align-items: center; justify-content: space-between; gap: 10px;
       pointer-events: auto;
       animation: floatSlideUp 0.2s cubic-bezier(0.2, 0.8, 0.2, 1);
+    }
+    [data-theme="nordic"] .undo-float-bar {
+      background: linear-gradient(155deg, rgba(254, 243, 199, 0.92), rgba(255, 255, 255, 0.92));
+      border-color: rgba(217, 119, 6, 0.55);
+      box-shadow: 0 12px 30px rgba(15, 23, 42, 0.16), inset 0 1.5px 0 rgba(255, 255, 255, 0.95);
     }
     .undo-float-bar.visible { display: flex; }
 
@@ -1269,7 +1317,7 @@
       .quick-cues { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
       .qc-item.qc-stop-row { grid-column: 1 / -1; }
       .bottom-float-stack { max-width: 780px; }
-      .anim-stage { height: 145px; }
+      .tech-drawer .anim-stage { height: 145px; }
     }
 
     /* v8 Upgrades: Live PR Pill, Variant B Dual Guide Buttons, Spotlight Canvas, Muscle Volume, Relative Strength, Cable Guide, What's New */
@@ -1406,7 +1454,9 @@
     .wn-item {
       display: flex; align-items: flex-start; gap: 10px;
       padding: 10px 11px; border-radius: 13px;
-      background: var(--bg-surface); margin-bottom: 8px;
+      background: color-mix(in srgb, var(--bg-surface) 82%, transparent);
+      border: 1px solid var(--card-rim);
+      margin-bottom: 8px;
     }
     .wn-ico {
       width: 34px; height: 34px; border-radius: 10px; flex-shrink: 0;
@@ -2132,25 +2182,25 @@
             <div style="font-size:11px;opacity:0.75;">Švari dienos salė + safyras</div>
           </button>
         </div>
-        <div class="setting-toggle-row mt-12" style="margin-bottom:8px;padding:11px 12px;" onclick="openCardFrameModal()">
-          <div class="row" style="min-width:0;flex:1;gap:10px;">
-            <span style="width:34px;height:34px;border-radius:10px;background:var(--accent-soft);color:var(--accent);display:inline-flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0;">✨</span>
-            <div style="min-width:0;">
-              <div style="font-weight:800;font-size:13.5px;line-height:1.25;">Aktyvaus langelio rėmelis</div>
-              <div id="settings-frame-summary" style="font-size:11.5px;color:var(--accent);font-weight:700;margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">#9 Stiklinis šviesos kraštas</div>
+        <div class="setting-toggle-row mt-12" style="margin-bottom:8px;padding:10px 11px;" onclick="openCardFrameModal()">
+          <div class="row" style="min-width:0;flex:1;gap:9px;">
+            <span style="width:32px;height:32px;border-radius:10px;background:var(--accent-soft);color:var(--accent);display:inline-flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0;">✨</span>
+            <div style="min-width:0;flex:1;">
+              <div style="font-weight:800;font-size:13px;line-height:1.25;">Aktyvaus langelio rėmelis</div>
+              <div id="settings-frame-summary" style="font-size:11.5px;color:var(--accent);font-weight:700;margin-top:2px;line-height:1.25;">#9 Stiklinis šviesos kraštas</div>
             </div>
           </div>
-          <span class="pill pill-accent" style="padding:5px 10px;font-size:11.5px;font-weight:800;">Keisti ▸</span>
+          <span class="pill pill-accent" style="padding:4px 9px;font-size:11px;font-weight:800;">Keisti ▸</span>
         </div>
-        <div class="setting-toggle-row" style="margin-bottom:0;padding:11px 12px;" onclick="openCardAnimModal()">
-          <div class="row" style="min-width:0;flex:1;gap:10px;">
-            <span style="width:34px;height:34px;border-radius:10px;background:var(--accent-soft);color:var(--accent);display:inline-flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0;">🎬</span>
-            <div style="min-width:0;">
-              <div style="font-weight:800;font-size:13.5px;line-height:1.25;">Pratimų perjungimo animacija</div>
-              <div id="settings-anim-summary" style="font-size:11.5px;color:var(--accent);font-weight:700;margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">#10 Šviesos blyksnis · 1.0×</div>
+        <div class="setting-toggle-row" style="margin-bottom:0;padding:10px 11px;" onclick="openCardAnimModal()">
+          <div class="row" style="min-width:0;flex:1;gap:9px;">
+            <span style="width:32px;height:32px;border-radius:10px;background:var(--accent-soft);color:var(--accent);display:inline-flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0;">🎬</span>
+            <div style="min-width:0;flex:1;">
+              <div style="font-weight:800;font-size:13px;line-height:1.25;">Pratimų animacija</div>
+              <div id="settings-anim-summary" style="font-size:11.5px;color:var(--accent);font-weight:700;margin-top:2px;line-height:1.25;">#10 Šviesos blyksnis · 1.0×</div>
             </div>
           </div>
-          <span class="pill pill-accent" style="padding:5px 10px;font-size:11.5px;font-weight:800;">Keisti ▸</span>
+          <span class="pill pill-accent" style="padding:4px 9px;font-size:11px;font-weight:800;">Keisti ▸</span>
         </div>
       </section>
 
@@ -2269,8 +2319,8 @@
       <!-- PWA Home Screen Info & Release Notes Card -->
       <section class="card">
         <div class="section-title">
-          <span>Programėlė (v8.5) ir darbalaukio PWA</span>
-          <button type="button" class="btn btn-sm btn-ghost" style="min-height:28px;padding:3px 9px;font-size:11px;" onclick="openWhatsNewModal()">✨ Kas naujo v8.5</button>
+          <span>Programėlė (v8.6) ir darbalaukio PWA</span>
+          <button type="button" class="btn btn-sm btn-ghost" style="min-height:28px;padding:3px 9px;font-size:11px;" onclick="openWhatsNewModal()">✨ Kas naujo v8.6</button>
         </div>
         <div class="pwa-hint-box" style="align-items:flex-start;">
           <div style="width:46px;height:46px;border-radius:13px;overflow:hidden;border:1px solid rgba(56,189,248,0.45);flex-shrink:0;margin-top:2px;">
@@ -2298,7 +2348,7 @@
         </div>
         <div class="row-between mt-8" style="flex-wrap:wrap;gap:8px;">
           <button type="button" class="btn btn-sm btn-secondary" onclick="checkForPwaUpdates()">🔄 Patikrinti atnaujinimus</button>
-          <span id="pwa-check-status" style="font-size:11.5px;color:var(--text-muted);">Versija: v8.5</span>
+          <span id="pwa-check-status" style="font-size:11.5px;color:var(--text-muted);">Versija: v8.6</span>
         </div>
       </section>
     </main>
@@ -2617,17 +2667,34 @@
     </div>
   </div>
 
-  <!-- What's New in v8.5 + Full Release History Modal -->
+  <!-- What's New in v8.6 + Full Release History Modal -->
   <div id="modal-whats-new" class="modal-backdrop" onclick="closeModalOnBackdrop(event, 'modal-whats-new')">
     <div class="modal-sheet">
       <div class="row-between" style="margin-bottom:8px;">
         <div>
-          <span class="pill pill-accent" style="font-size:10px;padding:2px 8px;">ATNAUJINIMAS · v8.5</span>
-          <h3 style="margin:4px 0 0 0;font-size:18px;">✨ Kas naujo LeverLab 193 v8.5?</h3>
+          <span class="pill pill-accent" style="font-size:10px;padding:2px 8px;">ATNAUJINIMAS · v8.6</span>
+          <h3 style="margin:4px 0 0 0;font-size:18px;">✨ Kas naujo LeverLab 193 v8.6?</h3>
         </div>
         <button class="btn btn-sm btn-secondary" onclick="closeWhatsNewModal()">Uždaryti</button>
       </div>
       <div style="max-height:60vh;overflow-y:auto;padding-right:2px;">
+        <div class="wn-item">
+          <div class="wn-ico">🫧</div>
+          <div>
+            <div class="wn-title">Matinio stiklo („rūko“) efektas visiems iššokantiems langams</div>
+            <div class="wn-sub">Visi modaliniai langai (<em>Planas B</em>, <em>Blynai</em>, <em>Lyno 1:1/2:1</em>, <em>Rėmeliai</em>, <em>Animacijos</em>, <em>Kas naujo</em>) dabar atsidaro ant sulieto rūko fono su stikline briauna ir sklandžia įplaukimo animacija.</div>
+          </div>
+        </div>
+        <div class="wn-item">
+          <div class="wn-ico">🎯</div>
+          <div>
+            <div class="wn-title">Aiškus atskyrimas: viršutinis pranešimas vs. ↩ Atšaukti vs. Poilsio laikmatis</div>
+            <div class="wn-sub">Viršutinis pranešimas tapo švaria 16 px kapsule (be išsipūtusio ovalo), <code>↩ Atšaukti</code> gavo šiltą gintarinį stiklą, o poilsio laikmatis – gilų temos spalvos stiklą (baigus – žalią), tad visi sluoksniai iškart skiriasi vienas nuo kito.</div>
+          </div>
+        </div>
+
+        <div class="wn-ver-divider">Ankstesni atnaujinimai (v8.5)</div>
+
         <div class="wn-item">
           <div class="wn-ico">✨</div>
           <div>
@@ -5438,7 +5505,7 @@
           if (nextUnfinished) {
             activeExId = nextUnfinished;
             advancedTo = nextUnfinished;
-            showToast(`✓ ${ex.name} baigtas! Kitas pratimas atidarytas.`);
+            showToast(`✓ ${ex.name} baigtas!`);
           }
         }
       }
@@ -7799,7 +7866,7 @@
       { id: '6', short: '#6', title: '#6 HUD taktiniai kampai', desc: '4 ryškiai švytintys kampų skliaustai aplink langelį' },
       { id: '7', short: '#7', title: '#7 Ramus kvėpuojantis pulsas', desc: 'Lėtai (3,2 s) švelniai pulsuojantis švytėjimas' },
       { id: '8', short: '#8', title: '#8 Iškelta kontrastinė kortelė', desc: 'Šviesesnis vidus + ryškus 2 px kraštas maksimaliam matomumui' },
-      { id: '9', short: '#9', title: '#9 Stiklinis šviesos kraštas (Standartinis)', desc: 'Įstrižas stiklo atspindys + vidinis švytėjimas' },
+      { id: '9', short: '#9', title: '#9 Stiklinis šviesos kraštas', desc: 'Standartinis · Įstrižas stiklo atspindys + vidinis švytėjimas' },
       { id: '10', short: '#10', title: '#10 Dvispalvis #8.4 gradientas', desc: 'Spalvinis perėjimas aplink visą langelį kaip tavo ikonoje' }
     ];
 
@@ -7843,7 +7910,7 @@
       { id: '7', short: '#7', title: '#7 Šoninis įčiuožimas', desc: 'Elementai dinamiškai įslysta iš dešinės su stabdymu' },
       { id: '8', short: '#8', title: '#8 Išsiskleidimas iš centro', desc: 'Turinys išsiplečia iš vidurio į visus keturis kraštus' },
       { id: '9', short: '#9', title: '#9 Organiška „Jelly“ fizika', desc: 'Elastinga slopstanti spyruoklė su minkštu nusėdimu' },
-      { id: '10', short: '#10', title: '#10 Šviesos blyksnis (Standartinis)', desc: 'Ryškus įstrižas metalo šviesos blyksnis per visą kortelę' }
+      { id: '10', short: '#10', title: '#10 Šviesos blyksnis', desc: 'Standartinis · Ryškus įstrižas metalo šviesos blyksnis per visą kortelę' }
     ];
 
     function applyCardAnimSettings() {
@@ -7901,8 +7968,8 @@
     function openWhatsNewModal() { openModal('modal-whats-new'); }
     function closeWhatsNewModal() {
       closeModal('modal-whats-new');
-      if (state.lastSeenRelease !== 'v8.5') {
-        state.lastSeenRelease = 'v8.5';
+      if (state.lastSeenRelease !== 'v8.6') {
+        state.lastSeenRelease = 'v8.6';
         saveState();
       }
     }
@@ -7937,7 +8004,7 @@
       try {
         const reg = await navigator.serviceWorker.getRegistration();
         if (!reg) {
-          if (st) st.textContent = 'Naudoji naujausią versiją (v8.5)';
+          if (st) st.textContent = 'Naudoji naujausią versiją (v8.6)';
           return;
         }
         await reg.update();
@@ -7948,7 +8015,7 @@
         } else if (reg.installing) {
           if (st) st.textContent = 'Atsisiunčiama nauja versija...';
         } else {
-          if (st) st.textContent = '✓ Naudoji naujausią versiją (v8.5)';
+          if (st) st.textContent = '✓ Naudoji naujausią versiją (v8.6)';
           showToast('✓ Turi naujausią versiją');
         }
       } catch (e) {
@@ -7996,7 +8063,7 @@
       renderWorkoutView();
       checkBackupReminder();
       setInterval(updateSessionClock, 1000);
-      if (state.lastSeenRelease !== 'v8.5') {
+      if (state.lastSeenRelease !== 'v8.6') {
         setTimeout(() => openWhatsNewModal(), 350);
       }
     };
