@@ -11,7 +11,7 @@
   <link rel="manifest" href="./manifest.json">
   <link id="pwa-favicon" rel="icon" type="image/svg+xml" href="./icon.svg">
   <link id="pwa-apple-icon" rel="apple-touch-icon" sizes="192x192" href="./icon-192.png">
-  <title>LeverLab 193 (v8.4) – Sporto Salės Programa</title>
+  <title>LeverLab 193 (v8.5) – Sporto Salės Programa</title>
   <style>
     /* ==========================================================================
        1. DESIGN TOKENS & 4 SELECTABLE THEMES (ROUND 5 NATIVE HIERARCHY)
@@ -1522,6 +1522,166 @@
       background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), var(--accent-soft), transparent);
       animation: llFlashSweep calc(0.66s * var(--anim-spd)) cubic-bezier(0.22, 1, 0.36, 1) forwards;
     }
+
+    /* v8.5: 10 Selectable Active Frame / Border Styles (Demo 19 integrated into Settings) */
+    .frame-pick-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 5px; margin-bottom: 9px; }
+    .frame-demo-box {
+      position: relative; border-radius: 16px; background: var(--bg-surface);
+      padding: 11px 12px; margin-bottom: 11px; overflow: hidden;
+      transition: all 0.22s ease;
+    }
+    @keyframes llCalmPulse {
+      0%, 100% { box-shadow: 0 0 10px var(--accent-soft), 0 0 0 1px var(--accent); }
+      50% { box-shadow: 0 0 26px var(--accent-glow), 0 0 0 2px var(--accent); }
+    }
+
+    /* #1 Crisp Neon Rim */
+    [data-card-frame="1"] .set-active-focus,
+    [data-card-frame="1"] .ex-active-card,
+    [data-card-frame="1"] .frame-demo-box {
+      background: var(--bg-surface);
+      border: 2px solid var(--accent);
+      box-shadow: 0 0 22px var(--accent-glow), 0 8px 20px rgba(0,0,0,0.35);
+    }
+    [data-card-frame="1"] .ex-active-card { background: var(--bg-card); }
+
+    /* #2 Luminous Gradient Frame */
+    [data-card-frame="2"] .set-active-focus,
+    [data-card-frame="2"] .frame-demo-box {
+      border: 2px solid transparent;
+      background: linear-gradient(var(--bg-surface), var(--bg-surface)) padding-box,
+                  linear-gradient(135deg, #ffffff 0%, var(--accent) 45%, rgba(255,255,255,0.18) 100%) border-box;
+      box-shadow: 0 8px 24px var(--accent-glow);
+    }
+    [data-card-frame="2"] .ex-active-card {
+      border: 2px solid transparent;
+      background: linear-gradient(var(--bg-card), var(--bg-card)) padding-box,
+                  linear-gradient(135deg, #ffffff 0%, var(--accent) 45%, rgba(255,255,255,0.16) 100%) border-box;
+      box-shadow: var(--shadow), 0 8px 24px var(--accent-glow);
+    }
+
+    /* #3 Double Ring Halo */
+    [data-card-frame="3"] .set-active-focus,
+    [data-card-frame="3"] .frame-demo-box {
+      background: var(--bg-surface);
+      border: 1.5px solid var(--accent);
+      box-shadow: 0 0 0 4px var(--accent-soft), 0 10px 24px rgba(0,0,0,0.38);
+    }
+    [data-card-frame="3"] .ex-active-card {
+      background: var(--bg-card);
+      border: 1.5px solid var(--accent);
+      box-shadow: var(--shadow), 0 0 0 4px var(--accent-soft);
+    }
+
+    /* #4 Top Spotlight Beam */
+    [data-card-frame="4"] .set-active-focus,
+    [data-card-frame="4"] .frame-demo-box {
+      border: 1px solid color-mix(in srgb, var(--accent) 45%, transparent);
+      border-top: 3.5px solid var(--accent);
+      background: linear-gradient(180deg, var(--accent-soft) 0%, var(--bg-surface) 42%);
+      box-shadow: 0 -6px 24px -6px var(--accent-glow), 0 10px 22px rgba(0,0,0,0.34);
+    }
+    [data-card-frame="4"] .ex-active-card {
+      border: 1px solid color-mix(in srgb, var(--accent) 45%, transparent);
+      border-top: 3.5px solid var(--accent);
+      background: linear-gradient(180deg, var(--accent-soft) 0%, var(--bg-card) 32%);
+      box-shadow: var(--shadow), 0 -6px 24px -6px var(--accent-glow);
+    }
+
+    /* #5 Power Rail Left Bar */
+    [data-card-frame="5"] .set-active-focus,
+    [data-card-frame="5"] .frame-demo-box {
+      border: 1.5px solid color-mix(in srgb, var(--accent) 55%, transparent);
+      border-left: 5.5px solid var(--accent);
+      background: linear-gradient(90deg, var(--accent-soft) 0%, var(--bg-surface) 34%);
+      box-shadow: 0 8px 22px rgba(0,0,0,0.36);
+    }
+    [data-card-frame="5"] .ex-active-card {
+      border: 1.5px solid color-mix(in srgb, var(--accent) 55%, transparent);
+      border-left: 5.5px solid var(--accent);
+      background: linear-gradient(90deg, var(--accent-soft) 0%, var(--bg-card) 26%);
+      box-shadow: var(--shadow);
+    }
+    [data-card-frame="5"] .set-active-focus::before { display: none; }
+
+    /* #6 HUD Tactical Glowing Corners (Pure CSS corner brackets) */
+    [data-card-frame="6"] .set-active-focus,
+    [data-card-frame="6"] .frame-demo-box {
+      border: 1px solid color-mix(in srgb, var(--accent) 34%, transparent);
+      background:
+        linear-gradient(var(--accent), var(--accent)) top left / 18px 3px no-repeat,
+        linear-gradient(var(--accent), var(--accent)) top left / 3px 18px no-repeat,
+        linear-gradient(var(--accent), var(--accent)) top right / 18px 3px no-repeat,
+        linear-gradient(var(--accent), var(--accent)) top right / 3px 18px no-repeat,
+        linear-gradient(var(--accent), var(--accent)) bottom left / 18px 3px no-repeat,
+        linear-gradient(var(--accent), var(--accent)) bottom left / 3px 18px no-repeat,
+        linear-gradient(var(--accent), var(--accent)) bottom right / 18px 3px no-repeat,
+        linear-gradient(var(--accent), var(--accent)) bottom right / 3px 18px no-repeat,
+        var(--bg-surface);
+      box-shadow: 0 8px 22px rgba(0,0,0,0.38);
+    }
+    [data-card-frame="6"] .ex-active-card {
+      border: 1px solid color-mix(in srgb, var(--accent) 34%, transparent);
+      background:
+        linear-gradient(var(--accent), var(--accent)) top left / 22px 3px no-repeat,
+        linear-gradient(var(--accent), var(--accent)) top left / 3px 22px no-repeat,
+        linear-gradient(var(--accent), var(--accent)) top right / 22px 3px no-repeat,
+        linear-gradient(var(--accent), var(--accent)) top right / 3px 22px no-repeat,
+        linear-gradient(var(--accent), var(--accent)) bottom left / 22px 3px no-repeat,
+        linear-gradient(var(--accent), var(--accent)) bottom left / 3px 22px no-repeat,
+        linear-gradient(var(--accent), var(--accent)) bottom right / 22px 3px no-repeat,
+        linear-gradient(var(--accent), var(--accent)) bottom right / 3px 22px no-repeat,
+        var(--bg-card);
+      box-shadow: var(--shadow);
+    }
+
+    /* #7 Calm Breathing Pulse */
+    [data-card-frame="7"] .set-active-focus,
+    [data-card-frame="7"] .frame-demo-box {
+      background: var(--bg-surface);
+      border: 1.5px solid var(--accent);
+      animation: llCalmPulse 3.2s ease-in-out infinite;
+    }
+    [data-card-frame="7"] .ex-active-card {
+      background: var(--bg-card);
+      border: 1.5px solid var(--accent);
+      box-shadow: var(--shadow), 0 0 18px var(--accent-soft);
+    }
+
+    /* #8 Elevated High-Contrast Spotlight */
+    [data-card-frame="8"] .set-active-focus,
+    [data-card-frame="8"] .frame-demo-box {
+      background: color-mix(in srgb, var(--bg-surface-2) 78%, var(--accent-soft));
+      border: 2px solid var(--accent);
+      box-shadow: 0 14px 30px rgba(0,0,0,0.48), inset 0 1px 0 rgba(255,255,255,0.28);
+    }
+    [data-card-frame="8"] .ex-active-card {
+      background: color-mix(in srgb, var(--bg-card) 85%, var(--accent-soft));
+      border: 2px solid var(--accent);
+      box-shadow: var(--shadow), 0 0 18px var(--accent-glow), inset 0 1px 0 rgba(255,255,255,0.22);
+    }
+
+    /* #9 Frosted Specular Glass Rim (Default) */
+    [data-card-frame="9"] .frame-demo-box {
+      background: linear-gradient(145deg, color-mix(in srgb, var(--accent) 14%, var(--bg-surface)), var(--bg-surface) 58%);
+      border: 1.5px solid color-mix(in srgb, var(--accent) 72%, rgba(255, 255, 255, 0.6));
+      box-shadow: var(--shadow-active), inset 0 1.5px 0 rgba(255, 255, 255, 0.24), inset 0 0 20px var(--accent-soft);
+    }
+
+    /* #10 Dual-Tone #8.4 Lever Gradient Rim */
+    [data-card-frame="10"] .set-active-focus,
+    [data-card-frame="10"] .frame-demo-box {
+      border: 2.2px solid transparent;
+      background: linear-gradient(var(--bg-surface), var(--bg-surface)) padding-box,
+                  linear-gradient(120deg, var(--green) 0%, var(--accent) 52%, #38bdf8 100%) border-box;
+      box-shadow: 0 0 22px var(--accent-glow);
+    }
+    [data-card-frame="10"] .ex-active-card {
+      border: 2.2px solid transparent;
+      background: linear-gradient(var(--bg-card), var(--bg-card)) padding-box,
+                  linear-gradient(120deg, var(--green) 0%, var(--accent) 52%, #38bdf8 100%) border-box;
+      box-shadow: var(--shadow), 0 0 22px var(--accent-glow);
+    }
   </style>
 </head>
 <body>
@@ -1972,12 +2132,25 @@
             <div style="font-size:11px;opacity:0.75;">Švari dienos salė + safyras</div>
           </button>
         </div>
-        <div class="setting-toggle-row mt-12" style="margin-bottom:0;" onclick="openCardAnimModal()">
-          <div style="min-width:0;">
-            <div style="font-weight:800;font-size:13.5px;">🎬 Pratimų perjungimo animacija</div>
-            <div id="settings-anim-summary" style="font-size:11.5px;color:var(--accent);font-weight:700;margin-top:2px;">#1 Tikra spyruoklė · 1.0×</div>
+        <div class="setting-toggle-row mt-12" style="margin-bottom:8px;padding:11px 12px;" onclick="openCardFrameModal()">
+          <div class="row" style="min-width:0;flex:1;gap:10px;">
+            <span style="width:34px;height:34px;border-radius:10px;background:var(--accent-soft);color:var(--accent);display:inline-flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0;">✨</span>
+            <div style="min-width:0;">
+              <div style="font-weight:800;font-size:13.5px;line-height:1.25;">Aktyvaus langelio rėmelis</div>
+              <div id="settings-frame-summary" style="font-size:11.5px;color:var(--accent);font-weight:700;margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">#9 Stiklinis šviesos kraštas</div>
+            </div>
           </div>
-          <span class="btn btn-sm btn-ghost" style="min-height:30px;padding:4px 10px;font-size:11.5px;flex-shrink:0;">Demo ir pasirinkti</span>
+          <span class="pill pill-accent" style="padding:5px 10px;font-size:11.5px;font-weight:800;">Keisti ▸</span>
+        </div>
+        <div class="setting-toggle-row" style="margin-bottom:0;padding:11px 12px;" onclick="openCardAnimModal()">
+          <div class="row" style="min-width:0;flex:1;gap:10px;">
+            <span style="width:34px;height:34px;border-radius:10px;background:var(--accent-soft);color:var(--accent);display:inline-flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0;">🎬</span>
+            <div style="min-width:0;">
+              <div style="font-weight:800;font-size:13.5px;line-height:1.25;">Pratimų perjungimo animacija</div>
+              <div id="settings-anim-summary" style="font-size:11.5px;color:var(--accent);font-weight:700;margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">#10 Šviesos blyksnis · 1.0×</div>
+            </div>
+          </div>
+          <span class="pill pill-accent" style="padding:5px 10px;font-size:11.5px;font-weight:800;">Keisti ▸</span>
         </div>
       </section>
 
@@ -2017,8 +2190,9 @@
           </div>
           <button id="sw-timer-live-shade" type="button" class="ui-switch" aria-label="Perjungti nuolatinį laikmatį pranešimų juostoje" tabindex="-1"></button>
         </div>
-        <div style="font-size:11px;color:var(--text-muted);margin:-2px 2px 8px;line-height:1.35;">
-          💡 <strong>Galaxy Watch 8:</strong> <em>Galaxy Wearable → Pranešimai → Programų pranešimai</em> įjunk <em>LeverLab / Chrome</em>, o <em>Išplėstiniuose</em> pažymėk <em>„Rodyti net naudojant telefoną“</em>.
+        <div style="font-size:11px;color:var(--text-muted);margin:-2px 2px 8px;line-height:1.4;padding:8px 10px;border-radius:11px;background:var(--bg-surface);border-left:3px solid var(--accent);">
+          <div>💡 <strong>Svarbu dėl naršyklės:</strong> įdiegtai programėlei pranešimai į telefoną ir <em>Galaxy Watch 8</em> patikimai veikia įdiegus per <strong style="color:var(--green);">Google Chrome</strong> (įdiegus per <strong style="color:var(--yellow);">Samsung Internet</strong> pranešimai įdiegtoje programėlėje neveikia).</div>
+          <div style="margin-top:4px;">⌚ <strong>Galaxy Watch 8:</strong> <em>Galaxy Wearable → Pranešimai → Programų pranešimai</em> įjunk <em>LeverLab / Chrome</em>, o <em>Išplėstiniuose</em> pažymėk <em>„Rodyti net naudojant telefoną“</em>.</div>
         </div>
         <div class="row-between" style="flex-wrap:wrap;margin-top:10px;gap:8px;">
           <div class="row" style="gap:6px;">
@@ -2095,8 +2269,8 @@
       <!-- PWA Home Screen Info & Release Notes Card -->
       <section class="card">
         <div class="section-title">
-          <span>Programėlė (v8.4) ir darbalaukio PWA</span>
-          <button type="button" class="btn btn-sm btn-ghost" style="min-height:28px;padding:3px 9px;font-size:11px;" onclick="openWhatsNewModal()">✨ Kas naujo v8.4</button>
+          <span>Programėlė (v8.5) ir darbalaukio PWA</span>
+          <button type="button" class="btn btn-sm btn-ghost" style="min-height:28px;padding:3px 9px;font-size:11px;" onclick="openWhatsNewModal()">✨ Kas naujo v8.5</button>
         </div>
         <div class="pwa-hint-box" style="align-items:flex-start;">
           <div style="width:46px;height:46px;border-radius:13px;overflow:hidden;border:1px solid rgba(56,189,248,0.45);flex-shrink:0;margin-top:2px;">
@@ -2124,7 +2298,7 @@
         </div>
         <div class="row-between mt-8" style="flex-wrap:wrap;gap:8px;">
           <button type="button" class="btn btn-sm btn-secondary" onclick="checkForPwaUpdates()">🔄 Patikrinti atnaujinimus</button>
-          <span id="pwa-check-status" style="font-size:11.5px;color:var(--text-muted);">Versija: v8.4</span>
+          <span id="pwa-check-status" style="font-size:11.5px;color:var(--text-muted);">Versija: v8.5</span>
         </div>
       </section>
     </main>
@@ -2367,6 +2541,42 @@
     </div>
   </div>
 
+  <!-- Active Card Frame / Border Picker & Live Demo Modal (v8.5) -->
+  <div id="modal-card-frame" class="modal-backdrop" onclick="closeModalOnBackdrop(event, 'modal-card-frame')">
+    <div class="modal-sheet">
+      <div class="row-between" style="margin-bottom:8px;">
+        <div>
+          <span class="pill pill-accent" style="font-size:10px;padding:2px 8px;">10 VARIANTŲ · DEMO</span>
+          <h3 style="margin:4px 0 0 0;font-size:17px;">✨ Aktyvaus langelio rėmelis</h3>
+        </div>
+        <button class="btn btn-sm btn-secondary" onclick="closeModal('modal-card-frame')">Uždaryti</button>
+      </div>
+      <div id="frame-pick-grid" class="frame-pick-grid"></div>
+      <div style="margin-bottom:9px;">
+        <div id="frame-pick-title" style="font-size:12.5px;font-weight:800;color:var(--accent);">#9 Stiklinis šviesos kraštas</div>
+        <div id="frame-pick-desc" style="font-size:11px;color:var(--text-muted);">Įstrižas stiklo atspindys + vidinis švytėjimas</div>
+      </div>
+      <div class="frame-demo-box">
+        <div class="row-between" style="margin-bottom:8px;">
+          <span class="pill pill-accent" style="font-size:10px;font-family:var(--font-mono);font-weight:900;">SERIJA 1 IŠ 2</span>
+          <span class="pill" style="font-size:10.5px;font-family:var(--font-mono);">RIR 3 ↻</span>
+        </div>
+        <div class="grid-2" style="margin-bottom:8px;">
+          <div style="background:var(--bg-card);border:1px solid var(--card-rim);border-radius:11px;padding:7px;text-align:center;">
+            <div style="font-size:18px;font-weight:900;font-family:var(--font-mono);">60</div>
+            <div style="font-size:10px;color:var(--text-muted);">kg</div>
+          </div>
+          <div style="background:var(--bg-card);border:1px solid var(--card-rim);border-radius:11px;padding:7px;text-align:center;">
+            <div style="font-size:18px;font-weight:900;font-family:var(--font-mono);">10</div>
+            <div style="font-size:10px;color:var(--text-muted);">pak.</div>
+          </div>
+        </div>
+        <div style="height:38px;border-radius:11px;background:var(--accent-grad);color:var(--accent-text);font-size:13px;font-weight:900;display:flex;align-items:center;justify-content:center;">✓ Užbaigti 1 / 2 seriją</div>
+      </div>
+      <button type="button" class="btn btn-primary btn-full" onclick="closeModal('modal-card-frame');showToast('Rėmelio stilius išsaugotas!');">✓ Taikyti rėmelį</button>
+    </div>
+  </div>
+
   <!-- Card Transition Animation Picker & Live Demo Modal (v8.4) -->
   <div id="modal-card-anim" class="modal-backdrop" onclick="closeModalOnBackdrop(event, 'modal-card-anim')">
     <div class="modal-sheet">
@@ -2407,17 +2617,34 @@
     </div>
   </div>
 
-  <!-- What's New in v8.4 + Full Release History Modal -->
+  <!-- What's New in v8.5 + Full Release History Modal -->
   <div id="modal-whats-new" class="modal-backdrop" onclick="closeModalOnBackdrop(event, 'modal-whats-new')">
     <div class="modal-sheet">
       <div class="row-between" style="margin-bottom:8px;">
         <div>
-          <span class="pill pill-accent" style="font-size:10px;padding:2px 8px;">ATNAUJINIMAS · v8.4</span>
-          <h3 style="margin:4px 0 0 0;font-size:18px;">✨ Kas naujo LeverLab 193 v8.4?</h3>
+          <span class="pill pill-accent" style="font-size:10px;padding:2px 8px;">ATNAUJINIMAS · v8.5</span>
+          <h3 style="margin:4px 0 0 0;font-size:18px;">✨ Kas naujo LeverLab 193 v8.5?</h3>
         </div>
         <button class="btn btn-sm btn-secondary" onclick="closeWhatsNewModal()">Uždaryti</button>
       </div>
       <div style="max-height:60vh;overflow-y:auto;padding-right:2px;">
+        <div class="wn-item">
+          <div class="wn-ico">✨</div>
+          <div>
+            <div class="wn-title">10 aktyvaus langelio rėmelių + gyvas demo meniu Nustatymuose</div>
+            <div class="wn-sub"><em>Nustatymuose</em> atsirado <strong>✨ Aktyvaus langelio rėmelis → Demo ir pasirinkti</strong> – gali gyvai palyginti ir bet kada persijungti visus 10 stilių (neoninis, gradientinis, dvigubas žiedas, prožektorius, galios stulpelis, HUD kampai, pulsas, kontrastinis, <strong>#9 stiklinis</strong> ir <strong>#10 dvispalvis</strong>).</div>
+          </div>
+        </div>
+        <div class="wn-item">
+          <div class="wn-ico">🔧</div>
+          <div>
+            <div class="wn-title">Pataisytas „Ekranas“ (Wake Lock) išjungimo pranešimas</div>
+            <div class="wn-sub">Išjungiant ekrano užraktą dabar rodo tikslų pranešimą <em>„Ekrano užraktas išjungtas“</em>.</div>
+          </div>
+        </div>
+
+        <div class="wn-ver-divider">Ankstesni atnaujinimai (v8.4)</div>
+
         <div class="wn-item">
           <div class="wn-ico">✨</div>
           <div>
@@ -3185,6 +3412,7 @@
         timerLiveShade: false,
         cardAnim: '10',
         cardAnimSpeed: 1.0,
+        cardFrame: '9',
         timerTone: 'soft',
         timerVolume: 'loud',
         lastSeenRelease: null,
@@ -3254,6 +3482,7 @@
         timerLiveShade: parsed.timerLiveShade !== undefined ? !!parsed.timerLiveShade : false,
         cardAnim: parsed.cardAnim !== undefined ? String(parsed.cardAnim) : '10',
         cardAnimSpeed: parsed.cardAnimSpeed ? Math.max(0.4, Math.min(2.2, Number(parsed.cardAnimSpeed))) : 1.0,
+        cardFrame: parsed.cardFrame !== undefined ? String(parsed.cardFrame) : '9',
         timerTone: ['soft', 'double', 'gong'].includes(parsed.timerTone) ? parsed.timerTone : 'soft',
         timerVolume: ['normal', 'loud'].includes(parsed.timerVolume) ? parsed.timerVolume : 'loud',
         lastSeenRelease: parsed.lastSeenRelease || null,
@@ -3667,11 +3896,16 @@
         dot.classList.add('ping');
         setTimeout(() => dot.classList.remove('ping'), 520);
       }
+      const isSamsungBrowser = /SamsungBrowser/i.test(navigator.userAgent || '');
       if (sent) {
-        if (status) status.textContent = `✓ Pranešimas išsiųstas! (Leidimas: Leista · ${reg ? 'PWA tarnyba aktyvi' : 'Naršyklė'})`;
+        if (status) {
+          status.textContent = isSamsungBrowser
+            ? '✓ Išsiųsta! Pastaba: įdiegtoje Samsung Internet programėlėje pranešimai neveikia – naudok Google Chrome.'
+            : `✓ Pranešimas išsiųstas! (Leidimas: Leista · Chrome/PWA · ${reg ? 'tarnyba aktyvi' : 'naršyklė'})`;
+        }
         showToast('⌚ Testinis pranešimas išsiųstas!');
       } else {
-        if (status) status.textContent = '⚠️ Leidimas yra, bet Android atmetė pranešimą – patikrink sistemos pranešimų kanalą.';
+        if (status) status.textContent = '⚠️ Nepavyko išsiųsti – įsitikink, kad programėlė įdiegta per Google Chrome (su Samsung Internet neveikia).';
         showToast('Nepavyko išsiųsti pranešimo');
       }
     }
@@ -3747,7 +3981,7 @@
         wakeLockWanted = false;
         if (wakeLockObj) { try { await wakeLockObj.release(); } catch (e) {} wakeLockObj = null; }
         btn.classList.remove('active');
-        showToast('Ekrano užraktas įjungtas');
+        showToast('Ekrano užraktas išjungtas');
       } else {
         wakeLockWanted = true;
         await requestWakeLockInternal(false);
@@ -7400,6 +7634,7 @@
 
     function renderSettingsTab() {
       setTheme(state.theme, true);
+      applyCardFrameSettings();
       applyCardAnimSettings();
       renderTimerSignalControls();
       const p = state.profile;
@@ -7555,6 +7790,48 @@
       if (document.getElementById('view-body').classList.contains('active')) { renderWeightChart(); renderMeasurementChart(); }
     });
 
+    const CARD_FRAME_LIST = [
+      { id: '1', short: '#1', title: '#1 Ryškus neoninis kontūras', desc: '2 px akcento rėmelis + švelnus išorinis švytėjimas' },
+      { id: '2', short: '#2', title: '#2 Gradientinis rėmelis', desc: 'Dviejų atspalvių šviesus rėmelis (flagmano stilius)' },
+      { id: '3', short: '#3', title: '#3 Dvigubas žiedas (Halo)', desc: '1,5 px rėmelis + 4 px permatoma šviesos aureolė' },
+      { id: '4', short: '#4', title: '#4 Viršutinė prožektoriaus juosta', desc: 'Ryški viršutinė juosta su žemyn krintančia šviesa' },
+      { id: '5', short: '#5', title: '#5 Kairysis galios stulpelis', desc: 'Storas švytintis kairysis kraštas + akcento rėmelis' },
+      { id: '6', short: '#6', title: '#6 HUD taktiniai kampai', desc: '4 ryškiai švytintys kampų skliaustai aplink langelį' },
+      { id: '7', short: '#7', title: '#7 Ramus kvėpuojantis pulsas', desc: 'Lėtai (3,2 s) švelniai pulsuojantis švytėjimas' },
+      { id: '8', short: '#8', title: '#8 Iškelta kontrastinė kortelė', desc: 'Šviesesnis vidus + ryškus 2 px kraštas maksimaliam matomumui' },
+      { id: '9', short: '#9', title: '#9 Stiklinis šviesos kraštas (Standartinis)', desc: 'Įstrižas stiklo atspindys + vidinis švytėjimas' },
+      { id: '10', short: '#10', title: '#10 Dvispalvis #8.4 gradientas', desc: 'Spalvinis perėjimas aplink visą langelį kaip tavo ikonoje' }
+    ];
+
+    function applyCardFrameSettings() {
+      const id = String(state.cardFrame || '9');
+      document.documentElement.setAttribute('data-card-frame', id);
+      const item = CARD_FRAME_LIST.find(x => x.id === id) || CARD_FRAME_LIST[8];
+      const sum = document.getElementById('settings-frame-summary');
+      if (sum) sum.textContent = item.title;
+      const tEl = document.getElementById('frame-pick-title');
+      const dEl = document.getElementById('frame-pick-desc');
+      if (tEl) tEl.textContent = item.title;
+      if (dEl) dEl.textContent = item.desc;
+      const grid = document.getElementById('frame-pick-grid');
+      if (grid) {
+        grid.innerHTML = CARD_FRAME_LIST.map(f =>
+          `<button type="button" class="anim-pick-btn ${f.id === id ? 'active' : ''}" onclick="pickCardFrame('${f.id}')">${f.short}</button>`
+        ).join('');
+      }
+    }
+
+    function openCardFrameModal() {
+      applyCardFrameSettings();
+      openModal('modal-card-frame');
+    }
+
+    function pickCardFrame(id) {
+      state.cardFrame = String(id);
+      saveState();
+      applyCardFrameSettings();
+    }
+
     const CARD_ANIM_LIST = [
       { id: '0', short: 'Išj.', title: 'Animacija išjungta', desc: 'Momentinis perjungimas be judesio (taupo bateriją)' },
       { id: '1', short: '#1', title: '#1 Tikra spyruoklė', desc: 'Kortelė gyvai atšoka ir nusėda su tikra spyruoklės fizika' },
@@ -7624,8 +7901,8 @@
     function openWhatsNewModal() { openModal('modal-whats-new'); }
     function closeWhatsNewModal() {
       closeModal('modal-whats-new');
-      if (state.lastSeenRelease !== 'v8.4') {
-        state.lastSeenRelease = 'v8.4';
+      if (state.lastSeenRelease !== 'v8.5') {
+        state.lastSeenRelease = 'v8.5';
         saveState();
       }
     }
@@ -7660,7 +7937,7 @@
       try {
         const reg = await navigator.serviceWorker.getRegistration();
         if (!reg) {
-          if (st) st.textContent = 'Naudoji naujausią versiją (v8.4)';
+          if (st) st.textContent = 'Naudoji naujausią versiją (v8.5)';
           return;
         }
         await reg.update();
@@ -7671,7 +7948,7 @@
         } else if (reg.installing) {
           if (st) st.textContent = 'Atsisiunčiama nauja versija...';
         } else {
-          if (st) st.textContent = '✓ Naudoji naujausią versiją (v8.4)';
+          if (st) st.textContent = '✓ Naudoji naujausią versiją (v8.5)';
           showToast('✓ Turi naujausią versiją');
         }
       } catch (e) {
@@ -7707,6 +7984,7 @@
       initPwaManifest();
       document.getElementById('brand-height-badge').textContent = state.profile.height || 193;
       setTheme(state.theme, true);
+      applyCardFrameSettings();
       applyCardAnimSettings();
       ensureDraft();
       sanitizeStaleDraftClock();
@@ -7718,7 +7996,7 @@
       renderWorkoutView();
       checkBackupReminder();
       setInterval(updateSessionClock, 1000);
-      if (state.lastSeenRelease !== 'v8.4') {
+      if (state.lastSeenRelease !== 'v8.5') {
         setTimeout(() => openWhatsNewModal(), 350);
       }
     };
