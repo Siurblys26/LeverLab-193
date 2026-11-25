@@ -1,4 +1,4 @@
-const CACHE_NAME = 'leverlab193-v7-cache-2';
+const CACHE_NAME = 'leverlab193-v8-cache-1';
 const ASSETS = [
   './',
   './index.html',
@@ -10,9 +10,23 @@ const ASSETS = [
 
 self.addEventListener('install', event => {
   event.waitUntil(
-    caches.open(CACHE_NAME)
-      .then(cache => cache.addAll(ASSETS))
-      .then(() => self.skipWaiting())
+    caches.open(CACHE_NAME).then(cache => cache.addAll(ASSETS))
+  );
+});
+
+self.addEventListener('message', event => {
+  if (event.data && event.data.type === 'SKIP_WAITING') {
+    self.skipWaiting();
+  }
+});
+
+self.addEventListener('notificationclick', event => {
+  event.notification.close();
+  event.waitUntil(
+    self.clients.matchAll({ type: 'window', includeUncontrolled: true }).then(list => {
+      if (list.length > 0 && list[0].focus) return list[0].focus();
+      if (self.clients.openWindow) return self.clients.openWindow('./');
+    })
   );
 });
 
@@ -33,15 +47,7 @@ self.addEventListener('fetch', event => {
 
   event.respondWith(
     caches.match(event.request).then(cached => {
-      if (cached) {
-        // Refresh cache quietly in background when online
-        fetch(event.request).then(resp => {
-          if (resp && resp.status === 200 && resp.type === 'basic') {
-            caches.open(CACHE_NAME).then(c => c.put(event.request, resp.clone()));
-          }
-        }).catch(() => {});
-        return cached;
-      }
+      if (cached) return cached;
       return fetch(event.request).then(resp => {
         if (resp && resp.status === 200 && resp.type === 'basic') {
           const copy = resp.clone();
