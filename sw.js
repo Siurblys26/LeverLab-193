@@ -1,4 +1,4 @@
-const CACHE_NAME = 'leverlab193-v8-2-cache-1';
+const CACHE_NAME = 'leverlab193-v8-3-cache-1';
 const ASSETS = [
   './',
   './index.html',
@@ -21,9 +21,16 @@ self.addEventListener('message', event => {
 });
 
 self.addEventListener('notificationclick', event => {
+  const action = event.action || '';
   event.notification.close();
   event.waitUntil(
     self.clients.matchAll({ type: 'window', includeUncontrolled: true }).then(list => {
+      if (action === 'plus15' || action === 'stop') {
+        list.forEach(c => {
+          try { c.postMessage({ type: 'REST_TIMER_ACTION', action }); } catch (e) {}
+        });
+        if (action === 'stop') return;
+      }
       if (list.length > 0 && list[0].focus) return list[0].focus();
       if (self.clients.openWindow) return self.clients.openWindow('./');
     })

@@ -11,7 +11,7 @@
   <link rel="manifest" href="./manifest.json">
   <link id="pwa-favicon" rel="icon" type="image/svg+xml" href="./icon.svg">
   <link id="pwa-apple-icon" rel="apple-touch-icon" sizes="192x192" href="./icon-192.png">
-  <title>LeverLab 193 (v8.2) – Sporto Salės Programa</title>
+  <title>LeverLab 193 (v8.3) – Sporto Salės Programa</title>
   <style>
     /* ==========================================================================
        1. DESIGN TOKENS & 4 SELECTABLE THEMES (ROUND 5 NATIVE HIERARCHY)
@@ -1860,10 +1860,18 @@
         <div class="setting-toggle-row" onclick="toggleSystemNotifications()">
           <div>
             <div style="font-weight:700;font-size:13.5px;">⌚ Pranešimas telefone ir laikrodyje</div>
-            <div style="font-size:11.5px;color:var(--text-muted);">Išmeta sistemos pranešimą viršuje (persiunčia į <em>Galaxy Watch</em>)</div>
+            <div style="font-size:11.5px;color:var(--text-muted);">Išmeta sistemos pranešimą pasibaigus poilsiui (persiunčia į <em>Galaxy Watch</em>)</div>
             <div id="notify-perm-status" style="font-size:11px;margin-top:3px;font-weight:700;color:var(--accent);">Paspausk – naršyklė paprašys leidimo pranešimams</div>
           </div>
           <button id="sw-timer-notify" type="button" class="ui-switch" aria-label="Perjungti sistemos pranešimus" tabindex="-1"></button>
+        </div>
+        <div class="setting-toggle-row" onclick="toggleLiveShadeTimer()">
+          <div>
+            <div style="font-weight:700;font-size:13.5px;">⏱ Nuolatinis laikmatis pranešimų juostoje</div>
+            <div style="font-size:11.5px;color:var(--text-muted);">Poilsio metu rodo gyvą kortelę telefono viršuje (su <em>+15 s</em> / <em>Praleisti</em>), laikrodis suvibruoja tik pabaigoje</div>
+            <div style="font-size:10.5px;margin-top:3px;font-weight:700;color:var(--yellow);">⚡ Pastaba: gali šiek tiek greičiau eikvoti telefono bateriją</div>
+          </div>
+          <button id="sw-timer-live-shade" type="button" class="ui-switch" aria-label="Perjungti nuolatinį laikmatį pranešimų juostoje" tabindex="-1"></button>
         </div>
         <div style="font-size:11px;color:var(--text-muted);margin:-2px 2px 8px;line-height:1.35;">
           💡 <strong>Galaxy Watch 8:</strong> <em>Galaxy Wearable → Pranešimai → Programų pranešimai</em> įjunk <em>LeverLab / Chrome</em>, o <em>Išplėstiniuose</em> pažymėk <em>„Rodyti net naudojant telefoną“</em>.
@@ -1943,8 +1951,8 @@
       <!-- PWA Home Screen Info & Release Notes Card -->
       <section class="card">
         <div class="section-title">
-          <span>Programėlė (v8.2) ir darbalaukio PWA</span>
-          <button type="button" class="btn btn-sm btn-ghost" style="min-height:28px;padding:3px 9px;font-size:11px;" onclick="openWhatsNewModal()">✨ Kas naujo v8.2</button>
+          <span>Programėlė (v8.3) ir darbalaukio PWA</span>
+          <button type="button" class="btn btn-sm btn-ghost" style="min-height:28px;padding:3px 9px;font-size:11px;" onclick="openWhatsNewModal()">✨ Kas naujo v8.3</button>
         </div>
         <div class="pwa-hint-box" style="align-items:flex-start;">
           <div style="width:46px;height:46px;border-radius:13px;overflow:hidden;border:1px solid rgba(56,189,248,0.45);flex-shrink:0;margin-top:2px;">
@@ -1972,7 +1980,7 @@
         </div>
         <div class="row-between mt-8" style="flex-wrap:wrap;gap:8px;">
           <button type="button" class="btn btn-sm btn-secondary" onclick="checkForPwaUpdates()">🔄 Patikrinti atnaujinimus</button>
-          <span id="pwa-check-status" style="font-size:11.5px;color:var(--text-muted);">Versija: v8.2</span>
+          <span id="pwa-check-status" style="font-size:11.5px;color:var(--text-muted);">Versija: v8.3</span>
         </div>
       </section>
     </main>
@@ -2212,17 +2220,34 @@
     </div>
   </div>
 
-  <!-- What's New in v8.2 + Full Release History Modal -->
+  <!-- What's New in v8.3 + Full Release History Modal -->
   <div id="modal-whats-new" class="modal-backdrop" onclick="closeModalOnBackdrop(event, 'modal-whats-new')">
     <div class="modal-sheet">
       <div class="row-between" style="margin-bottom:8px;">
         <div>
-          <span class="pill pill-accent" style="font-size:10px;padding:2px 8px;">ATNAUJINIMAS · v8.2</span>
-          <h3 style="margin:4px 0 0 0;font-size:18px;">✨ Kas naujo LeverLab 193 v8.2?</h3>
+          <span class="pill pill-accent" style="font-size:10px;padding:2px 8px;">ATNAUJINIMAS · v8.3</span>
+          <h3 style="margin:4px 0 0 0;font-size:18px;">✨ Kas naujo LeverLab 193 v8.3?</h3>
         </div>
         <button class="btn btn-sm btn-secondary" onclick="closeWhatsNewModal()">Uždaryti</button>
       </div>
       <div style="max-height:60vh;overflow-y:auto;padding-right:2px;">
+        <div class="wn-item">
+          <div class="wn-ico">⏱</div>
+          <div>
+            <div class="wn-title">Pasirenkamas nuolatinis laikmatis pranešimų juostoje</div>
+            <div class="wn-sub"><em>Nustatymuose</em> atsirado naujas jungiklis <strong>⏱ Nuolatinis laikmatis pranešimų juostoje</strong> (su baterijos įspėjimu) – poilsio metu tyliai rodo laiką, pabaigos valandą ir <code>+15 s</code> / <code>Praleisti</code> mygtukus, o <em>Galaxy Watch</em> suvibruoja tik pabaigoje.</div>
+          </div>
+        </div>
+        <div class="wn-item">
+          <div class="wn-ico">🛡️</div>
+          <div>
+            <div class="wn-title">Patikimesnis Android PWA pranešimų siuntimas</div>
+            <div class="wn-sub">Pranešimai dabar visada siunčiami per <em>Service Worker</em> registraciją (nebekrenta per pirmą atidarymą po įdiegimo), o mygtukas <code>▶ Patikrinti signalą</code> parodo tikrą pristatymo patvirtinimą.</div>
+          </div>
+        </div>
+
+        <div class="wn-ver-divider">Ankstesni atnaujinimai (v8.2)</div>
+
         <div class="wn-item">
           <div class="wn-ico">🎨</div>
           <div>
@@ -2953,6 +2978,7 @@
         timerSound: true,
         timerVibrate: true,
         timerNotify: false,
+        timerLiveShade: false,
         timerTone: 'soft',
         timerVolume: 'loud',
         lastSeenRelease: null,
@@ -3018,6 +3044,7 @@
         timerSound: parsed.timerSound !== undefined ? !!parsed.timerSound : true,
         timerVibrate: parsed.timerVibrate !== undefined ? !!parsed.timerVibrate : true,
         timerNotify: parsed.timerNotify !== undefined ? !!parsed.timerNotify : false,
+        timerLiveShade: parsed.timerLiveShade !== undefined ? !!parsed.timerLiveShade : false,
         timerTone: ['soft', 'double', 'gong'].includes(parsed.timerTone) ? parsed.timerTone : 'soft',
         timerVolume: ['normal', 'loud'].includes(parsed.timerVolume) ? parsed.timerVolume : 'loud',
         lastSeenRelease: parsed.lastSeenRelease || null,
@@ -3222,31 +3249,120 @@
       }
     }
 
-    function sendRestSystemNotification(bodyText) {
-      if (!state.timerNotify || !('Notification' in window) || Notification.permission !== 'granted') return;
+    function toggleLiveShadeTimer() {
+      if (!state.timerLiveShade) {
+        if (!('Notification' in window) || !window.isSecureContext) {
+          showToast('Veikia tik įdiegus per GitHub Pages (HTTPS)');
+          return;
+        }
+        if (Notification.permission !== 'granted') {
+          showToast('Pirma įjunk „Pranešimas telefone ir laikrodyje“ aukščiau');
+          toggleSystemNotifications();
+          return;
+        }
+        state.timerNotify = true;
+        state.timerLiveShade = true;
+        saveState();
+        renderTimerSignalControls();
+        showToast('⏱ Nuolatinis laikmatis juostoje įjungtas');
+      } else {
+        state.timerLiveShade = false;
+        saveState();
+        clearLiveShadeNotification();
+        renderTimerSignalControls();
+        showToast('Nuolatinis laikmatis juostoje išjungtas');
+      }
+    }
+
+    async function getActiveSwReg() {
+      if (!('serviceWorker' in navigator)) return null;
+      try {
+        const reg = await navigator.serviceWorker.getRegistration();
+        if (reg && reg.showNotification) return reg;
+        const ready = await Promise.race([
+          navigator.serviceWorker.ready,
+          new Promise(r => setTimeout(() => r(null), 1200))
+        ]);
+        if (ready && ready.showNotification) return ready;
+      } catch (e) {}
+      return null;
+    }
+
+    async function clearLiveShadeNotification() {
+      const reg = await getActiveSwReg();
+      if (!reg || !reg.getNotifications) return;
+      try {
+        const list = await reg.getNotifications({ tag: 'leverlab193-rest-live' });
+        list.forEach(n => n.close());
+      } catch (e) {}
+    }
+
+    let lastShadeNotifyAt = 0;
+    async function updateLiveShadeNotification(force = false) {
+      if (!state.timerLiveShade || !state.timerNotify || !('Notification' in window) || Notification.permission !== 'granted') return;
+      if (!restTimerState.endTime && !restTimerState.paused) return;
+      const now = Date.now();
+      if (!force && (now - lastShadeNotifyAt) < 4800) return;
+      lastShadeNotifyAt = now;
+      const reg = await getActiveSwReg();
+      if (!reg) return;
+      const remMs = restTimerState.paused ? restTimerState.pausedRemainingMs : Math.max(0, restTimerState.endTime - now);
+      const sec = Math.ceil(remMs / 1000);
+      const mmss = `${String(Math.floor(sec / 60)).padStart(2, '0')}:${String(sec % 60).padStart(2, '0')}`;
+      const endDate = new Date(now + remMs);
+      const endClock = `${String(endDate.getHours()).padStart(2, '0')}:${String(endDate.getMinutes()).padStart(2, '0')}`;
+      const title = restTimerState.paused
+        ? `⏸ Poilsis pristabdytas (${mmss})`
+        : `⏱ Poilsis: ${mmss} · Baigsis ${endClock}`;
+      const opts = {
+        body: `${restTimerState.label || 'Poilsis tarp serijų'} · Laikrodis suvibruos pabaigoje`,
+        icon: './icon-192.png',
+        badge: './icon-192.png',
+        tag: 'leverlab193-rest-live',
+        silent: true,
+        renotify: false,
+        requireInteraction: true,
+        actions: [
+          { action: 'plus15', title: '+15 s' },
+          { action: 'stop', title: 'Praleisti' }
+        ]
+      };
+      try { await reg.showNotification(title, opts); } catch (e) {}
+    }
+
+    async function sendRestSystemNotification(bodyText) {
+      if (!state.timerNotify || !('Notification' in window) || Notification.permission !== 'granted') return false;
+      await clearLiveShadeNotification();
       const opts = {
         body: bodyText || 'Poilsis baigtas – kitas priėjimas!',
         icon: './icon-192.png',
         badge: './icon-192.png',
         tag: 'leverlab193-rest',
         renotify: true,
+        silent: false,
+        requireInteraction: false,
         vibrate: [250, 100, 250]
       };
+      const reg = await getActiveSwReg();
+      if (reg) {
+        try {
+          await reg.showNotification('🏋️ LeverLab 193', opts);
+          return true;
+        } catch (e) {}
+      }
       try {
-        if ('serviceWorker' in navigator && navigator.serviceWorker.controller) {
-          navigator.serviceWorker.ready.then(reg => {
-            if (reg && reg.showNotification) reg.showNotification('🏋️ LeverLab 193', opts);
-          }).catch(() => {});
-          return;
-        }
         new Notification('🏋️ LeverLab 193', opts);
-      } catch (e) {}
+        return true;
+      } catch (e) {
+        return false;
+      }
     }
 
     function renderTimerSignalControls() {
       const swS = document.getElementById('sw-timer-sound');
       const swV = document.getElementById('sw-timer-vib');
       const swN = document.getElementById('sw-timer-notify');
+      const swL = document.getElementById('sw-timer-live-shade');
       const nSt = document.getElementById('notify-perm-status');
       const hasApi = ('Notification' in window);
       const perm = hasApi ? Notification.permission : 'unsupported';
@@ -3254,6 +3370,7 @@
       if (swS) swS.classList.toggle('on', !!state.timerSound);
       if (swV) swV.classList.toggle('on', !!state.timerVibrate);
       if (swN) swN.classList.toggle('on', isNotifyOn);
+      if (swL) swL.classList.toggle('on', !!(isNotifyOn && state.timerLiveShade));
       if (nSt) {
         if (!hasApi || !window.isSecureContext) {
           nSt.style.color = 'var(--yellow)';
@@ -3280,7 +3397,7 @@
       });
     }
 
-    function testRestTimerSignal() {
+    async function testRestTimerSignal() {
       const dot = document.getElementById('timer-test-dot');
       const status = document.getElementById('timer-test-status');
       if (!state.timerSound && !state.timerVibrate && !state.timerNotify) {
@@ -3290,7 +3407,10 @@
       }
       if (state.timerSound) playChime(state.timerTone, true);
       if (state.timerVibrate) vibrateDevice([180, 80, 180], true);
-      if (state.timerNotify) sendRestSystemNotification('Testinis signalas – patikrink telefoną ir Galaxy Watch!');
+      let notifSent = false;
+      if (state.timerNotify) {
+        notifSent = await sendRestSystemNotification('Testinis signalas – patikrink telefoną ir Galaxy Watch!');
+      }
       if (dot) {
         dot.classList.add('ping');
         setTimeout(() => dot.classList.remove('ping'), 520);
@@ -3299,7 +3419,7 @@
       const parts = [];
       if (state.timerSound) parts.push(`Garsas (${toneNames[state.timerTone] || 'Švelnus'})`);
       if (state.timerVibrate) parts.push('Vibracija');
-      if (state.timerNotify) parts.push('Pranešimas (Watch)');
+      if (state.timerNotify) parts.push(notifSent ? '✓ Pranešimas išsiųstas (Watch)' : '⚠️ Pranešimas blokuotas');
       if (status) status.textContent = 'Suveikė: ' + parts.join(' + ');
     }
 
@@ -5077,6 +5197,7 @@
       if (undoBar && undoBar.classList.contains('visible')) undoBar.classList.add('above-timer');
       if (restTimerState.intervalId) clearInterval(restTimerState.intervalId);
       tickRestTimer();
+      updateLiveShadeNotification(true);
       restTimerState.intervalId = setInterval(tickRestTimer, 250);
     }
 
@@ -5089,12 +5210,14 @@
         restTimerState.paused = true;
         if (pBtn) pBtn.textContent = '▶ Tęsti';
         if (lbl) lbl.textContent = `⏸ Pristabdyta · ${restTimerState.label || 'Poilsis'}`;
+        updateLiveShadeNotification(true);
       } else {
         restTimerState.endTime = Date.now() + restTimerState.pausedRemainingMs;
         restTimerState.paused = false;
         if (pBtn) pBtn.textContent = '⏸ Pauzė';
         if (lbl) lbl.textContent = `Poilsis · ${restTimerState.label || ''}`;
         tickRestTimer();
+        updateLiveShadeNotification(true);
       }
     }
 
@@ -5121,6 +5244,7 @@
       readout.textContent = `${String(Math.floor(sec/60)).padStart(2,'0')}:${String(sec%60).padStart(2,'0')}`;
       const pct = Math.max(0, Math.min(100, (remMs / (restTimerState.duration * 1000)) * 100));
       fill.style.width = pct + '%';
+      updateLiveShadeNotification(false);
     }
 
     function adjustRestTimer(deltaSec) {
@@ -5130,6 +5254,7 @@
         restTimerState.duration = Math.max(15, restTimerState.duration + deltaSec);
         const sec = Math.ceil(restTimerState.pausedRemainingMs / 1000);
         document.getElementById('rest-time-readout').textContent = `${String(Math.floor(sec/60)).padStart(2,'0')}:${String(sec%60).padStart(2,'0')}`;
+        updateLiveShadeNotification(true);
         return;
       }
       const base = Math.max(Date.now(), restTimerState.endTime);
@@ -5138,6 +5263,7 @@
       restTimerState.finished = false;
       document.getElementById('rest-timer-bar').classList.remove('finished');
       tickRestTimer();
+      updateLiveShadeNotification(true);
     }
 
     function stopRestTimer() {
@@ -5146,6 +5272,15 @@
       document.getElementById('rest-timer-bar').classList.remove('visible', 'finished');
       const undoBar = document.getElementById('undo-float-bar');
       if (undoBar) undoBar.classList.remove('above-timer');
+      clearLiveShadeNotification();
+    }
+
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.addEventListener('message', ev => {
+        if (!ev.data || ev.data.type !== 'REST_TIMER_ACTION') return;
+        if (ev.data.action === 'plus15') adjustRestTimer(15);
+        else if (ev.data.action === 'stop') stopRestTimer();
+      });
     }
 
     /* Round 6: Visibility Listener (Auto-Restore Wake Lock + Pause/Resume Bio Canvas + Resync Clocks) */
@@ -5157,6 +5292,7 @@
         tickWarmupTimer();
         updateSessionClock();
         syncBioAnimationLoop();
+        renderTimerSignalControls();
         if (wakeLockWanted && !wakeLockObj) requestWakeLockInternal(true);
       }
     });
@@ -7162,8 +7298,8 @@
     function openWhatsNewModal() { openModal('modal-whats-new'); }
     function closeWhatsNewModal() {
       closeModal('modal-whats-new');
-      if (state.lastSeenRelease !== 'v8.2') {
-        state.lastSeenRelease = 'v8.2';
+      if (state.lastSeenRelease !== 'v8.3') {
+        state.lastSeenRelease = 'v8.3';
         saveState();
       }
     }
@@ -7198,7 +7334,7 @@
       try {
         const reg = await navigator.serviceWorker.getRegistration();
         if (!reg) {
-          if (st) st.textContent = 'Naudoji naujausią versiją (v8.2)';
+          if (st) st.textContent = 'Naudoji naujausią versiją (v8.3)';
           return;
         }
         await reg.update();
@@ -7209,7 +7345,7 @@
         } else if (reg.installing) {
           if (st) st.textContent = 'Atsisiunčiama nauja versija...';
         } else {
-          if (st) st.textContent = '✓ Naudoji naujausią versiją (v8.2)';
+          if (st) st.textContent = '✓ Naudoji naujausią versiją (v8.3)';
           showToast('✓ Turi naujausią versiją');
         }
       } catch (e) {
@@ -7255,7 +7391,7 @@
       renderWorkoutView();
       checkBackupReminder();
       setInterval(updateSessionClock, 1000);
-      if (state.lastSeenRelease !== 'v8.2') {
+      if (state.lastSeenRelease !== 'v8.3') {
         setTimeout(() => openWhatsNewModal(), 350);
       }
     };
