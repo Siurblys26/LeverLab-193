@@ -11,7 +11,7 @@
   <link rel="manifest" href="./manifest.json">
   <link id="pwa-favicon" rel="icon" type="image/svg+xml" href="./icon.svg">
   <link id="pwa-apple-icon" rel="apple-touch-icon" sizes="192x192" href="./icon-192.png">
-  <title>LeverLab 193 (v8) – Sporto Salės Programa</title>
+  <title>LeverLab 193 (v8.1) – Sporto Salės Programa</title>
   <style>
     /* ==========================================================================
        1. DESIGN TOKENS & 4 SELECTABLE THEMES (ROUND 5 NATIVE HIERARCHY)
@@ -971,14 +971,38 @@
     }
 
     .toast-wrap {
-      position: fixed; top: 64px; left: 50%; transform: translateX(-50%);
-      z-index: 120; width: calc(100% - 28px); max-width: 480px;
-      pointer-events: none; display: flex; flex-direction: column; gap: 6px;
+      position: fixed; top: calc(env(safe-area-inset-top, 0px) + 64px); left: 50%; transform: translateX(-50%);
+      z-index: 120; width: auto; max-width: min(90vw, 360px);
+      pointer-events: none; display: flex; flex-direction: column; align-items: center; gap: 7px;
+    }
+    @keyframes toastGlassIn {
+      0% { opacity: 0; transform: translateY(-10px) scale(0.92); filter: blur(4px); }
+      100% { opacity: 1; transform: translateY(0) scale(1); filter: blur(0); }
     }
     .toast {
-      background: var(--bg-card); color: var(--text); border: 1.5px solid var(--accent);
-      border-radius: var(--radius-md); padding: 10px 14px; font-size: 13px; font-weight: 700;
-      box-shadow: 0 10px 26px rgba(0,0,0,0.45); text-align: center;
+      width: fit-content; max-width: 100%;
+      background: rgba(15, 23, 38, 0.56);
+      backdrop-filter: blur(18px) saturate(170%);
+      -webkit-backdrop-filter: blur(18px) saturate(170%);
+      color: var(--text);
+      border: 1px solid rgba(255, 255, 255, 0.16);
+      border-radius: 999px;
+      padding: 8px 16px;
+      font-size: 12.5px; font-weight: 700; line-height: 1.3;
+      box-shadow: 0 10px 28px rgba(0, 0, 0, 0.36), inset 0 1px 0 rgba(255, 255, 255, 0.14);
+      text-align: center;
+      animation: toastGlassIn 0.28s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+      transition: opacity 0.24s ease, transform 0.24s cubic-bezier(0.4, 0, 0.2, 1), filter 0.24s ease;
+    }
+    [data-theme="nordic"] .toast {
+      background: rgba(255, 255, 255, 0.72);
+      border-color: rgba(15, 23, 42, 0.12);
+      box-shadow: 0 8px 24px rgba(15, 23, 42, 0.14), inset 0 1px 0 rgba(255, 255, 255, 0.75);
+    }
+    .toast.leaving {
+      opacity: 0;
+      transform: translateY(-8px) scale(0.94);
+      filter: blur(3px);
     }
     .measure-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
     .measure-field label { display: block; font-size: 11px; color: var(--text-muted); margin-bottom: 3px; font-weight: 700; }
@@ -1050,7 +1074,9 @@
       display: flex; align-items: center; justify-content: space-between; gap: 10px;
       padding: 10px 12px; border-radius: var(--radius-md);
       background: var(--bg-surface); margin-bottom: 8px;
+      cursor: pointer; user-select: none; transition: var(--transition);
     }
+    .setting-toggle-row:active { transform: scale(0.99); }
     .ui-switch {
       width: 44px; height: 26px; border-radius: 999px; position: relative;
       background: var(--bg-surface-2); transition: var(--transition); flex-shrink: 0;
@@ -1230,6 +1256,27 @@
       position: absolute; top: 7px; left: 8px; padding: 2px 8px; border-radius: 999px;
       background: rgba(6, 182, 212, 0.22); border: 1px solid rgba(6, 182, 212, 0.5);
       color: #67e8f9; font-size: 9.5px; font-weight: 900; letter-spacing: 0.04em; pointer-events: none;
+    }
+    .stage-phase-badge {
+      position: absolute; top: 7px; right: 8px; padding: 2px 9px; border-radius: 999px;
+      background: rgba(7, 13, 24, 0.82); border: 1px solid rgba(6, 182, 212, 0.45);
+      color: #67e8f9; font-size: 9.5px; font-weight: 900; font-family: var(--font-mono);
+      pointer-events: none; transition: color 0.15s ease, border-color 0.15s ease;
+    }
+    .stage-phase-badge.ecc { color: #fbbf24; border-color: rgba(245, 158, 11, 0.55); }
+    .stage-phase-badge.con { color: #4ade80; border-color: rgba(34, 197, 94, 0.55); }
+    [data-theme="nordic"] .stage-phase-badge { background: rgba(255, 255, 255, 0.88); color: #0284c7; }
+    [data-theme="nordic"] .stage-phase-badge.ecc { color: #b45309; }
+    [data-theme="nordic"] .stage-phase-badge.con { color: #15803d; }
+    .anim-footer-bar {
+      display: flex; align-items: center; justify-content: space-between; gap: 8px; flex-wrap: wrap;
+      margin: -4px 2px 9px; font-size: 10.5px; color: var(--text-muted); line-height: 1.3;
+    }
+    .anim-footer-cue { font-weight: 700; color: var(--text); }
+    .wn-ver-divider {
+      font-size: 11px; font-weight: 900; letter-spacing: 0.05em; text-transform: uppercase;
+      color: var(--text-muted); margin: 12px 2px 7px; padding-top: 10px;
+      border-top: 1px solid var(--border);
     }
     .pin-panel {
       padding: 9px 10px; border-radius: 11px;
@@ -1745,26 +1792,27 @@
           <span>Poilsio laikmačio signalas</span>
           <span class="pill">Offline Web Audio</span>
         </div>
-        <div class="setting-toggle-row">
+        <div class="setting-toggle-row" onclick="toggleTimerSetting('timerSound')">
           <div>
             <div style="font-weight:700;font-size:13.5px;">🔔 Poilsio pabaigos garsas</div>
             <div style="font-size:11.5px;color:var(--text-muted);">Trumpas signalas pasibaigus poilsiui tarp serijų</div>
           </div>
-          <button id="sw-timer-sound" type="button" class="ui-switch on" aria-label="Perjungti garsą" onclick="toggleTimerSetting('timerSound')"></button>
+          <button id="sw-timer-sound" type="button" class="ui-switch on" aria-label="Perjungti garsą" tabindex="-1"></button>
         </div>
-        <div class="setting-toggle-row">
+        <div class="setting-toggle-row" onclick="toggleTimerSetting('timerVibrate')">
           <div>
             <div style="font-weight:700;font-size:13.5px;">📳 Telefono vibracija</div>
             <div style="font-size:11.5px;color:var(--text-muted);">Dvigubas impulsas pasibaigus poilsiui ir užbaigus seriją</div>
           </div>
-          <button id="sw-timer-vib" type="button" class="ui-switch on" aria-label="Perjungti vibraciją" onclick="toggleTimerSetting('timerVibrate')"></button>
+          <button id="sw-timer-vib" type="button" class="ui-switch on" aria-label="Perjungti vibraciją" tabindex="-1"></button>
         </div>
-        <div class="setting-toggle-row">
+        <div class="setting-toggle-row" onclick="toggleSystemNotifications()">
           <div>
             <div style="font-weight:700;font-size:13.5px;">⌚ Pranešimas telefone ir laikrodyje</div>
             <div style="font-size:11.5px;color:var(--text-muted);">Išmeta sistemos pranešimą viršuje (persiunčia į <em>Galaxy Watch</em>)</div>
+            <div id="notify-perm-status" style="font-size:11px;margin-top:3px;font-weight:700;color:var(--accent);">Paspausk – naršyklė paprašys leidimo pranešimams</div>
           </div>
-          <button id="sw-timer-notify" type="button" class="ui-switch" aria-label="Perjungti sistemos pranešimus" onclick="toggleSystemNotifications()"></button>
+          <button id="sw-timer-notify" type="button" class="ui-switch" aria-label="Perjungti sistemos pranešimus" tabindex="-1"></button>
         </div>
         <div style="font-size:11px;color:var(--text-muted);margin:-2px 2px 8px;line-height:1.35;">
           💡 <strong>Galaxy Watch 8:</strong> <em>Galaxy Wearable → Pranešimai → Programų pranešimai</em> įjunk <em>LeverLab / Chrome</em>, o <em>Išplėstiniuose</em> pažymėk <em>„Rodyti net naudojant telefoną“</em>.
@@ -1844,18 +1892,25 @@
       <!-- PWA Home Screen Info & Release Notes Card -->
       <section class="card">
         <div class="section-title">
-          <span>Programėlė (v8) ir darbalaukio PWA</span>
-          <button type="button" class="btn btn-sm btn-ghost" style="min-height:28px;padding:3px 9px;font-size:11px;" onclick="openWhatsNewModal()">✨ Kas naujo v8</button>
+          <span>Programėlė (v8.1) ir darbalaukio PWA</span>
+          <button type="button" class="btn btn-sm btn-ghost" style="min-height:28px;padding:3px 9px;font-size:11px;" onclick="openWhatsNewModal()">✨ Kas naujo v8.1</button>
         </div>
         <div class="pwa-hint-box" style="align-items:flex-start;">
           <div style="width:46px;height:46px;border-radius:13px;overflow:hidden;border:1px solid rgba(56,189,248,0.45);flex-shrink:0;margin-top:2px;">
             <svg viewBox="0 0 512 512" width="46" height="46" aria-hidden="true">
+              <defs>
+                <linearGradient id="ll-icon-g" x1="125" y1="244" x2="387" y2="156" gradientUnits="userSpaceOnUse">
+                  <stop offset="0" stop-color="#22c55e"/>
+                  <stop offset="0.55" stop-color="#06b6d4"/>
+                  <stop offset="1" stop-color="#38bdf8"/>
+                </linearGradient>
+              </defs>
               <rect width="512" height="512" fill="#060a12"/>
-              <path d="M88 240 L424 128" stroke="#06b6d4" stroke-width="26" stroke-linecap="round"/>
-              <circle cx="96" cy="238" r="28" fill="#22c55e"/>
-              <circle cx="416" cy="130" r="38" fill="#38bdf8"/>
-              <path d="M234 218 Q256 184 278 218 L374 374 Q394 408 354 408 L158 408 Q118 408 138 374 Z" fill="#172234" stroke="#38bdf8" stroke-width="12"/>
-              <text x="256" y="368" text-anchor="middle" fill="#ffffff" font-family="sans-serif" font-weight="900" font-size="78">193</text>
+              <path d="M125 244 L387 156" stroke="url(#ll-icon-g)" stroke-width="22" stroke-linecap="round"/>
+              <circle cx="131" cy="242" r="23" fill="#22c55e"/>
+              <circle cx="381" cy="158" r="31" fill="#38bdf8"/>
+              <path d="M239 226 Q256 200 273 226 L348 348 Q364 374 332 374 L180 374 Q148 374 164 348 Z" fill="#172234" stroke="#38bdf8" stroke-width="10"/>
+              <text x="256" y="342" text-anchor="middle" fill="#ffffff" font-family="sans-serif" font-weight="900" font-size="62">193</text>
             </svg>
           </div>
           <div style="display:flex;flex-direction:column;gap:6px;line-height:1.4;">
@@ -1866,7 +1921,7 @@
         </div>
         <div class="row-between mt-8" style="flex-wrap:wrap;gap:8px;">
           <button type="button" class="btn btn-sm btn-secondary" onclick="checkForPwaUpdates()">🔄 Patikrinti atnaujinimus</button>
-          <span id="pwa-check-status" style="font-size:11.5px;color:var(--text-muted);">Versija: v8</span>
+          <span id="pwa-check-status" style="font-size:11.5px;color:var(--text-muted);">Versija: v8.1</span>
         </div>
       </section>
     </main>
@@ -2106,17 +2161,48 @@
     </div>
   </div>
 
-  <!-- What's New in v8 Visual Tour Modal -->
+  <!-- What's New in v8.1 + Full Release History Modal -->
   <div id="modal-whats-new" class="modal-backdrop" onclick="closeModalOnBackdrop(event, 'modal-whats-new')">
     <div class="modal-sheet">
       <div class="row-between" style="margin-bottom:8px;">
         <div>
-          <span class="pill pill-accent" style="font-size:10px;padding:2px 8px;">ATNAUJINIMAS · v8</span>
-          <h3 style="margin:4px 0 0 0;font-size:18px;">✨ Kas naujo LeverLab 193 v8?</h3>
+          <span class="pill pill-accent" style="font-size:10px;padding:2px 8px;">ATNAUJINIMAS · v8.1</span>
+          <h3 style="margin:4px 0 0 0;font-size:18px;">✨ Kas naujo LeverLab 193 v8.1?</h3>
         </div>
         <button class="btn btn-sm btn-secondary" onclick="closeWhatsNewModal()">Uždaryti</button>
       </div>
-      <div style="max-height:58vh;overflow-y:auto;padding-right:2px;">
+      <div style="max-height:60vh;overflow-y:auto;padding-right:2px;">
+        <div class="wn-item">
+          <div class="wn-ico">🦴</div>
+          <div>
+            <div class="wn-title">Patobulintos 3–1–1 tempo animacijos su krypties rodyklėmis</div>
+            <div class="wn-sub">Visos 19 schemų dabar rodo tikrovišką lėtą leidimą (<code>↓ Lėtai 3 s</code> → <code>⏸ Pauzė</code> → <code>↑ Stumk/Kelk</code>), žaliai švytintį dirbantį raumenį, judesio rodykles ir švarią apatinę juostą be jokio teksto užlipimo.</div>
+          </div>
+        </div>
+        <div class="wn-item">
+          <div class="wn-ico">🔺</div>
+          <div>
+            <div class="wn-title">Subalansuota #8.4 ikona (saugi zona Samsung ekranams)</div>
+            <div class="wn-sub">Išlaikyti skirtingo dydžio burbuliukai (žalias kairėje, didesnis žydras dešinėje) ir <code>193</code> trikampis, bet kompozicija patraukta į saugią zoną – kraštai niekur nebekirpsta.</div>
+          </div>
+        </div>
+        <div class="wn-item">
+          <div class="wn-ico">🫧</div>
+          <div>
+            <div class="wn-title">Kompaktiški stikliniai („frosted glass“) pranešimai</div>
+            <div class="wn-sub">Pranešimai (pvz. <em>„Tema atnaujinta“</em>) prisitaiko prie teksto pločio, turi permatomą matinio stiklo foną ir sklandžią atsiradimo bei išnykimo animaciją.</div>
+          </div>
+        </div>
+        <div class="wn-item">
+          <div class="wn-ico">⌚</div>
+          <div>
+            <div class="wn-title">Patikimesnis telefono ir laikrodžio pranešimų leidimas</div>
+            <div class="wn-sub">Paspaudžiama visa nustatymo eilutė, tiesioginis naršyklės leidimo iškvietimas ir aiški leidimo būsena po jungikliu.</div>
+          </div>
+        </div>
+
+        <div class="wn-ver-divider">Ankstesni atnaujinimai (v8)</div>
+
         <div class="wn-item">
           <div class="wn-ico">🏆</div>
           <div>
@@ -2992,32 +3078,69 @@
       renderTimerSignalControls();
     }
 
-    async function toggleSystemNotifications() {
-      if (state.timerNotify) {
+    function applyNotificationPermissionResult(perm) {
+      if (perm === 'granted') {
+        state.timerNotify = true;
+        saveState();
+        renderTimerSignalControls();
+        sendRestSystemNotification('Pranešimai įjungti – pajusi ir ant laikrodžio!');
+        showToast('⌚ Pranešimai telefonui ir laikrodžiui įjungti');
+      } else if (perm === 'denied') {
+        state.timerNotify = false;
+        saveState();
+        renderTimerSignalControls();
+        showToast('Pranešimai užblokuoti – leisk telefono nustatymuose');
+      } else {
+        state.timerNotify = false;
+        saveState();
+        renderTimerSignalControls();
+        showToast('Leidimas nesuteiktas – bandyk dar kartą');
+      }
+    }
+
+    function toggleSystemNotifications() {
+      if (!('Notification' in window)) {
+        state.timerNotify = false;
+        saveState();
+        renderTimerSignalControls();
+        showToast('Naršyklė nepalaiko pranešimų (reikia HTTPS / PWA)');
+        return;
+      }
+      if (!window.isSecureContext) {
+        state.timerNotify = false;
+        saveState();
+        renderTimerSignalControls();
+        showToast('Atidaryk per GitHub Pages (HTTPS) programėlę');
+        return;
+      }
+      const curPerm = Notification.permission;
+      if (state.timerNotify && curPerm === 'granted') {
         state.timerNotify = false;
         saveState();
         renderTimerSignalControls();
         showToast('Sistemos pranešimai išjungti');
         return;
       }
-      if (!('Notification' in window)) {
-        showToast('Ši naršyklė nepalaiko pranešimų');
+      if (curPerm === 'granted') {
+        applyNotificationPermissionResult('granted');
         return;
       }
+      if (curPerm === 'denied') {
+        state.timerNotify = false;
+        saveState();
+        renderTimerSignalControls();
+        showToast('Užblokuota: palaikyk LeverLab 193 → (i) → Pranešimai → Leisti');
+        return;
+      }
+      // Must call requestPermission() synchronously inside the click gesture for Android Chrome / Samsung Internet
       try {
-        let perm = Notification.permission;
-        if (perm === 'default') perm = await Notification.requestPermission();
-        if (perm === 'granted') {
-          state.timerNotify = true;
-          saveState();
-          renderTimerSignalControls();
-          sendRestSystemNotification('Pranešimai įjungti – pajusi ir ant laikrodžio!');
-          showToast('⌚ Pranešimai telefonui ir laikrodžiui įjungti');
-        } else {
-          state.timerNotify = false;
-          saveState();
-          renderTimerSignalControls();
-          showToast('Naršyklėje užblokuoti pranešimai – leisk telefono nustatymuose');
+        const req = Notification.requestPermission(res => {
+          if (typeof res === 'string') applyNotificationPermissionResult(res);
+        });
+        if (req && typeof req.then === 'function') {
+          req.then(applyNotificationPermissionResult).catch(() => {
+            showToast('Nepavyko paprašyti leidimo – patikrink naršyklės nustatymus');
+          });
         }
       } catch (e) {
         showToast('Nepavyko įjungti pranešimų (reikia HTTPS / PWA)');
@@ -3049,9 +3172,31 @@
       const swS = document.getElementById('sw-timer-sound');
       const swV = document.getElementById('sw-timer-vib');
       const swN = document.getElementById('sw-timer-notify');
+      const nSt = document.getElementById('notify-perm-status');
+      const hasApi = ('Notification' in window);
+      const perm = hasApi ? Notification.permission : 'unsupported';
+      const isNotifyOn = !!(state.timerNotify && hasApi && perm === 'granted');
       if (swS) swS.classList.toggle('on', !!state.timerSound);
       if (swV) swV.classList.toggle('on', !!state.timerVibrate);
-      if (swN) swN.classList.toggle('on', !!(state.timerNotify && 'Notification' in window && Notification.permission === 'granted'));
+      if (swN) swN.classList.toggle('on', isNotifyOn);
+      if (nSt) {
+        if (!hasApi || !window.isSecureContext) {
+          nSt.style.color = 'var(--yellow)';
+          nSt.textContent = '⚠️ Veikia tik įdiegus per GitHub Pages (HTTPS)';
+        } else if (perm === 'granted' && isNotifyOn) {
+          nSt.style.color = 'var(--green)';
+          nSt.textContent = '✓ Leidimas suteiktas – siunčia į telefoną ir laikrodį';
+        } else if (perm === 'granted') {
+          nSt.style.color = 'var(--text-muted)';
+          nSt.textContent = 'Leidimas yra (išjungta) – paspausk, kad įjungtum';
+        } else if (perm === 'denied') {
+          nSt.style.color = 'var(--red)';
+          nSt.textContent = '⚠️ Užblokuota: palaikyk LeverLab 193 ikoną → (i) → Pranešimai → Leisti';
+        } else {
+          nSt.style.color = 'var(--accent)';
+          nSt.textContent = 'Paspausk eilutę – naršyklė išmes leidimo klausimą';
+        }
+      }
       document.querySelectorAll('.tone-chip:not(.vol-chip)').forEach(el => {
         el.classList.toggle('active', el.dataset.tone === (state.timerTone || 'soft'));
       });
@@ -3085,14 +3230,16 @@
 
     function showToast(msg) {
       const wrap = document.getElementById('toast-wrap');
+      if (!wrap) return;
+      while (wrap.children.length >= 2) wrap.firstElementChild.remove();
       const el = document.createElement('div');
       el.className = 'toast';
       el.textContent = msg;
       wrap.appendChild(el);
       setTimeout(() => {
-        el.style.opacity = '0'; el.style.transition = 'opacity 0.25s';
+        el.classList.add('leaving');
         setTimeout(() => el.remove(), 260);
-      }, 2400);
+      }, 2150);
     }
 
     function openModal(id) { document.getElementById(id).classList.add('open'); }
@@ -3607,8 +3754,12 @@
               <div class="collapsible-inner">
                 <div class="warmup-guide-drawer">
                   <div class="anim-stage" style="height:152px;">
+                    <span class="stage-phase-badge">↓ Lėtai</span>
                     <canvas class="bio-canvas" data-anim="${w.anim}" data-warmup-id="${w.id}" data-open="${canvasOpen}"></canvas>
-                    <div class="anim-legend"><span>● Dirbanti zona</span><span>--- Technikos orientyras</span></div>
+                  </div>
+                  <div class="anim-footer-bar">
+                    <span><b style="color:var(--green);">●</b> Dirbanti zona · <b style="color:var(--yellow);">---</b> Orientyras</span>
+                    <span class="anim-footer-cue">${ANIM_CUES[w.anim] || ''}</span>
                   </div>
                   <div class="warmup-cue-box">
                     <div><strong>Kaip atlikti:</strong> ${w.cue}</div>
@@ -4146,9 +4297,13 @@
           <div class="collapsible-inner">
             <div class="tech-drawer">
               <div class="anim-stage">
-                <span class="stage-live-badge">● GYVA SCHEMA (OFFLINE)</span>
+                <span class="stage-live-badge">● GYVA SCHEMA</span>
+                <span class="stage-phase-badge ecc">↓ Lėtai (3 s)</span>
                 <canvas class="bio-canvas" data-anim="${ex.anim}" data-open="${isDrawerOpen ? '1' : '0'}"></canvas>
-                <div class="anim-legend"><span>● Dirbantys raumenys</span><span>--- Saugi riba</span></div>
+              </div>
+              <div class="anim-footer-bar">
+                <span><b style="color:var(--green);">●</b> Dirbantis raumuo · <b style="color:var(--yellow);">---</b> Saugi riba</span>
+                <span class="anim-footer-cue">${ANIM_CUES[ex.anim] || ''}</span>
               </div>
               <div style="font-size:12.5px;margin-bottom:9px;color:var(--text-muted);">
                 ${(ex.tallTips || []).map(t => `<div style="margin-bottom:3px;">• ${t}</div>`).join('')}
@@ -4981,8 +5136,64 @@
     }
 
     /* ==========================================================================
-       8. BATTERY-SAFE BIO CANVAS LOOP (TRUE 0 FPS SLEEP WHEN CLOSED)
+       8. BATTERY-SAFE BIO CANVAS LOOP (TRUE 0 FPS SLEEP + 3-1-1 REAL TEMPO)
        ========================================================================== */
+    const ANIM_CUES = {
+      warmup_band: 'Mentės suvedamos · Pečiai žemai',
+      warmup_openbook: 'Keliai neatsikelia · Atverk krūtinę',
+      warmup_ankle: 'Kulnas priklijuotas · Kelis link sienos',
+      warmup_lunge: 'Tiesi nugara · ~90° keliai',
+      squat: 'Saugi ~90° riba · Dubuo prie atlošo',
+      legpress: 'Pėdos aukščiau · Dubuo neatsikelia',
+      press: 'Alkūnės ~45° · Neužrakink giliai atgal',
+      inclinepress: '30° suolas · Alkūnės ties liemeniu',
+      row: 'Krūtinė prie pagalvės · Alkūnės link klubų',
+      legcurl: 'Kelis = ašis · Pėdos atpalaiduotos',
+      legext: 'Kelis = ašis · 1 sek. pauzė viršuje',
+      latraise: 'Peties lygis (riba) · Nekelk trapecijos',
+      triceps: 'Alkūnės fiksuotos · Tiesk tik dilbius',
+      biceps: 'Alkūnė prie šono · Nesūpuok liemeniu',
+      crunch: 'Dubuo užrakintas · Lenk tik šonkaulius',
+      plank: 'Tiesi linija · Įtempk presą ir sėdmenis',
+      hinge: 'Dubuo toli atgal · Sustok ties keliais',
+      pulldown: 'Klūpint · Alkūnės traukiamos link klubų',
+      lunge: 'Tiesus liemuo · Stumk per priekinę pėdą',
+      fly: 'Vaizdas iš viršaus · Sustok ties liemeniu',
+      facepull: 'Trauk prie kaktos · Plaštakos atgal',
+      hang: 'Ramus kvėpavimas · Stuburo dekompresija',
+      pinch: '2 lygūs diskai · Tiesūs pirštai'
+    };
+
+    function getBioTempoPhase(sec, animType) {
+      if (animType === 'plank' || animType === 'hang' || animType === 'pinch') {
+        const p = (Math.sin(sec * 1.9 - Math.PI / 2) + 1) / 2;
+        return { p, label: '● Laikyk / Kvėpuok', cls: '' };
+      }
+      if (animType && animType.startsWith('warmup_')) {
+        const cycle = 3.6, t = sec % cycle;
+        if (t < 1.8) {
+          const u = t / 1.8;
+          return { p: 0.5 - 0.5 * Math.cos(u * Math.PI), label: '→ Lėtas judesys', cls: 'ecc' };
+        }
+        if (t < 2.3) return { p: 1, label: '⏸ Pauzė', cls: '' };
+        const u = (t - 2.3) / 1.3;
+        return { p: 0.5 + 0.5 * Math.cos(u * Math.PI), label: '← Grįžk', cls: 'con' };
+      }
+      // Realistic tendon-safe 3-1-1 lifting tempo (4.4s cycle)
+      const cycle = 4.4, t = sec % cycle;
+      const isPull = (animType === 'row' || animType === 'pulldown' || animType === 'biceps' || animType === 'facepull' || animType === 'legcurl' || animType === 'crunch');
+      if (t < 2.3) {
+        const u = t / 2.3;
+        return { p: 0.5 - 0.5 * Math.cos(u * Math.PI), label: isPull ? '↑ Trauk / Kelk' : '↓ Lėtai (3 s)', cls: isPull ? 'con' : 'ecc' };
+      }
+      if (t < 2.85) return { p: 1, label: '⏸ Pauzė', cls: '' };
+      if (t < 4.0) {
+        const u = (t - 2.85) / 1.15;
+        return { p: 0.5 + 0.5 * Math.cos(u * Math.PI), label: isPull ? '↓ Lėtai (3 s)' : '↑ Stumk / Kelk', cls: isPull ? 'ecc' : 'con' };
+      }
+      return { p: 0, label: '● Startas', cls: '' };
+    }
+
     function syncBioAnimationLoop() {
       const hasOpen = !document.hidden &&
         document.getElementById('view-workout').classList.contains('active') &&
@@ -4998,8 +5209,7 @@
           if (document.hidden) { bioRafId = null; return; }
           const canvases = document.querySelectorAll('.bio-canvas[data-open="1"]');
           if (!canvases.length) { bioRafId = null; return; }
-          const raw = (Math.sin(((now - startTime) / 1000) * 2.2 - Math.PI / 2) + 1) / 2;
-          const p = raw * raw * (3 - 2 * raw);
+          const sec = (now - startTime) / 1000;
           const styles = getComputedStyle(document.documentElement);
           const pal = {
             bg: styles.getPropertyValue('--canvas-bg').trim(),
@@ -5011,17 +5221,25 @@
             green: styles.getPropertyValue('--green').trim(),
             muted: styles.getPropertyValue('--text-muted').trim()
           };
-          canvases.forEach(cv => drawBioFrame(cv, cv.dataset.anim, p, pal));
+          canvases.forEach(cv => {
+            const tp = getBioTempoPhase(sec, cv.dataset.anim);
+            drawBioFrame(cv, cv.dataset.anim, tp.p, pal, tp);
+            const badge = cv.parentElement && cv.parentElement.querySelector('.stage-phase-badge');
+            if (badge && badge.textContent !== tp.label) {
+              badge.textContent = tp.label;
+              badge.className = 'stage-phase-badge ' + tp.cls;
+            }
+          });
           bioRafId = requestAnimationFrame(frame);
         }
         bioRafId = requestAnimationFrame(frame);
       }
     }
 
-    function drawBioFrame(canvas, animType, p, pal) {
+    function drawBioFrame(canvas, animType, p, pal, tp) {
       const rect = canvas.getBoundingClientRect();
       if (rect.width < 10 || rect.height < 10) return;
-      const dpr = window.devicePixelRatio || 1;
+      const dpr = Math.min(window.devicePixelRatio || 1, 2);
       const w = Math.round(rect.width), h = Math.round(rect.height);
       if (canvas.width !== w * dpr || canvas.height !== h * dpr) { canvas.width = w * dpr; canvas.height = h * dpr; }
       const ctx = canvas.getContext('2d');
@@ -5031,11 +5249,21 @@
       for (let x = 20; x < w; x += 24) { ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, h); ctx.stroke(); }
       for (let y = 20; y < h; y += 24) { ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(w, y); ctx.stroke(); }
 
-      const cx = w / 2, floorY = h - 22;
+      const cx = w / 2, floorY = h - 14;
       const line = (x1, y1, x2, y2, color, width = 4, dashed = false) => {
         ctx.save(); ctx.strokeStyle = color; ctx.lineWidth = width; ctx.lineCap = 'round';
         if (dashed) ctx.setLineDash([5, 4]);
         ctx.beginPath(); ctx.moveTo(x1, y1); ctx.lineTo(x2, y2); ctx.stroke(); ctx.restore();
+      };
+      const arrow = (x1, y1, x2, y2, col = pal.accent) => {
+        const ang = Math.atan2(y2 - y1, x2 - x1);
+        ctx.save(); ctx.strokeStyle = col; ctx.fillStyle = col; ctx.lineWidth = 2.2; ctx.lineCap = 'round';
+        ctx.beginPath(); ctx.moveTo(x1, y1); ctx.lineTo(x2, y2); ctx.stroke();
+        ctx.beginPath();
+        ctx.moveTo(x2, y2);
+        ctx.lineTo(x2 - Math.cos(ang - 0.5) * 6.8, y2 - Math.sin(ang - 0.5) * 6.8);
+        ctx.lineTo(x2 - Math.cos(ang + 0.5) * 6.8, y2 - Math.sin(ang + 0.5) * 6.8);
+        ctx.closePath(); ctx.fill(); ctx.restore();
       };
       const joint = (x, y, r = 4.3, color = pal.bone) => { ctx.fillStyle = color; ctx.beginPath(); ctx.arc(x, y, r, 0, Math.PI * 2); ctx.fill(); };
       const head = (x, y, r = 8.5) => {
@@ -5058,12 +5286,12 @@
         ctx.beginPath(); ctx.arc(x1, y1, r1, 0, Math.PI * 2); ctx.arc(x2, y2, r2, 0, Math.PI * 2); ctx.fill();
         ctx.restore();
       };
-      const muscle = (x1, y1, x2, y2, thick = 6.5, alpha = 0.25 + p * 0.4) => {
+      const muscle = (x1, y1, x2, y2, thick = 7.2, alpha = 0.28 + p * 0.5) => {
         const mx = (x1 + x2) / 2, my = (y1 + y2) / 2;
         const len = Math.hypot(x2 - x1, y2 - y1), ang = Math.atan2(y2 - y1, x2 - x1);
         ctx.save(); ctx.translate(mx, my); ctx.rotate(ang);
-        ctx.fillStyle = pal.accent; ctx.globalAlpha = Math.min(0.75, alpha);
-        ctx.beginPath(); ctx.ellipse(0, 0, len * 0.44, thick, 0, 0, Math.PI * 2); ctx.fill();
+        ctx.fillStyle = pal.green; ctx.globalAlpha = Math.min(0.82, alpha);
+        ctx.beginPath(); ctx.ellipse(0, 0, len * 0.45, thick, 0, 0, Math.PI * 2); ctx.fill();
         ctx.restore();
       };
       const pad = (x1, y1, x2, y2, width = 9) => {
@@ -5084,7 +5312,7 @@
         ctx.save();
         ctx.fillStyle = pal.equip; ctx.globalAlpha = 0.7;
         ctx.beginPath(); ctx.arc(x, y, r, 0, Math.PI * 2); ctx.fill();
-        ctx.globalAlpha = 1; ctx.strokeStyle = pal.accent; ctx.lineWidth = 2;
+        ctx.globalAlpha = 1; ctx.strokeStyle = pal.accent; ctx.lineWidth = 2.2;
         ctx.beginPath(); ctx.arc(x, y, r, 0, Math.PI * 2); ctx.stroke();
         ctx.fillStyle = pal.bg; ctx.beginPath(); ctx.arc(x, y, 3, 0, Math.PI * 2); ctx.fill();
         ctx.restore();
@@ -5092,11 +5320,9 @@
       const shoe = (x, y, dir = 1) => {
         line(x - 3 * dir, y, x + 13 * dir, y, pal.bone, 5.5);
       };
-      const cueTag = (txt, x, y, color = pal.muted, align = 'center') => {
-        ctx.save(); ctx.fillStyle = color; ctx.font = '700 9.5px sans-serif'; ctx.textAlign = align;
-        ctx.fillText(txt, x, y); ctx.restore();
-      };
-      const glow = (x1, y1, x2, y2) => { muscle(x1, y1, x2, y2, 6.2); limb(x1, y1, x2, y2, 3.8, 3.1, pal.bone); };
+      // Bottom cues now live cleanly below the canvas in .anim-footer-bar (zero overlap!)
+      const cueTag = () => {};
+      const glow = (x1, y1, x2, y2) => { muscle(x1, y1, x2, y2, 6.8); limb(x1, y1, x2, y2, 3.8, 3.1, pal.bone); };
 
       line(16, floorY, w - 16, floorY, pal.equip, 2);
 
@@ -5169,8 +5395,6 @@
         ctx.fillStyle = pal.accent; ctx.font = '800 10px sans-serif'; ctx.textAlign = 'center';
         ctx.fillText('←', hL[0] - 11, hL[1] + 4);
         ctx.fillText('→', hR[0] + 11, hR[1] + 4);
-        ctx.fillStyle = pal.muted; ctx.font = '700 9.5px sans-serif';
-        ctx.fillText('Mentės suvedamos · Pečiai žemai', cx, floorY + 14);
         ctx.restore();
       } else if (animType === 'warmup_openbook') {
         // Detailed side-lying Thoracic "Open Book" on mat with anchored 90° knees
@@ -5241,8 +5465,6 @@
 
         ctx.save();
         ctx.font = '700 9.5px sans-serif';
-        ctx.fillStyle = pal.green; ctx.textAlign = 'center';
-        ctx.fillText('● Keliai neatsikelia', kneePos[0] + 6, matY + 13);
         ctx.fillStyle = pal.muted; ctx.textAlign = 'left';
         ctx.fillText('Atveriama krūtinė', cx - 102, 20);
         ctx.restore();
@@ -5320,8 +5542,6 @@
 
         ctx.save();
         ctx.font = '700 9.5px sans-serif';
-        ctx.fillStyle = pal.green; ctx.textAlign = 'center';
-        ctx.fillText('● Kulnas priklijuotas', heel[0] - 6, floorY + 14);
         ctx.fillStyle = pal.warn; ctx.textAlign = 'right';
         ctx.fillText('Siena', wallX + 14, 24);
         ctx.restore();
@@ -5364,12 +5584,7 @@
 
         head(sh[0] + 3, sh[1] - 11, 8.5);
         [hip, sh, fKnee, bKnee, fFoot].forEach(pt => joint(pt[0], pt[1], 4.4, pal.bone));
-
-        ctx.save();
-        ctx.font = '700 9.5px sans-serif';
-        ctx.fillStyle = pal.muted; ctx.textAlign = 'center';
-        ctx.fillText('Tiesi nugara · ~90° keliai · Lėtas tempas', cx, floorY + 14);
-        ctx.restore();
+        arrow(sh[0] + 24, sh[1] + 8, sh[0] + 24, sh[1] + (p > 0.5 ? -14 : 24), pal.accent);
       } else if (animType === 'squat') {
         // Hack Squat: angled steel rails, sliding back pad, loaded plate, footplate, 57 cm shin tracking
         line(cx - 64, floorY, cx + 14, 18, pal.equip, 5);
@@ -5399,6 +5614,7 @@
         limb(hip[0], hip[1], sh[0], sh[1], 6, 5.2);
         head(sh[0] + 7, sh[1] - 12, 8.5);
         [ankle, knee, hip, sh].forEach(pt => joint(pt[0], pt[1], 4, pal.bone));
+        arrow(sh[0] + 26, sh[1] + 8, sh[0] + 26 + (p > 0.5 ? 9 : -9), sh[1] + (p > 0.5 ? -14 : 24), pal.accent);
         cueTag('Saugi ~90° riba · Dubuo prie atlošo', cx, floorY + 14);
       } else if (animType === 'legpress') {
         // 45° Leg Press: seat + reclined backrest + guide rails + weighted sliding sled
@@ -5738,6 +5954,7 @@
         plate(bar[0], bar[1], 11.5);
         head(sh[0] + Math.cos(ang) * 12, sh[1] + Math.sin(ang) * 12, 8.5);
         [ankle, knee, hip, sh].forEach(pt => joint(pt[0], pt[1], 4, pal.bone));
+        if (p > 0.14) arrow(hip[0] - 12, hip[1], hip[0] - 34, hip[1], pal.accent);
         cueTag('Dubuo toli atgal · Sustok ties keliais', cx - 4, floorY + 14);
       } else if (animType === 'pulldown') {
         // Kneeling Lat Pulldown: overhead pulley + mat + 89 cm full stretch + glowing lats
@@ -5771,6 +5988,7 @@
         line(hand[0] - 9, hand[1], hand[0] + 9, hand[1], pal.accent, 4);
         head(sh[0] - 4, sh[1] - 12, 8.5);
         [knee, hip, sh, elbow].forEach(pt => joint(pt[0], pt[1], 4, pal.bone));
+        arrow(elbow[0] + 16, elbow[1] - 12, elbow[0] + 16, elbow[1] + 16, pal.green);
         cueTag('Klūpint · Alkūnės traukiamos link klubų', cx, floorY + 14);
       } else if (animType === 'lunge') {
         // Split Squat with dumbbells: upright vertical guide + safe knee hover + glowing quad
@@ -6869,8 +7087,8 @@
     function openWhatsNewModal() { openModal('modal-whats-new'); }
     function closeWhatsNewModal() {
       closeModal('modal-whats-new');
-      if (state.lastSeenRelease !== 'v8') {
-        state.lastSeenRelease = 'v8';
+      if (state.lastSeenRelease !== 'v8.1') {
+        state.lastSeenRelease = 'v8.1';
         saveState();
       }
     }
@@ -6905,7 +7123,7 @@
       try {
         const reg = await navigator.serviceWorker.getRegistration();
         if (!reg) {
-          if (st) st.textContent = 'Naudoji naujausią versiją (v8)';
+          if (st) st.textContent = 'Naudoji naujausią versiją (v8.1)';
           return;
         }
         await reg.update();
@@ -6916,7 +7134,7 @@
         } else if (reg.installing) {
           if (st) st.textContent = 'Atsisiunčiama nauja versija...';
         } else {
-          if (st) st.textContent = '✓ Naudoji naujausią versiją (v8)';
+          if (st) st.textContent = '✓ Naudoji naujausią versiją (v8.1)';
           showToast('✓ Turi naujausią versiją');
         }
       } catch (e) {
@@ -6962,7 +7180,7 @@
       renderWorkoutView();
       checkBackupReminder();
       setInterval(updateSessionClock, 1000);
-      if (state.lastSeenRelease !== 'v8') {
+      if (state.lastSeenRelease !== 'v8.1') {
         setTimeout(() => openWhatsNewModal(), 350);
       }
     };
