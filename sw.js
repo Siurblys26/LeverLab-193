@@ -1,10 +1,11 @@
-const CACHE_NAME = 'leverlab193-v8-6-cache-1';
+const CACHE_NAME = 'leverlab193-v9-0-cache-1';
 const ASSETS = [
   './',
   './index.html',
   './manifest.json',
   './icon-192.png',
   './icon-512.png',
+  './badge-96.png',
   './icon.svg'
 ];
 

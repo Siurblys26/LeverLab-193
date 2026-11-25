@@ -8,10 +8,12 @@
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="apple-mobile-web-app-title" content="LeverLab 193">
+  <link id="pwa-favicon" rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='125' y1='244' x2='387' y2='156' gradientUnits='userSpaceOnUse'%3E%3Cstop offset='0' stop-color='%2322c55e'/%3E%3Cstop offset='0.55' stop-color='%2306b6d4'/%3E%3Cstop offset='1' stop-color='%2338bdf8'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='512' height='512' rx='112' fill='%23060a12'/%3E%3Cpath d='M125 244 L387 156' stroke='url(%23g)' stroke-width='22' stroke-linecap='round'/%3E%3Ccircle cx='131' cy='242' r='23' fill='%2322c55e'/%3E%3Ccircle cx='381' cy='158' r='31' fill='%2338bdf8'/%3E%3Cpath d='M239 226 Q256 200 273 226 L348 348 Q364 374 332 374 L180 374 Q148 374 164 348 Z' fill='%23172234' stroke='%2338bdf8' stroke-width='10'/%3E%3Ctext x='256' y='342' text-anchor='middle' fill='%23ffffff' font-family='sans-serif' font-weight='900' font-size='62'%3E193%3C/text%3E%3C/svg%3E">
+  <link id="pwa-apple-icon" rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='125' y1='244' x2='387' y2='156' gradientUnits='userSpaceOnUse'%3E%3Cstop offset='0' stop-color='%2322c55e'/%3E%3Cstop offset='0.55' stop-color='%2306b6d4'/%3E%3Cstop offset='1' stop-color='%2338bdf8'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='512' height='512' fill='%23060a12'/%3E%3Cpath d='M125 244 L387 156' stroke='url(%23g)' stroke-width='22' stroke-linecap='round'/%3E%3Ccircle cx='131' cy='242' r='23' fill='%2322c55e'/%3E%3Ccircle cx='381' cy='158' r='31' fill='%2338bdf8'/%3E%3Cpath d='M239 226 Q256 200 273 226 L348 348 Q364 374 332 374 L180 374 Q148 374 164 348 Z' fill='%23172234' stroke='%2338bdf8' stroke-width='10'/%3E%3Ctext x='256' y='342' text-anchor='middle' fill='%23ffffff' font-family='sans-serif' font-weight='900' font-size='62'%3E193%3C/text%3E%3C/svg%3E">
   <link rel="manifest" href="./manifest.json">
   <link id="pwa-favicon" rel="icon" type="image/svg+xml" href="./icon.svg">
   <link id="pwa-apple-icon" rel="apple-touch-icon" sizes="192x192" href="./icon-192.png">
-  <title>LeverLab 193 (v8.6) – Sporto Salės Programa</title>
+  <title>LeverLab 193 (v9.0) – Sporto Salės Programa</title>
   <style>
     /* ==========================================================================
        1. DESIGN TOKENS & 4 SELECTABLE THEMES (ROUND 5 NATIVE HIERARCHY)
@@ -244,9 +246,22 @@
       color: var(--text); display: inline-flex; align-items: center; justify-content: center;
       gap: 4px; font-size: 11.5px; font-weight: 700; transition: var(--transition);
     }
+    .icon-btn.icon-only {
+      width: 36px; height: 36px; padding: 0; border-radius: 11px;
+      color: var(--text-muted); border: 1px solid var(--card-rim);
+    }
+    .icon-btn.icon-only svg { width: 17px; height: 17px; }
     .icon-btn:active { transform: scale(0.95); }
     .icon-btn.active { background: var(--accent-soft); box-shadow: inset 0 0 0 1.5px var(--accent); color: var(--accent); }
+    #btn-wakelock.active {
+      background: color-mix(in srgb, var(--accent) 22%, var(--bg-surface));
+      border-color: var(--accent);
+      color: var(--accent);
+      box-shadow: 0 0 14px var(--accent-glow), inset 0 0 0 1px color-mix(in srgb, var(--accent) 60%, #fff);
+    }
+    #btn-wakelock.active svg { filter: drop-shadow(0 0 4px var(--accent-glow)); }
     .icon-btn svg { width: 14px; height: 14px; stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+    .icon-plate-svg { width: 15px; height: 15px; flex-shrink: 0; display: inline-block; vertical-align: -2px; }
 
     /* ==========================================================================
        4. VIEWS, BORDERLESS ELEVATED CARDS & CONTROLS (ROUND 5)
@@ -326,32 +341,115 @@
     }
     .tendon-check-row { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 8px; }
 
+    /* Demo 21 Variant #3: Distinct Soft-Tinted Top Bars (Program & Warmup) vs. Exercise Cards */
+    .program-v3 {
+      background: linear-gradient(135deg, color-mix(in srgb, var(--accent) 9%, var(--bg-card)), color-mix(in srgb, var(--accent) 4%, var(--bg-surface)));
+      border: 1px solid color-mix(in srgb, var(--accent) 26%, var(--border));
+      border-left: 3.5px solid var(--accent);
+      border-radius: 15px;
+      padding: 10px 12px;
+      margin-bottom: 8px;
+      box-shadow: none;
+      transition: var(--transition);
+    }
+    .program-v3.is-collapsed { padding: 9px 12px; }
+    .program-v3.is-collapsed .prog-progress-block { margin-top: 7px; }
+    .program-v3 .prog-progress-block { margin-top: 10px; }
+
     .warmup-inline {
-      background: var(--bg-card);
-      border: 1px solid var(--card-rim);
-      border-radius: var(--radius-lg); padding: 11px 13px; margin-bottom: 10px;
-      box-shadow: var(--shadow); transition: var(--transition);
+      background: linear-gradient(135deg, rgba(245, 158, 11, 0.10), color-mix(in srgb, var(--bg-surface) 92%, transparent));
+      border: 1px solid rgba(245, 158, 11, 0.28);
+      border-left: 3.5px solid var(--yellow);
+      border-radius: 15px; padding: 10px 12px; margin-bottom: 10px;
+      box-shadow: none; transition: var(--transition);
     }
+    [data-theme="nordic"] .warmup-inline {
+      background: linear-gradient(135deg, rgba(254, 243, 199, 0.72), rgba(255, 251, 235, 0.85));
+      border-color: rgba(217, 119, 6, 0.28);
+    }
+    .warmup-inline.is-collapsed { padding: 9px 12px; }
+    .warmup-inline.is-collapsed .warmup-sub-line,
+    .warmup-inline.is-collapsed .warmup-prog-track,
+    .warmup-inline.is-collapsed .warmup-timer-wrap { display: none !important; }
     .warmup-inline.warmup-complete {
-      box-shadow: var(--shadow), inset 0 0 0 1.5px rgba(34, 197, 94, 0.45);
+      background: linear-gradient(135deg, var(--green-bg), color-mix(in srgb, var(--bg-surface) 90%, transparent));
+      border-color: rgba(34, 197, 94, 0.36);
+      border-left-color: var(--green);
     }
+    .exercises-divider {
+      display: flex; align-items: center; gap: 9px;
+      margin: 12px 2px 9px;
+      font-size: 10.5px; font-weight: 900; letter-spacing: 0.08em;
+      text-transform: uppercase; color: var(--text-muted);
+    }
+    .exercises-divider::before, .exercises-divider::after {
+      content: ""; flex: 1; height: 1px; background: var(--border-strong); opacity: 0.65;
+    }
+    .exercises-divider::before { flex: 0 0 14px; }
     .warmup-prog-track {
-      width: 100%; height: 5px; border-radius: 999px;
-      background: var(--bg-surface); overflow: hidden; margin-top: 9px;
+      width: 100%; height: 4px; border-radius: 999px;
+      background: var(--bg-surface); overflow: hidden; margin-top: 8px;
     }
     .warmup-prog-fill {
       height: 100%; border-radius: 999px; width: 0%;
       transition: width 0.28s ease, background 0.28s ease;
     }
-    .warmup-timer-pill {
-      height: 28px; padding: 0 9px; border-radius: 999px;
-      background: var(--bg-surface); color: var(--yellow);
-      font-family: var(--font-mono); font-size: 11px; font-weight: 800;
-      display: inline-flex; align-items: center; gap: 4px; transition: var(--transition);
+    .warmup-timer-wrap {
+      display: flex; align-items: center; justify-content: space-between; gap: 8px;
+      margin-top: 8px; padding: 7px 9px; border-radius: 11px;
+      background: var(--bg-card); border: 1px solid var(--border);
     }
+    .warmup-timer-hint {
+      font-size: 10.5px; color: var(--text-muted); line-height: 1.25;
+    }
+    .warmup-timer-pill {
+      position: relative; overflow: hidden;
+      height: 30px; padding: 0 11px; border-radius: 999px;
+      background: var(--bg-surface); color: var(--yellow);
+      font-family: var(--font-mono); font-size: 11.5px; font-weight: 800;
+      display: inline-flex; align-items: center; gap: 4px; flex-shrink: 0;
+      user-select: none; -webkit-user-select: none; touch-action: manipulation;
+      transition: transform 0.14s ease, background 0.18s ease, box-shadow 0.18s ease;
+    }
+    .warmup-timer-pill::before {
+      content: ""; position: absolute; inset: 0; width: 0%;
+      background: color-mix(in srgb, var(--yellow) 32%, transparent);
+      pointer-events: none; transition: width 0.08s linear;
+    }
+    .warmup-timer-pill.holding { transform: scale(0.95); }
+    .warmup-timer-pill.holding::before { width: 100%; transition: width 0.65s linear; }
+    .warmup-timer-pill > span { position: relative; z-index: 1; }
     .warmup-timer-pill.running {
       background: var(--yellow-bg); box-shadow: inset 0 0 0 1px var(--yellow);
     }
+    .warmup-item.optional-card {
+      border: 1px dashed rgba(245, 158, 11, 0.42);
+      background: color-mix(in srgb, var(--yellow) 6%, var(--bg-surface));
+    }
+    .warmup-opt-badge {
+      font-size: 9.5px; font-weight: 800; padding: 2px 7px; border-radius: 999px;
+      background: var(--yellow-bg); color: var(--yellow);
+      text-transform: uppercase; letter-spacing: 0.04em;
+    }
+    .warmup-tips-list {
+      display: flex; flex-direction: column; gap: 6px;
+      font-size: 12px; color: var(--text-muted); line-height: 1.42;
+    }
+    .warmup-tips-list strong { color: var(--text); }
+    .kcal-mini-table {
+      width: 100%; border-collapse: collapse; margin-top: 6px;
+      font-size: 11px; background: var(--bg-card); border-radius: 10px; overflow: hidden;
+      border: 1px solid var(--border);
+    }
+    .kcal-mini-table th, .kcal-mini-table td {
+      padding: 6px 7px; text-align: left; border-bottom: 1px solid var(--border);
+    }
+    .kcal-mini-table tr:last-child td { border-bottom: none; }
+    .kcal-mini-table th {
+      font-size: 10px; text-transform: uppercase; letter-spacing: 0.04em;
+      color: var(--text-muted); background: var(--bg-surface); font-weight: 800;
+    }
+    .kcal-mini-table td.num { font-family: var(--font-mono); font-weight: 800; color: var(--accent); text-align: right; white-space: nowrap; }
     .warmup-item {
       border-radius: 14px; background: var(--bg-surface); margin-top: 8px;
       overflow: hidden; transition: var(--transition);
@@ -645,19 +743,19 @@
       display: flex; align-items: center; justify-content: space-between; gap: 2px;
     }
     .thumb-btn {
-      width: 48px; height: 48px; border-radius: 12px;
+      width: 42px; height: 46px; border-radius: 11px;
       background: var(--bg-surface-2); color: var(--text);
-      font-size: 22px; font-weight: 700;
+      font-size: 20px; font-weight: 700;
       display: flex; align-items: center; justify-content: center; flex-shrink: 0;
       transition: var(--transition);
     }
     .thumb-btn:active { background: var(--accent); color: var(--accent-text); transform: scale(0.93); }
 
     .big-num-input {
-      width: 100%; min-width: 0; height: 48px; border: none; background: transparent;
-      text-align: center; font-size: 22px; font-weight: 900;
-      letter-spacing: -0.02em; font-variant-numeric: tabular-nums;
-      color: var(--text); outline: none; padding: 0;
+      width: 100%; min-width: 0; height: 46px; border: none; background: transparent;
+      text-align: center; font-size: 19px; font-weight: 900; font-family: var(--font-mono);
+      letter-spacing: -0.025em; font-variant-numeric: tabular-nums;
+      color: var(--text); outline: none; padding: 0 1px;
     }
 
     .active-check-btn {
@@ -761,7 +859,7 @@
     .bottom-float-stack {
       position: fixed; left: 50%; transform: translateX(-50%);
       bottom: calc(var(--nav-height) + var(--safe-bottom) + 10px);
-      width: calc(100% - 22px); max-width: 538px;
+      width: calc(100% - 34px); max-width: 520px;
       z-index: 48;
       display: flex; flex-direction: column; gap: 8px;
       pointer-events: none;
@@ -772,7 +870,7 @@
       backdrop-filter: blur(26px) saturate(185%);
       -webkit-backdrop-filter: blur(26px) saturate(185%);
       border: 1.5px solid color-mix(in srgb, var(--accent) 70%, rgba(255, 255, 255, 0.35));
-      box-shadow: 0 18px 42px rgba(0, 0, 0, 0.72), 0 0 20px var(--accent-soft), inset 0 1.5px 0 rgba(255, 255, 255, 0.22);
+      box-shadow: 0 22px 50px rgba(0, 0, 0, 0.82), 0 0 22px var(--accent-soft), inset 0 1.5px 0 rgba(255, 255, 255, 0.22);
       border-radius: var(--radius-lg); padding: 10px 12px;
       display: none; pointer-events: auto;
       animation: floatSlideUp 0.22s cubic-bezier(0.2, 0.8, 0.2, 1);
@@ -1055,7 +1153,13 @@
       background: rgba(15, 23, 42, 0.34);
     }
     .modal-backdrop.open { display: flex; animation: modalFadeIn 0.2s ease both; }
-    @media (min-width: 600px) { .modal-backdrop { align-items: center; } }
+    .modal-backdrop.align-top { align-items: flex-start; padding-top: calc(env(safe-area-inset-top, 0px) + 16px); }
+    .modal-backdrop.align-top .modal-sheet { animation: modalSheetDown 0.24s cubic-bezier(0.22, 1, 0.36, 1) both; }
+    @keyframes modalSheetDown {
+      from { opacity: 0; transform: translateY(-16px) scale(0.97); }
+      to { opacity: 1; transform: translateY(0) scale(1); }
+    }
+    @media (min-width: 600px) { .modal-backdrop:not(.align-top) { align-items: center; } }
     .modal-sheet {
       position: relative;
       width: 100%; max-width: 520px; max-height: 88vh; overflow-y: auto;
@@ -1255,12 +1359,13 @@
     }
     .set-num-pill {
       display: inline-flex; align-items: center; gap: 5px;
+      width: fit-content; align-self: flex-start;
       padding: 4px 9px; border-radius: 999px;
       background: var(--accent); color: var(--accent-text);
       font-size: 11px; font-weight: 900; letter-spacing: 0.03em; white-space: nowrap;
     }
 
-    /* Labeled Exercise Note Box + Quick Chips */
+    /* Labeled Exercise Note Box + Lockable Quick Chips */
     .note-box {
       margin-top: 9px; padding: 10px; border-radius: 12px;
       background: var(--bg-surface); border: 1px solid var(--border);
@@ -1269,12 +1374,30 @@
       font-size: 11px; font-weight: 800; color: var(--accent);
       margin-bottom: 6px; display: flex; align-items: center; justify-content: space-between; gap: 6px;
     }
+    .note-lock-btn {
+      display: inline-flex; align-items: center; gap: 4px;
+      height: 24px; padding: 0 8px; border-radius: 999px;
+      background: var(--bg-card); border: 1px solid var(--border);
+      color: var(--text-muted); font-size: 10.5px; font-weight: 800;
+      transition: var(--transition); flex-shrink: 0;
+    }
+    .note-lock-btn.unlocked {
+      background: var(--yellow-bg); border-color: rgba(245, 158, 11, 0.55); color: var(--yellow);
+    }
     .note-chips { display: flex; flex-wrap: wrap; gap: 5px; margin-bottom: 7px; }
+    .note-chips.locked .note-chip-del,
+    .note-chips.locked .note-chip-custom-add { display: none; }
     .note-chip {
       padding: 3px 8px; border-radius: 999px; font-size: 10.5px; font-weight: 700;
       background: var(--bg-card); color: var(--text-muted); border: 1px solid var(--border);
     }
     .note-chip:active { background: var(--accent-soft); color: var(--accent); }
+    .custom-ex-del-btn {
+      width: 26px; height: 26px; border-radius: 8px;
+      background: var(--red-bg); color: var(--red);
+      font-size: 13px; font-weight: 900; display: inline-flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+    }
     .note-textarea {
       width: 100%; min-height: 56px; padding: 8px 10px; border-radius: 10px;
       background: var(--bg-card); border: 1px solid var(--border-strong); color: var(--text);
@@ -1780,13 +1903,8 @@
         </div>
       </div>
       <div class="header-actions">
-        <button id="btn-wakelock" class="icon-btn" title="Neužgesinti ekrano" onclick="toggleWakeLock()">
+        <button id="btn-wakelock" class="icon-btn icon-only" title="Neužgesinti ekrano" aria-label="Neužgesinti ekrano" onclick="toggleWakeLock()">
           <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>
-          <span>Ekranas</span>
-        </button>
-        <button class="icon-btn" title="Blynų skaičiuoklė" onclick="openPlateModal()">
-          <svg viewBox="0 0 24 24"><path d="M6 5v14M18 5v14M2 9v6M22 9v6M6 12h12"/></svg>
-          <span>Blynai</span>
         </button>
       </div>
     </header>
@@ -1804,8 +1922,8 @@
       <!-- Auto Deload Suggestion Banner (6+ wks Working or Repeated Joint Flags) -->
       <div id="deload-suggest-container"></div>
 
-      <!-- Auto-Collapsing Program & Mode Control Card -->
-      <section class="card" id="program-bar-card">
+      <!-- Auto-Collapsing Program & Mode Control Bar (Demo 21 Variant #3) -->
+      <section class="program-v3" id="program-bar-card">
         <div class="row-between" style="cursor:pointer;" onclick="toggleProgramBar()">
           <div class="row" style="gap:7px;min-width:0;">
             <strong id="program-bar-summary" style="font-size:13.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">Treniruotė A · Adaptacija</strong>
@@ -1868,7 +1986,7 @@
           </div>
         </div>
 
-        <div style="margin-top:11px;">
+        <div class="prog-progress-block">
           <div class="row-between" style="font-size:12px;margin-bottom:5px;">
             <span id="workout-progress-text" class="tabular" style="color:var(--text-muted);font-weight:700;">Atlikta serijų: 0 / 14</span>
             <span id="workout-volume-text" class="tabular" style="font-family:var(--font-mono);color:var(--accent);font-weight:800;">0 kg</span>
@@ -1879,27 +1997,39 @@
         </div>
       </section>
 
-      <!-- Inline 5-Min Warmup Checklist (v7: Compact Zones, Live 5th Item, Detailed Canvas Guides, Timer & Mark-All) -->
+      <!-- Inline 5-Min Warmup Checklist (v9.0: Variant #3 Strip, Optional Cardio + Tips, Hold-to-Reset Timer) -->
       <section class="warmup-inline" id="warmup-card">
         <div class="row-between" style="cursor:pointer;" onclick="toggleWarmupInline()">
-          <div>
-            <span id="warmup-inline-title" style="font-weight:800;font-size:14px;">🔥 5 min. apšilimas (<span id="warmup-inline-count" class="tabular">0/5</span>)</span>
-            <div style="font-size:10.5px;color:var(--text-muted);margin-top:1px;">Atlik iš eilės (1 → 5), ne ratuku</div>
+          <div style="min-width:0;">
+            <span id="warmup-inline-title" style="font-weight:800;font-size:13.5px;">🔥 5 min. apšilimas (<span id="warmup-inline-count" class="tabular">0/5</span>)</span>
+            <div class="warmup-sub-line" style="font-size:10.5px;color:var(--text-muted);margin-top:1px;">Atlik iš eilės (1 → 5), ne ratuku</div>
           </div>
-          <div class="row" style="gap:7px;">
-            <button id="warmup-timer-btn" type="button" class="warmup-timer-pill" onclick="toggleWarmupTimer(event)">⏱ 5:00</button>
-            <span id="warmup-inline-arrow" style="font-size:12px;color:var(--text-muted);font-weight:700;">Slėpti ▴</span>
-          </div>
+          <span id="warmup-inline-arrow" style="font-size:12px;color:var(--text-muted);font-weight:700;flex-shrink:0;">Slėpti ▴</span>
         </div>
         <div class="warmup-prog-track">
           <div id="warmup-prog-fill" class="warmup-prog-fill"></div>
         </div>
         <div id="warmup-inline-collapse" class="collapsible">
           <div class="collapsible-inner">
+            <div id="warmup-timer-wrap" class="warmup-timer-wrap">
+              <div class="warmup-timer-hint">
+                <strong style="color:var(--text);">Apšilimo laikmatis</strong><br>
+                Spustelk = start/pauzė · Palaikyk = atstatyti 5:00
+              </div>
+              <button id="warmup-timer-btn" type="button" class="warmup-timer-pill"
+                onpointerdown="startWarmupTimerHold(event)"
+                onpointerup="endWarmupTimerHold(event)"
+                onpointerleave="cancelWarmupTimerHold()"
+                onpointercancel="cancelWarmupTimerHold()"
+                oncontextmenu="return false"><span>⏱ 5:00</span></button>
+            </div>
             <div id="warmup-inline-list" style="padding-top:2px;"></div>
           </div>
         </div>
       </section>
+
+      <!-- Clear Visual Section Divider Before Exercises (Demo 21 Variant #3) -->
+      <div id="exercises-divider" class="exercises-divider">PRATIMAI · 7</div>
 
       <!-- Single-Focus Accordion Exercise List -->
       <div id="exercises-container"></div>
@@ -1937,6 +2067,11 @@
           </div>
         </div>
       </section>
+
+      <button class="btn btn-secondary btn-full mt-8" style="min-height:44px;font-size:13.5px;" onclick="openPlateModal()">
+        <svg class="icon-plate-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9.5"/><circle cx="12" cy="12" r="5.5" stroke-opacity="0.45"/><circle cx="12" cy="12" r="2.2"/><path d="M12 2.5v3M12 18.5v3M2.5 12h3M18.5 12h3"/></svg>
+        <span>Diskų skaičiuoklė</span>
+      </button>
 
       <button class="btn btn-primary btn-full mt-8" style="min-height:54px;font-size:16px;" onclick="handleFinishWorkout()">
         Baigti ir išsaugoti treniruotę
@@ -2319,8 +2454,8 @@
       <!-- PWA Home Screen Info & Release Notes Card -->
       <section class="card">
         <div class="section-title">
-          <span>Programėlė (v8.6) ir darbalaukio PWA</span>
-          <button type="button" class="btn btn-sm btn-ghost" style="min-height:28px;padding:3px 9px;font-size:11px;" onclick="openWhatsNewModal()">✨ Kas naujo v8.6</button>
+          <span>Programėlė (v9.0) ir darbalaukio PWA</span>
+          <button type="button" class="btn btn-sm btn-ghost" style="min-height:28px;padding:3px 9px;font-size:11px;" onclick="openWhatsNewModal()">✨ Kas naujo v9.0</button>
         </div>
         <div class="pwa-hint-box" style="align-items:flex-start;">
           <div style="width:46px;height:46px;border-radius:13px;overflow:hidden;border:1px solid rgba(56,189,248,0.45);flex-shrink:0;margin-top:2px;">
@@ -2348,7 +2483,7 @@
         </div>
         <div class="row-between mt-8" style="flex-wrap:wrap;gap:8px;">
           <button type="button" class="btn btn-sm btn-secondary" onclick="checkForPwaUpdates()">🔄 Patikrinti atnaujinimus</button>
-          <span id="pwa-check-status" style="font-size:11.5px;color:var(--text-muted);">Versija: v8.6</span>
+          <span id="pwa-check-status" style="font-size:11.5px;color:var(--text-muted);">Versija: v9.0</span>
         </div>
       </section>
     </main>
@@ -2417,11 +2552,14 @@
     </div>
   </div>
 
-  <!-- Plate Calculator Modal -->
-  <div id="modal-plates" class="modal-backdrop" onclick="closeModalOnBackdrop(event, 'modal-plates')">
+  <!-- Plate Calculator Modal (Top-Aligned above Mobile Keyboard) -->
+  <div id="modal-plates" class="modal-backdrop align-top" onclick="closeModalOnBackdrop(event, 'modal-plates')">
     <div class="modal-sheet">
       <div class="row-between" style="margin-bottom:12px;">
-        <h3 style="margin:0;font-size:17px;">Blynų skaičiuoklė (1 pusei)</h3>
+        <h3 style="margin:0;font-size:17px;display:inline-flex;align-items:center;gap:7px;">
+          <svg class="icon-plate-svg" style="width:19px;height:19px;color:var(--accent);" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9.5"/><circle cx="12" cy="12" r="5.5" stroke-opacity="0.45"/><circle cx="12" cy="12" r="2.2"/><path d="M12 2.5v3M12 18.5v3M2.5 12h3M18.5 12h3"/></svg>
+          <span>Diskų skaičiuoklė (1 pusei)</span>
+        </h3>
         <button class="btn btn-sm btn-secondary" onclick="closeModal('modal-plates')">Uždaryti</button>
       </div>
       <div class="grid-2" style="margin-bottom:10px;">
@@ -2667,22 +2805,53 @@
     </div>
   </div>
 
-  <!-- What's New in v8.6 + Full Release History Modal -->
+  <!-- What's New in v9.0 + Full Release History Modal -->
   <div id="modal-whats-new" class="modal-backdrop" onclick="closeModalOnBackdrop(event, 'modal-whats-new')">
     <div class="modal-sheet">
       <div class="row-between" style="margin-bottom:8px;">
         <div>
-          <span class="pill pill-accent" style="font-size:10px;padding:2px 8px;">ATNAUJINIMAS · v8.6</span>
-          <h3 style="margin:4px 0 0 0;font-size:18px;">✨ Kas naujo LeverLab 193 v8.6?</h3>
+          <span class="pill pill-accent" style="font-size:10px;padding:2px 8px;">ATNAUJINIMAS · v9.0</span>
+          <h3 style="margin:4px 0 0 0;font-size:18px;">✨ Kas naujo LeverLab 193 v9.0?</h3>
         </div>
         <button class="btn btn-sm btn-secondary" onclick="closeWhatsNewModal()">Uždaryti</button>
       </div>
       <div style="max-height:60vh;overflow-y:auto;padding-right:2px;">
         <div class="wn-item">
+          <div class="wn-ico">⌚</div>
+          <div>
+            <div class="wn-title">Švarūs pranešimai telefone ir Galaxy Watch 8</div>
+            <div class="wn-sub">Laikrodyje rodoma 1 švari <code>#8.4</code> ikona (be dvigubos ikonos), Android būsenos juostoje – permatomas baltas siluetas vietoje kvadrato, o pasiekus <code>00:00</code> poilsio laikmatis pats pasislepia. Paskutinė treniruotės serija poilsio nebepaleidžia.</div>
+          </div>
+        </div>
+        <div class="wn-item">
+          <div class="wn-ico">✨</div>
+          <div>
+            <div class="wn-title">Švari viršutinė juosta, „Diskai“ ir aiškus viršaus atskyrimas</div>
+            <div class="wn-sub">Viršuje liko švytinti <em>Ekranas</em> ikona ir pilnas laikrodis be nukirpimo; <em>Diskų skaičiuoklė</em> gavo naują SVG ikoną ir atsidaro viršuje (virš klaviatūros); suskleista <em>Programa</em> ir <em>Apšilimas</em> (be 5:00 laikmačio) vizualiai atskirti nuo <code>PRATIMAI · 7</code>.</div>
+          </div>
+        </div>
+        <div class="wn-item">
+          <div class="wn-ico">🏃</div>
+          <div>
+            <div class="wn-title">Pasirenkamas apšilimo kardio punktas + patarimai + Hold-to-Reset</div>
+            <div class="wn-sub">Pridėtas pasirenkamas 0-inis apšilimo punktas (ėjimas / bėgimas / irklavimas, pulso zonos, kalorijų lentelė pagal tavo svorį) ir <code>5:00</code> laikmačio atstatymas palaikius 0,65 s.</div>
+          </div>
+        </div>
+        <div class="wn-item">
+          <div class="wn-ico">⏱</div>
+          <div>
+            <div class="wn-title">Tikri serijų laikai, pastabų spynelė 🔒 ir išmani juostelė</div>
+            <div class="wn-sub">Automatiškai fiksuojama treniruotės pradžia/pabaiga, tikslus kiekvienos serijos laikas ir tarpas tarp serijų (matoma <em>Progrese</em> ir CSV); pastabų žymekliai apsaugoti spynele <code>🔒</code>; aktyvaus pratimo juostelė atsiranda tik nuslinkus žemyn ir paspaudus grąžina atgal.</div>
+          </div>
+        </div>
+
+        <div class="wn-ver-divider">Ankstesni atnaujinimai (v8.6)</div>
+
+        <div class="wn-item">
           <div class="wn-ico">🫧</div>
           <div>
             <div class="wn-title">Matinio stiklo („rūko“) efektas visiems iššokantiems langams</div>
-            <div class="wn-sub">Visi modaliniai langai (<em>Planas B</em>, <em>Blynai</em>, <em>Lyno 1:1/2:1</em>, <em>Rėmeliai</em>, <em>Animacijos</em>, <em>Kas naujo</em>) dabar atsidaro ant sulieto rūko fono su stikline briauna ir sklandžia įplaukimo animacija.</div>
+            <div class="wn-sub">Visi modaliniai langai (<em>Planas B</em>, <em>Diskai</em>, <em>Lyno 1:1/2:1</em>, <em>Rėmeliai</em>, <em>Animacijos</em>, <em>Kas naujo</em>) dabar atsidaro ant sulieto rūko fono su stikline briauna ir sklandžia įplaukimo animacija.</div>
           </div>
         </div>
         <div class="wn-item">
@@ -2964,7 +3133,7 @@
         tallTips: ['Atsisėsk toliau nuo bloko, kad 89 cm rankos pilnai išsitiestų.']
       },
       seated_leg_curl: {
-        id: 'seated_leg_curl', name: 'Seated Leg Curl (sėdint)', altId: 'lying_leg_curl',
+        id: 'seated_leg_curl', name: 'Seated Leg Curl', altId: 'lying_leg_curl',
         weightLabel: 'Bendras svoris', step: 5, rest: 90, minReps: 10, maxReps: 12,
         warmupCalc: false, hasStraps: false, isLower: true, isCable: false, anim: 'legcurl',
         defaultPin: 'Atlošas: max atgal | Volelis: max toli (57 cm)',
@@ -2980,7 +3149,7 @@
         tallTips: ['Kelio sąnarys privalo sutapti su sukimosi ašimi; 57 cm blauzdai volelis gali būti kiek aukščiau čiurnos.']
       },
       lying_leg_curl: {
-        id: 'lying_leg_curl', name: 'Lying Leg Curl (gulint)', altId: 'seated_leg_curl',
+        id: 'lying_leg_curl', name: 'Lying Leg Curl', altId: 'seated_leg_curl',
         weightLabel: 'Bendras svoris', step: 5, rest: 90, minReps: 10, maxReps: 12,
         warmupCalc: false, hasStraps: false, isLower: true, isCable: false, anim: 'legcurl',
         defaultPin: 'Volelis: maksimaliai ištrauktas',
@@ -2996,7 +3165,7 @@
         tallTips: ['Jei apačioje juosmuo išsiriečia – šiek tiek sumažink svorį.']
       },
       cable_lateral_raise: {
-        id: 'cable_lateral_raise', name: 'Cable Lateral Raise (lynu)', altId: 'db_leaning_lateral',
+        id: 'cable_lateral_raise', name: 'Cable Lateral Raise', altId: 'db_leaning_lateral',
         weightLabel: '1 pusės kg', step: 1.25, rest: 60, minReps: 12, maxReps: 15,
         warmupCalc: false, hasStraps: false, isLower: false, isCable: true, anim: 'latraise',
         defaultPin: 'Skriemulys: ties klubu | Blokas: 2:1',
@@ -3359,6 +3528,14 @@
     const GRIP_EXERCISES = ['dead_hang', 'plate_pinch'];
 
     const WARMUP_ITEMS = [
+      {
+        id: 'w0_cardio',
+        optional: true,
+        isCardioTips: true,
+        title: '🏃 5–7 min. ėjimas, irklavimas arba lengvas bėgimas',
+        zone: 'Pasirenkama',
+        dose: '5–7 min.'
+      },
       {
         id: 'w1',
         title: 'Pečių sukimai + gumos tempimas',
@@ -3821,8 +3998,7 @@
         : `⏱ Poilsis: ${mmss} · Baigsis ${endClock}`;
       const opts = {
         body: `${restTimerState.label || 'Poilsis tarp serijų'} · Laikrodis suvibruos pabaigoje`,
-        icon: './icon-192.png',
-        badge: './icon-192.png',
+        badge: './badge-96.png',
         tag: 'leverlab193-rest-live',
         silent: true,
         renotify: false,
@@ -3840,8 +4016,7 @@
       await clearLiveShadeNotification();
       const opts = {
         body: bodyText || 'Poilsis baigtas – kitas priėjimas!',
-        icon: './icon-192.png',
-        badge: './icon-192.png',
+        badge: './badge-96.png',
         tag: 'leverlab193-rest',
         renotify: true,
         silent: false,
@@ -3851,12 +4026,12 @@
       const reg = await getActiveSwReg();
       if (reg) {
         try {
-          await reg.showNotification('🏋️ LeverLab 193', opts);
+          await reg.showNotification('LeverLab 193', opts);
           return true;
         } catch (e) {}
       }
       try {
-        new Notification('🏋️ LeverLab 193', opts);
+        new Notification('LeverLab 193', opts);
         return true;
       } catch (e) {
         return false;
@@ -3995,9 +4170,11 @@
     function closeModal(id) { document.getElementById(id).classList.remove('open'); }
     function closeModalOnBackdrop(e, id) { if (e.target.id === id) closeModal(id); }
 
-    function askConfirm(title, msg, onConfirm, isDanger = false) {
+    function askConfirm(title, msg, onConfirm, isDanger = false, alignTop = false) {
       document.getElementById('confirm-title').textContent = title;
       document.getElementById('confirm-msg').textContent = msg;
+      const modal = document.getElementById('modal-confirm');
+      if (modal) modal.classList.toggle('align-top', !!alignTop);
       const okBtn = document.getElementById('confirm-ok-btn');
       okBtn.className = isDanger ? 'btn btn-danger' : 'btn btn-primary';
       confirmCallback = onConfirm;
@@ -4312,6 +4489,8 @@
     function toggleProgramBar() {
       programBarOpen = !programBarOpen;
       applyCollapsibleState('program-bar-collapse', programBarOpen);
+      const pCard = document.getElementById('program-bar-card');
+      if (pCard) pCard.classList.toggle('is-collapsed', !programBarOpen);
       document.getElementById('program-bar-toggle').textContent = programBarOpen ? 'Slėpti ▴' : 'Keisti ▾';
     }
 
@@ -4322,32 +4501,70 @@
       if (btn) btn.textContent = programHelpOpen ? '▲ Slėpti' : 'ℹ️ Paaiškinimas';
     }
 
+    let warmupHoldTimer = null;
+    let warmupHoldFired = false;
+
     function formatWarmupTimer(sec) {
       const s = Math.max(0, Math.ceil(sec));
       return `${Math.floor(s / 60)}:${String(s % 60).padStart(2, '0')}`;
     }
 
-    function tickWarmupTimer() {
+    function setWarmupTimerBtnLabel(sec, isRunning) {
       const btn = document.getElementById('warmup-timer-btn');
+      if (!btn) return;
+      const modified = isRunning || Math.ceil(sec) < 300;
+      btn.innerHTML = `<span>⏱ ${formatWarmupTimer(sec)}${modified ? ' ↺' : ''}</span>`;
+      btn.classList.toggle('running', !!isRunning);
+    }
+
+    function tickWarmupTimer() {
       if (!warmupTimerState.endTime) {
-        if (btn) {
-          btn.textContent = '⏱ ' + formatWarmupTimer(warmupTimerState.remainingSec);
-          btn.classList.remove('running');
-        }
+        setWarmupTimerBtnLabel(warmupTimerState.remainingSec, false);
         return;
       }
       const remSec = Math.max(0, (warmupTimerState.endTime - Date.now()) / 1000);
       warmupTimerState.remainingSec = Math.ceil(remSec);
-      if (btn) {
-        btn.textContent = '⏱ ' + formatWarmupTimer(remSec);
-        btn.classList.add('running');
-      }
+      setWarmupTimerBtnLabel(remSec, true);
       if (remSec <= 0) {
         stopWarmupTimer(true);
         playChime();
         vibrateDevice([150, 80, 150]);
         showToast('⏱ 5 min. apšilimo laikas baigėsi – laikas 1-am pratimui!');
       }
+    }
+
+    function startWarmupTimerHold(e) {
+      if (e) e.stopPropagation();
+      cancelWarmupTimerHold();
+      warmupHoldFired = false;
+      const btn = document.getElementById('warmup-timer-btn');
+      if (btn) btn.classList.add('holding');
+      warmupHoldTimer = setTimeout(() => {
+        warmupHoldFired = true;
+        warmupHoldTimer = null;
+        if (btn) btn.classList.remove('holding');
+        stopWarmupTimer(true);
+        vibrateDevice(45);
+        showToast('↺ Apšilimo laikmatis atstatytas (5:00)');
+      }, 650);
+    }
+
+    function endWarmupTimerHold(e) {
+      if (e) e.stopPropagation();
+      const btn = document.getElementById('warmup-timer-btn');
+      if (btn) btn.classList.remove('holding');
+      if (warmupHoldTimer) {
+        clearTimeout(warmupHoldTimer);
+        warmupHoldTimer = null;
+      }
+      if (!warmupHoldFired) toggleWarmupTimer(e);
+      warmupHoldFired = false;
+    }
+
+    function cancelWarmupTimerHold() {
+      if (warmupHoldTimer) { clearTimeout(warmupHoldTimer); warmupHoldTimer = null; }
+      const btn = document.getElementById('warmup-timer-btn');
+      if (btn) btn.classList.remove('holding');
     }
 
     function toggleWarmupTimer(e) {
@@ -4370,11 +4587,20 @@
       warmupTimerState.intervalId = null;
       warmupTimerState.endTime = null;
       if (resetSec) warmupTimerState.remainingSec = 300;
-      const btn = document.getElementById('warmup-timer-btn');
-      if (btn) {
-        btn.classList.remove('running');
-        btn.textContent = '⏱ ' + formatWarmupTimer(warmupTimerState.remainingSec);
+      setWarmupTimerBtnLabel(warmupTimerState.remainingSec, false);
+    }
+
+    function getCurrentAthleteWeightKg() {
+      if (Array.isArray(state.weights) && state.weights.length > 0) {
+        const sorted = [...state.weights].sort((a, b) => a.date.localeCompare(b.date));
+        const lastKg = Number(sorted[sorted.length - 1]?.kg);
+        if (lastKg >= 40 && lastKg <= 200) return lastKg;
       }
+      return Number(state.profile?.startWeight) || 75;
+    }
+
+    function getCoreWarmupItems() {
+      return WARMUP_ITEMS.filter(w => !w.optional);
     }
 
     function getFirstExerciseWarmupInfo() {
@@ -4402,6 +4628,8 @@
 
     function toggleWarmupInline() {
       warmupInlineOpen = !warmupInlineOpen;
+      const card = document.getElementById('warmup-card');
+      if (card) card.classList.toggle('is-collapsed', !warmupInlineOpen);
       applyCollapsibleState('warmup-inline-collapse', warmupInlineOpen);
       document.getElementById('warmup-inline-arrow').textContent = warmupInlineOpen ? 'Slėpti ▴' : 'Rodyti ▾';
       document.querySelectorAll('#warmup-inline-list .bio-canvas').forEach(cv => {
@@ -4420,7 +4648,7 @@
     }
 
     function markAllWarmupDone() {
-      WARMUP_ITEMS.forEach(w => warmupChecked.add(w.id));
+      getCoreWarmupItems().forEach(w => warmupChecked.add(w.id));
       warmupInlineOpen = false;
       openWarmupGuides.clear();
       stopWarmupTimer(true);
@@ -4434,14 +4662,18 @@
       const card = document.getElementById('warmup-card');
       const titleEl = document.getElementById('warmup-inline-title');
       const progFill = document.getElementById('warmup-prog-fill');
-      const timerBtn = document.getElementById('warmup-timer-btn');
+      const timerWrap = document.getElementById('warmup-timer-wrap');
 
-      const cnt = warmupChecked.size;
-      const total = WARMUP_ITEMS.length;
+      const coreItems = getCoreWarmupItems();
+      const cnt = coreItems.filter(w => warmupChecked.has(w.id)).length;
+      const total = coreItems.length;
       const allDone = cnt === total;
       const pct = Math.round((cnt / total) * 100);
 
-      if (card) card.classList.toggle('warmup-complete', allDone);
+      if (card) {
+        card.classList.toggle('warmup-complete', allDone);
+        card.classList.toggle('is-collapsed', !warmupInlineOpen);
+      }
       if (titleEl) {
         titleEl.style.color = allDone ? 'var(--green)' : 'var(--text)';
         titleEl.innerHTML = `${allDone ? '✅' : '🔥'} 5 min. apšilimas (<span id="warmup-inline-count" class="tabular">${cnt}/${total}</span>)`;
@@ -4450,8 +4682,8 @@
         progFill.style.width = `${pct}%`;
         progFill.style.background = allDone ? 'var(--green)' : 'linear-gradient(90deg, var(--yellow), var(--accent))';
       }
-      if (timerBtn) {
-        timerBtn.style.display = allDone ? 'none' : 'inline-flex';
+      if (timerWrap) {
+        timerWrap.style.display = allDone ? 'none' : 'flex';
         tickWarmupTimer();
       }
 
@@ -4459,9 +4691,56 @@
       document.getElementById('warmup-inline-arrow').textContent = warmupInlineOpen ? 'Slėpti ▴' : 'Rodyti ▾';
 
       const firstInfo = getFirstExerciseWarmupInfo();
+      const bwKg = getCurrentAthleteWeightKg();
+      const walkKm = Math.round(bwKg * 0.72);
+      const runKm = Math.round(bwKg * 1.03);
+      const incKm = Math.round(bwKg * 1.25);
+      const walk5m = Math.round(walkKm * (5 / 12));
+      const run5m = Math.round(runKm * (5 / 6.67));
+      const inc5m = Math.round(incKm * (5 / 12));
 
       list.innerHTML = WARMUP_ITEMS.map(w => {
         const done = warmupChecked.has(w.id);
+
+        if (w.isCardioTips) {
+          const isOpen = openWarmupGuides.has(w.id);
+          return `
+            <div class="warmup-item optional-card ${done ? 'done' : ''}">
+              <div class="warmup-item-head">
+                <button type="button" class="warmup-item-main" onclick="toggleWarmupItem('${w.id}')">
+                  <div class="warmup-item-title">${w.title}</div>
+                  <div class="warmup-tags">
+                    <span class="warmup-opt-badge">${w.zone} · nebūtina</span>
+                    <span class="warmup-dose-tag">${w.dose}</span>
+                  </div>
+                </button>
+                <button type="button" class="warmup-guide-btn ${isOpen ? 'open' : ''}" onclick="toggleWarmupGuide('${w.id}', event)">${isOpen ? '▲ Slėpti' : 'ℹ️ Patarimai'}</button>
+                <button type="button" class="warmup-chk-btn" aria-label="Pažymėti ${w.title}" onclick="toggleWarmupItem('${w.id}')">${done ? '✓' : ''}</button>
+              </div>
+              <div class="collapsible ${isOpen ? '' : 'collapsed'}">
+                <div class="collapsible-inner">
+                  <div class="warmup-guide-drawer">
+                    <div class="warmup-tips-list">
+                      <div><strong>Kam reikalinga:</strong> pakelia kūno temperatūrą ir „sutepa“ sąnarius (suaktyvina sinovinį skystį), ypač naudinga šaltą dieną arba po ilgo sėdėjimo. <em>Neprivaloma – 5/5 skaitiklio nestabdo.</em></div>
+                      <div><strong>Efektyviausia / greičiausia (3–5 min.):</strong> <strong>irklavimas</strong> (vienu metu sušildo kojas, nugarą ir pečius be smūgio) arba <strong>ėjimas į 6–8 % įkalnę (~110–125 bpm)</strong> – tausoja kelius ir jėgą prieš <em>Hack Squat</em> / <em>RDL</em>.</div>
+                      <div><strong>Lengvas bėgimas (ristelė):</strong> optimalus maksimumas iki <strong>~140–145 bpm</strong> (<span style="color:var(--yellow);font-weight:700;">virš ~150 bpm – per daug</span> apšilimui). Schema: <code>1 min.</code> greitas ėjimas → <code>3–4 min.</code> ristelė → <code>1 min.</code> ramus ėjimas (&lt;120 bpm).</div>
+                      <div><strong>Kalbėjimo testas &amp; jėga:</strong> turi galėti laisvai kalbėti sakiniais, kojos po 5 min. lieka šviežios. Prieš svorius venk ilgo statinio tempimo; keičiant raumenų grupę (pvz. krūtinė/nugara) atlik 1 lengvą „pajautimo“ seriją (~55 % × 5).</div>
+                    </div>
+                    <table class="kcal-mini-table">
+                      <thead>
+                        <tr><th>Veikla (${bwKg.toFixed(0)} kg)</th><th style="text-align:right;">1 km</th><th style="text-align:right;">5 min.</th></tr>
+                      </thead>
+                      <tbody>
+                        <tr><td>Ėjimas 5 km/h (lyguma)</td><td class="num">~${walkKm} kcal</td><td class="num">~${walk5m} kcal</td></tr>
+                        <tr><td>Bėgimas 9 km/h (lyguma)</td><td class="num">~${runKm} kcal</td><td class="num">~${run5m} kcal</td></tr>
+                        <tr><td>Ėjimas 5 km/h (7 % įkalnė)</td><td class="num">~${incKm} kcal</td><td class="num">~${inc5m} kcal</td></tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </div>`;
+        }
 
         if (w.isLiveFirstEx) {
           const wTxt = (firstInfo && !firstInfo.isTime && firstInfo.weight > 0)
@@ -4525,7 +4804,9 @@
     function toggleWarmupItem(id) {
       if (warmupChecked.has(id)) warmupChecked.delete(id);
       else warmupChecked.add(id);
-      if (warmupChecked.size === WARMUP_ITEMS.length) {
+      const coreItems = getCoreWarmupItems();
+      const itemObj = WARMUP_ITEMS.find(w => w.id === id);
+      if (!itemObj?.optional && coreItems.every(w => warmupChecked.has(w.id))) {
         warmupInlineOpen = false;
         openWarmupGuides.clear();
         stopWarmupTimer(true);
@@ -4668,7 +4949,7 @@
         saveState();
         updateSessionClock();
         showToast('Laikrodis atstatytas');
-      });
+      }, false, true);
     }
 
     function markSessionStartedIfNeeded() {
@@ -4678,6 +4959,10 @@
         warmupInlineOpen = false;
         openWarmupGuides.clear();
         stopWarmupTimer(false);
+        const pCard = document.getElementById('program-bar-card');
+        if (pCard) pCard.classList.add('is-collapsed');
+        const wCard = document.getElementById('warmup-card');
+        if (wCard) wCard.classList.add('is-collapsed');
         applyCollapsibleState('program-bar-collapse', false);
         document.getElementById('program-bar-toggle').textContent = 'Keisti ▾';
         applyCollapsibleState('warmup-inline-collapse', false);
@@ -4715,6 +5000,8 @@
       const type = state.draft.type;
       const modeNames = { adaptation: 'Adaptacija', working: 'Darbinis', deload: 'Deload' };
       document.getElementById('program-bar-summary').textContent = `Treniruotė ${type} · ${modeNames[state.trainingMode]}`;
+      const pCard = document.getElementById('program-bar-card');
+      if (pCard) pCard.classList.toggle('is-collapsed', !programBarOpen);
       applyCollapsibleState('program-bar-collapse', programBarOpen);
       document.getElementById('program-bar-toggle').textContent = programBarOpen ? 'Slėpti ▴' : 'Keisti ▾';
 
@@ -4736,6 +5023,8 @@
 
       // Render Focus Accordion
       const exIds = getSlotExerciseIds(type);
+      const exDiv = document.getElementById('exercises-divider');
+      if (exDiv) exDiv.textContent = `PRATIMAI · ${exIds.length}`;
       const shouldAnimSwitch = (prevRenderedExId !== null && activeExId !== prevRenderedExId && state.cardAnim !== '0');
       prevRenderedExId = activeExId;
       const container = document.getElementById('exercises-container');
@@ -4752,6 +5041,7 @@
         }
       });
       renderActiveStickyBar();
+      observeActiveExerciseSticky();
 
       const subEl = document.getElementById('extra-tools-sub');
       if (state.trainingMode === 'adaptation') {
@@ -4776,6 +5066,23 @@
       syncBioAnimationLoop();
     }
 
+    let activeExObserver = null;
+    let noteChipsUnlocked = false;
+
+    function formatClockHM(ts) {
+      if (!ts) return '';
+      const d = new Date(ts);
+      if (isNaN(d.getTime())) return '';
+      return `${String(d.getHours()).padStart(2, '0')}:${String(d.getMinutes()).padStart(2, '0')}`;
+    }
+
+    function formatGapLabel(sec) {
+      if (sec === undefined || sec === null || isNaN(sec) || sec < 0) return '';
+      const s = Math.round(sec);
+      if (s < 60) return `+${s}s`;
+      return `+${Math.floor(s / 60)}m ${String(s % 60).padStart(2, '0')}s`;
+    }
+
     function buildCompactExerciseStrip(exId, displayNum) {
       const ex = getExercise(exId);
       const entry = state.draft.entries[exId];
@@ -4785,10 +5092,18 @@
       const w0 = entry.sets[0] ? entry.sets[0].weight : 0;
       const r0 = entry.sets[0] ? entry.sets[0].reps : ex.minReps;
       const summary = ex.weightLabel === 'Sekundės' ? `${r0}s` : (w0 > 0 ? `${w0} kg × ${r0}` : `${ex.minReps}–${ex.maxReps} pak.`);
+      const isCustom = !!state.customExercises[exId];
 
       const div = document.createElement('div');
       div.className = 'ex-strip' + (allDone ? ' done-strip' : '');
-      div.onclick = () => { activeExId = exId; renderWorkoutView(); };
+      div.onclick = () => {
+        activeExId = exId;
+        renderWorkoutView();
+        requestAnimationFrame(() => {
+          const card = document.getElementById('active-ex-' + exId);
+          if (card) card.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        });
+      };
       div.innerHTML = `
         <div class="row" style="min-width:0;flex:1;">
           <span class="ex-num">${allDone ? '✓' : displayNum}</span>
@@ -4799,6 +5114,7 @@
         </div>
         <div class="row" style="gap:6px;flex-shrink:0;">
           <span class="pill tabular ${allDone ? 'pill-green' : ''}">${doneCnt}/${totalCnt}</span>
+          ${isCustom ? `<button type="button" class="custom-ex-del-btn" title="Pašalinti savo pratimą" onclick="deleteCustomExercise('${exId}', event)">✕</button>` : ''}
           <span style="color:var(--text-muted);font-size:13px;">▾</span>
         </div>`;
       return div;
@@ -4820,8 +5136,26 @@
           <span class="pill pill-accent" style="padding:2px 7px;font-size:10.5px;">#${idx + 1}/${exIds.length}</span>
           <span class="active-ex-sticky-name">${ex.name}</span>
         </div>
-        <span class="active-ex-sticky-set">${setLabel}</span>`;
-      bar.classList.add('visible');
+        <div class="row" style="gap:5px;flex-shrink:0;">
+          <span class="active-ex-sticky-set">${setLabel}</span>
+          <span style="font-size:11px;color:var(--accent);font-weight:900;">↑</span>
+        </div>`;
+    }
+
+    function observeActiveExerciseSticky() {
+      const bar = document.getElementById('active-ex-sticky');
+      if (activeExObserver) { activeExObserver.disconnect(); activeExObserver = null; }
+      if (!bar || !activeExId) { if (bar) bar.classList.remove('visible'); return; }
+      const card = document.getElementById('active-ex-' + activeExId);
+      if (!card) { bar.classList.remove('visible'); return; }
+      if (!('IntersectionObserver' in window)) { bar.classList.remove('visible'); return; }
+      activeExObserver = new IntersectionObserver(entries => {
+        const ent = entries[0];
+        if (!ent) return;
+        const isWorkoutView = document.getElementById('view-workout')?.classList.contains('active');
+        bar.classList.toggle('visible', !!(isWorkoutView && !ent.isIntersecting));
+      }, { rootMargin: '-56px 0px 0px 0px', threshold: 0.04 });
+      activeExObserver.observe(card);
     }
 
     function scrollToActiveExercise() {
@@ -4879,15 +5213,16 @@
 
       // Round 5: 3 Distinct Set Visual States (Completed / Active Focus / Waiting)
       const setsHtml = entry.sets.map((s, sIdx) => {
-        // 1) Completed Set -> Compact, dimmed, single pill
+        // 1) Completed Set -> Compact, dimmed, single pill + real timestamp
         if (s.done) {
           const readout = isTimeOnly ? `${s.reps} sek.` : `${s.weight} kg × ${s.reps}`;
+          const tsTxt = s.doneAt ? formatClockHM(s.doneAt) : '';
           return `
             <div class="set-done-compact" id="setrow-${exId}-${sIdx}">
               <div class="done-left">
                 <span class="done-idx">#${sIdx + 1}</span>
                 <span class="done-readout">${readout}</span>
-                <span class="tabular" style="font-size:11px;color:var(--text-dim);">RIR ${s.rir}</span>
+                <span class="tabular" style="font-size:11px;color:var(--text-dim);">RIR ${s.rir}${tsTxt ? ' · ' + tsTxt : ''}</span>
               </div>
               <button class="done-check-pill" title="Atžymėti seriją" onclick="toggleSetDone('${exId}', ${sIdx})">
                 ✓ Atlikta
@@ -4895,7 +5230,7 @@
             </div>`;
         }
 
-        // 2) Active Focus Set ("Serija X iš Y" – Unmistakable + Live PR + 22px Tabular + 48x48 Thumb Targets)
+        // 2) Active Focus Set ("Serija X iš Y" – Unmistakable + Live PR + 19px Mono + 42x46 Thumb Targets)
         if (sIdx === firstUndoneIdx) {
           const curE1 = (!isTimeOnly && Number(s.weight) > 0 && Number(s.reps) > 0) ? calcE1RM(s.weight, s.reps) : 0;
           const isLivePr = histBestE1 > 0 && curE1 > histBestE1;
@@ -4910,7 +5245,7 @@
                   <span style="font-size:11px;color:var(--text-muted);font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${ex.name}</span>
                 </div>
                 <div class="row" style="gap:5px;flex-shrink:0;">
-                  ${showPlatesBtn ? `<button type="button" class="inline-plate-btn" title="Blynų skaičiuoklė šiam svoriui" onclick="openPlateForSet('${exId}', ${sIdx})">🏋️ Blynai</button>` : ''}
+                  ${showPlatesBtn ? `<button type="button" class="inline-plate-btn" title="Diskų skaičiuoklė šiam svoriui" onclick="openPlateForSet('${exId}', ${sIdx})"><svg class="icon-plate-svg" style="width:13px;height:13px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9.5"/><circle cx="12" cy="12" r="5" stroke-opacity="0.45"/><circle cx="12" cy="12" r="2"/></svg><span>Diskai</span></button>` : ''}
                   <button class="rir-single-btn" id="rir-btn-${exId}-${sIdx}" onclick="cycleSetRir('${exId}', ${sIdx})">
                     RIR ${s.rir} ↻
                   </button>
@@ -4980,7 +5315,10 @@
               ${cableBtnHtml}
             </div>
           </div>
-          <button class="btn btn-sm ${isPlanBSwapped ? 'btn-amber-ghost' : 'btn-ghost'}" style="flex-shrink:0;" onclick="openPlanBModal('${exId}', '${slotKey || ''}')">${isPlanBSwapped ? '↩ Planas A' : '⚡ Planas B'}</button>
+          <div class="row" style="gap:5px;flex-shrink:0;">
+            ${state.customExercises[exId] ? `<button type="button" class="btn btn-sm btn-danger" style="min-height:33px;padding:5px 9px;" title="Pašalinti savo pratimą" onclick="deleteCustomExercise('${exId}', event)">✕</button>` : ''}
+            <button class="btn btn-sm ${isPlanBSwapped ? 'btn-amber-ghost' : 'btn-ghost'}" style="flex-shrink:0;" onclick="openPlanBModal('${exId}', '${slotKey || ''}')">${isPlanBSwapped ? '↩ Planas A' : '⚡ Planas B'}</button>
+          </div>
         </div>
 
         <!-- Visual 3-Sec Summary (Action / Target Muscle / Safety Stop) -->
@@ -5113,16 +5451,19 @@
           ${isNoteOpen ? `
             <div class="note-box">
               <div class="note-box-hd">
-                <span>📝 Pastaba visam pratimui („${ex.name}“)</span>
-                ${entry.note ? `<button type="button" style="font-size:11px;color:var(--text-muted);" onclick="clearExerciseNote('${exId}')">Išvalyti</button>` : ''}
+                <span>📝 Pastaba („${ex.name}“)</span>
+                <div class="row" style="gap:6px;">
+                  <button type="button" class="note-lock-btn ${noteChipsUnlocked ? 'unlocked' : ''}" title="${noteChipsUnlocked ? 'Užrakinti greitus mygtukus' : 'Atrakinti žymeklių redagavimą'}" onclick="toggleNoteChipsLock()">${noteChipsUnlocked ? '🔓 Redaguoti' : '🔒 Užrakinta'}</button>
+                  ${entry.note ? `<button type="button" style="font-size:11px;color:var(--text-muted);" onclick="clearExerciseNote('${exId}')">Išvalyti</button>` : ''}
+                </div>
               </div>
-              <div class="note-chips">
+              <div class="note-chips ${noteChipsUnlocked ? '' : 'locked'}">
                 ${(state.noteChips || []).map((chip, cIdx) => `
                   <span class="note-chip-wrap">
                     <button type="button" class="note-chip-add" onclick="appendQuickNote('${exId}', '${escapeAttr(chip).replace(/'/g, '&#39;')}')">+ ${escapeAttr(chip)}</button>
                     <button type="button" class="note-chip-del" title="Pašalinti žymeklį" onclick="deleteCustomNoteChip(${cIdx})">×</button>
                   </span>`).join('')}
-                <button type="button" class="note-chip" style="border-style:dashed;color:var(--accent);" onclick="addCustomNoteChip('${exId}')">+ Pridėti savo</button>
+                <button type="button" class="note-chip note-chip-custom-add" style="border-style:dashed;color:var(--accent);" onclick="addCustomNoteChip('${exId}')">+ Pridėti savo</button>
               </div>
               <textarea id="note-ta-${exId}" class="note-textarea" rows="2" placeholder="${entry.comfort === 'red' ? 'Kur ir kada suskaudo? (pvz., dūris peties priekyje...)' : entry.comfort === 'yellow' ? 'Kur jautėsi įtampa? (pvz., kelis apačioje, kairė alkūnė...)' : 'Įrašyk pastabą šiam pratimui (išsisaugos Progreso istorijoje)...'}" oninput="setExerciseNote('${exId}', this.value)">${escapeAttr(entry.note || '')}</textarea>
             </div>` : ''}
@@ -5162,8 +5503,14 @@
       showToast('Pridėtas tavo žymeklis: ' + txt);
     }
 
+    function toggleNoteChipsLock() {
+      noteChipsUnlocked = !noteChipsUnlocked;
+      renderWorkoutView();
+      showToast(noteChipsUnlocked ? '🔓 Žymekliai atrakinti redagavimui' : '🔒 Žymekliai užrakinti');
+    }
+
     function deleteCustomNoteChip(idx) {
-      if (!Array.isArray(state.noteChips)) return;
+      if (!noteChipsUnlocked || !Array.isArray(state.noteChips)) return;
       state.noteChips.splice(idx, 1);
       saveState();
       renderWorkoutView();
@@ -5383,7 +5730,7 @@
     }
 
     function toggleNoteField(exId) {
-      if (openNotes.has(exId)) openNotes.delete(exId);
+      if (openNotes.has(exId)) { openNotes.delete(exId); noteChipsUnlocked = false; }
       else openNotes.add(exId);
       renderWorkoutView();
     }
@@ -5479,6 +5826,17 @@
       if (btn) btn.textContent = `RIR ${next} ↻`;
     }
 
+    function getLatestDoneSetTimestamp() {
+      if (!state.draft || !state.draft.entries) return null;
+      let latest = 0;
+      Object.values(state.draft.entries).forEach(ent => {
+        (ent.sets || []).forEach(st => {
+          if (st.done && st.doneAt && st.doneAt > latest) latest = st.doneAt;
+        });
+      });
+      return latest > 0 ? latest : null;
+    }
+
     function toggleSetDone(exId, setIdx) {
       const ex = getExercise(exId);
       const entry = state.draft.entries[exId];
@@ -5486,34 +5844,56 @@
       const willBeDone = !s.done;
       pushUndoAction(willBeDone ? `✓ Užbaigta ${ex.name} #${setIdx + 1} ser.` : `Atžymėta ${ex.name} #${setIdx + 1} ser.`, willBeDone);
       markSessionStartedIfNeeded();
+      const prevDoneTs = willBeDone ? getLatestDoneSetTimestamp() : null;
       s.done = willBeDone;
+      if (s.done) {
+        const nowTs = Date.now();
+        s.doneAt = nowTs;
+        s.intervalSec = prevDoneTs ? Math.max(0, Math.round((nowTs - prevDoneTs) / 1000)) : null;
+      } else {
+        delete s.doneAt;
+        delete s.intervalSec;
+      }
 
-      // Sync weight down to next uncompleted set if set 0 was adjusted
-      if (s.done && setIdx === 0 && entry.sets[1] && !entry.sets[1].done) {
-        entry.sets[1].weight = s.weight;
+      // Sync weight down to next uncompleted set (works for both 2-set Adaptation and 3-set Working mode)
+      if (s.done && entry.sets[setIdx + 1] && !entry.sets[setIdx + 1].done) {
+        entry.sets[setIdx + 1].weight = s.weight;
       }
 
       let advancedTo = null;
       if (s.done) {
         vibrateDevice(30);
-        startRestTimer(ex.rest, ex.name);
-        if (entry.sets.every(x => x.done)) {
-          const allIds = getSlotExerciseIds(state.draft.type);
-          const curIdx = allIds.indexOf(exId);
-          const nextUnfinished = allIds.slice(curIdx + 1).find(id => !state.draft.entries[id].sets.every(x => x.done))
-            || allIds.find(id => id !== exId && !state.draft.entries[id].sets.every(x => x.done));
-          if (nextUnfinished) {
-            activeExId = nextUnfinished;
-            advancedTo = nextUnfinished;
-            showToast(`✓ ${ex.name} baigtas!`);
+        const allIds = getSlotExerciseIds(state.draft.type);
+        const checkIds = [...allIds, ...(state.draft.showGrip ? GRIP_EXERCISES : [])];
+        const allWorkoutDone = checkIds.length > 0 && checkIds.every(id => {
+          const ent = state.draft.entries[id];
+          return ent && ent.sets.length > 0 && ent.sets.every(x => x.done);
+        });
+
+        if (allWorkoutDone) {
+          stopRestTimer();
+          showToast('🏁 Visos serijos atliktos – gali išsaugoti treniruotę!');
+        } else {
+          startRestTimer(ex.rest, ex.name);
+          if (entry.sets.every(x => x.done)) {
+            const curIdx = allIds.indexOf(exId);
+            const nextUnfinished = allIds.slice(curIdx + 1).find(id => !state.draft.entries[id].sets.every(x => x.done))
+              || allIds.find(id => id !== exId && !state.draft.entries[id].sets.every(x => x.done));
+            if (nextUnfinished) {
+              activeExId = nextUnfinished;
+              advancedTo = nextUnfinished;
+              showToast(`✓ ${ex.name} baigtas!`);
+            }
           }
         }
       }
       saveState();
       renderWorkoutView();
       if (advancedTo) {
-        const nextCard = document.getElementById('active-ex-' + advancedTo);
-        if (nextCard) nextCard.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        requestAnimationFrame(() => {
+          const nextCard = document.getElementById('active-ex-' + advancedTo);
+          if (nextCard) nextCard.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        });
       }
     }
 
@@ -5673,8 +6053,11 @@
         });
       });
 
+      const finishedAt = Date.now();
+      const startedAt = state.draft.startedAt || (finishedAt - durationMin * 60000);
       const sessionObj = {
-        id: 'sess_' + Date.now(), date: todayISO(), timestamp: Date.now(),
+        id: 'sess_' + finishedAt, date: todayISO(), timestamp: finishedAt,
+        startedAt, finishedAt,
         type: state.draft.type, mode: state.trainingMode, durationMin,
         totalVolume: Math.round(totalVolume), doneSetsCount, exercises: loggedExercises
       };
@@ -5741,7 +6124,32 @@
       showToast('Pridėtas pratimas: ' + name);
     }
 
+    function deleteCustomExercise(exId, e) {
+      if (e) e.stopPropagation();
+      const ex = state.customExercises[exId];
+      if (!ex) return;
+      askConfirm(`Pašalinti „${ex.name}“?`, 'Savo sukurtas pratimas bus pašalintas iš dabartinės programos (išsaugota istorija išliks).', () => {
+        delete state.customExercises[exId];
+        ['A', 'B'].forEach(t => {
+          if (Array.isArray(state.customSlots[t])) {
+            state.customSlots[t] = state.customSlots[t].filter(id => id !== exId);
+          }
+        });
+        if (state.draft && state.draft.entries && state.draft.entries[exId]) {
+          delete state.draft.entries[exId];
+        }
+        if (activeExId === exId) {
+          const ids = state.draft ? getSlotExerciseIds(state.draft.type) : [];
+          activeExId = ids[0] || null;
+        }
+        saveState();
+        renderWorkoutView();
+        showToast('Pašalintas pratimas: ' + ex.name);
+      }, true);
+    }
+
     function startRestTimer(seconds, label) {
+      if (restTimerState.autoHideId) { clearTimeout(restTimerState.autoHideId); restTimerState.autoHideId = null; }
       restTimerState.duration = seconds;
       restTimerState.endTime = Date.now() + seconds * 1000;
       restTimerState.finished = false;
@@ -5796,7 +6204,11 @@
           bar.classList.add('finished');
           document.getElementById('rest-timer-label').textContent = 'Poilsis baigtas – kitas priėjimas!';
           playChime(); vibrateDevice([220, 90, 220, 90, 220]);
-          sendRestSystemNotification(`Poilsis baigtas (${restTimerState.label || 'kitas priėjimas'})!`);
+          sendRestSystemNotification(`Poilsis baigtas · ${restTimerState.label || 'kitas priėjimas'}`);
+          if (restTimerState.autoHideId) clearTimeout(restTimerState.autoHideId);
+          restTimerState.autoHideId = setTimeout(() => {
+            if (restTimerState.finished) stopRestTimer();
+          }, 1650);
         }
         return;
       }
@@ -5809,6 +6221,7 @@
 
     function adjustRestTimer(deltaSec) {
       if (!restTimerState.endTime && !restTimerState.paused) return;
+      if (restTimerState.autoHideId) { clearTimeout(restTimerState.autoHideId); restTimerState.autoHideId = null; }
       if (restTimerState.paused) {
         restTimerState.pausedRemainingMs = Math.max(3000, restTimerState.pausedRemainingMs + deltaSec * 1000);
         restTimerState.duration = Math.max(15, restTimerState.duration + deltaSec);
@@ -5828,7 +6241,8 @@
 
     function stopRestTimer() {
       if (restTimerState.intervalId) clearInterval(restTimerState.intervalId);
-      restTimerState.intervalId = null; restTimerState.endTime = null; restTimerState.finished = false; restTimerState.paused = false; restTimerState.pausedRemainingMs = 0;
+      if (restTimerState.autoHideId) clearTimeout(restTimerState.autoHideId);
+      restTimerState.intervalId = null; restTimerState.autoHideId = null; restTimerState.endTime = null; restTimerState.finished = false; restTimerState.paused = false; restTimerState.pausedRemainingMs = 0;
       document.getElementById('rest-timer-bar').classList.remove('visible', 'finished');
       const undoBar = document.getElementById('undo-float-bar');
       if (undoBar) undoBar.classList.remove('above-timer');
@@ -7340,14 +7754,22 @@
         const flagHtml = flags.length
           ? `<div class="row-wrap mt-8">${flags.map(f => `<span class="pill ${f.comfort === 'red' ? 'pill-red' : 'pill-yellow'}">${f.name}: ${f.comfort === 'red' ? 'skausmas' : 'įtampa'}${f.note ? ' – ' + escapeAttr(f.note) : ''}</span>`).join('')}</div>`
           : '';
+        const timeRange = (sess.startedAt && sess.finishedAt)
+          ? ` · ${formatClockHM(sess.startedAt)}–${formatClockHM(sess.finishedAt)}`
+          : (sess.timestamp ? ` · ${formatClockHM(sess.timestamp)}` : '');
         const details = (sess.exercises || []).map(e => {
-          const setsTxt = (e.sets || []).map(s => `${s.weight}×${s.reps}`).join(', ');
+          const setsTxt = (e.sets || []).map(s => {
+            const hm = s.doneAt ? formatClockHM(s.doneAt) : '';
+            const gap = (s.intervalSec !== undefined && s.intervalSec !== null) ? formatGapLabel(s.intervalSec) : '';
+            const meta = hm ? ` <span style="opacity:0.7;font-size:10.5px;">(${hm}${gap ? ' ' + gap : ''})</span>` : '';
+            return `${s.weight}×${s.reps}${meta}`;
+          }).join(', ');
           return `<div style="font-size:12px;color:var(--text-muted);margin-top:3px;"><strong>${e.name}</strong>${e.cableRatio ? `<span class="cable-badge">${e.cableRatio}</span>` : ''}: <span class="tabular">${setsTxt}</span>${e.straps ? ' [diržai]' : ''}</div>`;
         }).join('');
         return `
           <div class="history-item">
             <div class="row-between">
-              <div><strong>Treniruotė ${sess.type}</strong> <span style="font-size:12px;color:var(--text-muted);">${sess.date}</span></div>
+              <div><strong>Treniruotė ${sess.type}</strong> <span style="font-size:12px;color:var(--text-muted);">${sess.date}${timeRange}</span></div>
               <div class="row" style="gap:5px;">
                 <span class="pill">${modeNames[sess.mode] || sess.mode}</span>
                 <button class="btn btn-sm btn-ghost" style="min-height:28px;padding:2px 9px;" title="Redaguoti treniruotę" onclick="openEditSessionModal('${sess.id}')">✏️</button>
@@ -7520,7 +7942,12 @@
 
       let inWaterPhase = false;
       if (state.creatineStartDate) {
-        const daysOn = Math.floor((Date.now() - new Date(state.creatineStartDate).getTime()) / 86400000);
+        const parts = String(state.creatineStartDate).split('-').map(Number);
+        const startLocalMs = (parts.length === 3 && parts[0] > 2000)
+          ? new Date(parts[0], parts[1] - 1, parts[2]).getTime()
+          : new Date(state.creatineStartDate).getTime();
+        const nowLocalDayMs = new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate()).getTime();
+        const daysOn = Math.floor((nowLocalDayMs - startLocalMs) / 86400000);
         inWaterPhase = daysOn >= 0 && daysOn <= 21;
         cEl.innerHTML = `<div class="row-wrap" style="gap:6px;"><span>💊 Kreatinas nuo</span><input type="date" value="${escapeAttr(state.creatineStartDate)}" max="${todayISO()}" onchange="updateCreatineStartDate(this.value)" style="background:var(--bg-card);border:1px solid var(--border-strong);border-radius:8px;padding:3px 6px;font-size:12px;font-weight:700;font-family:var(--font-mono);color:var(--text);"></div>${inWaterPhase ? '<div style="font-size:11px;color:var(--yellow);margin-top:3px;">+1–2 kg vandens fazė</div>' : ''}`;
         cBtn.textContent = 'Nuimti';
@@ -7815,18 +8242,21 @@
     }
 
     function exportCSV() {
-      const rows = [['Tipas', 'Data', 'Treniruote', 'Pratimas', 'Blokas', 'Serija', 'Svoris_kg', 'Pakartojimai', 'RIR', 'Dirzai', 'Sanariai', 'Pastaba']];
+      const rows = [['Tipas', 'Data', 'Pradzia', 'Pabaiga', 'Treniruote', 'Pratimas', 'Blokas', 'Serija', 'Serija_atlikta', 'Tarpas_s', 'Svoris_kg', 'Pakartojimai', 'RIR', 'Dirzai', 'Sanariai', 'Pastaba']];
       state.history.forEach(sess => {
+        const startHM = sess.startedAt ? formatClockHM(sess.startedAt) : '';
+        const endHM = sess.finishedAt ? formatClockHM(sess.finishedAt) : (sess.timestamp ? formatClockHM(sess.timestamp) : '');
         (sess.exercises || []).forEach(ex => {
           (ex.sets || []).forEach((s, i) => {
             rows.push([
-              'Treniruote', sess.date, sess.type, `"${ex.name.replace(/"/g, '""')}"`, ex.cableRatio || '',
-              i + 1, s.weight, s.reps, s.rir, ex.straps ? 'Taip' : 'Ne', ex.comfort, `"${(ex.note || '').replace(/"/g, '""')}"`
+              'Treniruote', sess.date, startHM, endHM, sess.type, `"${ex.name.replace(/"/g, '""')}"`, ex.cableRatio || '',
+              i + 1, s.doneAt ? formatClockHM(s.doneAt) : '', (s.intervalSec !== undefined && s.intervalSec !== null) ? s.intervalSec : '',
+              s.weight, s.reps, s.rir, ex.straps ? 'Taip' : 'Ne', ex.comfort, `"${(ex.note || '').replace(/"/g, '""')}"`
             ]);
           });
         });
       });
-      state.weights.forEach(w => rows.push(['Svoris', w.date, '', 'Kuno svoris', '', '', w.kg, '', '', '', '', '']));
+      state.weights.forEach(w => rows.push(['Svoris', w.date, '', '', '', 'Kuno svoris', '', '', '', '', w.kg, '', '', '', '', '']));
       downloadFile('\uFEFF' + rows.map(r => r.join(',')).join('\n'), `leverlab193_eksportas_${todayISO()}.csv`, 'text/csv;charset=utf-8;');
       showToast('CSV failas eksportuotas');
     }
@@ -7844,8 +8274,13 @@
       document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
       document.getElementById('view-' + tabName).classList.add('active');
       document.querySelectorAll('.nav-item').forEach(btn => btn.classList.toggle('active', btn.dataset.tab === tabName));
+      if (restTimerState.finished) stopRestTimer();
       if (tabName === 'workout') renderWorkoutView();
-      else syncBioAnimationLoop();
+      else {
+        const sBar = document.getElementById('active-ex-sticky');
+        if (sBar) sBar.classList.remove('visible');
+        syncBioAnimationLoop();
+      }
       if (tabName === 'progress') renderProgressTab();
       if (tabName === 'body') renderBodyTab();
       if (tabName === 'settings') renderSettingsTab();
@@ -7968,8 +8403,8 @@
     function openWhatsNewModal() { openModal('modal-whats-new'); }
     function closeWhatsNewModal() {
       closeModal('modal-whats-new');
-      if (state.lastSeenRelease !== 'v8.6') {
-        state.lastSeenRelease = 'v8.6';
+      if (state.lastSeenRelease !== 'v9.0') {
+        state.lastSeenRelease = 'v9.0';
         saveState();
       }
     }
@@ -8004,7 +8439,7 @@
       try {
         const reg = await navigator.serviceWorker.getRegistration();
         if (!reg) {
-          if (st) st.textContent = 'Naudoji naujausią versiją (v8.6)';
+          if (st) st.textContent = 'Naudoji naujausią versiją (v9.0)';
           return;
         }
         await reg.update();
@@ -8015,7 +8450,7 @@
         } else if (reg.installing) {
           if (st) st.textContent = 'Atsisiunčiama nauja versija...';
         } else {
-          if (st) st.textContent = '✓ Naudoji naujausią versiją (v8.6)';
+          if (st) st.textContent = '✓ Naudoji naujausią versiją (v9.0)';
           showToast('✓ Turi naujausią versiją');
         }
       } catch (e) {
@@ -8063,7 +8498,7 @@
       renderWorkoutView();
       checkBackupReminder();
       setInterval(updateSessionClock, 1000);
-      if (state.lastSeenRelease !== 'v8.6') {
+      if (state.lastSeenRelease !== 'v9.0') {
         setTimeout(() => openWhatsNewModal(), 350);
       }
     };
