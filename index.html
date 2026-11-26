@@ -1,4 +1,9 @@
 <!DOCTYPE html>
+<!--
+  LeverLab 193 – Copyright © 2026. All Rights Reserved.
+  Šios programėlės kodas, dizainas, struktūra ir biomechaninės animacijos yra saugomos autorių teisių.
+  Draudžiama be išankstinio raštiško autoriaus leidimo kopijuoti, platinti, keisti ar naudoti komerciniais tikslais.
+-->
 <html lang="lt" data-theme="obsidian">
 <head>
   <meta charset="UTF-8">
@@ -8,8 +13,6 @@
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="apple-mobile-web-app-title" content="LeverLab 193">
-  <link id="pwa-favicon" rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='125' y1='244' x2='387' y2='156' gradientUnits='userSpaceOnUse'%3E%3Cstop offset='0' stop-color='%2322c55e'/%3E%3Cstop offset='0.55' stop-color='%2306b6d4'/%3E%3Cstop offset='1' stop-color='%2338bdf8'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='512' height='512' rx='112' fill='%23060a12'/%3E%3Cpath d='M125 244 L387 156' stroke='url(%23g)' stroke-width='22' stroke-linecap='round'/%3E%3Ccircle cx='131' cy='242' r='23' fill='%2322c55e'/%3E%3Ccircle cx='381' cy='158' r='31' fill='%2338bdf8'/%3E%3Cpath d='M239 226 Q256 200 273 226 L348 348 Q364 374 332 374 L180 374 Q148 374 164 348 Z' fill='%23172234' stroke='%2338bdf8' stroke-width='10'/%3E%3Ctext x='256' y='342' text-anchor='middle' fill='%23ffffff' font-family='sans-serif' font-weight='900' font-size='62'%3E193%3C/text%3E%3C/svg%3E">
-  <link id="pwa-apple-icon" rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='125' y1='244' x2='387' y2='156' gradientUnits='userSpaceOnUse'%3E%3Cstop offset='0' stop-color='%2322c55e'/%3E%3Cstop offset='0.55' stop-color='%2306b6d4'/%3E%3Cstop offset='1' stop-color='%2338bdf8'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='512' height='512' fill='%23060a12'/%3E%3Cpath d='M125 244 L387 156' stroke='url(%23g)' stroke-width='22' stroke-linecap='round'/%3E%3Ccircle cx='131' cy='242' r='23' fill='%2322c55e'/%3E%3Ccircle cx='381' cy='158' r='31' fill='%2338bdf8'/%3E%3Cpath d='M239 226 Q256 200 273 226 L348 348 Q364 374 332 374 L180 374 Q148 374 164 348 Z' fill='%23172234' stroke='%2338bdf8' stroke-width='10'/%3E%3Ctext x='256' y='342' text-anchor='middle' fill='%23ffffff' font-family='sans-serif' font-weight='900' font-size='62'%3E193%3C/text%3E%3C/svg%3E">
   <link rel="manifest" href="./manifest.json">
   <link id="pwa-favicon" rel="icon" type="image/svg+xml" href="./icon.svg">
   <link id="pwa-apple-icon" rel="apple-touch-icon" sizes="192x192" href="./icon-192.png">
@@ -2092,10 +2095,10 @@
     @keyframes figArmRUp { 0% { transform: rotate(0deg); } 22% { transform: rotate(10deg); } 60% { transform: rotate(-62deg); } 82% { transform: rotate(-44deg); } 100% { transform: rotate(-52deg); } }
     @keyframes figArmLDown { 0% { transform: rotate(52deg); } 65% { transform: rotate(-6deg); } 100% { transform: rotate(0deg); } }
     @keyframes figArmRDown { 0% { transform: rotate(-52deg); } 65% { transform: rotate(6deg); } 100% { transform: rotate(0deg); } }
-    .ap-btn.open .fig-body { animation: figJumpOpen 0.62s cubic-bezier(0.22, 1, 0.36, 1) forwards; }
-    .ap-btn.open .fig-arm-l { animation: figArmLUp 0.62s cubic-bezier(0.22, 1, 0.36, 1) forwards; }
-    .ap-btn.open .fig-arm-r { animation: figArmRUp 0.62s cubic-bezier(0.22, 1, 0.36, 1) forwards; }
-    .ap-btn.open .fig-head { fill: var(--accent-soft); }
+    .ap-btn.open .fig-body, .app-pick-card.demo-play .fig-body { animation: figJumpOpen 0.62s cubic-bezier(0.22, 1, 0.36, 1) forwards; }
+    .ap-btn.open .fig-arm-l, .app-pick-card.demo-play .fig-arm-l { animation: figArmLUp 0.62s cubic-bezier(0.22, 1, 0.36, 1) forwards; }
+    .ap-btn.open .fig-arm-r, .app-pick-card.demo-play .fig-arm-r { animation: figArmRUp 0.62s cubic-bezier(0.22, 1, 0.36, 1) forwards; }
+    .ap-btn.open .fig-head, .app-pick-card.demo-play .fig-head { fill: var(--accent-soft); }
     .ap-btn.closing .fig-arm-l { animation: figArmLDown 0.42s cubic-bezier(0.22, 1, 0.36, 1) forwards; }
     .ap-btn.closing .fig-arm-r { animation: figArmRDown 0.42s cubic-bezier(0.22, 1, 0.36, 1) forwards; }
 
@@ -2114,9 +2117,9 @@
     @keyframes playSonar { 0% { transform: scale(0.82); opacity: 0.78; stroke-width: 1.8; } 100% { transform: scale(1.42); opacity: 0; stroke-width: 0.5; } }
     @keyframes mapPinDrop { 0% { transform: translateY(-5px) scale(0.9, 1.14); } 45% { transform: translateY(1.6px) scale(1.12, 0.86); } 72% { transform: translateY(-2px) scale(0.96, 1.05); } 100% { transform: translateY(0) scale(1, 1); } }
     @keyframes pinCoreGlow { 0%, 100% { opacity: 0.75; transform: scale(1); } 50% { opacity: 1; transform: scale(1.28); } }
-    .ap-btn.open .play-orb { fill-opacity: 0.28; stroke-opacity: 0.92; animation: playOrbBreathe 0.54s cubic-bezier(0.22, 1, 0.36, 1) forwards; }
-    .ap-btn.open .play-tri { animation: playLaunch 0.52s cubic-bezier(0.22, 1, 0.36, 1) forwards; }
-    .ap-btn.open .play-ring { animation: playSonar 0.66s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+    .ap-btn.open .play-orb, .app-pick-card.demo-play .play-orb { fill-opacity: 0.28; stroke-opacity: 0.92; animation: playOrbBreathe 0.54s cubic-bezier(0.22, 1, 0.36, 1) forwards; }
+    .ap-btn.open .play-tri, .app-pick-card.demo-play .play-tri { animation: playLaunch 0.52s cubic-bezier(0.22, 1, 0.36, 1) forwards; }
+    .ap-btn.open .play-ring, .app-pick-card.demo-play .play-ring { animation: playSonar 0.66s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
     .ap-btn.closing .play-tri { animation: playReturn 0.32s ease forwards; }
     .ap-btn.open .ico-mappin { animation: mapPinDrop 0.6s cubic-bezier(0.22, 1, 0.36, 1) forwards; }
     .ap-btn.closing .ico-mappin { animation: none; }
@@ -2131,10 +2134,10 @@
     @keyframes scrPowerOff { 0% { transform: scale(1.03); } 45% { transform: scale(1.06, 0.82); } 100% { transform: scale(1); } }
     @keyframes scrGlowOn { 0% { opacity: 0; transform: scaleY(0.12); } 45% { opacity: 0.45; transform: scaleY(1.05); } 100% { opacity: 0.24; transform: scaleY(1); } }
     @keyframes scrPlayPop { 0% { transform: translateX(0) scale(1); } 42% { transform: translateX(1.8px) scale(1.26); } 100% { transform: translateX(0.8px) scale(1.1); } }
-    .ap-btn.open .scr-frame { animation: scrPowerOn 0.48s cubic-bezier(0.22, 1, 0.36, 1) forwards; }
+    .ap-btn.open .scr-frame, .app-pick-card.demo-play .scr-frame { animation: scrPowerOn 0.48s cubic-bezier(0.22, 1, 0.36, 1) forwards; }
     .ap-btn.closing .scr-frame { animation: scrPowerOff 0.34s cubic-bezier(0.22, 1, 0.36, 1) forwards; }
-    .ap-btn.open .scr-glow { animation: scrGlowOn 0.5s cubic-bezier(0.22, 1, 0.36, 1) forwards; }
-    .ap-btn.open .scr-play { animation: scrPlayPop 0.52s cubic-bezier(0.22, 1, 0.36, 1) forwards; }
+    .ap-btn.open .scr-glow, .app-pick-card.demo-play .scr-glow { animation: scrGlowOn 0.5s cubic-bezier(0.22, 1, 0.36, 1) forwards; }
+    .ap-btn.open .scr-play, .app-pick-card.demo-play .scr-play { animation: scrPlayPop 0.52s cubic-bezier(0.22, 1, 0.36, 1) forwards; }
 
     /* #5 Brand #8.4 Lever Damped Pendulum Physics */
     .ap-btn .ico-lever { width: calc(var(--ap-ico) * 1.32); height: calc(var(--ap-ico) * 1.32); overflow: visible; }
@@ -2156,7 +2159,7 @@
       90%  { transform: rotate(-18.5deg); animation-timing-function: ease-in-out; }
       100% { transform: rotate(-19deg); }
     }
-    .ap-btn.open .lever-beam { animation: leverBalance 0.96s forwards; }
+    .ap-btn.open .lever-beam, .app-pick-card.demo-play .lever-beam { animation: leverBalance 0.96s forwards; }
     .ap-btn.closing .lever-beam { animation: leverTiltBack 0.84s forwards; }
 
     /* 5) Icon-Only Plate Button + 6 Tap Animations */
@@ -2181,17 +2184,17 @@
     @keyframes pRingOut { 0% { transform: rotate(0deg) scale(0.95); } 65% { transform: rotate(192deg) scale(1.08); } 100% { transform: rotate(180deg) scale(1); } }
     @keyframes pRingIn { 0% { transform: rotate(0deg); } 65% { transform: rotate(-192deg); } 100% { transform: rotate(-180deg); } }
     @keyframes pCorePop { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.45); } }
-    .plate-ico-btn.anim-spin svg { animation: pSpin180 0.56s cubic-bezier(0.22, 1, 0.36, 1); }
-    .plate-ico-btn.anim-tri svg { animation: pTri120 0.52s cubic-bezier(0.22, 1, 0.36, 1); }
-    .plate-ico-btn.anim-pump svg { animation: pBarPump 0.48s cubic-bezier(0.22, 1, 0.36, 1); }
-    .plate-ico-btn.anim-pump .p-l { animation: pPlateL 0.48s cubic-bezier(0.22, 1, 0.36, 1); }
-    .plate-ico-btn.anim-pump .p-r { animation: pPlateR 0.48s cubic-bezier(0.22, 1, 0.36, 1); }
-    .plate-ico-btn.anim-split .p-front { animation: pSplitFront 0.52s cubic-bezier(0.22, 1, 0.36, 1); }
-    .plate-ico-btn.anim-split .p-back { animation: pSplitBack 0.52s cubic-bezier(0.22, 1, 0.36, 1); }
-    .plate-ico-btn.anim-pro svg { animation: pPro360 0.62s cubic-bezier(0.22, 1, 0.36, 1); }
-    .plate-ico-btn.anim-brand .ring-out { transform-origin: 12px 12px; animation: pRingOut 0.6s cubic-bezier(0.22, 1, 0.36, 1); }
-    .plate-ico-btn.anim-brand .ring-in { transform-origin: 12px 12px; animation: pRingIn 0.6s cubic-bezier(0.22, 1, 0.36, 1); }
-    .plate-ico-btn.anim-brand .ring-core { transform-origin: 12px 12px; animation: pCorePop 0.6s cubic-bezier(0.22, 1, 0.36, 1); }
+    .plate-ico-btn.anim-spin svg, .app-pick-card.anim-spin svg { animation: pSpin180 0.56s cubic-bezier(0.22, 1, 0.36, 1); }
+    .plate-ico-btn.anim-tri svg, .app-pick-card.anim-tri svg { animation: pTri120 0.52s cubic-bezier(0.22, 1, 0.36, 1); }
+    .plate-ico-btn.anim-pump svg, .app-pick-card.anim-pump svg { animation: pBarPump 0.48s cubic-bezier(0.22, 1, 0.36, 1); }
+    .plate-ico-btn.anim-pump .p-l, .app-pick-card.anim-pump .p-l { animation: pPlateL 0.48s cubic-bezier(0.22, 1, 0.36, 1); }
+    .plate-ico-btn.anim-pump .p-r, .app-pick-card.anim-pump .p-r { animation: pPlateR 0.48s cubic-bezier(0.22, 1, 0.36, 1); }
+    .plate-ico-btn.anim-split .p-front, .app-pick-card.anim-split .p-front { animation: pSplitFront 0.52s cubic-bezier(0.22, 1, 0.36, 1); }
+    .plate-ico-btn.anim-split .p-back, .app-pick-card.anim-split .p-back { animation: pSplitBack 0.52s cubic-bezier(0.22, 1, 0.36, 1); }
+    .plate-ico-btn.anim-pro svg, .app-pick-card.anim-pro svg { animation: pPro360 0.62s cubic-bezier(0.22, 1, 0.36, 1); }
+    .plate-ico-btn.anim-brand .ring-out, .app-pick-card.anim-brand .ring-out { transform-origin: 12px 12px; animation: pRingOut 0.6s cubic-bezier(0.22, 1, 0.36, 1); }
+    .plate-ico-btn.anim-brand .ring-in, .app-pick-card.anim-brand .ring-in { transform-origin: 12px 12px; animation: pRingIn 0.6s cubic-bezier(0.22, 1, 0.36, 1); }
+    .plate-ico-btn.anim-brand .ring-core, .app-pick-card.anim-brand .ring-core { transform-origin: 12px 12px; animation: pCorePop 0.6s cubic-bezier(0.22, 1, 0.36, 1); }
 
     /* 7) Collapsible Exercise Info Drawer (Collapsed by Default, Unified Frosted Rotating Chevron) */
     .ex-info-toggle {
@@ -2231,7 +2234,7 @@
     /* Style #1: Glass Tube + GPU Gloss Sweep + Plasma Tip */
     .rt-pb1-track {
       height: 10px; border-radius: 999px; background: var(--rt-track-bg);
-      box-shadow: inset 0 2px 4px rgba(0,0,0,0.45); padding: 1.5px 4px; position: relative;
+      box-shadow: inset 0 2px 4px rgba(0,0,0,0.45); padding: 1.5px; position: relative;
     }
     @keyframes rtPb1Sheen { from { transform: translateX(-120%); } to { transform: translateX(340%); } }
     .rt-pb1-fill { height: 100%; border-radius: 999px; position: relative; box-shadow: 0 0 12px var(--accent-glow); }
@@ -2271,8 +2274,10 @@
     .rest-timer-bar[data-rt-style="2"].phase-go .rt-phase-pill { background: var(--green-bg); color: var(--green); }
     .rt-pb2-track { height: 10px; border-radius: 999px; background: var(--rt-track-bg); padding: 1.5px; box-shadow: inset 0 2px 4px rgba(0,0,0,0.4); }
     .rt-pb2-fill { height: 100%; border-radius: 999px; background: var(--accent-grad); box-shadow: 0 0 12px var(--accent-glow); transition: background 0.3s ease; }
-    .rest-timer-bar[data-rt-style="2"].phase-warn .rt-pb2-fill { background: linear-gradient(90deg, #b45309, var(--yellow), #fde68a); box-shadow: 0 0 14px rgba(245, 158, 11, 0.58); }
-    .rest-timer-bar[data-rt-style="2"].phase-go .rt-pb2-fill { background: linear-gradient(90deg, #15803d, var(--green), #bbf7d0); box-shadow: 0 0 16px rgba(34, 197, 94, 0.72); }
+    .rest-timer-bar[data-rt-style="2"].phase-warn .rt-pb2-fill,
+    .rtm-all-card.phase-warn .rt-pb2-fill { background: linear-gradient(90deg, #b45309, var(--yellow), #fde68a); box-shadow: 0 0 14px rgba(245, 158, 11, 0.58); }
+    .rest-timer-bar[data-rt-style="2"].phase-go .rt-pb2-fill,
+    .rtm-all-card.phase-go .rt-pb2-fill { background: linear-gradient(90deg, #15803d, var(--green), #bbf7d0); box-shadow: 0 0 16px rgba(34, 197, 94, 0.72); }
 
     /* Style #3: 16 Unclipped Glass LED Cells */
     .rt-pb3-grid { display: flex; align-items: stretch; gap: 3px; height: 11px; }
@@ -2340,7 +2345,7 @@
     /* Style #9: Symmetric Center-Converging Reactor Beam */
     .rt-pb9-track {
       height: 11px; border-radius: 999px; background: var(--rt-track-bg); border: 1px solid var(--rt-track-border);
-      padding: 1.5px 5px; display: flex; align-items: center; justify-content: center; position: relative; overflow: visible;
+      padding: 1.5px; display: flex; align-items: center; justify-content: center; position: relative; overflow: visible;
     }
     .rt-pb9-track::before { content: ""; position: absolute; left: 50%; top: -2px; bottom: -2px; width: 2px; transform: translateX(-50%); background: color-mix(in srgb, var(--text) 28%, transparent); border-radius: 2px; }
     .rt-pb9-track::after { content: ""; position: absolute; left: 50%; top: 50%; width: 38px; height: 18px; border-radius: 999px; transform: translate(-50%, -50%); background: radial-gradient(circle, rgba(74,222,128,0.85) 0%, rgba(34,197,94,0.22) 55%, transparent 76%); opacity: var(--conv-glow, 0); pointer-events: none; }
@@ -2371,6 +2376,695 @@
       color: var(--text-muted); font-size: 11px; font-weight: 800; transition: var(--transition);
     }
     .app-pill-btn.active { background: var(--accent); border-color: var(--accent); color: var(--accent-text); }
+
+    /* v10+: Scroll Boundary Edge Glow (10 Flagship Styles + Off + Scroll Depth Shadow, 4 Themes) */
+    .edge-glow-top, .edge-glow-bot {
+      position: absolute; left: 0; right: 0; height: 42px; pointer-events: none; z-index: 45;
+      overflow: hidden;
+    }
+    .edge-glow-top { top: 100%; }
+    .edge-glow-bot { bottom: 100%; }
+    .edge-fx-depth, .edge-fx-bloom, .edge-fx-line, .edge-fx-notch {
+      position: absolute; left: 0; right: 0; pointer-events: none;
+      transition: opacity 0.34s cubic-bezier(0.22, 1, 0.36, 1), transform 0.38s cubic-bezier(0.22, 1, 0.36, 1), width 0.34s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+    .edge-glow-top .edge-fx-depth { top: 0; height: 18px; opacity: 0.65; background: linear-gradient(180deg, rgba(0,0,0,0.44), transparent); }
+    .edge-glow-bot .edge-fx-depth { bottom: 0; height: 18px; opacity: 0.65; background: linear-gradient(0deg, rgba(0,0,0,0.44), transparent); }
+    [data-theme="nordic"] .edge-glow-top .edge-fx-depth { background: linear-gradient(180deg, rgba(15,23,42,0.12), transparent); }
+    [data-theme="nordic"] .edge-glow-bot .edge-fx-depth { background: linear-gradient(0deg, rgba(15,23,42,0.12), transparent); }
+    .edge-glow-top.is-at-edge .edge-fx-depth,
+    .edge-glow-bot.is-at-edge .edge-fx-depth { opacity: 0; }
+
+    .edge-glow-top .edge-fx-bloom { top: 0; }
+    .edge-glow-bot .edge-fx-bloom { bottom: 0; }
+    .edge-glow-top .edge-fx-line { top: 0; }
+    .edge-glow-bot .edge-fx-line { bottom: 0; }
+    .edge-glow-top .edge-fx-notch { top: 0; }
+    .edge-glow-bot .edge-fx-notch { bottom: 0; }
+
+    .edge-glow-top[data-edge-style="0"],
+    .edge-glow-bot[data-edge-style="0"] { display: none; }
+
+    /* #1 Neon Horizon Spotlight (2-Layer Volumetric Beam) */
+    .edge-glow-top[data-edge-style="1"] .edge-fx-bloom { height: 34px; opacity: 0; transform: translateY(-6px); background: radial-gradient(ellipse 72% 100% at 50% 0%, color-mix(in srgb, var(--accent) 48%, transparent) 0%, color-mix(in srgb, var(--accent) 14%, transparent) 52%, transparent 82%); }
+    .edge-glow-bot[data-edge-style="1"] .edge-fx-bloom { height: 34px; opacity: 0; transform: translateY(6px); background: radial-gradient(ellipse 72% 100% at 50% 100%, color-mix(in srgb, var(--accent) 48%, transparent) 0%, color-mix(in srgb, var(--accent) 14%, transparent) 52%, transparent 82%); }
+    .edge-glow-top[data-edge-style="1"] .edge-fx-line,
+    .edge-glow-bot[data-edge-style="1"] .edge-fx-line {
+      height: 2.5px; opacity: 0; transform: scaleX(0.3);
+      background: linear-gradient(90deg, transparent 2%, var(--accent) 24%, #ffffff 50%, var(--accent) 76%, transparent 98%);
+      box-shadow: 0 0 10px var(--accent), 0 0 22px var(--accent-glow);
+    }
+    .edge-glow-top[data-edge-style="1"] .edge-fx-notch,
+    .edge-glow-bot[data-edge-style="1"] .edge-fx-notch { display: none; }
+    .edge-glow-top[data-edge-style="1"].is-at-edge .edge-fx-bloom,
+    .edge-glow-bot[data-edge-style="1"].is-at-edge .edge-fx-bloom { opacity: 1; transform: translateY(0); }
+    .edge-glow-top[data-edge-style="1"].is-at-edge .edge-fx-line,
+    .edge-glow-bot[data-edge-style="1"].is-at-edge .edge-fx-line { opacity: 1; transform: scaleX(1); }
+
+    /* #2 Center-Out Plasma Hyper-Laser */
+    @keyframes edgeLaserPulse { 0%, 100% { filter: brightness(1); } 50% { filter: brightness(1.3); } }
+    .edge-glow-top[data-edge-style="2"] .edge-fx-bloom { height: 22px; opacity: 0; transform: scaleX(0.2); background: radial-gradient(ellipse 60% 100% at 50% 0%, color-mix(in srgb, var(--accent) 42%, transparent), transparent 80%); }
+    .edge-glow-bot[data-edge-style="2"] .edge-fx-bloom { height: 22px; opacity: 0; transform: scaleX(0.2); background: radial-gradient(ellipse 60% 100% at 50% 100%, color-mix(in srgb, var(--accent) 42%, transparent), transparent 80%); }
+    .edge-glow-top[data-edge-style="2"] .edge-fx-line,
+    .edge-glow-bot[data-edge-style="2"] .edge-fx-line {
+      height: 2.5px; opacity: 0; transform: scaleX(0);
+      background: linear-gradient(90deg, transparent 0%, var(--accent) 16%, #ffffff 50%, var(--accent) 84%, transparent 100%);
+      box-shadow: 0 0 8px #ffffff, 0 0 18px var(--accent), 0 0 28px var(--accent-glow);
+    }
+    .edge-glow-top[data-edge-style="2"] .edge-fx-notch,
+    .edge-glow-bot[data-edge-style="2"] .edge-fx-notch {
+      left: 50%; right: auto; width: 76px; height: 5px; border-radius: 99px; opacity: 0;
+      transform: translateX(-50%) scaleX(0.1);
+      background: radial-gradient(ellipse, #ffffff 22%, var(--accent) 62%, transparent 85%);
+    }
+    .edge-glow-top[data-edge-style="2"].is-at-edge .edge-fx-bloom,
+    .edge-glow-bot[data-edge-style="2"].is-at-edge .edge-fx-bloom { opacity: 1; transform: scaleX(1); }
+    .edge-glow-top[data-edge-style="2"].is-at-edge .edge-fx-line,
+    .edge-glow-bot[data-edge-style="2"].is-at-edge .edge-fx-line { opacity: 1; transform: scaleX(1); animation: edgeLaserPulse 2.2s ease-in-out infinite; }
+    .edge-glow-top[data-edge-style="2"].is-at-edge .edge-fx-notch,
+    .edge-glow-bot[data-edge-style="2"].is-at-edge .edge-fx-notch { opacity: 1; transform: translateX(-50%) scaleX(1); }
+
+    /* #3 Live Scroll Progress Comet + Emerald Finish Bloom */
+    .edge-glow-top[data-edge-style="3"] .edge-fx-bloom { height: 28px; opacity: 0; background: radial-gradient(ellipse 68% 100% at 50% 0%, color-mix(in srgb, var(--green) 42%, transparent), transparent 78%); }
+    .edge-glow-bot[data-edge-style="3"] .edge-fx-bloom { height: 30px; opacity: 0; background: radial-gradient(ellipse 68% 100% at 50% 100%, color-mix(in srgb, var(--green) 44%, transparent), transparent 78%); }
+    .edge-glow-top[data-edge-style="3"] .edge-fx-line {
+      height: 2.5px; right: auto; width: calc(max(0.02, var(--scroll-p, 0)) * 100%); opacity: 0.96;
+      background: linear-gradient(90deg, var(--green), var(--accent));
+      box-shadow: 0 0 10px var(--accent-glow);
+      transition: width 0.08s linear;
+    }
+    .edge-glow-top[data-edge-style="3"] .edge-fx-line::after {
+      content: ""; position: absolute; right: -3px; top: 50%; width: 7px; height: 7px; border-radius: 50%;
+      transform: translateY(-50%); background: #ffffff; box-shadow: 0 0 8px #ffffff, 0 0 14px var(--accent);
+    }
+    .edge-glow-top[data-edge-style="3"].is-at-edge .edge-fx-line { width: 100%; background: linear-gradient(90deg, transparent 4%, var(--green) 50%, transparent 96%); }
+    .edge-glow-top[data-edge-style="3"].is-at-edge .edge-fx-line::after { display: none; }
+    .edge-glow-bot[data-edge-style="3"] .edge-fx-line {
+      height: 2.5px; opacity: 0; transform: scaleX(0.25);
+      background: linear-gradient(90deg, transparent 4%, var(--green) 35%, var(--accent) 65%, transparent 96%);
+      box-shadow: 0 0 14px var(--green);
+    }
+    .edge-glow-top[data-edge-style="3"] .edge-fx-notch,
+    .edge-glow-bot[data-edge-style="3"] .edge-fx-notch { display: none; }
+    .edge-glow-top[data-edge-style="3"].is-at-edge .edge-fx-bloom,
+    .edge-glow-bot[data-edge-style="3"].is-at-edge .edge-fx-bloom,
+    .edge-glow-bot[data-edge-style="3"].is-at-edge .edge-fx-line { opacity: 1; transform: scaleX(1); }
+
+    /* #4 Signature #8.4 Flowing Dual-Color Neon */
+    @keyframes edgeFlow84 { 0% { background-position: 0% 50%; } 100% { background-position: 200% 50%; } }
+    .edge-glow-top[data-edge-style="4"] .edge-fx-bloom {
+      height: 32px; opacity: 0;
+      background: linear-gradient(90deg, transparent 4%, color-mix(in srgb, var(--green) 28%, transparent) 28%, color-mix(in srgb, var(--accent) 36%, transparent) 50%, color-mix(in srgb, var(--green) 28%, transparent) 72%, transparent 96%);
+      -webkit-mask-image: linear-gradient(180deg, #000 0%, transparent 100%); mask-image: linear-gradient(180deg, #000 0%, transparent 100%);
+    }
+    .edge-glow-bot[data-edge-style="4"] .edge-fx-bloom {
+      height: 32px; opacity: 0;
+      background: linear-gradient(90deg, transparent 4%, color-mix(in srgb, var(--green) 28%, transparent) 28%, color-mix(in srgb, var(--accent) 36%, transparent) 50%, color-mix(in srgb, var(--green) 28%, transparent) 72%, transparent 96%);
+      -webkit-mask-image: linear-gradient(0deg, #000 0%, transparent 100%); mask-image: linear-gradient(0deg, #000 0%, transparent 100%);
+    }
+    .edge-glow-top[data-edge-style="4"] .edge-fx-line,
+    .edge-glow-bot[data-edge-style="4"] .edge-fx-line {
+      height: 2.8px; opacity: 0; transform: scaleX(0.35);
+      background: linear-gradient(90deg, transparent 0%, var(--green) 22%, var(--accent) 50%, var(--green) 78%, transparent 100%);
+      background-size: 200% 100%; box-shadow: 0 0 12px var(--accent-glow);
+    }
+    .edge-glow-top[data-edge-style="4"] .edge-fx-notch,
+    .edge-glow-bot[data-edge-style="4"] .edge-fx-notch { display: none; }
+    .edge-glow-top[data-edge-style="4"].is-at-edge .edge-fx-bloom,
+    .edge-glow-bot[data-edge-style="4"].is-at-edge .edge-fx-bloom { opacity: 1; }
+    .edge-glow-top[data-edge-style="4"].is-at-edge .edge-fx-line,
+    .edge-glow-bot[data-edge-style="4"].is-at-edge .edge-fx-line { opacity: 1; transform: scaleX(1); animation: edgeFlow84 3.2s linear infinite; }
+
+    /* #5 Samsung Edge Parabolic OLED Dome */
+    .edge-glow-top[data-edge-style="5"] .edge-fx-bloom {
+      left: 6%; right: 6%; top: -16px; height: 48px; border-radius: 50%; opacity: 0; transform: scale(0.72);
+      background: radial-gradient(ellipse at 50% 42%, color-mix(in srgb, var(--accent) 60%, transparent) 0%, color-mix(in srgb, var(--accent) 20%, transparent) 50%, transparent 74%);
+    }
+    .edge-glow-bot[data-edge-style="5"] .edge-fx-bloom {
+      left: 6%; right: 6%; bottom: -16px; height: 48px; border-radius: 50%; opacity: 0; transform: scale(0.72);
+      background: radial-gradient(ellipse at 50% 58%, color-mix(in srgb, var(--accent) 60%, transparent) 0%, color-mix(in srgb, var(--accent) 20%, transparent) 50%, transparent 74%);
+    }
+    .edge-glow-top[data-edge-style="5"] .edge-fx-line,
+    .edge-glow-bot[data-edge-style="5"] .edge-fx-line {
+      left: 14%; right: 14%; height: 2px; border-radius: 99px; opacity: 0; transform: scaleX(0.35);
+      background: linear-gradient(90deg, transparent, #ffffff 50%, transparent);
+      box-shadow: 0 0 12px var(--accent);
+    }
+    .edge-glow-top[data-edge-style="5"] .edge-fx-notch,
+    .edge-glow-bot[data-edge-style="5"] .edge-fx-notch { display: none; }
+    .edge-glow-top[data-edge-style="5"].is-at-edge .edge-fx-bloom,
+    .edge-glow-bot[data-edge-style="5"].is-at-edge .edge-fx-bloom { opacity: 1; transform: scale(1); }
+    .edge-glow-top[data-edge-style="5"].is-at-edge .edge-fx-line,
+    .edge-glow-bot[data-edge-style="5"].is-at-edge .edge-fx-line { opacity: 0.95; transform: scaleX(1); }
+
+    /* #6 Frosted Hairline + Expanding Dynamic Jewel Capsule */
+    .edge-glow-top[data-edge-style="6"] .edge-fx-bloom { height: 22px; opacity: 0; background: radial-gradient(ellipse 38% 100% at 50% 0%, color-mix(in srgb, var(--accent) 36%, transparent), transparent 78%); }
+    .edge-glow-bot[data-edge-style="6"] .edge-fx-bloom { height: 22px; opacity: 0; background: radial-gradient(ellipse 38% 100% at 50% 100%, color-mix(in srgb, var(--accent) 36%, transparent), transparent 78%); }
+    .edge-glow-top[data-edge-style="6"] .edge-fx-line,
+    .edge-glow-bot[data-edge-style="6"] .edge-fx-line {
+      height: 1px; opacity: 0.25;
+      background: linear-gradient(90deg, transparent 8%, var(--accent) 50%, transparent 92%);
+    }
+    .edge-glow-top[data-edge-style="6"] .edge-fx-notch,
+    .edge-glow-bot[data-edge-style="6"] .edge-fx-notch {
+      left: 50%; right: auto; transform: translateX(-50%);
+      width: 18px; height: 3.5px; border-radius: 99px; background: var(--text-dim); opacity: 0.3;
+    }
+    .edge-glow-top[data-edge-style="6"].is-at-edge .edge-fx-bloom,
+    .edge-glow-bot[data-edge-style="6"].is-at-edge .edge-fx-bloom { opacity: 1; }
+    .edge-glow-top[data-edge-style="6"].is-at-edge .edge-fx-line,
+    .edge-glow-bot[data-edge-style="6"].is-at-edge .edge-fx-line { opacity: 0.92; }
+    .edge-glow-top[data-edge-style="6"].is-at-edge .edge-fx-notch,
+    .edge-glow-bot[data-edge-style="6"].is-at-edge .edge-fx-notch {
+      width: 64px; opacity: 1; background: linear-gradient(90deg, var(--accent), #ffffff, var(--accent));
+      box-shadow: 0 0 10px var(--accent), 0 0 22px var(--accent-glow);
+    }
+
+    /* #7 Aurora Wave (Drifting Multi-Tone OLED Curtain) */
+    @keyframes edgeAuroraDrift { 0%, 100% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } }
+    .edge-glow-top[data-edge-style="7"] .edge-fx-bloom {
+      height: 40px; opacity: 0; transform: scaleY(0.35); transform-origin: top center;
+      background: linear-gradient(110deg, transparent 4%, color-mix(in srgb, var(--green) 36%, transparent) 24%, color-mix(in srgb, var(--accent) 52%, transparent) 52%, rgba(167,139,250,0.34) 78%, transparent 96%);
+      background-size: 220% 100%;
+      -webkit-mask-image: linear-gradient(180deg, #000 0%, rgba(0,0,0,0.45) 45%, transparent 100%); mask-image: linear-gradient(180deg, #000 0%, rgba(0,0,0,0.45) 45%, transparent 100%);
+    }
+    .edge-glow-bot[data-edge-style="7"] .edge-fx-bloom {
+      height: 40px; opacity: 0; transform: scaleY(0.35); transform-origin: bottom center;
+      background: linear-gradient(110deg, transparent 4%, color-mix(in srgb, var(--green) 36%, transparent) 24%, color-mix(in srgb, var(--accent) 52%, transparent) 52%, rgba(167,139,250,0.34) 78%, transparent 96%);
+      background-size: 220% 100%;
+      -webkit-mask-image: linear-gradient(0deg, #000 0%, rgba(0,0,0,0.45) 45%, transparent 100%); mask-image: linear-gradient(0deg, #000 0%, rgba(0,0,0,0.45) 45%, transparent 100%);
+    }
+    .edge-glow-top[data-edge-style="7"] .edge-fx-line,
+    .edge-glow-bot[data-edge-style="7"] .edge-fx-line {
+      height: 2px; opacity: 0;
+      background: linear-gradient(90deg, transparent, var(--green) 25%, var(--accent) 55%, #c4b5fd 80%, transparent);
+      background-size: 220% 100%;
+    }
+    .edge-glow-top[data-edge-style="7"] .edge-fx-notch,
+    .edge-glow-bot[data-edge-style="7"] .edge-fx-notch { display: none; }
+    .edge-glow-top[data-edge-style="7"].is-at-edge .edge-fx-bloom,
+    .edge-glow-bot[data-edge-style="7"].is-at-edge .edge-fx-bloom { opacity: 1; transform: scaleY(1); animation: edgeAuroraDrift 4.8s ease-in-out infinite; }
+    .edge-glow-top[data-edge-style="7"].is-at-edge .edge-fx-line,
+    .edge-glow-bot[data-edge-style="7"].is-at-edge .edge-fx-line { opacity: 0.95; animation: edgeAuroraDrift 4.8s ease-in-out infinite; }
+
+    /* #8 Tactical HUD Corner Brackets + Micro Ticks */
+    .edge-glow-top[data-edge-style="8"] .edge-fx-bloom,
+    .edge-glow-bot[data-edge-style="8"] .edge-fx-bloom { display: none; }
+    .edge-glow-top[data-edge-style="8"] .edge-fx-line,
+    .edge-glow-bot[data-edge-style="8"] .edge-fx-line {
+      height: 2px; opacity: 0; transform: scaleX(0.75);
+      background: repeating-linear-gradient(90deg, var(--accent) 0 6px, transparent 6px 12px);
+      -webkit-mask-image: linear-gradient(90deg, transparent 6%, #000 22%, #000 78%, transparent 94%); mask-image: linear-gradient(90deg, transparent 6%, #000 22%, #000 78%, transparent 94%);
+    }
+    .edge-glow-top[data-edge-style="8"] .edge-fx-notch,
+    .edge-glow-bot[data-edge-style="8"] .edge-fx-notch {
+      left: 10px; right: 10px; height: 11px; opacity: 0;
+      border-left: 2.5px solid var(--accent); border-right: 2.5px solid var(--accent);
+      filter: drop-shadow(0 0 6px var(--accent-glow));
+      -webkit-mask-image: linear-gradient(90deg, #000 0 28px, transparent 28px calc(100% - 28px), #000 calc(100% - 28px));
+      mask-image: linear-gradient(90deg, #000 0 28px, transparent 28px calc(100% - 28px), #000 calc(100% - 28px));
+    }
+    .edge-glow-top[data-edge-style="8"] .edge-fx-notch { border-top: 2.5px solid var(--accent); border-radius: 7px 7px 0 0; transform: translateY(-5px); }
+    .edge-glow-bot[data-edge-style="8"] .edge-fx-notch { border-bottom: 2.5px solid var(--accent); border-radius: 0 0 7px 7px; transform: translateY(5px); }
+    .edge-glow-top[data-edge-style="8"].is-at-edge .edge-fx-line,
+    .edge-glow-bot[data-edge-style="8"].is-at-edge .edge-fx-line { opacity: 0.9; transform: scaleX(1); }
+    .edge-glow-top[data-edge-style="8"].is-at-edge .edge-fx-notch,
+    .edge-glow-bot[data-edge-style="8"].is-at-edge .edge-fx-notch { opacity: 1; transform: translateY(0); }
+
+    /* #9 Dual Energy Radar Ripple (Impact Shockwave on Hit) */
+    @keyframes edgeShockwave { 0% { transform: scaleX(0.08); opacity: 1; } 75% { opacity: 0.65; } 100% { transform: scaleX(1); opacity: 0; } }
+    .edge-glow-top[data-edge-style="9"] .edge-fx-bloom { height: 24px; opacity: 0; background: radial-gradient(ellipse 64% 100% at 50% 0%, color-mix(in srgb, var(--accent) 36%, transparent), transparent 80%); }
+    .edge-glow-bot[data-edge-style="9"] .edge-fx-bloom { height: 24px; opacity: 0; background: radial-gradient(ellipse 64% 100% at 50% 100%, color-mix(in srgb, var(--accent) 36%, transparent), transparent 80%); }
+    .edge-glow-top[data-edge-style="9"] .edge-fx-line,
+    .edge-glow-bot[data-edge-style="9"] .edge-fx-line {
+      height: 2px; opacity: 0; transform: scaleX(0.2);
+      background: linear-gradient(90deg, transparent 4%, var(--accent) 30%, var(--green) 50%, var(--accent) 70%, transparent 96%);
+      box-shadow: 0 0 10px var(--accent-glow);
+    }
+    .edge-glow-top[data-edge-style="9"] .edge-fx-notch,
+    .edge-glow-bot[data-edge-style="9"] .edge-fx-notch {
+      height: 4px; opacity: 0; transform-origin: center;
+      background: linear-gradient(90deg, transparent, #ffffff 15%, var(--accent) 50%, #ffffff 85%, transparent);
+      box-shadow: 0 0 14px var(--accent);
+    }
+    .edge-glow-top[data-edge-style="9"].is-at-edge .edge-fx-bloom,
+    .edge-glow-bot[data-edge-style="9"].is-at-edge .edge-fx-bloom { opacity: 1; }
+    .edge-glow-top[data-edge-style="9"].is-at-edge .edge-fx-line,
+    .edge-glow-bot[data-edge-style="9"].is-at-edge .edge-fx-line { opacity: 1; transform: scaleX(1); }
+    .edge-glow-top[data-edge-style="9"].is-at-edge .edge-fx-notch,
+    .edge-glow-bot[data-edge-style="9"].is-at-edge .edge-fx-notch { animation: edgeShockwave 0.72s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+
+    /* #10 Kinetic OLED Dot Matrix Ribbon */
+    .edge-glow-top[data-edge-style="10"] .edge-fx-bloom { height: 22px; opacity: 0; background: radial-gradient(ellipse 46% 100% at 50% 0%, color-mix(in srgb, var(--accent) 38%, transparent), transparent 80%); }
+    .edge-glow-bot[data-edge-style="10"] .edge-fx-bloom { height: 22px; opacity: 0; background: radial-gradient(ellipse 46% 100% at 50% 100%, color-mix(in srgb, var(--accent) 38%, transparent), transparent 80%); }
+    .edge-glow-top[data-edge-style="10"] .edge-fx-line,
+    .edge-glow-bot[data-edge-style="10"] .edge-fx-line {
+      left: 50%; right: auto; width: 164px; height: 4px; opacity: 0;
+      transform: translateX(-50%) scaleX(0.25);
+      background-image: radial-gradient(circle, var(--accent) 1.6px, transparent 2px);
+      background-size: 10px 4px; background-repeat: repeat-x;
+      -webkit-mask-image: linear-gradient(90deg, transparent, #000 22%, #000 78%, transparent); mask-image: linear-gradient(90deg, transparent, #000 22%, #000 78%, transparent);
+      filter: drop-shadow(0 0 6px var(--accent));
+    }
+    .edge-glow-top[data-edge-style="10"] .edge-fx-notch,
+    .edge-glow-bot[data-edge-style="10"] .edge-fx-notch { display: none; }
+    .edge-glow-top[data-edge-style="10"].is-at-edge .edge-fx-bloom,
+    .edge-glow-bot[data-edge-style="10"].is-at-edge .edge-fx-bloom { opacity: 1; }
+    .edge-glow-top[data-edge-style="10"].is-at-edge .edge-fx-line,
+    .edge-glow-bot[data-edge-style="10"].is-at-edge .edge-fx-line { opacity: 1; transform: translateX(-50%) scaleX(1); }
+
+    /* Live Interactive Mini Phone Inside #modal-edge-glow */
+    .eg-demo-phone {
+      position: relative; border-radius: 18px; overflow: hidden;
+      background: var(--bg); border: 1.5px solid var(--card-rim);
+      box-shadow: 0 12px 30px rgba(0,0,0,0.42);
+    }
+    .eg-demo-hdr {
+      position: relative; z-index: 4; padding: 8px 11px;
+      background: var(--glass-bg); border-bottom: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .eg-demo-scroll {
+      position: relative; height: 192px; overflow-y: auto; padding: 10px;
+      display: flex; flex-direction: column; gap: 7px; scroll-behavior: smooth;
+    }
+    .eg-demo-card {
+      padding: 9px 10px; border-radius: 12px; background: var(--bg-card); border: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: space-between; font-size: 11.5px; flex-shrink: 0;
+    }
+    .eg-demo-card.active { border-color: var(--accent); }
+    .eg-demo-bnav {
+      position: relative; z-index: 4; padding: 7px 8px;
+      background: var(--glass-bg); border-top: 1px solid var(--border);
+      display: grid; grid-template-columns: repeat(4, 1fr); text-align: center;
+      font-size: 9.5px; font-weight: 800; color: var(--text-muted);
+    }
+    .eg-demo-bnav .on { color: var(--accent); }
+    .eg-pos-pill {
+      position: absolute; right: 9px; top: 46px; z-index: 6; pointer-events: none;
+      padding: 2px 7px; border-radius: 999px; font-size: 9.5px; font-weight: 900; font-family: var(--font-mono);
+      background: var(--accent-soft); color: var(--accent); border: 1px solid var(--accent);
+      backdrop-filter: blur(8px);
+    }
+
+    /* v10+: Long-Press RIR Button Charging Fill + Animated Frosted RIR Guide Card */
+    .rir-single-btn {
+      position: relative; overflow: hidden;
+      user-select: none; -webkit-user-select: none; -webkit-touch-callout: none; touch-action: none;
+    }
+    .rir-single-btn::before {
+      content: ""; position: absolute; inset: 0; width: 0%;
+      background: linear-gradient(90deg, color-mix(in srgb, var(--green) 24%, transparent), color-mix(in srgb, var(--accent) 36%, transparent));
+      pointer-events: none; transition: none;
+    }
+    .rir-single-btn::after {
+      content: ""; position: absolute; left: 0; bottom: 0; height: 2.5px; width: 0%;
+      background: linear-gradient(90deg, var(--green), var(--accent));
+      box-shadow: 0 0 9px var(--accent-glow);
+      pointer-events: none; transition: none;
+    }
+    .rir-single-btn.holding {
+      transform: scale(0.94); border-color: var(--green);
+      box-shadow: 0 0 0 3px color-mix(in srgb, var(--green) 22%, transparent);
+    }
+    .rir-single-btn.holding::before,
+    .rir-single-btn.holding::after { width: 100%; transition: width 0.40s linear; }
+    @keyframes rirSheetIn {
+      0% { opacity: 0; transform: translate3d(0, 22px, 0) scale(0.92); }
+      100% { opacity: 1; transform: translate3d(0, 0, 0) scale(1); }
+    }
+    @keyframes rirItemUp {
+      0% { opacity: 0; transform: translate3d(0, 10px, 0); }
+      100% { opacity: 1; transform: translate3d(0, 0, 0); }
+    }
+    .rir-guide-sheet {
+      max-width: 410px !important; border-radius: 22px !important;
+      margin: auto !important;
+    }
+    #modal-rir-guide { align-items: center; padding: 14px; }
+    #modal-rir-guide.open .rir-guide-sheet { animation: rirSheetIn 0.34s cubic-bezier(0.22, 1, 0.36, 1) both; }
+    #modal-rir-guide.open .rir-anim-item { animation: rirItemUp 0.34s cubic-bezier(0.22, 1, 0.36, 1) both; }
+    #modal-rir-guide.open .rir-anim-item:nth-child(2) { animation-delay: 0.04s; }
+    #modal-rir-guide.open .rir-anim-item:nth-child(3) { animation-delay: 0.08s; }
+    #modal-rir-guide.open .rir-anim-item:nth-child(4) { animation-delay: 0.12s; }
+    #modal-rir-guide.open .rir-anim-item:nth-child(5) { animation-delay: 0.16s; }
+    .rir-scale-row { display: grid; grid-template-columns: repeat(5, 1fr); gap: 5px; margin: 10px 0 11px; }
+    .rir-scale-pill {
+      padding: 7px 3px; border-radius: 11px; text-align: center;
+      background: var(--bg-surface); border: 1px solid var(--border); color: var(--text-muted);
+      transition: all 0.18s ease;
+    }
+    .rir-scale-pill strong { display: block; font-family: var(--font-mono); font-size: 13px; color: var(--text); }
+    .rir-scale-pill span { display: block; font-size: 9px; font-weight: 700; margin-top: 1px; opacity: 0.82; }
+    .rir-scale-pill.active {
+      background: var(--green-bg); border-color: var(--green);
+      box-shadow: 0 0 12px color-mix(in srgb, var(--green) 24%, transparent);
+    }
+    .rir-scale-pill.active strong { color: var(--green); }
+    .rir-guide-ttl {
+      font-size: 10.5px; font-weight: 900; text-transform: uppercase; letter-spacing: 0.06em;
+      color: var(--accent); margin: 9px 0 6px;
+    }
+    .rir-guide-list { display: flex; flex-direction: column; gap: 6px; }
+    .rir-guide-item {
+      padding: 8px 10px; border-radius: 12px; background: var(--bg-surface);
+      border-left: 3px solid var(--accent); font-size: 11.5px; line-height: 1.42; color: var(--text-muted);
+    }
+    .rir-guide-item.green { border-left-color: var(--green); background: color-mix(in srgb, var(--green) 9%, var(--bg-surface)); }
+    .rir-guide-item.yellow { border-left-color: var(--yellow); background: color-mix(in srgb, var(--yellow) 10%, var(--bg-surface)); }
+    .rir-guide-item strong { color: var(--text); }
+
+    /* Clean Hidden Scrollbars Inside Modals & Drawers (No Ugly White Windows Bars) */
+    .modal-sheet, .rtm-pane-all, .eg-demo-scroll, .picker-list, #edit-sess-body, #modal-whats-new .modal-sheet > div {
+      scrollbar-width: none; -ms-overflow-style: none;
+    }
+    .modal-sheet::-webkit-scrollbar, .rtm-pane-all::-webkit-scrollbar, .eg-demo-scroll::-webkit-scrollbar,
+    .picker-list::-webkit-scrollbar, #edit-sess-body::-webkit-scrollbar, #modal-whats-new .modal-sheet > div::-webkit-scrollbar { display: none; }
+
+    /* Smooth Fold-Up Collapse Animation on Active Exercise */
+    .ex-active-card.collapsing-out {
+      opacity: 0 !important;
+      transform: translate3d(0, -6px, 0) scale(0.97) !important;
+      transition: opacity 0.17s ease, transform 0.18s cubic-bezier(0.22, 1, 0.36, 1) !important;
+      pointer-events: none;
+    }
+
+    /* v10+: Rest Timer Modal Clean Elevated Segmented Switcher + Fixed 10-Bar Gallery */
+    .rtm-view-sw {
+      position: relative; display: grid; grid-template-columns: 1fr 1fr;
+      padding: 3px; border-radius: 12px; margin: 4px 0 10px;
+      background: var(--bg); border: 1px solid var(--border);
+    }
+    .rtm-view-thumb {
+      position: absolute; top: 3px; left: 3px; width: calc(50% - 3px); height: calc(100% - 6px);
+      border-radius: 9px; background: var(--bg-surface-2);
+      box-shadow: 0 3px 10px rgba(0, 0, 0, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.14);
+      transform: translate3d(0, 0, 0);
+      transition: transform 0.34s cubic-bezier(0.22, 1, 0.36, 1);
+      pointer-events: none;
+    }
+    [data-theme="nordic"] .rtm-view-thumb { background: var(--bg-card); box-shadow: 0 2px 8px rgba(15, 23, 42, 0.12); }
+    #modal-rest-bar[data-view="all"] .rtm-view-thumb { transform: translate3d(100%, 0, 0); }
+    .rtm-view-btn {
+      position: relative; z-index: 1; padding: 7px 6px; border-radius: 9px;
+      font-size: 11.5px; font-weight: 800; color: var(--text-muted);
+      display: inline-flex; align-items: center; justify-content: center; gap: 6px;
+      transition: color 0.22s ease;
+    }
+    .rtm-view-btn svg { width: 14px; height: 14px; stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; flex-shrink: 0; }
+    .rtm-view-btn.active { color: var(--accent); }
+    .rtm-stage {
+      position: relative; overflow: hidden;
+      transition: height 0.38s cubic-bezier(0.22, 1, 0.36, 1);
+      will-change: height;
+    }
+    .rtm-pane {
+      position: absolute; top: 0; left: 0; right: 0;
+      transition: transform 0.38s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.26s ease;
+      will-change: transform, opacity;
+    }
+    .rtm-pane-single { opacity: 1; transform: translate3d(0, 0, 0) scale(1); pointer-events: auto; }
+    #modal-rest-bar[data-view="all"] .rtm-pane-single { opacity: 0; transform: translate3d(-32px, 0, 0) scale(0.96); pointer-events: none; }
+    .rtm-pane-all {
+      opacity: 0; transform: translate3d(32px, 0, 0) scale(0.96); pointer-events: none;
+      max-height: 365px; overflow-y: auto; padding: 4px 6px 10px 6px;
+      display: flex; flex-direction: column; gap: 8px;
+    }
+    #modal-rest-bar[data-view="all"] .rtm-pane-all { opacity: 1; transform: translate3d(0, 0, 0) scale(1); pointer-events: auto; }
+    .rtm-all-card {
+      position: relative; padding: 10px 11px; border-radius: 15px; flex-shrink: 0;
+      background: var(--bg-surface); border: 1.5px solid var(--border);
+      cursor: pointer; overflow: hidden;
+      opacity: 0; transform: translate3d(0, 10px, 0);
+      transition: transform 0.34s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.28s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+    }
+    #modal-rest-bar[data-view="all"] .rtm-all-card { opacity: 1; transform: translate3d(0, 0, 0); }
+    .rtm-all-card[data-rt-all="6"] { overflow: visible; border-color: transparent; }
+    .rtm-all-card.picked { border-color: var(--accent); box-shadow: 0 0 0 1px var(--accent-soft), 0 6px 18px var(--accent-glow); }
+    .rtm-all-card.picked[data-rt-all="6"] { border-color: transparent; }
+    .rtm-all-card.phase-warn { border-color: var(--yellow); }
+    .rtm-all-card.phase-go { border-color: var(--green); }
+    .rtm-all-hd {
+      position: relative; z-index: 2;
+      display: flex; align-items: center; justify-content: space-between; gap: 6px; margin-bottom: 7px;
+    }
+    .rtm-all-name { font-size: 11px; font-weight: 800; color: var(--text); }
+    .rtm-all-name b { color: var(--accent); font-family: var(--font-mono); margin-right: 3px; }
+    .rtm-zoom-btn {
+      padding: 2px 7px; border-radius: 8px; font-size: 10px; font-weight: 800;
+      background: var(--bg-card); border: 1px solid var(--border); color: var(--text-muted);
+    }
+    .rtm-all-card.picked .rtm-zoom-btn { background: var(--accent-soft); border-color: var(--accent); color: var(--accent); }
+    .rtm-all-bg-cv { position: absolute; inset: 0; width: 100%; height: 100%; z-index: 1; pointer-events: none; }
+    .rtm-all-svg6 { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; z-index: 3; overflow: visible; fill: none; }
+    .rtm-all-svg6 * { fill: none; }
+
+    /* ==========================================================================
+       v10+: 11) BOTTOM NAVIGATION ANIMATIONS (6 FLAGSHIP STYLES + OFF)
+       ========================================================================== */
+    .bottom-nav-inner { position: relative; }
+    .nav-slide-ind {
+      position: absolute; top: 0; left: 0; width: 25%; height: 100%;
+      pointer-events: none; z-index: 0;
+      transform: translate3d(calc(var(--nav-idx, 0) * 100%), 0, 0);
+      transition: transform 0.38s cubic-bezier(0.22, 1, 0.36, 1);
+      will-change: transform;
+    }
+    .nav-item { z-index: 1; transition: color 0.24s ease; }
+    .nav-ico-wrap {
+      position: relative; width: 32px; height: 26px;
+      display: inline-flex; align-items: center; justify-content: center;
+      transition: transform 0.34s cubic-bezier(0.34, 1.56, 0.64, 1), background 0.24s ease, box-shadow 0.24s ease;
+    }
+    .nav-item > span:not(.nav-ico-wrap) { transition: transform 0.26s cubic-bezier(0.22, 1, 0.36, 1); }
+    [data-nav-anim]:not([data-nav-anim="0"]) .nav-item.active::before { display: none; }
+    [data-nav-anim="0"] .nav-slide-ind { display: none; }
+
+    @keyframes appNvPump {
+      0% { transform: translateY(0) rotate(0deg) scale(1); }
+      30% { transform: translateY(-4px) rotate(-7deg) scale(1.12); }
+      62% { transform: translateY(0.5px) rotate(4deg) scale(0.96); }
+      82% { transform: translateY(-1.5px) rotate(-1.5deg) scale(1.04); }
+      100% { transform: translateY(0) rotate(0deg) scale(1); }
+    }
+    @keyframes appNvDraw { 0% { stroke-dashoffset: 100; opacity: 0.35; } 72%, 100% { stroke-dashoffset: 0; opacity: 1; } }
+    @keyframes appNvChart { 0% { transform: scale(1); } 45% { transform: translateY(-2.5px) scale(1.1); } 100% { transform: scale(1); } }
+    @keyframes appNvBody { 0% { transform: scale(1) translateY(0); } 35% { transform: scale(1.14, 0.92) translateY(-3px); } 70% { transform: scale(0.96, 1.06) translateY(-1px); } 100% { transform: scale(1) translateY(0); } }
+    @keyframes appNvGear { 0% { transform: rotate(0deg) scale(1); } 45% { transform: rotate(135deg) scale(1.1); } 100% { transform: rotate(120deg) scale(1); } }
+    @keyframes appNvRipple { 0% { transform: translate(-50%, -50%) scale(0.65); opacity: 0.9; } 100% { transform: translate(-50%, -50%) scale(1.55); opacity: 0; } }
+
+    [data-nav-anim]:not([data-nav-anim="0"]) .nav-item.anim-pop .nv-ico-w { animation: appNvPump 0.56s cubic-bezier(0.22, 1, 0.36, 1); }
+    [data-nav-anim]:not([data-nav-anim="0"]) .nav-item.anim-pop .nv-ico-p { animation: appNvChart 0.48s cubic-bezier(0.22, 1, 0.36, 1); }
+    [data-nav-anim]:not([data-nav-anim="0"]) .nav-item.anim-pop .nv-ico-p .nv-line { stroke-dasharray: 100; animation: appNvDraw 0.54s cubic-bezier(0.22, 1, 0.36, 1); }
+    [data-nav-anim]:not([data-nav-anim="0"]) .nav-item.anim-pop .nv-ico-b { animation: appNvBody 0.52s cubic-bezier(0.22, 1, 0.36, 1); }
+    [data-nav-anim]:not([data-nav-anim="0"]) .nav-item.anim-pop .nv-ico-s { animation: appNvGear 0.62s cubic-bezier(0.34, 1.56, 0.64, 1); }
+
+    /* #1 Liquid Sliding Neon Bar */
+    [data-nav-anim="1"] .nav-slide-ind::before {
+      content: ""; position: absolute; top: 0; left: 50%; transform: translateX(-50%);
+      width: 40px; height: 3.5px; border-radius: 0 0 6px 6px; background: var(--accent);
+      box-shadow: 0 2px 12px var(--accent-glow);
+    }
+    [data-nav-anim="1"] .nav-slide-ind::after {
+      content: ""; position: absolute; top: 0; left: 10%; right: 10%; height: 32px;
+      background: radial-gradient(ellipse 68% 100% at 50% 0%, color-mix(in srgb, var(--accent) 22%, transparent), transparent 76%);
+    }
+    [data-nav-anim="1"] .nav-item.active .nav-ico-wrap { transform: translateY(-1.5px); }
+
+    /* #2 Floating Frosted Glass Pill */
+    [data-nav-anim="2"] .nav-slide-ind::before {
+      content: ""; position: absolute; inset: 6px 7px; border-radius: 12px;
+      background: var(--accent-soft); border: 1px solid color-mix(in srgb, var(--accent) 44%, transparent);
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.14);
+    }
+    [data-nav-anim="2"] .nav-item.active .nav-ico-wrap { transform: translateY(-1px) scale(1.06); }
+
+    /* #3 Overhead OLED Spotlight Cone */
+    [data-nav-anim="3"] .nav-slide-ind::before {
+      content: ""; position: absolute; top: 0; left: 50%; transform: translateX(-50%);
+      width: 24px; height: 3px; border-radius: 0 0 99px 99px;
+      background: #ffffff; box-shadow: 0 0 10px #ffffff, 0 0 18px var(--accent);
+    }
+    [data-theme="nordic"][data-nav-anim="3"] .nav-slide-ind::before {
+      background: var(--accent); box-shadow: 0 2px 10px var(--accent-glow);
+    }
+    [data-nav-anim="3"] .nav-slide-ind::after {
+      content: ""; position: absolute; top: 0; left: 50%; transform: translateX(-50%);
+      width: 78%; height: 100%;
+      background: linear-gradient(180deg, color-mix(in srgb, var(--accent) 34%, transparent) 0%, color-mix(in srgb, var(--accent) 10%, transparent) 50%, transparent 100%);
+      clip-path: polygon(32% 0%, 68% 0%, 100% 100%, 0% 100%);
+    }
+    [data-nav-anim="3"] .nav-item.active svg { filter: drop-shadow(0 0 7px var(--accent-glow)); }
+
+    /* #4 Elastic Lift + Halo Ring */
+    [data-nav-anim="4"] .nav-slide-ind { display: none; }
+    [data-nav-anim="4"] .nav-ico-wrap { width: 34px; height: 29px; border-radius: 11px; }
+    [data-nav-anim="4"] .nav-item.active .nav-ico-wrap {
+      transform: translateY(-3px); background: var(--accent-soft);
+      box-shadow: 0 0 0 1.5px color-mix(in srgb, var(--accent) 55%, transparent), 0 5px 12px var(--accent-glow);
+    }
+    [data-nav-anim="4"] .nav-item.anim-pop .nav-ico-wrap::after {
+      content: ""; position: absolute; left: 50%; top: 50%; width: 32px; height: 32px; border-radius: 50%;
+      border: 2px solid var(--accent); animation: appNvRipple 0.5s ease-out forwards; pointer-events: none;
+    }
+
+    /* #5 Dual-Color #8.4 Glide */
+    [data-nav-anim="5"] .nav-slide-ind::before {
+      content: ""; position: absolute; top: 0; left: 50%; transform: translateX(-50%);
+      width: 46px; height: 3.5px; border-radius: 0 0 99px 99px;
+      background: linear-gradient(90deg, var(--green), var(--accent));
+      box-shadow: 0 2px 12px var(--accent-glow);
+    }
+    [data-nav-anim="5"] .nav-slide-ind::after {
+      content: ""; position: absolute; bottom: 0; left: 16%; right: 16%; height: 22px;
+      background: radial-gradient(ellipse 68% 100% at 50% 100%, color-mix(in srgb, var(--green) 24%, transparent), transparent 80%);
+    }
+    [data-nav-anim="5"] .nav-item.active .nav-ico-wrap { transform: translateY(-2px) scale(1.07); }
+
+    /* #6 Minimal Magnetic Dot */
+    [data-nav-anim="6"] .nav-slide-ind::before {
+      content: ""; position: absolute; bottom: 4px; left: 50%; transform: translateX(-50%);
+      width: 5px; height: 5px; border-radius: 50%; background: var(--accent);
+      box-shadow: 0 0 8px var(--accent), 0 0 14px var(--accent-glow);
+    }
+    [data-nav-anim="6"] .nav-item.active .nav-ico-wrap { transform: translateY(-2.5px); }
+    [data-nav-anim="6"] .nav-item.active > span:not(.nav-ico-wrap) { transform: translateY(-1.5px); }
+
+    /* ==========================================================================
+       v10+: 12) ORGANIC "KĄ REIŠKIA?" & "PASTABA" BUTTON STYLES (DEFAULT #2D)
+       ========================================================================== */
+    .j-act-btn {
+      position: relative; display: inline-flex; align-items: center; justify-content: center; gap: 5px;
+      font-family: inherit; font-weight: 800; white-space: nowrap; flex-shrink: 0;
+      transition: all 0.22s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+    .j-act-btn:active { transform: scale(0.94); }
+    .j-act-btn svg { width: 14px; height: 14px; stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; flex-shrink: 0; transition: transform 0.28s cubic-bezier(0.34, 1.56, 0.64, 1); }
+    .j-act-btn.on .ico-pen { transform: rotate(-14deg) translateY(-1px); }
+    .j-act-btn.on .ico-info { transform: scale(1.12); }
+    .j-act-btn.on .ico-chev { transform: rotate(180deg); }
+    .j-act-btn.has-note-dot::after {
+      content: ""; position: absolute; top: 3px; right: 3px; width: 5.5px; height: 5.5px;
+      border-radius: 50%; background: var(--accent); box-shadow: 0 0 6px var(--accent);
+    }
+    .jb-1-i { padding: 4px 9px; border-radius: 999px; font-size: 10.5px; background: var(--accent-soft); color: var(--accent); border: 1px solid color-mix(in srgb, var(--accent) 32%, transparent); }
+    .jb-1-i.on { border-color: var(--accent); }
+    .jb-1-n { padding: 6px 10px; border-radius: 10px; font-size: 11px; background: var(--bg-surface); color: var(--text); border: 1px solid var(--border); }
+    .jb-1-n.on { background: var(--accent-soft); color: var(--accent); border-color: var(--accent); }
+
+    .jb-3-i { padding: 4px 10px; border-radius: 999px; font-size: 10.5px; background: linear-gradient(155deg, color-mix(in srgb, var(--accent) 16%, transparent), color-mix(in srgb, var(--accent) 6%, transparent)); color: var(--accent); border: 1px solid color-mix(in srgb, var(--accent) 38%, transparent); box-shadow: inset 0 1px 0 rgba(255,255,255,0.16); }
+    .jb-3-n { padding: 6px 11px; border-radius: 11px; font-size: 11px; background: linear-gradient(160deg, var(--bg-surface-2), var(--bg-surface)); color: var(--text); border: 1px solid var(--border); box-shadow: inset 0 1px 0 rgba(255,255,255,0.14); }
+    .jb-3-n.on { border-color: var(--accent); color: var(--accent); }
+
+    .jb-4-i { padding: 3px 4px; border-radius: 8px; font-size: 10.5px; background: transparent; color: var(--text-muted); }
+    .jb-4-i.on { color: var(--accent); }
+    .jb-4-n { padding: 6px 11px; border-radius: 999px; font-size: 11px; background: var(--bg-surface-2); color: var(--text); border: 1px solid transparent; }
+    .jb-4-n.on { background: var(--accent); color: var(--accent-text); }
+    .jb-4-n.has-note-dot.on::after { display: none; }
+
+    .jb-5-i { padding: 4px 9px; border-radius: 9px; font-size: 10.5px; background: linear-gradient(135deg, var(--green-bg), var(--accent-soft)); color: var(--text); border: 1px solid color-mix(in srgb, var(--accent) 34%, transparent); }
+    .jb-5-i svg { color: var(--accent); }
+    .jb-5-n { padding: 6px 10px; border-radius: 10px; font-size: 11px; background: var(--bg-surface); color: var(--text); border: 1px solid color-mix(in srgb, var(--accent) 28%, transparent); }
+    .jb-5-n svg { color: var(--accent); }
+    .jb-5-n.on { background: var(--green-bg); border-color: var(--green); }
+    .jb-5-n.on svg { color: var(--green); }
+
+    .jb-6-i { padding: 3.5px 8px; border-radius: 8px; font-size: 10px; background: var(--bg-surface); color: var(--text-muted); border: 1px solid var(--border); }
+    .jb-6-i.on { color: var(--accent); border-color: var(--accent); background: var(--accent-soft); }
+    .jb-6-n { padding: 5.5px 9px; border-radius: 9px; font-size: 10.5px; background: var(--bg-surface); color: var(--text); border: 1px dashed var(--border); }
+    .jb-6-n.on { border-style: solid; border-color: var(--accent); background: var(--accent-soft); color: var(--accent); }
+
+    .jb-2a-i { width: 28px; height: 28px; border-radius: 999px; background: var(--bg-surface); color: var(--text-muted); border: 1px solid var(--border); }
+    .jb-2a-i.on { background: var(--accent-soft); color: var(--accent); border-color: var(--accent); }
+    .jb-2a-n { width: 36px; height: 34px; border-radius: 10px; background: var(--bg-surface); color: var(--text); border: 1px solid var(--border); }
+    .jb-2a-n.on { background: var(--accent-soft); color: var(--accent); border-color: var(--accent); }
+
+    .jb-2b-i { width: 28px; height: 28px; border-radius: 9px; background: linear-gradient(155deg, color-mix(in srgb, var(--accent) 16%, transparent), color-mix(in srgb, var(--accent) 6%, transparent)); color: var(--accent); border: 1px solid color-mix(in srgb, var(--accent) 36%, transparent); box-shadow: inset 0 1px 0 rgba(255,255,255,0.18); }
+    .jb-2b-n { width: 36px; height: 34px; border-radius: 11px; background: linear-gradient(155deg, var(--bg-surface-2), var(--bg-surface)); color: var(--text); border: 1px solid var(--border); box-shadow: inset 0 1px 0 rgba(255,255,255,0.16); }
+    .jb-2b-n.on { border-color: var(--accent); color: var(--accent); }
+
+    .jb-2c-i { width: 29px; height: 27px; border-radius: 9px; background: linear-gradient(135deg, var(--green-bg), var(--accent-soft)); color: var(--accent); border: 1px solid color-mix(in srgb, var(--accent) 36%, transparent); }
+    .jb-2c-i.on { border-color: var(--green); color: var(--green); }
+    .jb-2c-n { width: 36px; height: 34px; border-radius: 11px; background: var(--bg-surface); color: var(--accent); border: 1px solid color-mix(in srgb, var(--accent) 30%, transparent); }
+    .jb-2c-n.on { background: var(--green-bg); color: var(--green); border-color: var(--green); }
+    .jb-2c-n.has-note-dot::after { background: var(--green); box-shadow: 0 0 6px var(--green); }
+
+    .jb-2d-i { width: 29px; height: 29px; border-radius: 999px; background: var(--bg-surface-2); color: var(--text-muted); border: 1px solid transparent; }
+    .jb-2d-i.on { background: var(--accent); color: var(--accent-text); box-shadow: 0 0 12px var(--accent-glow); }
+    .jb-2d-n { width: 35px; height: 35px; border-radius: 999px; background: var(--bg-surface-2); color: var(--text); border: 1px solid transparent; }
+    .jb-2d-n.on { background: var(--accent); color: var(--accent-text); box-shadow: 0 0 14px var(--accent-glow); }
+    .jb-2d-n.has-note-dot.on::after { display: none; }
+
+    .jb-2e-i { width: 29px; height: 29px; border-radius: 999px; background: transparent; color: var(--text-muted); }
+    .jb-2e-i.on { background: var(--accent-soft); color: var(--accent); }
+    .jb-2e-n { width: 36px; height: 34px; border-radius: 10px; background: transparent; color: var(--text-muted); }
+    .jb-2e-n.on { background: var(--accent-soft); color: var(--accent); }
+
+    .jb-2f-i { width: 28px; height: 28px; border-radius: 8px; background: var(--bg-surface); color: var(--text-muted); border: 1px dashed var(--border); }
+    .jb-2f-i.on { border-style: solid; border-color: var(--accent); color: var(--accent); background: var(--accent-soft); }
+    .jb-2f-n { width: 36px; height: 34px; border-radius: 10px; background: var(--bg-surface); color: var(--text); border: 1px dashed var(--border); }
+    .jb-2f-n.on { border-style: solid; border-color: var(--accent); color: var(--accent); background: var(--accent-soft); }
+
+    /* ==========================================================================
+       v10+: 13) MORPHING JOINT TRAFFIC LIGHT (LAISVAI / ĮTAMPA / SKAUSMAS, DEFAULT #2)
+       ========================================================================== */
+    @keyframes jOrbPop { 0% { transform: scale(0.75); } 55% { transform: scale(1.26); } 100% { transform: scale(1.06); } }
+    .joint-dots.morph { display: inline-flex; align-items: center; gap: 6px; }
+    .joint-dots.morph .j-dot {
+      display: inline-flex; align-items: center; justify-content: center;
+      height: 34px; min-width: 34px; padding: 0 10px; border-radius: 999px;
+      background: var(--bg-surface); border: 1.5px solid var(--border);
+      color: var(--text-muted); font-size: 12px; font-weight: 800; overflow: hidden;
+      transition: padding 0.36s cubic-bezier(0.22, 1, 0.36, 1), background 0.26s ease, border-color 0.26s ease, box-shadow 0.28s ease, transform 0.16s ease;
+    }
+    .joint-dots.morph .j-dot.active { padding: 0 13px 0 11px; }
+    .joint-dots.morph .j-dot:active { transform: scale(0.93); }
+    .joint-dots.morph .j-orb {
+      width: 11px; height: 11px; border-radius: 50%; flex-shrink: 0;
+      transition: transform 0.32s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.24s ease;
+    }
+    .joint-dots.morph .j-dot.g .j-orb { background: var(--green); box-shadow: 0 0 7px color-mix(in srgb, var(--green) 65%, transparent); }
+    .joint-dots.morph .j-dot.y .j-orb { background: var(--yellow); box-shadow: 0 0 7px color-mix(in srgb, var(--yellow) 65%, transparent); }
+    .joint-dots.morph .j-dot.r .j-orb { background: var(--red); box-shadow: 0 0 7px color-mix(in srgb, var(--red) 65%, transparent); }
+    .joint-dots.morph .j-dot:not(.active) .j-orb { opacity: 0.78; transform: scale(0.95); }
+    .joint-dots.morph .j-dot.active .j-orb { opacity: 1; animation: jOrbPop 0.42s cubic-bezier(0.22, 1, 0.36, 1) forwards; }
+    .joint-dots.morph .j-txt {
+      display: inline-block; overflow: hidden; white-space: nowrap;
+      max-width: 0; opacity: 0; margin-left: 0; transform: translate3d(-6px, 0, 0);
+      transition: max-width 0.38s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.22s ease, margin-left 0.36s cubic-bezier(0.22, 1, 0.36, 1), transform 0.34s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+    .joint-dots.morph .j-dot.active .j-txt { max-width: 86px; opacity: 1; margin-left: 7px; transform: translate3d(0, 0, 0); }
+    .joint-dots.morph .j-dot.g.active { background: var(--green-bg); border-color: color-mix(in srgb, var(--green) 58%, transparent); color: var(--green); box-shadow: 0 0 14px color-mix(in srgb, var(--green) 20%, transparent); }
+    .joint-dots.morph .j-dot.y.active { background: var(--yellow-bg); border-color: color-mix(in srgb, var(--yellow) 62%, transparent); color: var(--yellow); box-shadow: 0 0 14px color-mix(in srgb, var(--yellow) 22%, transparent); }
+    .joint-dots.morph .j-dot.r.active { background: var(--red-bg); border-color: color-mix(in srgb, var(--red) 64%, transparent); color: var(--red); box-shadow: 0 0 14px color-mix(in srgb, var(--red) 24%, transparent); }
+
+    /* #2 Unified Recessed Dock (Default) */
+    [data-joint-style="2"] .joint-dots.morph { padding: 3px; border-radius: 999px; background: var(--bg-surface); border: 1px solid var(--border); gap: 3px; }
+    [data-joint-style="2"] .joint-dots.morph .j-dot { height: 30px; min-width: 30px; padding: 0 8px; background: transparent; border-color: transparent; }
+    [data-joint-style="2"] .joint-dots.morph .j-dot.active { padding: 0 12px 0 9px; }
+    [data-joint-style="2"] .joint-dots.morph .j-dot.g.active { background: var(--green-bg); border-color: color-mix(in srgb, var(--green) 55%, transparent); }
+    [data-joint-style="2"] .joint-dots.morph .j-dot.y.active { background: var(--yellow-bg); border-color: color-mix(in srgb, var(--yellow) 58%, transparent); }
+    [data-joint-style="2"] .joint-dots.morph .j-dot.r.active { background: var(--red-bg); border-color: color-mix(in srgb, var(--red) 60%, transparent); }
+
+    /* #3 Glossy 3D Jewel Orbs */
+    [data-joint-style="3"] .joint-dots.morph .j-dot { padding: 0 9px; }
+    [data-joint-style="3"] .joint-dots.morph .j-dot.active { padding: 0 13px 0 10px; box-shadow: inset 0 1px 0 rgba(255,255,255,0.22), 0 6px 14px rgba(0,0,0,0.22); }
+    [data-joint-style="3"] .joint-dots.morph .j-orb { width: 13px; height: 13px; }
+    [data-joint-style="3"] .joint-dots.morph .j-dot.g .j-orb { background: radial-gradient(circle at 35% 30%, #bbf7d0 0%, #22c55e 52%, #15803d 100%); }
+    [data-joint-style="3"] .joint-dots.morph .j-dot.y .j-orb { background: radial-gradient(circle at 35% 30%, #fef08a 0%, #f59e0b 52%, #b45309 100%); }
+    [data-joint-style="3"] .joint-dots.morph .j-dot.r .j-orb { background: radial-gradient(circle at 35% 30%, #fecaca 0%, #ef4444 52%, #b91c1c 100%); }
+
+    /* #4 Borderless Quiet Orbs + Luminous Ring */
+    [data-joint-style="4"] .joint-dots.morph .j-dot:not(.active) { background: transparent; border-color: transparent; }
+    [data-joint-style="4"] .joint-dots.morph .j-dot.active { background: transparent; }
+
+    /* Legal & Copyright Notice Card at Bottom of Settings */
+    .legal-footer-card {
+      padding: 12px 13px; border-radius: var(--radius-md);
+      background: var(--bg-surface); border: 1px solid var(--border);
+      font-size: 11px; line-height: 1.48; color: var(--text-muted);
+    }
+    .legal-footer-card strong { color: var(--text); }
   </style>
 </head>
 <body>
@@ -2422,6 +3116,12 @@
         <button id="btn-wakelock" class="icon-btn icon-only" title="Neužgesinti ekrano" aria-label="Neužgesinti ekrano" onclick="toggleWakeLock()">
           <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>
         </button>
+      </div>
+      <div id="app-edge-top" class="edge-glow-top" data-edge-style="1" aria-hidden="true">
+        <div class="edge-fx-depth"></div>
+        <div class="edge-fx-bloom"></div>
+        <div class="edge-fx-line"></div>
+        <div class="edge-fx-notch"></div>
       </div>
     </header>
 
@@ -2845,6 +3545,28 @@
         </div>
       </section>
 
+      <!-- Workout Flow Controls (Exercise Collapse & Auto-Advance) -->
+      <section class="card">
+        <div class="section-title">
+          <span>Treniruotės eiga</span>
+          <span class="pill">Valdymas</span>
+        </div>
+        <div class="setting-toggle-row" onclick="toggleWorkoutFlowSetting('autoOpenNextEx')">
+          <div>
+            <div style="font-weight:700;font-size:13.5px;">⏭ Automatiškai atidaryti kitą nebaigtą</div>
+            <div style="font-size:11.5px;color:var(--text-muted);">Užbaigus pratimą automatiškai išskleidžia kitą nebaigtą pratimą</div>
+          </div>
+          <button id="sw-auto-open-next" type="button" class="ui-switch" aria-label="Automatiškai atidaryti kitą nebaigtą" tabindex="-1"></button>
+        </div>
+        <div class="setting-toggle-row" style="margin-bottom:0;" onclick="toggleWorkoutFlowSetting('allowCollapseActiveEx')">
+          <div>
+            <div style="font-weight:700;font-size:13.5px;">▾ Leisti suskleisti aktyvų pratimą</div>
+            <div style="font-size:11.5px;color:var(--text-muted);">Paspaudus bet kurio (ir paskutinio nebaigto) pratimo viršų jį galima suskleisti</div>
+          </div>
+          <button id="sw-allow-collapse-ex" type="button" class="ui-switch on" aria-label="Leisti suskleisti aktyvų pratimą" tabindex="-1"></button>
+        </div>
+      </section>
+
       <!-- Rest Timer Sound & Vibration Controls -->
       <section class="card">
         <div class="section-title">
@@ -2992,6 +3714,14 @@
           <span id="pwa-check-status" style="font-size:11.5px;color:var(--text-muted);">Versija: v10.0</span>
         </div>
       </section>
+
+      <!-- Copyright & Legal Usage Notice -->
+      <section class="card" style="margin-bottom:0;">
+        <div class="legal-footer-card">
+          <div style="font-weight:900;color:var(--text);font-size:12px;margin-bottom:4px;">© 2026 LeverLab 193 · Visos teisės saugomos</div>
+          <div>Ši programėlė, jos dizainas, išeities kodas ir biomechaninės animacijos yra autoriaus intelektinė nuosavybė. <strong>Draudžiama</strong> be išankstinio raštiško autoriaus leidimo kopijuoti, platinti, keisti, perparduoti ar naudoti komerciniais tikslais.</div>
+        </div>
+      </section>
     </main>
   </div>
 
@@ -3051,21 +3781,28 @@
 
   <!-- Fixed Bottom Navigation -->
   <nav class="bottom-nav">
-    <div class="bottom-nav-inner">
+    <div id="app-edge-bot" class="edge-glow-bot" data-edge-style="1" aria-hidden="true">
+      <div class="edge-fx-depth"></div>
+      <div class="edge-fx-bloom"></div>
+      <div class="edge-fx-line"></div>
+      <div class="edge-fx-notch"></div>
+    </div>
+    <div id="bottom-nav-inner" class="bottom-nav-inner" style="--nav-idx:0;">
+      <div class="nav-slide-ind" aria-hidden="true"></div>
       <button class="nav-item active" data-tab="workout" onclick="switchTab('workout')">
-        <svg viewBox="0 0 24 24"><path d="M6 5v14M18 5v14M2 9v6M22 9v6M6 12h12"/></svg>
+        <span class="nav-ico-wrap"><svg class="nv-ico-w" viewBox="0 0 24 24"><path d="M6 5v14M18 5v14M2 9v6M22 9v6M6 12h12"/></svg></span>
         <span>Treniruotė</span>
       </button>
       <button class="nav-item" data-tab="progress" onclick="switchTab('progress')">
-        <svg viewBox="0 0 24 24"><path d="M3 3v18h18"/><path d="m19 9-5 5-4-4-3 3"/></svg>
+        <span class="nav-ico-wrap"><svg class="nv-ico-p" viewBox="0 0 24 24"><path d="M3 3v18h18"/><path class="nv-line" pathLength="100" d="m19 9-5 5-4-4-3 3"/></svg></span>
         <span>Progresas</span>
       </button>
       <button class="nav-item" data-tab="body" onclick="switchTab('body')">
-        <svg viewBox="0 0 24 24"><circle cx="12" cy="5" r="3"/><path d="M12 8v8M8 12h8M9 21l3-5 3 5"/></svg>
+        <span class="nav-ico-wrap"><svg class="nv-ico-b" viewBox="0 0 24 24"><circle cx="12" cy="5" r="3"/><path d="M12 8v8M8 12h8M9 21l3-5 3 5"/></svg></span>
         <span>Kūnas</span>
       </button>
       <button class="nav-item" data-tab="settings" onclick="switchTab('settings')">
-        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9c.26.6.85 1 1.51 1H21a2 2 0 1 1 0 4h-.09c-.66 0-1.25.4-1.51 1Z"/></svg>
+        <span class="nav-ico-wrap"><svg class="nv-ico-s" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9c.26.6.85 1 1.51 1H21a2 2 0 1 1 0 4h-.09c-.66 0-1.25.4-1.51 1Z"/></svg></span>
         <span>Nustatymai</span>
       </button>
     </div>
@@ -3130,6 +3867,38 @@
         <button class="btn btn-sm btn-secondary" onclick="closeModal('modal-appearance')">Uždaryti</button>
       </div>
 
+      <!-- 0. Active Card Frame, Exercise Animation & Rest Timer Bar Live-Demo Pickers -->
+      <div class="grid-2" style="gap:7px;margin-bottom:7px;">
+        <button type="button" class="app-pick-card" style="padding:10px 9px;align-items:flex-start;text-align:left;gap:3px;background:var(--bg-surface);" onclick="closeModal('modal-appearance');openCardFrameModal()">
+          <span style="font-size:12px;font-weight:800;color:var(--text);">✨ Langelio rėmelis</span>
+          <span id="settings-frame-summary" style="font-size:10.5px;color:var(--accent);font-weight:700;line-height:1.25;">#9 Stiklinis šviesos kraštas</span>
+        </button>
+        <button type="button" class="app-pick-card" style="padding:10px 9px;align-items:flex-start;text-align:left;gap:3px;background:var(--bg-surface);" onclick="closeModal('modal-appearance');openCardAnimModal()">
+          <span style="font-size:12px;font-weight:800;color:var(--text);">🎬 Pratimų animacija</span>
+          <span id="settings-anim-summary" style="font-size:10.5px;color:var(--accent);font-weight:700;line-height:1.25;">#10 Šviesos blyksnis · 1.0×</span>
+        </button>
+      </div>
+      <div class="setting-toggle-row" style="margin-bottom:8px;padding:10px 11px;background:var(--bg-surface);border:1.5px solid var(--border);" onclick="closeModal('modal-appearance');openRestBarModal()">
+        <div class="row" style="min-width:0;flex:1;gap:9px;">
+          <span style="width:30px;height:30px;border-radius:9px;background:var(--accent-soft);color:var(--accent);display:inline-flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0;">⏱</span>
+          <div style="min-width:0;flex:1;">
+            <div style="font-weight:800;font-size:12.5px;color:var(--text);line-height:1.2;">Poilsio laikmačio juosta</div>
+            <div id="settings-rtbar-summary" style="font-size:11px;color:var(--accent);font-weight:700;margin-top:2px;line-height:1.2;">#4 Tikra skysčio fizika + burbuliukai</div>
+          </div>
+        </div>
+        <span class="pill pill-accent" style="padding:4px 9px;font-size:10.5px;font-weight:800;flex-shrink:0;">Keisti ▸</span>
+      </div>
+      <div class="setting-toggle-row" style="margin-bottom:10px;padding:10px 11px;background:var(--bg-surface);border:1.5px solid var(--border);" onclick="closeModal('modal-appearance');openEdgeGlowModal()">
+        <div class="row" style="min-width:0;flex:1;gap:9px;">
+          <span style="width:30px;height:30px;border-radius:9px;background:var(--accent-soft);color:var(--accent);display:inline-flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0;">🌌</span>
+          <div style="min-width:0;flex:1;">
+            <div style="font-weight:800;font-size:12.5px;color:var(--text);line-height:1.2;">Viršaus / apačios ribos švytėjimas</div>
+            <div id="settings-edgeglow-summary" style="font-size:11px;color:var(--accent);font-weight:700;margin-top:2px;line-height:1.2;">#1 Neoninis horizontas (10 stilių)</div>
+          </div>
+        </div>
+        <span class="pill pill-accent" style="padding:4px 9px;font-size:10.5px;font-weight:800;flex-shrink:0;">Keisti ▸</span>
+      </div>
+
       <!-- 1. Animacija & Pin + YouTube Button Style, Height & Width -->
       <div class="app-opt-sec">
         <div class="app-opt-hd">
@@ -3138,7 +3907,7 @@
         </div>
         <div id="app-animpin-grid" class="app-icon-grid-5"></div>
         <div style="font-size:10.5px;font-weight:800;color:var(--text-muted);margin-top:9px;">Aukštis (numatyta 46 px):</div>
-        <div id="app-aph-row" class="app-pill-row"></div>
+        <div id="app-aph-row" class="app-pill-row cols-6"></div>
         <div style="font-size:10.5px;font-weight:800;color:var(--text-muted);margin-top:7px;">Plotis (numatyta Vidutiniai):</div>
         <div id="app-apw-row" class="app-pill-row cols-3"></div>
       </div>
@@ -3152,48 +3921,42 @@
         <div id="app-plateico-grid" class="app-icon-grid-6"></div>
       </div>
 
-      <!-- 3. Rest Timer Progress Bar Style (#1–#10 + Live 6s Test Preview) -->
+      <!-- 3. Bottom Navigation Animation Style (11 p.) -->
       <div class="app-opt-sec">
         <div class="app-opt-hd">
-          <span>Poilsio laikmačio juosta</span>
-          <button type="button" class="btn btn-sm btn-ghost" style="min-height:26px;padding:2px 9px;font-size:10.5px;" onclick="previewRestBarFromSettings()">▶ 6 s testas</button>
+          <span>Apatinio meniu animacija</span>
+          <span id="app-navanim-lbl" class="pill pill-accent" style="font-size:10px;">#1 Slenkanti juostelė</span>
         </div>
-        <div id="app-rtbar-grid" class="app-icon-grid-10"></div>
-        <div id="app-rtbar-desc" style="font-size:11px;color:var(--text-muted);margin-top:7px;line-height:1.3;">#4 Tikra skysčio fizika + burbuliukai į dešinę</div>
+        <div id="app-navanim-row" class="app-pill-row"></div>
+        <div id="app-navanim-desc" style="font-size:10.5px;color:var(--text-muted);margin-top:5px;">Skystai slystanti viršutinė šviesos juostelė + gyvos ikonų animacijos.</div>
       </div>
 
-      <!-- 4. Plate Calculator Slider Max Cap -->
+      <!-- 4. Morphing Joint Traffic Light Style (13 p., Default #2) -->
       <div class="app-opt-sec">
+        <div class="app-opt-hd">
+          <span>Sąnarių šviesoforas („Laisvai“)</span>
+          <span id="app-jointstyle-lbl" class="pill pill-accent" style="font-size:10px;">#2 Vientisas kanalas</span>
+        </div>
+        <div id="app-jointstyle-row" class="app-pill-row"></div>
+      </div>
+
+      <!-- 5. "Ką reiškia?" & "Pastaba" Button Style (12 p., Default #2D) -->
+      <div class="app-opt-sec">
+        <div class="app-opt-hd">
+          <span>„Ką reiškia?“ ir „Pastaba“ stilius</span>
+          <span id="app-jointbtn-lbl" class="pill pill-accent" style="font-size:10px;">#2D Apvalūs dvyniai</span>
+        </div>
+        <div id="app-jointbtn-row" class="app-pill-row"></div>
+      </div>
+
+      <!-- 6. Plate Calculator Slider Max Cap -->
+      <div class="app-opt-sec" style="margin-bottom:0;">
         <div class="app-opt-hd">
           <span>Diskų slinkiklio maks. riba</span>
           <span id="app-platemax-lbl" class="pill pill-accent" style="font-size:10px;">100 kg</span>
         </div>
         <div id="app-platemax-row" class="app-pill-row cols-6"></div>
         <div style="font-size:10.5px;color:var(--text-muted);margin-top:6px;">Jei pratimo svoris viršija ribą, slinkiklis automatiškai laikinai prasiplės iki <em>svoris + 20 kg</em>.</div>
-      </div>
-
-      <!-- 5. Active Card Frame & Exercise Switch Animation Shortcuts -->
-      <div class="app-opt-sec" style="margin-bottom:0;">
-        <div class="setting-toggle-row" style="margin-bottom:7px;padding:9px 10px;background:var(--bg-card);" onclick="closeModal('modal-appearance');openCardFrameModal()">
-          <div class="row" style="min-width:0;flex:1;gap:8px;">
-            <span style="width:28px;height:28px;border-radius:8px;background:var(--accent-soft);color:var(--accent);display:inline-flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0;">✨</span>
-            <div style="min-width:0;flex:1;">
-              <div style="font-weight:800;font-size:12.5px;">Aktyvaus langelio rėmelis</div>
-              <div id="settings-frame-summary" style="font-size:11px;color:var(--accent);font-weight:700;">#9 Stiklinis šviesos kraštas</div>
-            </div>
-          </div>
-          <span class="pill pill-accent" style="font-size:10.5px;">Keisti ▸</span>
-        </div>
-        <div class="setting-toggle-row" style="margin-bottom:0;padding:9px 10px;background:var(--bg-card);" onclick="closeModal('modal-appearance');openCardAnimModal()">
-          <div class="row" style="min-width:0;flex:1;gap:8px;">
-            <span style="width:28px;height:28px;border-radius:8px;background:var(--accent-soft);color:var(--accent);display:inline-flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0;">🎬</span>
-            <div style="min-width:0;flex:1;">
-              <div style="font-weight:800;font-size:12.5px;">Pratimų animacija</div>
-              <div id="settings-anim-summary" style="font-size:11px;color:var(--accent);font-weight:700;">#10 Šviesos blyksnis · 1.0×</div>
-            </div>
-          </div>
-          <span class="pill pill-accent" style="font-size:10.5px;">Keisti ▸</span>
-        </div>
       </div>
     </div>
   </div>
@@ -3305,7 +4068,7 @@
   </div>
 
   <!-- Cable Ratio 1:1 vs 2:1 Visual Guide Modal -->
-  <div id="modal-cable-guide" class="modal-backdrop" onclick="closeModalOnBackdrop(event, 'modal-cable-guide');stopCableGuideAnim();">
+  <div id="modal-cable-guide" class="modal-backdrop" onclick="if(event.target===this) closeCableGuideModal();">
     <div class="modal-sheet">
       <div class="row-between" style="margin-bottom:6px;">
         <h3 style="margin:0;font-size:16.5px;">Kaip atskirti 1:1 nuo 2:1?</h3>
@@ -3425,8 +4188,202 @@
     </div>
   </div>
 
+  <!-- Rest Timer Bar Style Picker & Live Preview Modal (v10: 1 Variant <-> All 10 Animated Switcher!) -->
+  <div id="modal-rest-bar" class="modal-backdrop" data-view="single" onclick="if(event.target===this) closeRestBarModal()">
+    <div class="modal-sheet">
+      <div class="row-between" style="margin-bottom:6px;">
+        <div>
+          <span class="pill pill-accent" style="font-size:10px;padding:2px 8px;">GYVA DEMONSTRACIJA</span>
+          <h3 style="margin:4px 0 0 0;font-size:17px;">⏱ Poilsio laikmačio juosta</h3>
+        </div>
+        <button class="btn btn-sm btn-secondary" onclick="closeRestBarModal()">Uždaryti</button>
+      </div>
+
+      <!-- Clean Native Segmented Mode Toggle (1 Variant <-> All 10 Live) -->
+      <div class="rtm-view-sw" role="tablist">
+        <div class="rtm-view-thumb"></div>
+        <button id="rtm-tab-single" type="button" class="rtm-view-btn active" onclick="setRestBarModalView('single')">
+          <svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="3"/><path d="M7 14h10"/></svg>
+          <span>1 variantas</span>
+        </button>
+        <button id="rtm-tab-all" type="button" class="rtm-view-btn" onclick="setRestBarModalView('all')">
+          <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="4" rx="1.5"/><rect x="3" y="10" width="18" height="4" rx="1.5"/><rect x="3" y="16" width="18" height="4" rx="1.5"/></svg>
+          <span>Visi 10 gyvai</span>
+        </button>
+      </div>
+
+      <!-- Bidirectional Smooth Animated Stage -->
+      <div id="rtm-stage" class="rtm-stage">
+        <div id="rtm-pane-single" class="rtm-pane rtm-pane-single">
+          <div id="rtbar-pick-grid" class="anim-pick-grid"></div>
+          <div style="margin-bottom:9px;">
+            <div id="rtbar-pick-title" style="font-size:12.5px;font-weight:800;color:var(--accent);">#4 Tikra skysčio fizika + burbuliukai</div>
+            <div id="rtbar-pick-desc" style="font-size:11px;color:var(--text-muted);">Gyvos bangos, burbuliukai į dešinę ir teliūškavimas per ±15 s</div>
+          </div>
+
+          <!-- Live Interactive Rest Timer Bar Preview Card -->
+          <div style="padding:10px 4px 12px;">
+            <div id="rtbar-demo-card" class="rest-timer-bar visible" data-rt-style="4" style="animation:none;">
+              <canvas id="rtbar-demo-bg" class="rt-bg-canvas"></canvas>
+              <svg id="rtbar-demo-pb6-svg" class="rt-pb6-svg" viewBox="0 0 340 106">
+                <defs>
+                  <linearGradient id="rtDemoPb6Grad" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="0%" stop-color="#e0f2fe"/>
+                    <stop offset="45%" stop-color="#38bdf8"/>
+                    <stop offset="100%" stop-color="#10b981"/>
+                  </linearGradient>
+                  <linearGradient id="rtDemoPb6GradGo" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="0%" stop-color="#dcfce7"/>
+                    <stop offset="50%" stop-color="#4ade80"/>
+                    <stop offset="100%" stop-color="#16a34a"/>
+                  </linearGradient>
+                </defs>
+                <rect id="rtbar-demo-pb6-track" class="rt-pb6-track" x="1.5" y="1.5" width="337" height="103" rx="18" ry="18"/>
+                <path class="rt-pb6-aura rt-pb6-sym rt-pb6-left" style="stroke:url(#rtDemoPb6Grad);" pathLength="100" stroke-dasharray="100 100" stroke-dashoffset="32"/>
+                <path class="rt-pb6-aura rt-pb6-sym rt-pb6-right" style="stroke:url(#rtDemoPb6Grad);" pathLength="100" stroke-dasharray="100 100" stroke-dashoffset="32"/>
+                <path class="rt-pb6-glow rt-pb6-sym rt-pb6-left" style="stroke:url(#rtDemoPb6Grad);" pathLength="100" stroke-dasharray="100 100" stroke-dashoffset="32"/>
+                <path class="rt-pb6-glow rt-pb6-sym rt-pb6-right" style="stroke:url(#rtDemoPb6Grad);" pathLength="100" stroke-dasharray="100 100" stroke-dashoffset="32"/>
+                <path class="rt-pb6-stroke rt-pb6-sym rt-pb6-left" style="stroke:url(#rtDemoPb6Grad);" pathLength="100" stroke-dasharray="100 100" stroke-dashoffset="32"/>
+                <path class="rt-pb6-stroke rt-pb6-sym rt-pb6-right" style="stroke:url(#rtDemoPb6Grad);" pathLength="100" stroke-dasharray="100 100" stroke-dashoffset="32"/>
+                <path class="rt-pb6-tip rt-pb6-tip-path rt-pb6-left" pathLength="100" stroke-dasharray="2.4 104" stroke-dashoffset="40.8"/>
+                <path class="rt-pb6-tip rt-pb6-tip-path rt-pb6-right" pathLength="100" stroke-dasharray="2.4 104" stroke-dashoffset="40.8"/>
+              </svg>
+              <div class="rest-timer-top">
+                <div class="rest-timer-meta">
+                  <div id="rtbar-demo-time" class="rest-time-readout">01:22</div>
+                  <span id="rtbar-demo-phase" class="rt-phase-pill">Poilsis</span>
+                  <div class="rest-timer-lbl">Poilsis · Hack Squat</div>
+                </div>
+                <button type="button" class="rest-btn" style="color:var(--accent);" onclick="replayRestBarDemo()">↻ Iš naujo</button>
+              </div>
+              <div class="rest-controls-row">
+                <button type="button" class="rest-btn" onclick="nudgeRestBarDemo(-15)">−15 s</button>
+                <button id="rtbar-demo-play-btn" type="button" class="rest-btn" style="color:var(--yellow);" onclick="toggleRestBarDemoPlay()">⏸ Pauzė</button>
+                <button type="button" class="rest-btn" onclick="nudgeRestBarDemo(15)">+15 s</button>
+              </div>
+              <div id="rtbar-demo-slot" class="rt-bar-slot"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Pane B: All 10 Live Animated Gallery -->
+        <div id="rtm-pane-all" class="rtm-pane rtm-pane-all"></div>
+      </div>
+
+      <div class="anim-spd-row" style="margin-bottom:10px;">
+        <span>Laikas:</span>
+        <input id="rtbar-demo-slider" type="range" min="0" max="100" value="68" oninput="scrubRestBarDemo(this.value)">
+        <span id="rtbar-demo-pct" style="min-width:34px;text-align:right;font-family:var(--font-mono);color:var(--accent);">68%</span>
+      </div>
+
+      <div class="grid-2">
+        <button type="button" class="btn btn-sm btn-secondary" onclick="replayRestBarDemo()">▶ 8 s testas</button>
+        <button type="button" class="btn btn-sm btn-primary" onclick="closeRestBarModal();showToast('Poilsio juosta išsaugota!');">✓ Taikyti</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Scroll Boundary Edge Glow Picker & Live Mini-Phone Preview Modal (10 Flagship Styles + Off) -->
+  <div id="modal-edge-glow" class="modal-backdrop" onclick="closeModalOnBackdrop(event, 'modal-edge-glow')">
+    <div class="modal-sheet">
+      <div class="row-between" style="margin-bottom:8px;">
+        <div>
+          <span class="pill pill-accent" style="font-size:10px;padding:2px 8px;">GYVA DEMONSTRACIJA</span>
+          <h3 style="margin:4px 0 0 0;font-size:17px;">🌌 Viršaus / apačios ribos švytėjimas</h3>
+        </div>
+        <button class="btn btn-sm btn-secondary" onclick="closeModal('modal-edge-glow')">Uždaryti</button>
+      </div>
+      <div id="eg-pick-grid" class="anim-pick-grid"></div>
+      <div style="margin-bottom:9px;">
+        <div id="eg-pick-title" style="font-size:12.5px;font-weight:800;color:var(--accent);">#1 Neoninis horizontas</div>
+        <div id="eg-pick-desc" style="font-size:11px;color:var(--text-muted);">2 sluoksnių tūrinė šviesa ir ryški gija pasiekus viršų ar apačią.</div>
+      </div>
+
+      <div class="app-pill-row cols-3" style="margin:0 0 8px 0;">
+        <button type="button" class="app-pill-btn" onclick="jumpEdgeDemoScroll('top')">↑ Viršuje (0%)</button>
+        <button type="button" class="app-pill-btn" onclick="jumpEdgeDemoScroll('mid')">↕ Viduryje</button>
+        <button type="button" class="app-pill-btn" onclick="jumpEdgeDemoScroll('bot')">↓ Apačioje (100%)</button>
+      </div>
+
+      <div id="eg-demo-phone" class="eg-demo-phone">
+        <span id="eg-demo-pos-pill" class="eg-pos-pill">↑ VIRŠUS · 0%</span>
+        <div class="eg-demo-hdr">
+          <div style="font-size:12px;font-weight:900;">LeverLab 193 <span style="color:var(--accent);font-family:var(--font-mono);font-size:10.5px;margin-left:4px;">02:29</span></div>
+          <span style="font-size:11px;color:var(--accent);font-weight:800;">☀</span>
+          <div id="eg-demo-edge-top" class="edge-glow-top is-at-edge" data-edge-style="1">
+            <div class="edge-fx-depth"></div>
+            <div class="edge-fx-bloom"></div>
+            <div class="edge-fx-line"></div>
+            <div class="edge-fx-notch"></div>
+          </div>
+        </div>
+        <div id="eg-demo-scroll" class="eg-demo-scroll" onscroll="updateEdgeDemoScroll()">
+          <div class="eg-demo-card active"><strong>Treniruotė B · Darbinis</strong><span style="color:var(--accent);font-weight:800;">Keisti ▾</span></div>
+          <div class="eg-demo-card"><span>🔥 5 min. apšilimas (5/5)</span><span style="color:var(--green);font-weight:900;">✓</span></div>
+          <div class="eg-demo-card active"><span>1. Rumuniška mirties trauka</span><span style="color:var(--accent);font-weight:800;">70 kg</span></div>
+          <div class="eg-demo-card"><span>2. Vertikalus traukimas klūpint</span><span style="color:var(--text-muted);">▾</span></div>
+          <div class="eg-demo-card"><span>3. 30° spaudimas hanteliais</span><span style="color:var(--text-muted);">▾</span></div>
+          <div class="eg-demo-card"><span>4. Kojų lenkimas gulint</span><span style="color:var(--text-muted);">▾</span></div>
+          <div class="eg-demo-card" style="justify-content:center;color:var(--green);border-color:var(--green);font-weight:900;">✓ Išsaugoti treniruotę (apačia)</div>
+        </div>
+        <div class="eg-demo-bnav">
+          <div id="eg-demo-edge-bot" class="edge-glow-bot" data-edge-style="1">
+            <div class="edge-fx-depth"></div>
+            <div class="edge-fx-bloom"></div>
+            <div class="edge-fx-line"></div>
+            <div class="edge-fx-notch"></div>
+          </div>
+          <span class="on">Treniruotė</span><span>Progresas</span><span>Kūnas</span><span>Nustatymai</span>
+        </div>
+      </div>
+
+      <button type="button" class="btn btn-primary mt-12" style="width:100%;" onclick="closeModal('modal-edge-glow')">✓ Taikyti</button>
+    </div>
+  </div>
+
+  <!-- Animated Frosted RIR Guide Modal (Long-Press on RIR Button) -->
+  <div id="modal-rir-guide" class="modal-backdrop" onclick="closeModalOnBackdrop(event, 'modal-rir-guide')">
+    <div class="modal-sheet rir-guide-sheet" role="dialog" aria-modal="true" aria-labelledby="rir-guide-title">
+      <div class="rir-anim-item row-between" style="align-items:flex-start;gap:10px;">
+        <div>
+          <span id="rir-guide-mode-pill" class="pill pill-green" style="font-size:10px;margin-bottom:5px;">🟢 ADAPTACIJA · RIR 3–4</span>
+          <h3 id="rir-guide-title" style="margin:4px 0 0 0;font-size:16.5px;line-height:1.25;">RIR 3 – geriausias taikinys adaptacijai</h3>
+        </div>
+        <button type="button" class="btn btn-sm btn-secondary" onclick="closeModal('modal-rir-guide')">✕</button>
+      </div>
+
+      <div id="rir-guide-scale" class="rir-anim-item rir-scale-row">
+        <button type="button" class="rir-scale-pill" data-rir="4+" onclick="pickRirFromGuide('4+')"><strong>4+</strong><span>Lengva</span></button>
+        <button type="button" class="rir-scale-pill" data-rir="3" onclick="pickRirFromGuide('3')"><strong>3</strong><span>Adaptacija</span></button>
+        <button type="button" class="rir-scale-pill" data-rir="2" onclick="pickRirFromGuide('2')"><strong>2</strong><span>Darbinis</span></button>
+        <button type="button" class="rir-scale-pill" data-rir="1" onclick="pickRirFromGuide('1')"><strong>1</strong><span>Sunku</span></button>
+        <button type="button" class="rir-scale-pill" data-rir="0" onclick="pickRirFromGuide('0')"><strong>0</strong><span>Riba</span></button>
+      </div>
+
+      <div class="rir-anim-item">
+        <div class="rir-guide-ttl">Kodėl RIR 3–4 tinka geriausiai (193 cm):</div>
+        <div class="rir-guide-list">
+          <div class="rir-guide-item green"><strong>Sausgyslės ir sąnariai spėja prisitaikyti:</strong> raumenys atsigauna greičiau, bet prie ilgų svertų (89 cm rankų, 57 cm blauzdų) alkūnių, pečių ir kelių sausgyslėms reikia 1–2 sav. švelnaus mechaninio stimulo be ribinio krūvio.</div>
+          <div class="rir-guide-item"><strong>Švari technika:</strong> likus 3 pakartojimams atsargoje, paskutiniai pakartojimai dar nebūna „kreivi“ ar trūkčiojantys, todėl neperkraunami sąnariai.</div>
+          <div class="rir-guide-item"><strong>Lengvas atsistatymas:</strong> lieka minimalus raumenų skausmas (<em>DOMS</em>), tad be vargo išlaikysi 48 val. ritmą tarp A ir B treniruočių.</div>
+        </div>
+      </div>
+
+      <div class="rir-anim-item">
+        <div class="rir-guide-ttl">Praktinis orientyras salėje:</div>
+        <div class="rir-guide-list">
+          <div class="rir-guide-item green"><strong>RIR 3</strong> – kai paskutinis pakartojimas jau <em>pastebimai sulėtėja</em>, bet dar jauti, kad švariai padarytum 3, jei labai reikėtų.</div>
+          <div class="rir-guide-item yellow"><strong>Geriau RIR 4+</strong> – pačioje 1-oje treniruotėje po ilgesnės pertraukos arba bet kuriame pratime, kur pajunti <strong>🟡 Įtampa</strong>.</div>
+          <div class="rir-guide-item yellow"><strong>Saugiklis:</strong> pavargus dažnai atrodo, kad „liko 3“, nors realiai liko 1–2. Adaptacijoje jei abejoji – geriau padėk svorį <strong>1 pakartojimu anksčiau</strong>, o į <em>Darbinį</em> (<strong>RIR 1–2</strong>) pereik tik po 1–2 sav., kai treniruotes baigi su <strong>🟢 Laisvai</strong>.</div>
+        </div>
+      </div>
+
+      <button type="button" class="rir-anim-item btn btn-primary mt-12" style="width:100%;" onclick="closeModal('modal-rir-guide')">✓ Supratau</button>
+    </div>
+  </div>
+
   <!-- What's New in v10.0 + Full Release History Modal -->
-  <div id="modal-whats-new" class="modal-backdrop" onclick="closeModalOnBackdrop(event, 'modal-whats-new')">
+  <div id="modal-whats-new" class="modal-backdrop" onclick="if(event.target===this) closeWhatsNewModal();">
     <div class="modal-sheet">
       <div class="row-between" style="margin-bottom:8px;">
         <div>
@@ -3460,8 +4417,8 @@
         <div class="wn-item">
           <div class="wn-ico">🛡️</div>
           <div>
-            <div class="wn-title">Saugios zonos (S26 Ultra) ir visų 4 temų šlifavimas</div>
-            <div class="wn-sub">Prilimpanti aktyvaus pratimo juostelė atitraukta po viršutine saugia zona (<code>safe-area-inset-top</code>), pritaikytas aukštas kontrastas <em>Nordic Light</em> temai, o <code>−15 s / +15 s</code> gyvai suteliūškuoja skysčio poilsio juostą.</div>
+            <div class="wn-title">Saugios zonos, RIR gidas, meniu animacijos ir „Laisvai“ šviesoforas</div>
+            <div class="wn-sub">Palaikius <code>RIR</code> mygtuką iššoka animuota 193 cm adaptacijos gido kortelė; pridėtas <strong>10 stilių</strong> viršaus/apačios ribų švytėjimas su gyvu mini-telefonu; poilsio juostų lange – švarus perjungiklis <strong>1 variantas ↔ Visi 10 gyvai</strong>; <em>Išvaizdos nustatymuose</em> – <strong>6</strong> apatinio meniu animacijos (numatytai <code>#1</code>), sklandžiai išsiskleidžiantis <strong>„Laisvai“</strong> šviesoforas (<strong>4</strong> stiliai, numatytai <code>#2</code>) ir organiški <em>„Ką reiškia?“ / „Pastaba“</em> mygtukai (<strong>11</strong> stilių, numatytai <code>#2D Apvalūs dvyniai</code>); <em>Nustatymų</em> apačioje – autorių teisių apsauga.</div>
           </div>
         </div>
 
@@ -4313,7 +5270,13 @@
         animPinWidth: 'md',
         plateIconStyle: '6',
         restBarStyle: '4',
+        scrollEdgeStyle: '1',
+        navAnimStyle: '1',
+        jointStyle: '2',
+        jointBtnStyle: '2d',
         plateCalcMax: 100,
+        autoOpenNextEx: false,
+        allowCollapseActiveEx: true,
         timerTone: 'soft',
         timerVolume: 'loud',
         lastSeenRelease: null,
@@ -4340,10 +5303,13 @@
 
     let state = loadState();
     let activeExId = null;
+    let userCollapsedAll = false;
     let prevRenderedExId = null;
+    let hasRenderedWorkoutOnce = false;
     let openDrawers = new Set();
     let openExInfo = new Set();
     let openNotes = new Set();
+    let closedNotes = new Set();
     let programBarOpen = true;
     let warmupInlineOpen = true;
     let extraToolsOpen = false;
@@ -4386,11 +5352,17 @@
         cardAnimSpeed: parsed.cardAnimSpeed ? Math.max(0.4, Math.min(2.2, Number(parsed.cardAnimSpeed))) : 1.0,
         cardFrame: parsed.cardFrame !== undefined ? String(parsed.cardFrame) : '9',
         animPinStyle: ['1','2','3','4','5'].includes(String(parsed.animPinStyle)) ? String(parsed.animPinStyle) : '5',
-        animPinHeight: [34, 40, 46, 52].includes(Number(parsed.animPinHeight)) ? Number(parsed.animPinHeight) : 46,
+        animPinHeight: [34, 40, 46, 52, 60, 70].includes(Number(parsed.animPinHeight)) ? Number(parsed.animPinHeight) : 46,
         animPinWidth: ['sm','md','lg'].includes(parsed.animPinWidth) ? parsed.animPinWidth : 'md',
         plateIconStyle: ['1','2','3','4','5','6'].includes(String(parsed.plateIconStyle)) ? String(parsed.plateIconStyle) : '6',
         restBarStyle: ['1','2','3','4','5','6','7','8','9','10'].includes(String(parsed.restBarStyle)) ? String(parsed.restBarStyle) : '4',
+        scrollEdgeStyle: ['0','1','2','3','4','5','6','7','8','9','10'].includes(String(parsed.scrollEdgeStyle)) ? String(parsed.scrollEdgeStyle) : '1',
+        navAnimStyle: ['0','1','2','3','4','5','6'].includes(String(parsed.navAnimStyle)) ? String(parsed.navAnimStyle) : '1',
+        jointStyle: ['1','2','3','4'].includes(String(parsed.jointStyle)) ? String(parsed.jointStyle) : '2',
+        jointBtnStyle: ['1','3','4','5','6','2a','2b','2c','2d','2e','2f'].includes(String(parsed.jointBtnStyle)) ? String(parsed.jointBtnStyle) : '2d',
         plateCalcMax: [80, 100, 140, 180, 220, 260].includes(Number(parsed.plateCalcMax)) ? Number(parsed.plateCalcMax) : 100,
+        autoOpenNextEx: parsed.autoOpenNextEx !== undefined ? !!parsed.autoOpenNextEx : false,
+        allowCollapseActiveEx: parsed.allowCollapseActiveEx !== undefined ? !!parsed.allowCollapseActiveEx : true,
         timerTone: ['soft', 'double', 'gong'].includes(parsed.timerTone) ? parsed.timerTone : 'soft',
         timerVolume: ['normal', 'loud'].includes(parsed.timerVolume) ? parsed.timerVolume : 'loud',
         lastSeenRelease: parsed.lastSeenRelease || null,
@@ -4512,6 +5484,22 @@
       state[key] = !state[key];
       saveState();
       renderTimerSignalControls();
+    }
+
+    function toggleWorkoutFlowSetting(key) {
+      state[key] = !state[key];
+      if (key === 'allowCollapseActiveEx' && !state.allowCollapseActiveEx) {
+        userCollapsedAll = false;
+      }
+      saveState();
+      renderWorkoutFlowControls();
+    }
+
+    function renderWorkoutFlowControls() {
+      const swA = document.getElementById('sw-auto-open-next');
+      const swC = document.getElementById('sw-allow-collapse-ex');
+      if (swA) swA.classList.toggle('on', !!state.autoOpenNextEx);
+      if (swC) swC.classList.toggle('on', state.allowCollapseActiveEx !== false);
     }
 
     function setTimerTone(tone) {
@@ -4986,7 +5974,7 @@
           type: 'increase',
           suggestedWeight: nextW,
           title: `📈 Šiandien bandyk +${inc} kg → ${nextW} kg`,
-          sub: `Praeitą kartą pasiekei ${ex.maxReps} pak. su 🟢 Švaru sąnariais.`,
+          sub: `Praeitą kartą pasiekei ${ex.maxReps} pak. su 🟢 Laisvai sąnariais.`,
           btnLabel: `Taikyti ${nextW} kg`
         };
       }
@@ -5073,6 +6061,7 @@
       const entries = {};
       [...exIds, ...GRIP_EXERCISES].forEach(exId => { entries[exId] = createDraftEntry(exId); });
       state.draft = { type, startedAt: null, showGrip: false, entries };
+      userCollapsedAll = false;
       activeExId = exIds[0] || null;
       saveState();
     }
@@ -5099,6 +6088,7 @@
           state.draft.entries[exId] = createDraftEntry(exId);
         } else {
           const entry = state.draft.entries[exId];
+          if (!entry.comfort) entry.comfort = 'green';
           const targetSets = getTargetSetCount(!!ex.isGrip);
           while (entry.sets.length < targetSets) {
             const last = entry.sets[entry.sets.length - 1] || { weight: 20, reps: ex.minReps, rir: getDefaultRir() };
@@ -5109,9 +6099,11 @@
           }
         }
       });
-      if (!activeExId || !neededIds.includes(activeExId)) {
+      if (!userCollapsedAll && (!activeExId || !neededIds.includes(activeExId))) {
         const firstIncomplete = neededIds.find(id => state.draft.entries[id] && !state.draft.entries[id].sets.every(s => s.done));
         activeExId = firstIncomplete || neededIds[0] || null;
+      } else if (activeExId && !neededIds.includes(activeExId)) {
+        activeExId = null;
       }
     }
 
@@ -5501,9 +6493,11 @@
       const hasDone = state.draft && Object.values(state.draft.entries).some(e => e.sets.some(s => s.done));
       if (hasDone) {
         askConfirm(`Perjungti į Treniruotę ${type}?`, 'Jau pažymėtos serijos bus išvalytos.', () => {
+          openNotes.clear(); closedNotes.clear();
           state.draft = null; ensureDraft(type); renderWorkoutView();
         });
       } else {
+        openNotes.clear(); closedNotes.clear();
         state.draft = null; ensureDraft(type); renderWorkoutView();
       }
     }
@@ -5699,7 +6693,8 @@
       const exIds = getSlotExerciseIds(type);
       const exDiv = document.getElementById('exercises-divider');
       if (exDiv) exDiv.textContent = `PRATIMAI · ${exIds.length}`;
-      const shouldAnimSwitch = (prevRenderedExId !== null && activeExId !== prevRenderedExId && state.cardAnim !== '0');
+      const shouldAnimSwitch = (hasRenderedWorkoutOnce && activeExId !== null && activeExId !== prevRenderedExId && state.cardAnim !== '0');
+      hasRenderedWorkoutOnce = true;
       prevRenderedExId = activeExId;
       const container = document.getElementById('exercises-container');
       container.innerHTML = '';
@@ -5738,6 +6733,7 @@
       updateWorkoutProgressStats();
       updateSessionClock();
       syncBioAnimationLoop();
+      requestAnimationFrame(updateScrollEdgeState);
     }
 
     let activeExObserver = null;
@@ -5771,6 +6767,8 @@
       const div = document.createElement('div');
       div.className = 'ex-strip' + (allDone ? ' done-strip' : '');
       div.onclick = () => {
+        if (collapseAnimTimerId) { clearTimeout(collapseAnimTimerId); collapseAnimTimerId = null; }
+        userCollapsedAll = false;
         activeExId = exId;
         renderWorkoutView();
         requestAnimationFrame(() => {
@@ -5850,7 +6848,8 @@
       const prevLog = getLastExerciseLog(exId);
       const prog = evaluateDoubleProgression(ex, prevLog);
       const isDrawerOpen = openDrawers.has(exId);
-      const isNoteOpen = openNotes.has(exId) || entry.comfort !== 'green' || (entry.note && entry.note.trim().length > 0);
+      const hasNote = !!(entry.note && entry.note.trim().length > 0);
+      const isNoteOpen = openNotes.has(exId) || (!closedNotes.has(exId) && (entry.comfort !== 'green' || hasNote));
       const doneCount = entry.sets.filter(s => s.done).length;
       const totalSets = entry.sets.length;
       const allDone = totalSets > 0 && doneCount === totalSets;
@@ -5922,7 +6921,13 @@
                 </div>
                 <div class="row" style="gap:6px;flex-shrink:0;">
                   ${showPlatesBtn ? `<button type="button" class="plate-ico-btn" title="Diskų skaičiuoklė šiam svoriui" aria-label="Diskų skaičiuoklė" onclick="openPlateForSet('${exId}', ${sIdx}, event)">${plateMeta.svg}</button>` : ''}
-                  <button class="rir-single-btn" id="rir-btn-${exId}-${sIdx}" onclick="cycleSetRir('${exId}', ${sIdx})">
+                  <button class="rir-single-btn" id="rir-btn-${exId}-${sIdx}"
+                    onpointerdown="startRirHold(event, '${exId}', ${sIdx}, this)"
+                    onpointermove="moveRirHold(event, this)"
+                    onpointerup="cancelRirHold(this)"
+                    onpointercancel="cancelRirHold(this)"
+                    oncontextmenu="event.preventDefault();return false;"
+                    onclick="cycleSetRir('${exId}', ${sIdx})">
                     RIR ${s.rir} ↻
                   </button>
                 </div>
@@ -5974,7 +6979,7 @@
       }).join('');
 
       const slotHeaderTxt = typeof displayNum === 'number' ? `PRATIMAS ${displayNum} IŠ ${totalSlots}` : `PRIEDAS ${displayNum}`;
-      const canCollapseSelf = typeof displayNum === 'number';
+      const canCollapseSelf = (typeof displayNum === 'number') && (state.allowCollapseActiveEx !== false);
       const animPinHtml = buildAnimPinDualRowHtml(exId, ex.yt, isDrawerOpen);
 
       card.innerHTML = `
@@ -6098,66 +7103,102 @@
         <div class="joint-section">
           <div class="joint-header">
             <span class="joint-title">Sąnarių ir sausgyslių pojūtis</span>
-            <button id="joint-help-btn-${exId}" type="button" class="joint-help-btn" onclick="toggleJointHelp('${exId}')">${jointHelpOpen ? '▲ Slėpti' : 'ℹ️ Ką reiškia?'}</button>
+            ${buildJointActionButtons(exId, jointHelpOpen, isNoteOpen, hasNote).infoBtn}
           </div>
 
           <div id="joint-help-${exId}" class="collapsible ${jointHelpOpen ? '' : 'collapsed'}">
             <div class="collapsible-inner">
               <div class="joint-help-box">
                 <div style="color:var(--text);padding-bottom:4px;border-bottom:1px solid var(--border);">
-                  <strong>Kam ir kada spausti?</strong> Jei viskas gerai – <strong>nieko nespaudinėk</strong> (palik 🟢). Spausk tik tada, jei per seriją pajunti sąnarį ar sausgyslę – žymė išsisaugo <em>Progreso</em> istorijoje, kad laiku pastebėtum riziką ir išvengtum traumos.
+                  <strong>Kam ir kada spausti?</strong> Jei viskas gerai – <strong>nieko nespaudinėk</strong> (palik 🟢 <em>Laisvai</em>). Spausk tik tada, jei per seriją pajunti sąnarį ar sausgyslę – žymė išsisaugo <em>Progreso</em> istorijoje, kad laiku pastebėtum riziką ir išvengtum traumos.
                 </div>
-                <div><strong style="color:var(--green);">🟢 Švaru (numatyta):</strong> dirba tik raumuo – nieko spausti nereikia.</div>
+                <div><strong style="color:var(--green);">🟢 Laisvai (numatyta):</strong> dirba tik raumuo – nieko spausti nereikia.</div>
                 <div><strong style="color:var(--yellow);">🟡 Įtampa:</strong> jauti lengvą maudimą ar tempimą sąnaryje / sausgyslėje (pvz., kelis, alkūnė, petys) – sumažink svorį 10–15 %, sutrumpink amplitudę arba naudok <strong>Planą B</strong>.</div>
-                <div><strong style="color:var(--red);">🔴 Stop:</strong> aštrus skausmas, dūris ar kirtimas sąnaryje – iškart nutrauk šį pratimą ir pakeisk jį per <strong>Planą B</strong>.</div>
+                <div><strong style="color:var(--red);">🔴 Skausmas:</strong> aštrus skausmas, dūris ar kirtimas sąnaryje – iškart nutrauk šį pratimą ir pakeisk jį per <strong>Planą B</strong>.</div>
               </div>
             </div>
           </div>
 
           <div class="silent-footer">
-            <div class="joint-dots">
-              <button class="j-dot g ${entry.comfort === 'green' ? 'active' : ''}" onclick="setComfort('${exId}', 'green')">🟢 Švaru</button>
-              <button class="j-dot y ${entry.comfort === 'yellow' ? 'active' : ''}" onclick="setComfort('${exId}', 'yellow')">🟡 Įtampa</button>
-              <button class="j-dot r ${entry.comfort === 'red' ? 'active' : ''}" onclick="setComfort('${exId}', 'red')">🔴 Stop</button>
+            <div class="joint-dots morph" id="joint-dots-${exId}">
+              <button type="button" class="j-dot g ${entry.comfort === 'green' ? 'active' : ''}" data-c="green" aria-label="Laisvai" onclick="setComfort('${exId}', 'green')"><span class="j-orb"></span><span class="j-txt">Laisvai</span></button>
+              <button type="button" class="j-dot y ${entry.comfort === 'yellow' ? 'active' : ''}" data-c="yellow" aria-label="Įtampa" onclick="setComfort('${exId}', 'yellow')"><span class="j-orb"></span><span class="j-txt">Įtampa</span></button>
+              <button type="button" class="j-dot r ${entry.comfort === 'red' ? 'active' : ''}" data-c="red" aria-label="Skausmas" onclick="setComfort('${exId}', 'red')"><span class="j-orb"></span><span class="j-txt">Skausmas</span></button>
             </div>
-            <button class="btn btn-sm btn-secondary" style="min-height:32px;padding:3px 10px;font-size:12px;" onclick="toggleNoteField('${exId}')">📝 Pastaba</button>
+            ${buildJointActionButtons(exId, jointHelpOpen, isNoteOpen, hasNote).noteBtn}
           </div>
 
-          ${entry.comfort === 'yellow' ? `
-            <div class="joint-action-hint y">
-              <span style="flex:1;min-width:180px;"><strong style="color:var(--yellow);">Sąnario / sausgyslės įtampa:</strong> sumažink svorį 10–15 %, sulėtink tempą arba pabandyk palengvinimą.</span>
-              <button type="button" class="btn btn-sm btn-amber-ghost" style="min-height:30px;padding:4px 9px;font-size:11.5px;" onclick="openPlanBModal('${exId}', '${slotKey || ''}')">⚡ Planas B</button>
-            </div>` : ''}
-
-          ${entry.comfort === 'red' ? `
-            <div class="joint-action-hint r">
-              <span style="flex:1;min-width:180px;"><strong style="color:var(--red);">Aštrus skausmas – sustok čia ir dabar!</strong> Pasižymėk vietą žemiau ir pakeisk pratimą.</span>
-              <button type="button" class="btn btn-sm btn-danger" style="min-height:30px;padding:4px 9px;font-size:11.5px;font-weight:800;" onclick="openPlanBModal('${exId}', '${slotKey || ''}')">⚡ Planas B</button>
-            </div>` : ''}
-
-          ${isNoteOpen ? `
-            <div class="note-box">
-              <div class="note-box-hd">
-                <span>📝 Pastaba („${ex.name}“)</span>
-                <div class="row" style="gap:6px;">
-                  <button type="button" class="note-lock-btn ${noteChipsUnlocked ? 'unlocked' : ''}" title="${noteChipsUnlocked ? 'Užrakinti greitus mygtukus' : 'Atrakinti žymeklių redagavimą'}" onclick="toggleNoteChipsLock()">${noteChipsUnlocked ? '🔓 Redaguoti' : '🔒 Užrakinta'}</button>
-                  ${entry.note ? `<button type="button" style="font-size:11px;color:var(--text-muted);" onclick="clearExerciseNote('${exId}')">Išvalyti</button>` : ''}
-                </div>
-              </div>
-              <div class="note-chips ${noteChipsUnlocked ? '' : 'locked'}">
-                ${(state.noteChips || []).map((chip, cIdx) => `
-                  <span class="note-chip-wrap">
-                    <button type="button" class="note-chip-add" onclick="appendQuickNote('${exId}', '${escapeAttr(chip).replace(/'/g, '&#39;')}')">+ ${escapeAttr(chip)}</button>
-                    <button type="button" class="note-chip-del" title="Pašalinti žymeklį" onclick="deleteCustomNoteChip(${cIdx})">×</button>
-                  </span>`).join('')}
-                <button type="button" class="note-chip note-chip-custom-add" style="border-style:dashed;color:var(--accent);" onclick="addCustomNoteChip('${exId}')">+ Pridėti savo</button>
-              </div>
-              <textarea id="note-ta-${exId}" class="note-textarea" rows="2" placeholder="${entry.comfort === 'red' ? 'Kur ir kada suskaudo? (pvz., dūris peties priekyje...)' : entry.comfort === 'yellow' ? 'Kur jautėsi įtampa? (pvz., kelis apačioje, kairė alkūnė...)' : 'Įrašyk pastabą šiam pratimui (išsisaugos Progreso istorijoje)...'}" oninput="setExerciseNote('${exId}', this.value)">${escapeAttr(entry.note || '')}</textarea>
-            </div>` : ''}
+          <div id="joint-hint-slot-${exId}" data-slot-key="${slotKey || ''}">${buildJointHintHtml(exId, entry.comfort, slotKey || '')}</div>
+          <div id="joint-note-slot-${exId}">${isNoteOpen ? buildJointNoteHtml(exId) : ''}</div>
         </div>
         </div>
       `;
       return card;
+    }
+
+    function buildJointActionButtons(exId, isHelpOpen, isNoteOpen, hasNote) {
+      const st = String(state.jointBtnStyle || '2d');
+      const isIconOnly = st.startsWith('2');
+      const infoSvg = '<svg class="ico-info" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9.5"/><path d="M12 16v-4.5"/><circle cx="12" cy="8.2" r="0.6" fill="currentColor" stroke="none"/></svg>';
+      const penSvg = '<svg class="ico-pen" viewBox="0 0 24 24"><path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 1 1 3 3L7 19l-4 1 1-4Z"/></svg>';
+      const chevSvg = '<svg class="ico-chev" style="width:11px;height:11px;" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></svg>';
+      const infoInner = isIconOnly
+        ? infoSvg
+        : (st === '4' ? `${infoSvg}<span>Ką reiškia?</span>` : `${infoSvg}<span>Ką reiškia?</span>${chevSvg}`);
+      const noteInner = isIconOnly ? penSvg : `${penSvg}<span>Pastaba</span>`;
+      const infoBtn = `<button id="joint-help-btn-${exId}" type="button" class="j-act-btn jb-${st}-i ${isHelpOpen ? 'on' : ''}" title="Ką reiškia šviesoforas?" aria-label="Ką reiškia?" aria-expanded="${isHelpOpen ? 'true' : 'false'}" onclick="toggleJointHelp('${exId}')">${infoInner}</button>`;
+      const noteBtn = `<button id="joint-note-btn-${exId}" type="button" class="j-act-btn jb-${st}-n ${isNoteOpen ? 'on' : ''} ${hasNote ? 'has-note-dot' : ''}" title="Pratimo pastaba" aria-label="Pastaba" aria-expanded="${isNoteOpen ? 'true' : 'false'}" onclick="toggleNoteField('${exId}')">${noteInner}</button>`;
+      return { infoBtn, noteBtn };
+    }
+
+    function buildJointHintHtml(exId, comfort, slotKey) {
+      if (comfort === 'yellow') {
+        return `<div class="joint-action-hint y">
+          <span style="flex:1;min-width:180px;"><strong style="color:var(--yellow);">Sąnario / sausgyslės įtampa:</strong> sumažink svorį 10–15 %, sulėtink tempą arba pabandyk palengvinimą.</span>
+          <button type="button" class="btn btn-sm btn-amber-ghost" style="min-height:30px;padding:4px 9px;font-size:11.5px;" onclick="openPlanBModal('${exId}', '${slotKey || ''}')">⚡ Planas B</button>
+        </div>`;
+      }
+      if (comfort === 'red') {
+        return `<div class="joint-action-hint r">
+          <span style="flex:1;min-width:180px;"><strong style="color:var(--red);">Aštrus skausmas – sustok čia ir dabar!</strong> Pasižymėk vietą žemiau ir pakeisk pratimą.</span>
+          <button type="button" class="btn btn-sm btn-danger" style="min-height:30px;padding:4px 9px;font-size:11.5px;font-weight:800;" onclick="openPlanBModal('${exId}', '${slotKey || ''}')">⚡ Planas B</button>
+        </div>`;
+      }
+      return '';
+    }
+
+    function buildJointNoteHtml(exId) {
+      const ex = getExercise(exId);
+      const entry = state.draft?.entries?.[exId];
+      if (!ex || !entry) return '';
+      return `<div class="note-box">
+        <div class="note-box-hd">
+          <span>📝 Pastaba („${ex.name}“)</span>
+          <div class="row" style="gap:6px;">
+            <button type="button" class="note-lock-btn ${noteChipsUnlocked ? 'unlocked' : ''}" title="${noteChipsUnlocked ? 'Užrakinti greitus mygtukus' : 'Atrakinti žymeklių redagavimą'}" onclick="toggleNoteChipsLock()">${noteChipsUnlocked ? '🔓 Redaguoti' : '🔒 Užrakinta'}</button>
+            <button id="note-clr-${exId}" type="button" style="font-size:11px;color:var(--text-muted);display:${entry.note ? '' : 'none'};" onclick="clearExerciseNote('${exId}')">Išvalyti</button>
+          </div>
+        </div>
+        <div class="note-chips ${noteChipsUnlocked ? '' : 'locked'}">
+          ${(state.noteChips || []).map((chip, cIdx) => `
+            <span class="note-chip-wrap">
+              <button type="button" class="note-chip-add" onclick="appendQuickNote('${exId}', '${escapeAttr(chip).replace(/'/g, '&#39;')}')">+ ${escapeAttr(chip)}</button>
+              <button type="button" class="note-chip-del" title="Pašalinti žymeklį" onclick="deleteCustomNoteChip(${cIdx})">×</button>
+            </span>`).join('')}
+          <button type="button" class="note-chip note-chip-custom-add" style="border-style:dashed;color:var(--accent);" onclick="addCustomNoteChip('${exId}')">+ Pridėti savo</button>
+        </div>
+        <textarea id="note-ta-${exId}" class="note-textarea" rows="2" placeholder="${entry.comfort === 'red' ? 'Kur ir kada suskaudo? (pvz., dūris peties priekyje...)' : entry.comfort === 'yellow' ? 'Kur jautėsi įtampa? (pvz., kelis apačioje, kairė alkūnė...)' : 'Įrašyk pastabą šiam pratimui (išsisaugos Progreso istorijoje)...'}" oninput="setExerciseNote('${exId}', this.value)">${escapeAttr(entry.note || '')}</textarea>
+      </div>`;
+    }
+
+    function syncJointNoteDotInPlace(exId) {
+      const btn = document.getElementById('joint-note-btn-' + exId);
+      const clrBtn = document.getElementById('note-clr-' + exId);
+      const entry = state.draft?.entries?.[exId];
+      if (!entry) return;
+      const hasVal = !!(entry.note && entry.note.trim().length > 0);
+      if (btn) btn.classList.toggle('has-note-dot', hasVal);
+      if (clrBtn) clrBtn.style.display = hasVal ? '' : 'none';
     }
 
     function appendQuickNote(exId, snippet) {
@@ -6168,6 +7209,7 @@
       saveState();
       const ta = document.getElementById('note-ta-' + exId);
       if (ta) ta.value = entry.note;
+      syncJointNoteDotInPlace(exId);
     }
 
     function clearExerciseNote(exId) {
@@ -6405,6 +7447,7 @@
       state.draft = undoSnapshot.draft;
       state.activeSwaps = undoSnapshot.activeSwaps;
       activeExId = undoSnapshot.activeExId;
+      userCollapsedAll = !activeExId;
       if (undoSnapshot.startedTimer) stopRestTimer();
       hideUndoBar();
       saveState();
@@ -6412,11 +7455,29 @@
       showToast('↩ Paskutinis veiksmas atšauktas');
     }
 
+    let collapseAnimTimerId = null;
+
     function collapseActiveExercise(ev) {
       if (ev) ev.stopPropagation();
-      activeExId = null;
+      if (!activeExId || state.allowCollapseActiveEx === false) return;
+      const curId = activeExId;
       const sBar = document.getElementById('active-ex-sticky');
       if (sBar) sBar.classList.remove('visible');
+      const card = document.getElementById('active-ex-' + curId);
+      if (card && state.cardAnim !== '0') {
+        card.classList.add('collapsing-out');
+        clearTimeout(collapseAnimTimerId);
+        collapseAnimTimerId = setTimeout(() => {
+          collapseAnimTimerId = null;
+          if (activeExId !== curId) return;
+          userCollapsedAll = true;
+          activeExId = null;
+          renderWorkoutView();
+        }, 165);
+        return;
+      }
+      userCollapsedAll = true;
+      activeExId = null;
       renderWorkoutView();
     }
 
@@ -6449,9 +7510,22 @@
     }
 
     function toggleNoteField(exId) {
-      if (openNotes.has(exId)) { openNotes.delete(exId); noteChipsUnlocked = false; }
-      else openNotes.add(exId);
-      renderWorkoutView();
+      const slot = document.getElementById('joint-note-slot-' + exId);
+      const btn = document.getElementById('joint-note-btn-' + exId);
+      const currentlyOpen = !!(slot && slot.innerHTML.trim().length > 0);
+      if (currentlyOpen) {
+        openNotes.delete(exId);
+        closedNotes.add(exId);
+        noteChipsUnlocked = false;
+        if (slot) slot.innerHTML = '';
+        if (btn) { btn.classList.remove('on'); btn.setAttribute('aria-expanded', 'false'); }
+      } else {
+        closedNotes.delete(exId);
+        openNotes.add(exId);
+        if (slot) slot.innerHTML = buildJointNoteHtml(exId);
+        if (btn) { btn.classList.add('on'); btn.setAttribute('aria-expanded', 'true'); }
+      }
+      syncJointNoteDotInPlace(exId);
     }
 
     function savePinSetting(exId, val) { state.pinSettings[exId] = val; saveState(); }
@@ -6535,7 +7609,78 @@
       updateWorkoutProgressStats();
     }
 
+    let rirHoldTimer = null;
+    let rirHoldTriggered = false;
+    let rirHoldStart = null;
+    let rirGuideTarget = null;
+
+    function startRirHold(e, exId, setIdx, btn) {
+      if (e && e.button !== undefined && e.button !== 0) return;
+      rirHoldTriggered = false;
+      rirHoldStart = e ? { x: e.clientX, y: e.clientY } : null;
+      try { if (btn && e && e.pointerId !== undefined && btn.setPointerCapture) btn.setPointerCapture(e.pointerId); } catch (_) {}
+      if (btn) btn.classList.add('holding');
+      clearTimeout(rirHoldTimer);
+      rirHoldTimer = setTimeout(() => {
+        rirHoldTriggered = true;
+        rirHoldStart = null;
+        if (btn) btn.classList.remove('holding');
+        vibrateDevice(14);
+        openRirGuideModal(exId, setIdx);
+      }, 420);
+    }
+
+    function moveRirHold(e, btn) {
+      if (!rirHoldStart || !e) return;
+      if (Math.hypot(e.clientX - rirHoldStart.x, e.clientY - rirHoldStart.y) > 16) {
+        cancelRirHold(btn);
+      }
+    }
+
+    function cancelRirHold(btn) {
+      clearTimeout(rirHoldTimer);
+      rirHoldStart = null;
+      if (btn) btn.classList.remove('holding');
+    }
+
+    function openRirGuideModal(exId, setIdx) {
+      rirGuideTarget = (exId && setIdx !== undefined) ? { exId, setIdx } : null;
+      const modeMap = {
+        adaptation: { txt: '🟢 ADAPTACIJA · RIR 3–4', cls: 'pill pill-green' },
+        working: { txt: '🔵 DARBINIS · RIR 1–2', cls: 'pill pill-accent' },
+        deload: { txt: '🟡 DELOAD · RIR 4+', cls: 'pill pill-yellow' }
+      };
+      const mInfo = modeMap[state.trainingMode] || modeMap.adaptation;
+      const mPill = document.getElementById('rir-guide-mode-pill');
+      if (mPill) { mPill.textContent = mInfo.txt; mPill.className = mInfo.cls; }
+      const curRir = (rirGuideTarget && state.draft?.entries?.[exId]?.sets?.[setIdx])
+        ? String(state.draft.entries[exId].sets[setIdx].rir)
+        : getDefaultRir();
+      document.querySelectorAll('#rir-guide-scale .rir-scale-pill').forEach(p => {
+        p.classList.toggle('active', p.dataset.rir === curRir);
+      });
+      openModal('modal-rir-guide');
+    }
+
+    function pickRirFromGuide(val) {
+      document.querySelectorAll('#rir-guide-scale .rir-scale-pill').forEach(p => {
+        p.classList.toggle('active', p.dataset.rir === val);
+      });
+      if (rirGuideTarget && state.draft?.entries?.[rirGuideTarget.exId]?.sets?.[rirGuideTarget.setIdx]) {
+        const { exId, setIdx } = rirGuideTarget;
+        state.draft.entries[exId].sets[setIdx].rir = val;
+        saveState();
+        const btn = document.getElementById(`rir-btn-${exId}-${setIdx}`);
+        if (btn) btn.textContent = `RIR ${val} ↻`;
+        vibrateDevice(8);
+      }
+    }
+
     function cycleSetRir(exId, setIdx) {
+      if (rirHoldTriggered) {
+        rirHoldTriggered = false;
+        return;
+      }
       const order = ['3', '2', '1', '0', '4+'];
       const s = state.draft.entries[exId].sets[setIdx];
       const next = order[(order.indexOf(String(s.rir)) + 1) % order.length];
@@ -6596,14 +7741,17 @@
         } else {
           startRestTimer(ex.rest, ex.name);
           if (entry.sets.every(x => x.done)) {
-            const curIdx = allIds.indexOf(exId);
-            const nextUnfinished = allIds.slice(curIdx + 1).find(id => !state.draft.entries[id].sets.every(x => x.done))
-              || allIds.find(id => id !== exId && !state.draft.entries[id].sets.every(x => x.done));
-            if (nextUnfinished) {
-              activeExId = nextUnfinished;
-              advancedTo = nextUnfinished;
-              showToast(`✓ ${ex.name} baigtas!`);
+            if (state.autoOpenNextEx) {
+              const curIdx = allIds.indexOf(exId);
+              const nextUnfinished = allIds.slice(curIdx + 1).find(id => !state.draft.entries[id].sets.every(x => x.done))
+                || allIds.find(id => id !== exId && !state.draft.entries[id].sets.every(x => x.done));
+              if (nextUnfinished) {
+                userCollapsedAll = false;
+                activeExId = nextUnfinished;
+                advancedTo = nextUnfinished;
+              }
             }
+            showToast(`✓ ${ex.name} baigtas!`);
           }
         }
       }
@@ -6650,18 +7798,68 @@
       jointHelpOpen = !jointHelpOpen;
       applyCollapsibleState('joint-help-' + exId, jointHelpOpen);
       const btn = document.getElementById('joint-help-btn-' + exId);
-      if (btn) btn.textContent = jointHelpOpen ? '▲ Slėpti' : 'ℹ️ Ką reiškia?';
+      if (btn) {
+        btn.classList.toggle('on', jointHelpOpen);
+        btn.setAttribute('aria-expanded', jointHelpOpen ? 'true' : 'false');
+      }
     }
 
     function setComfort(exId, status) {
-      state.draft.entries[exId].comfort = status;
-      if (status !== 'green') openNotes.add(exId);
-      else if (!(state.draft.entries[exId].note || '').trim()) openNotes.delete(exId);
+      const entry = state.draft?.entries?.[exId];
+      if (!entry) return;
+      entry.comfort = status;
+      const hasNote = !!(entry.note && entry.note.trim().length > 0);
+      if (status !== 'green') {
+        closedNotes.delete(exId);
+        openNotes.add(exId);
+      } else if (!hasNote) {
+        openNotes.delete(exId);
+      }
       saveState();
+
+      // In-place morph update so CSS pill glide + orb pop plays smoothly without DOM teardown
+      const dotsWrap = document.getElementById('joint-dots-' + exId);
+      if (dotsWrap) {
+        dotsWrap.querySelectorAll('.j-dot').forEach(b => {
+          b.classList.toggle('active', b.dataset.c === status);
+        });
+        const hintSlot = document.getElementById('joint-hint-slot-' + exId);
+        if (hintSlot) {
+          hintSlot.innerHTML = buildJointHintHtml(exId, status, hintSlot.dataset.slotKey || '');
+        }
+        const noteSlot = document.getElementById('joint-note-slot-' + exId);
+        const noteBtn = document.getElementById('joint-note-btn-' + exId);
+        const shouldOpenNote = openNotes.has(exId) || (!closedNotes.has(exId) && (status !== 'green' || hasNote));
+        if (noteSlot) {
+          if (shouldOpenNote) {
+            if (!noteSlot.innerHTML.trim()) noteSlot.innerHTML = buildJointNoteHtml(exId);
+            else {
+              const ta = document.getElementById('note-ta-' + exId);
+              if (ta) {
+                ta.placeholder = status === 'red'
+                  ? 'Kur ir kada suskaudo? (pvz., dūris peties priekyje...)'
+                  : (status === 'yellow' ? 'Kur jautėsi įtampa? (pvz., kelis apačioje, kairė alkūnė...)' : 'Įrašyk pastabą šiam pratimui (išsisaugos Progreso istorijoje)...');
+              }
+            }
+          } else {
+            noteSlot.innerHTML = '';
+          }
+        }
+        if (noteBtn) {
+          noteBtn.classList.toggle('on', shouldOpenNote);
+          noteBtn.setAttribute('aria-expanded', shouldOpenNote ? 'true' : 'false');
+        }
+        syncJointNoteDotInPlace(exId);
+        return;
+      }
       renderWorkoutView();
     }
 
-    function setExerciseNote(exId, text) { state.draft.entries[exId].note = text; saveState(); }
+    function setExerciseNote(exId, text) {
+      state.draft.entries[exId].note = text;
+      saveState();
+      syncJointNoteDotInPlace(exId);
+    }
     function toggleGripSection() { state.draft.showGrip = !state.draft.showGrip; saveState(); renderWorkoutView(); }
 
     function updateWorkoutProgressStats() {
@@ -6706,6 +7904,7 @@
     function confirmResetDraft() {
       askConfirm('Išvalyti treniruotės juodraštį?', 'Visos nebaigtos treniruotės serijos bus atstatytos.', () => {
         const t = state.draft ? state.draft.type : 'A';
+        openNotes.clear(); closedNotes.clear();
         state.draft = null; ensureDraft(t); stopRestTimer(); renderWorkoutView();
         showToast('Juodraštis išvalytas');
       }, true);
@@ -6788,6 +7987,8 @@
       restDayDismissed = false;
       const nextType = getSuggestedWorkoutType();
       state.draft = null;
+      openNotes.clear();
+      closedNotes.clear();
       warmupChecked.clear();
       openWarmupGuides.clear();
       stopWarmupTimer(true);
@@ -7459,6 +8660,10 @@
         updateSessionClock();
         syncBioAnimationLoop();
         renderTimerSignalControls();
+        if (document.getElementById('modal-rest-bar')?.classList.contains('open') && !rtDemoRafId) {
+          rtDemoLastTs = 0;
+          rtDemoRafId = requestAnimationFrame(stepRestDemoLoop);
+        }
         if (wakeLockWanted && !wakeLockObj) requestWakeLockInternal(true);
       }
     });
@@ -9464,6 +10669,7 @@
       applyCardFrameSettings();
       applyCardAnimSettings();
       applyAppearanceSettings();
+      renderWorkoutFlowControls();
       renderTimerSignalControls();
       const p = state.profile;
       document.getElementById('prof-height').value = p.height;
@@ -9565,8 +10771,11 @@
               if (prevRaw) localStorage.setItem(MIGRATION_BACKUP_KEY, prevRaw);
             } catch (e) {}
             state = mergeLoadedState(parsed);
+            openNotes.clear(); closedNotes.clear(); openDrawers.clear(); openExInfo.clear();
             document.getElementById('brand-height-badge').textContent = state.profile.height || 193;
-            saveState(); setTheme(state.theme, true); renderWorkoutView(); checkBackupReminder(); renderStorageQuota();
+            saveState(); setTheme(state.theme, true);
+            applyCardFrameSettings(); applyCardAnimSettings(); applyAppearanceSettings(); renderWorkoutFlowControls();
+            renderWorkoutView(); renderSettingsTab(); checkBackupReminder(); renderStorageQuota();
             showToast('Duomenys atstatyti!');
           });
         } catch (e) { showToast('Netinkamas JSON failas'); }
@@ -9598,16 +10807,36 @@
     function confirmClearAllData() {
       askConfirm('Ištrinti VISUS duomenis?', 'Bus ištrinta visa treniruočių istorija, svoris ir apimtys.', () => {
         localStorage.removeItem(STORAGE_KEY); state = getDefaultState(); saveState();
-        setTheme('obsidian', true); stopRestTimer(); renderWorkoutView(); checkBackupReminder(); renderStorageQuota();
+        openNotes.clear(); closedNotes.clear(); openDrawers.clear(); openExInfo.clear();
+        setTheme('obsidian', true); stopRestTimer();
+        applyCardFrameSettings(); applyCardAnimSettings(); applyAppearanceSettings(); renderWorkoutFlowControls();
+        renderWorkoutView(); renderSettingsTab(); checkBackupReminder(); renderStorageQuota();
         showToast('Visi duomenys ištrinti');
       }, true);
     }
 
     /* NAVIGATION & INIT */
+    const NAV_TAB_ORDER = ['workout', 'progress', 'body', 'settings'];
+
+    function replayActiveNavPop(btn) {
+      if (!btn || String(state.navAnimStyle || '1') === '0') return;
+      btn.classList.remove('anim-pop');
+      void btn.offsetWidth;
+      btn.classList.add('anim-pop');
+    }
+
     function switchTab(tabName) {
       document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
       document.getElementById('view-' + tabName).classList.add('active');
-      document.querySelectorAll('.nav-item').forEach(btn => btn.classList.toggle('active', btn.dataset.tab === tabName));
+      const idx = Math.max(0, NAV_TAB_ORDER.indexOf(tabName));
+      const navInner = document.getElementById('bottom-nav-inner');
+      if (navInner) navInner.style.setProperty('--nav-idx', String(idx));
+      document.querySelectorAll('.nav-item').forEach(btn => {
+        const isAct = btn.dataset.tab === tabName;
+        btn.classList.toggle('active', isAct);
+        if (isAct) replayActiveNavPop(btn);
+        else btn.classList.remove('anim-pop');
+      });
       if (restTimerState.finished) stopRestTimer();
       if (tabName === 'workout') renderWorkoutView();
       else {
@@ -9619,11 +10848,17 @@
       if (tabName === 'body') renderBodyTab();
       if (tabName === 'settings') renderSettingsTab();
       window.scrollTo({ top: 0, behavior: 'instant' });
+      requestAnimationFrame(updateScrollEdgeState);
     }
 
     window.addEventListener('resize', () => {
       if (document.getElementById('view-progress').classList.contains('active')) renderProgressChart();
       if (document.getElementById('view-body').classList.contains('active')) { renderWeightChart(); renderMeasurementChart(); }
+      if (document.getElementById('modal-rest-bar')?.classList.contains('open')) {
+        syncRestDemoPb6Geometry();
+        if (rtModalView === 'all') syncRestAllPb6Geometry();
+        syncRestBarModalStageHeight();
+      }
     });
 
     const CARD_FRAME_LIST = [
@@ -9789,14 +11024,147 @@
         </div>`;
     }
 
+    const SCROLL_EDGE_LIST = [
+      { id: '0', short: 'Išj.', name: 'Išjungta', desc: 'Viršaus ir apačios slinkimo ribų švytėjimas išjungtas.' },
+      { id: '1', short: '#1', name: '#1 Neoninis horizontas', desc: '2 sluoksnių tūrinė šviesa ir ryški baltos šerdies gija pasiekus viršų ar apačią.' },
+      { id: '2', short: '#2', name: '#2 Plazmos lazeris', desc: 'Iš centro išsiskleidžianti pulsuojanti lazerio gija su baltu šviesos židiniu.' },
+      { id: '3', short: '#3', name: '#3 Slinkimo kometa', desc: 'Viršuje keliauja 0–100 % lazeris su baltu tašku, o pasiekus kraštą sušvinta žalia šviesa.' },
+      { id: '4', short: '#4', name: '#4 #8.4 tekantis neonas', desc: 'Firminis lėtai tekantis žalias → temos akcento neonas su minkšta aura.' },
+      { id: '5', short: '#5', name: '#5 Edge OLED kupolas', desc: 'Minkštas parabolinis Samsung Edge šviesos lankas su stikline briauna.' },
+      { id: '6', short: '#6', name: '#6 Švytinti kapsulė', desc: 'Minimalistinė linija ir centrinė kapsulė, išsiplečianti į 64 px šviesos kristalą.' },
+      { id: '7', short: '#7', name: '#7 Šiaurės pašvaistė', desc: 'Lėtai banguojanti daugiaspalvė OLED pašvaistės užuolaida (žalia · akcentas · violetinė).' },
+      { id: '8', short: '#8', name: '#8 HUD kampų skliaustai', desc: 'Ryškūs švytintys taktiniai kampų skliaustai + mikro brūkšneliai krašte.' },
+      { id: '9', short: '#9', name: '#9 Impulso radaro banga', desc: 'Atsimušus į ribą iš centro iššauna šviesos smūgio banga ir nusėda į liniją.' },
+      { id: '10', short: '#10', name: '#10 Kinetinė LED juosta', desc: 'Iš centro išsiskleidžianti švytinčių OLED taškų matrica su švelniu švytėjimu.' }
+    ];
+
+    function updateScrollEdgeState() {
+      const doc = document.documentElement;
+      const scTop = window.scrollY || doc.scrollTop || 0;
+      const maxS = Math.max(0, doc.scrollHeight - window.innerHeight);
+      const frac = maxS > 4 ? Math.max(0, Math.min(1, scTop / maxS)) : 0;
+      const atTop = scTop <= 4;
+      const atBot = maxS <= 4 || scTop >= maxS - 4;
+      const tEl = document.getElementById('app-edge-top');
+      const bEl = document.getElementById('app-edge-bot');
+      if (tEl) { tEl.classList.toggle('is-at-edge', atTop); tEl.style.setProperty('--scroll-p', frac.toFixed(3)); }
+      if (bEl) { bEl.classList.toggle('is-at-edge', atBot); }
+    }
+
+    function pickScrollEdgeStyle(id) {
+      state.scrollEdgeStyle = String(id);
+      saveState();
+      applyAppearanceSettings();
+      updateScrollEdgeState();
+      const dt = document.getElementById('eg-demo-edge-top');
+      const db = document.getElementById('eg-demo-edge-bot');
+      if (dt) { dt.setAttribute('data-edge-style', state.scrollEdgeStyle); dt.classList.remove('is-at-edge'); void dt.offsetWidth; }
+      if (db) { db.setAttribute('data-edge-style', state.scrollEdgeStyle); db.classList.remove('is-at-edge'); void db.offsetWidth; }
+      requestAnimationFrame(updateEdgeDemoScroll);
+    }
+
+    const NAV_ANIM_LIST = [
+      { id: '0', short: 'Išj.', name: 'Išjungta', desc: 'Klasikinis apatinis meniu be slinkimo ir ikonų judesio.' },
+      { id: '1', short: '#1', name: '#1 Slenkanti juostelė', desc: 'Standartinis · Skystai slystanti viršutinė šviesos juostelė + gyvos ikonų animacijos.' },
+      { id: '2', short: '#2', name: '#2 Stiklinė kapsulė', desc: 'Slenkanti matinė stiklo kapsulė už aktyvaus skirtuko.' },
+      { id: '3', short: '#3', name: '#3 OLED prožektorius', desc: 'Šviesos kūgis iš viršaus, apšviečiantis aktyvią ikoną.' },
+      { id: '4', short: '#4', name: '#4 Spyruoklė + žiedas', desc: 'Ikona pakyla į viršų su išsiskleidžiančiu šviesos ratilu.' },
+      { id: '5', short: '#5', name: '#5 #8.4 dvispalvis', desc: 'Firminis žalias → temos akcento slenkantis gradientas.' },
+      { id: '6', short: '#6', name: '#6 Magnetinis taškas', desc: 'Minimalistinis švytintis taškelis, švelniai peršokantis po tekstu.' }
+    ];
+
+    const JOINT_STYLE_LIST = [
+      { id: '1', short: '#1', name: '#1 Slenkanti kapsulė' },
+      { id: '2', short: '#2', name: '#2 Vientisas kanalas' },
+      { id: '3', short: '#3', name: '#3 3D brangakmeniai' },
+      { id: '4', short: '#4', name: '#4 Minimalus žiedas' }
+    ];
+
+    const JOINT_BTN_LIST = [
+      { id: '2d', short: '#2D', name: '#2D Apvalūs dvyniai' },
+      { id: '2a', short: '#2A', name: '#2A Paprasti apvalūs' },
+      { id: '2b', short: '#2B', name: '#2B Stiklo ikonos' },
+      { id: '2c', short: '#2C', name: '#2C #8.4 ikonos' },
+      { id: '2e', short: '#2E', name: '#2E Švarios ikonos' },
+      { id: '2f', short: '#2F', name: '#2F Žymeklių ikonos' },
+      { id: '1', short: '#1', name: '#1 Minimalios kapsulės' },
+      { id: '3', short: '#3', name: '#3 Stikliniai mygtukai' },
+      { id: '4', short: '#4', name: '#4 Švarus kontrastas' },
+      { id: '5', short: '#5', name: '#5 #8.4 gradientas' },
+      { id: '6', short: '#6', name: '#6 Žymeklių kortelės' }
+    ];
+
+    function pickNavAnimStyle(id) {
+      state.navAnimStyle = String(id);
+      saveState();
+      applyAppearanceSettings();
+      const activeNav = document.querySelector('.nav-item.active');
+      if (activeNav) replayActiveNavPop(activeNav);
+    }
+
+    function pickJointStyle(id) {
+      state.jointStyle = String(id);
+      saveState();
+      applyAppearanceSettings();
+    }
+
+    function pickJointBtnStyle(id) {
+      state.jointBtnStyle = String(id);
+      saveState();
+      applyAppearanceSettings();
+      renderWorkoutView();
+    }
+
+    function openEdgeGlowModal() {
+      applyAppearanceSettings();
+      openModal('modal-edge-glow');
+      const sc = document.getElementById('eg-demo-scroll');
+      if (sc) sc.scrollTop = 0;
+      requestAnimationFrame(updateEdgeDemoScroll);
+    }
+
+    function jumpEdgeDemoScroll(pos) {
+      const sc = document.getElementById('eg-demo-scroll');
+      if (!sc) return;
+      const maxS = Math.max(0, sc.scrollHeight - sc.clientHeight);
+      if (pos === 'top') sc.scrollTo({ top: 0, behavior: 'smooth' });
+      else if (pos === 'mid') sc.scrollTo({ top: Math.round(maxS * 0.5), behavior: 'smooth' });
+      else sc.scrollTo({ top: maxS, behavior: 'smooth' });
+    }
+
+    function updateEdgeDemoScroll() {
+      const sc = document.getElementById('eg-demo-scroll');
+      const dt = document.getElementById('eg-demo-edge-top');
+      const db = document.getElementById('eg-demo-edge-bot');
+      const pill = document.getElementById('eg-demo-pos-pill');
+      if (!sc || !dt || !db) return;
+      const maxS = Math.max(1, sc.scrollHeight - sc.clientHeight);
+      const frac = Math.max(0, Math.min(1, sc.scrollTop / maxS));
+      const atTop = sc.scrollTop <= 3;
+      const atBot = sc.scrollTop >= maxS - 3;
+      const st = String(state.scrollEdgeStyle !== undefined ? state.scrollEdgeStyle : '1');
+      dt.setAttribute('data-edge-style', st);
+      db.setAttribute('data-edge-style', st);
+      dt.classList.toggle('is-at-edge', atTop);
+      db.classList.toggle('is-at-edge', atBot);
+      dt.style.setProperty('--scroll-p', frac.toFixed(3));
+      if (pill) {
+        if (atTop) pill.textContent = '↑ VIRŠUS · 0%';
+        else if (atBot) pill.textContent = '↓ APAČIA · 100%';
+        else pill.textContent = `↕ ${Math.round(frac * 100)}%`;
+      }
+    }
+
     function applyAppearanceSettings() {
-      const h = [34, 40, 46, 52].includes(Number(state.animPinHeight)) ? Number(state.animPinHeight) : 46;
+      const h = [34, 40, 46, 52, 60, 70].includes(Number(state.animPinHeight)) ? Number(state.animPinHeight) : 46;
       const wMode = ['sm', 'md', 'lg'].includes(state.animPinWidth) ? state.animPinWidth : 'md';
       const hPresets = {
         34: { r: 10, ico: 16, pin: 14, yw: 22, yh: 15.5 },
         40: { r: 12, ico: 18, pin: 15, yw: 24, yh: 17 },
         46: { r: 13, ico: 20, pin: 16, yw: 25, yh: 18 },
-        52: { r: 14, ico: 22, pin: 17, yw: 27, yh: 19 }
+        52: { r: 14, ico: 22, pin: 17, yw: 27, yh: 19 },
+        60: { r: 16, ico: 26, pin: 20, yw: 32, yh: 22.5 },
+        70: { r: 18, ico: 30, pin: 23, yw: 36, yh: 25.5 }
       };
       const wPresets = { sm: '216px', md: '274px', lg: '100%' };
       const hp = hPresets[h] || hPresets[46];
@@ -9813,10 +11181,15 @@
       const piId = String(state.plateIconStyle || '6');
       const rtId = String(state.restBarStyle || '4');
       const frId = String(state.cardFrame || '9');
+      const egId = String(state.scrollEdgeStyle !== undefined ? state.scrollEdgeStyle : '1');
       const pMax = Number(state.plateCalcMax) || 100;
+      const appTopE = document.getElementById('app-edge-top');
+      const appBotE = document.getElementById('app-edge-bot');
+      if (appTopE) appTopE.setAttribute('data-edge-style', egId);
+      if (appBotE) appBotE.setAttribute('data-edge-style', egId);
 
       const sumEl = document.getElementById('settings-appearance-summary');
-      if (sumEl) sumEl.textContent = `Mygtukai #${apId} (${h} px) · Diskas #${piId} · Poilsis #${rtId} · Rėmelis #${frId}`;
+      if (sumEl) sumEl.textContent = `Mygtukai #${apId} (${h} px) · Diskas #${piId} · Poilsis #${rtId} · Ribos ${egId === '0' ? 'Išj.' : '#' + egId}`;
 
       const apGrid = document.getElementById('app-animpin-grid');
       if (apGrid) {
@@ -9827,25 +11200,65 @@
       if (apLbl) apLbl.textContent = apMeta.name;
 
       const hRow = document.getElementById('app-aph-row');
-      if (hRow) hRow.innerHTML = [34, 40, 46, 52].map(v => `<button type="button" class="app-pill-btn ${v === h ? 'active' : ''}" onclick="setAnimPinHeight(${v})">${v} px</button>`).join('');
+      if (hRow) hRow.innerHTML = [34, 40, 46, 52, 60, 70].map(v => `<button type="button" class="app-pill-btn ${v === h ? 'active' : ''}" onclick="setAnimPinHeight(${v})">${v} px</button>`).join('');
       const wRow = document.getElementById('app-apw-row');
       if (wRow) wRow.innerHTML = [['sm','Siauri'], ['md','Vidutiniai'], ['lg','Platūs']].map(([k, l]) => `<button type="button" class="app-pill-btn ${k === wMode ? 'active' : ''}" onclick="setAnimPinWidth('${k}')">${l}</button>`).join('');
+
+      const egMeta = SCROLL_EDGE_LIST.find(x => x.id === egId) || SCROLL_EDGE_LIST[1];
+      const egSum = document.getElementById('settings-edgeglow-summary');
+      if (egSum) egSum.textContent = egMeta.name;
+      const egGrid = document.getElementById('eg-pick-grid');
+      if (egGrid) egGrid.innerHTML = SCROLL_EDGE_LIST.map(e => `<button type="button" class="anim-pick-btn ${e.id === egId ? 'active' : ''}" onclick="pickScrollEdgeStyle('${e.id}')">${e.short}</button>`).join('');
+      const egTitle = document.getElementById('eg-pick-title');
+      const egDesc = document.getElementById('eg-pick-desc');
+      if (egTitle) egTitle.textContent = egMeta.name;
+      if (egDesc) egDesc.textContent = egMeta.desc;
 
       const piGrid = document.getElementById('app-plateico-grid');
       if (piGrid) piGrid.innerHTML = PLATE_ICON_LIST.map(p => `<button type="button" class="app-pick-card ${p.id === piId ? 'active' : ''}" onclick="pickPlateIconStyle('${p.id}')">${p.svg}<span>${p.name}</span></button>`).join('');
       const piLbl = document.getElementById('app-plateico-lbl');
       if (piLbl) piLbl.textContent = getPlateIconMeta(piId).name;
 
-      const rtGrid = document.getElementById('app-rtbar-grid');
-      if (rtGrid) rtGrid.innerHTML = REST_BAR_LIST.map(r => `<button type="button" class="app-pill-btn ${r.id === rtId ? 'active' : ''}" onclick="pickRestBarStyle('${r.id}')">#${r.id}</button>`).join('');
-      const rtDesc = document.getElementById('app-rtbar-desc');
       const rtMeta = REST_BAR_LIST.find(x => x.id === rtId) || REST_BAR_LIST[3];
-      if (rtDesc) rtDesc.innerHTML = `<strong style="color:var(--text);">${rtMeta.title}:</strong> ${rtMeta.desc}`;
+      const rtSum = document.getElementById('settings-rtbar-summary');
+      if (rtSum) rtSum.textContent = rtMeta.title;
+      const rtGrid = document.getElementById('rtbar-pick-grid');
+      if (rtGrid) rtGrid.innerHTML = REST_BAR_LIST.map(r => `<button type="button" class="anim-pick-btn ${r.id === rtId ? 'active' : ''}" onclick="pickRestBarStyle('${r.id}')">#${r.id}</button>`).join('');
+      const rtTitleEl = document.getElementById('rtbar-pick-title');
+      const rtDescEl = document.getElementById('rtbar-pick-desc');
+      if (rtTitleEl) rtTitleEl.textContent = rtMeta.title;
+      if (rtDescEl) rtDescEl.textContent = rtMeta.desc;
 
       const pmRow = document.getElementById('app-platemax-row');
       if (pmRow) pmRow.innerHTML = [80, 100, 140, 180, 220, 260].map(v => `<button type="button" class="app-pill-btn ${v === pMax ? 'active' : ''}" onclick="setPlateCalcMaxSetting(${v})">${v} kg</button>`).join('');
       const pmLbl = document.getElementById('app-platemax-lbl');
       if (pmLbl) pmLbl.textContent = pMax + ' kg';
+
+      const naId = String(state.navAnimStyle !== undefined ? state.navAnimStyle : '1');
+      const jsId = String(state.jointStyle || '2');
+      const jbId = String(state.jointBtnStyle || '2d');
+      document.documentElement.setAttribute('data-nav-anim', naId);
+      document.documentElement.setAttribute('data-joint-style', jsId);
+
+      const naMeta = NAV_ANIM_LIST.find(x => x.id === naId) || NAV_ANIM_LIST[1];
+      const naRow = document.getElementById('app-navanim-row');
+      if (naRow) naRow.innerHTML = NAV_ANIM_LIST.map(n => `<button type="button" class="app-pill-btn ${n.id === naId ? 'active' : ''}" onclick="pickNavAnimStyle('${n.id}')">${n.short}</button>`).join('');
+      const naLbl = document.getElementById('app-navanim-lbl');
+      if (naLbl) naLbl.textContent = naMeta.name;
+      const naDesc = document.getElementById('app-navanim-desc');
+      if (naDesc) naDesc.textContent = naMeta.desc;
+
+      const jsMeta = JOINT_STYLE_LIST.find(x => x.id === jsId) || JOINT_STYLE_LIST[1];
+      const jsRow = document.getElementById('app-jointstyle-row');
+      if (jsRow) jsRow.innerHTML = JOINT_STYLE_LIST.map(j => `<button type="button" class="app-pill-btn ${j.id === jsId ? 'active' : ''}" onclick="pickJointStyle('${j.id}')">${j.short}</button>`).join('');
+      const jsLbl = document.getElementById('app-jointstyle-lbl');
+      if (jsLbl) jsLbl.textContent = jsMeta.name;
+
+      const jbMeta = JOINT_BTN_LIST.find(x => x.id === jbId) || JOINT_BTN_LIST[0];
+      const jbRow = document.getElementById('app-jointbtn-row');
+      if (jbRow) jbRow.innerHTML = JOINT_BTN_LIST.map(j => `<button type="button" class="app-pill-btn ${j.id === jbId ? 'active' : ''}" onclick="pickJointBtnStyle('${j.id}')">${j.short}</button>`).join('');
+      const jbLbl = document.getElementById('app-jointbtn-lbl');
+      if (jbLbl) jbLbl.textContent = jbMeta.name;
     }
 
     function openAppearanceModal() {
@@ -9854,18 +11267,583 @@
       applyAppearanceSettings();
       openModal('modal-appearance');
     }
-    function pickAnimPinStyle(id) { state.animPinStyle = String(id); saveState(); applyAppearanceSettings(); renderWorkoutView(); }
+    function pickAnimPinStyle(id) {
+      state.animPinStyle = String(id);
+      saveState();
+      applyAppearanceSettings();
+      renderWorkoutView();
+      const card = document.querySelector(`#app-animpin-grid .app-pick-card:nth-child(${Number(id)})`);
+      if (card) {
+        card.classList.remove('demo-play');
+        void card.offsetWidth;
+        card.classList.add('demo-play');
+        setTimeout(() => card.classList.remove('demo-play'), 1000);
+      }
+    }
     function setAnimPinHeight(px) { state.animPinHeight = Number(px); saveState(); applyAppearanceSettings(); }
     function setAnimPinWidth(w) { state.animPinWidth = w; saveState(); applyAppearanceSettings(); }
-    function pickPlateIconStyle(id) { state.plateIconStyle = String(id); saveState(); applyAppearanceSettings(); renderWorkoutView(); }
+    function pickPlateIconStyle(id) {
+      state.plateIconStyle = String(id);
+      saveState();
+      applyAppearanceSettings();
+      renderWorkoutView();
+      const meta = getPlateIconMeta(id);
+      const card = document.querySelector(`#app-plateico-grid .app-pick-card:nth-child(${Number(id)})`);
+      if (card && meta) {
+        card.classList.remove('anim-spin','anim-tri','anim-pump','anim-split','anim-pro','anim-brand');
+        void card.offsetWidth;
+        card.classList.add(meta.anim);
+        setTimeout(() => card.classList.remove(meta.anim), 680);
+      }
+    }
     function pickRestBarStyle(id) {
       state.restBarStyle = String(id); saveState(); applyAppearanceSettings();
       if (document.getElementById('rest-timer-bar')?.classList.contains('visible')) buildRestBarSlotMarkup();
+      if (document.getElementById('modal-rest-bar')?.classList.contains('open')) {
+        buildRestBarDemoCard();
+        replayRestBarDemo();
+      }
     }
     function setPlateCalcMaxSetting(kg) { state.plateCalcMax = Number(kg) || 100; saveState(); applyAppearanceSettings(); }
-    function previewRestBarFromSettings() {
-      closeModal('modal-appearance');
-      startRestTimer(6, `Peržiūra #${state.restBarStyle || '4'}`);
+
+    /* Live Interactive Preview Engine for #modal-rest-bar (1 Variant <-> All 10 Live, True 0 FPS when closed!) */
+    let rtModalView = 'single';
+    let rtAllGalleryBuilt = false;
+    let rtDemoPct = 76;
+    let rtDemoPlaying = false;
+    let rtDemoRafId = null;
+    let rtDemoLastTs = 0;
+    let rtDemoSlosh = 0;
+    let rtDemoPhase = 0;
+    let rtDemoEcg = 0;
+    let rtDemoEq = 0;
+    let rtDemoPhase2 = '';
+    let rtDemoPhase3 = '';
+    const rtDemoPopRings = [];
+    const rtDemoSparks = [];
+    const rtDemoBubbles = Array.from({ length: 16 }, (_, i) => ({
+      x: (i / 16) * 300 + Math.random() * 14,
+      yFrac: 0.14 + (i % 5) * 0.17 + Math.random() * 0.05,
+      r: 1.5 + (i % 3) * 0.9,
+      vx: 46 + (i % 4) * 14,
+      age: 1.0,
+      phase: Math.random() * Math.PI * 2
+    }));
+
+    function syncRestDemoPb6Geometry() {
+      const card = document.getElementById('rtbar-demo-card');
+      const svg = document.getElementById('rtbar-demo-pb6-svg');
+      if (!card || !svg) return;
+      const w = Math.max(160, Math.round(card.clientWidth || 340));
+      const h = Math.max(54, Math.round(card.clientHeight || 106));
+      const pad = 1.5, r = Math.min(18, (h - pad * 2) / 2);
+      const midX = w / 2, x1 = pad, x2 = w - pad, y1 = pad, y2 = h - pad;
+      svg.setAttribute('viewBox', `0 0 ${w} ${h}`);
+      const tr = document.getElementById('rtbar-demo-pb6-track');
+      if (tr) { tr.setAttribute('x', pad); tr.setAttribute('y', pad); tr.setAttribute('width', w - pad * 2); tr.setAttribute('height', h - pad * 2); tr.setAttribute('rx', r); tr.setAttribute('ry', r); }
+      const dL = `M ${midX} ${y1} L ${x1 + r} ${y1} A ${r} ${r} 0 0 0 ${x1} ${y1 + r} L ${x1} ${y2 - r} A ${r} ${r} 0 0 0 ${x1 + r} ${y2} L ${midX} ${y2}`;
+      const dR = `M ${midX} ${y1} L ${x2 - r} ${y1} A ${r} ${r} 0 0 1 ${x2} ${y1 + r} L ${x2} ${y2 - r} A ${r} ${r} 0 0 1 ${x2 - r} ${y2} L ${midX} ${y2}`;
+      svg.querySelectorAll('.rt-pb6-left').forEach(p => p.setAttribute('d', dL));
+      svg.querySelectorAll('.rt-pb6-right').forEach(p => p.setAttribute('d', dR));
+    }
+
+    function buildRestBarDemoCard() {
+      const styleId = String(state.restBarStyle || '4');
+      const card = document.getElementById('rtbar-demo-card');
+      const slot = document.getElementById('rtbar-demo-slot');
+      if (!card || !slot) return;
+      card.setAttribute('data-rt-style', styleId);
+      card.classList.remove('phase-rest', 'phase-warn', 'phase-go', 'heartbeat', 'go');
+      rtDemoPhase2 = ''; rtDemoPhase3 = '';
+      if (styleId === '1') slot.innerHTML = '<div class="rt-pb1-track"><div id="rt-dm-pb1" class="rt-pb1-fill" style="width:76%;"><div class="rt-pb1-body"></div></div></div>';
+      else if (styleId === '2') slot.innerHTML = '<div class="rt-pb2-track"><div id="rt-dm-pb2" class="rt-pb2-fill" style="width:76%;"></div></div>';
+      else if (styleId === '3') slot.innerHTML = '<div id="rt-dm-pb3" class="rt-pb3-grid">' + Array.from({ length: 16 }, (_, idx) => `<span class="rt-pb3-seg${(idx === 3 || idx === 7 || idx === 11) ? ' q-gap' : ''}"><i class="rt-pb3-glow"></i></span>`).join('') + '</div>';
+      else if (styleId === '5') slot.innerHTML = '<div class="rt-pb5-track"><div id="rt-dm-pb5" class="rt-pb5-fill" style="width:76%;"><div class="rt-pb5-body"><div class="rt-pb5-stripes"></div></div><div class="rt-pb5-tip"></div></div><div class="rt-pb5-ticks"><i></i><i></i><i></i></div></div>';
+      else if (styleId === '7') slot.innerHTML = '<div class="rt-cv-wrap ecg"><canvas id="rtbar-demo-slot-cv"></canvas></div>';
+      else if (styleId === '8') slot.innerHTML = '<div class="rt-cv-wrap fuse"><canvas id="rtbar-demo-slot-cv"></canvas></div>';
+      else if (styleId === '9') slot.innerHTML = '<div id="rt-dm-pb9-t" class="rt-pb9-track"><div id="rt-dm-pb9" class="rt-pb9-fill" style="width:76%;"></div></div>';
+      else if (styleId === '10') slot.innerHTML = '<div class="rt-cv-wrap eq"><canvas id="rtbar-demo-slot-cv"></canvas></div>';
+      else slot.innerHTML = '';
+
+      if (styleId === '6') requestAnimationFrame(syncRestDemoPb6Geometry);
+      updateRestDemoVisuals(rtDemoPct);
+      requestAnimationFrame(syncRestBarModalStageHeight);
+    }
+
+    function updateRestDemoVisuals(pct) {
+      rtDemoPct = Math.max(0, Math.min(100, Number(pct) || 0));
+      const styleId = String(state.restBarStyle || '4');
+      const card = document.getElementById('rtbar-demo-card');
+      const sl = document.getElementById('rtbar-demo-slider');
+      const pl = document.getElementById('rtbar-demo-pct');
+      const tm = document.getElementById('rtbar-demo-time');
+      if (sl) sl.value = Math.round(rtDemoPct);
+      if (pl) pl.textContent = Math.round(rtDemoPct) + '%';
+      const sec = Math.ceil((rtDemoPct / 100) * 120);
+      if (tm) tm.textContent = `${String(Math.floor(sec / 60)).padStart(2, '0')}:${String(sec % 60).padStart(2, '0')}`;
+      if (!card) return;
+
+      if (rtModalView === 'all') updateRestAllGalleryDom(rtDemoPct);
+      if (styleId === '1') {
+        const f1 = document.getElementById('rt-dm-pb1');
+        if (f1) {
+          f1.style.width = rtDemoPct + '%';
+          f1.style.opacity = Math.max(0, Math.min(1, rtDemoPct / 1.5)).toFixed(3);
+          const tf = Math.max(0, Math.min(1, rtDemoPct / 8));
+          f1.style.setProperty('--tip-op', tf.toFixed(2));
+          f1.style.setProperty('--tip-scale', (0.35 + 0.65 * tf).toFixed(2));
+          f1.classList.toggle('go', rtDemoPct <= 18);
+        }
+      } else if (styleId === '2') {
+        const f2 = document.getElementById('rt-dm-pb2');
+        const pill = document.getElementById('rtbar-demo-phase');
+        if (f2) {
+          f2.style.width = rtDemoPct + '%';
+          f2.style.opacity = rtDemoPct > 0.25 ? '1' : '0';
+          const ph = rtDemoPct > 45 ? 'rest' : (rtDemoPct > 18 ? 'warn' : 'go');
+          if (ph !== rtDemoPhase2) {
+            rtDemoPhase2 = ph;
+            card.classList.remove('phase-rest', 'phase-warn', 'phase-go');
+            card.classList.add('phase-' + ph);
+            if (pill) pill.textContent = ph === 'rest' ? 'Poilsis' : (ph === 'warn' ? 'Ruoškis' : 'Startas!');
+          }
+          card.classList.toggle('heartbeat', ph === 'go' && rtDemoPct > 0.25);
+        }
+      } else if (styleId === '3') {
+        const g = document.getElementById('rt-dm-pb3');
+        if (g) {
+          const p3 = rtDemoPct <= 16 ? 'go' : (rtDemoPct <= 40 ? 'warn' : 'rest');
+          if (p3 !== rtDemoPhase3) { rtDemoPhase3 = p3; g.classList.toggle('warn', p3 === 'warn'); g.classList.toggle('go', p3 === 'go'); }
+          const segs = g.children, exact = (rtDemoPct / 100) * segs.length;
+          const tip = rtDemoPct > 0.2 ? Math.min(segs.length - 1, Math.floor(exact - 0.001)) : -1;
+          for (let i = 0; i < segs.length; i++) {
+            if (segs[i].firstElementChild) segs[i].firstElementChild.style.opacity = Math.max(0, Math.min(1, exact - i)).toFixed(3);
+            segs[i].classList.toggle('active-tip', i === tip);
+          }
+        }
+      } else if (styleId === '5') {
+        const f5 = document.getElementById('rt-dm-pb5');
+        if (f5) {
+          f5.style.width = rtDemoPct + '%';
+          f5.style.opacity = Math.max(0, Math.min(1, rtDemoPct / 1.5)).toFixed(3);
+          const t5 = Math.max(0, Math.min(1, rtDemoPct / 4));
+          f5.style.setProperty('--tip-o', t5.toFixed(2));
+          f5.style.setProperty('--tip-s', (0.5 + 0.5 * t5).toFixed(2));
+          f5.classList.toggle('go', rtDemoPct <= 18);
+        }
+      } else if (styleId === '6') {
+        const isGo6 = rtDemoPct <= 20;
+        card.classList.toggle('go', isGo6);
+        const dashOff = (100 - rtDemoPct).toFixed(2), tipOff = (108.8 - rtDemoPct).toFixed(2);
+        const gradUrl = isGo6 ? 'url(#rtDemoPb6GradGo)' : 'url(#rtDemoPb6Grad)';
+        card.querySelectorAll('.rt-pb6-sym').forEach(p => {
+          p.style.stroke = gradUrl;
+          p.setAttribute('stroke-dashoffset', dashOff);
+          p.style.opacity = rtDemoPct > 0.25 ? (p.classList.contains('rt-pb6-aura') ? '0.46' : (p.classList.contains('rt-pb6-glow') ? '0.70' : '1')) : '0';
+        });
+        card.querySelectorAll('.rt-pb6-tip-path').forEach(p => {
+          p.setAttribute('stroke-dashoffset', tipOff);
+          p.style.opacity = rtDemoPct > 1.2 && rtDemoPct < 99.6 ? '1' : '0';
+        });
+      } else if (styleId === '9') {
+        const f9 = document.getElementById('rt-dm-pb9'), t9 = document.getElementById('rt-dm-pb9-t');
+        if (f9) {
+          f9.style.width = rtDemoPct + '%';
+          f9.style.opacity = Math.max(0, Math.min(1, rtDemoPct / 3)).toFixed(3);
+          f9.style.setProperty('--dot-s', Math.max(0, Math.min(1, (rtDemoPct - 1.5) / 11)).toFixed(3));
+          f9.classList.toggle('go', rtDemoPct <= 18);
+        }
+        if (t9) t9.style.setProperty('--conv-glow', (rtDemoPct > 0.2 && rtDemoPct < 18 ? (1 - rtDemoPct / 18) : 0).toFixed(3));
+      }
+    }
+
+    function drawRestDemoCanvas(dt, ts, forceStyleId, forceCanvasId) {
+      const styleId = forceStyleId ? String(forceStyleId) : String(state.restBarStyle || '4');
+      const pal = getRestThemeColors();
+      const dpr = Math.min(window.devicePixelRatio || 1, 2);
+
+      if (styleId === '4') {
+        const cv = document.getElementById(forceCanvasId || 'rtbar-demo-bg');
+        if (!cv) return;
+        const w = Math.max(120, Math.round(cv.clientWidth || 320)), h = Math.max(54, Math.round(cv.clientHeight || 106));
+        if (cv.width !== Math.round(w * dpr) || cv.height !== Math.round(h * dpr)) { cv.width = Math.round(w * dpr); cv.height = Math.round(h * dpr); }
+        const ctx = cv.getContext('2d');
+        ctx.setTransform(dpr, 0, 0, dpr, 0, 0); ctx.clearRect(0, 0, w, h);
+        rtDemoPhase += dt * (rtDemoPlaying ? 1.0 : 0.35);
+        rtDemoSlosh = Math.max(0, rtDemoSlosh * Math.exp(-dt * 2.4));
+        if (rtDemoPct > 0.3) {
+          const t = rtDemoPhase, baseX = (rtDemoPct / 100) * w;
+          const amp = (3.4 + rtDemoSlosh * 4.8) * Math.max(0, Math.min(1, rtDemoPct / 10, (100 - rtDemoPct) / 6));
+          const goT = Math.max(0, Math.min(1, (20 - rtDemoPct) / 18));
+          const [ar, ag, ab] = pal.accentRgb, [gr, gg, gb] = pal.greenRgb;
+          const rE = Math.round(ar + (gr - ar) * goT), gE = Math.round(ag + (gg - ag) * goT), bE = Math.round(ab + (gb - ab) * goT);
+          const waveX = (y, ps, mult) => Math.max(0, Math.min(w, baseX + Math.sin((y / h) * Math.PI * 2.2 + t * 3.1 + ps) * amp * mult + Math.sin((y / h) * Math.PI * 4.5 - t * 4.8 + ps * 1.4) * (amp * 0.36 * mult)));
+          ctx.beginPath(); ctx.moveTo(0, 0); for (let y = 0; y < h; y += 4) ctx.lineTo(waveX(y, 1.8, 0.92), y); ctx.lineTo(waveX(h, 1.8, 0.92), h); ctx.lineTo(0, h); ctx.closePath();
+          const gb1 = ctx.createLinearGradient(0, 0, Math.max(24, baseX + 12), 0);
+          gb1.addColorStop(0, `rgba(${gr},${gg},${gb},${pal.isNordic ? 0.08 : 0.14})`); gb1.addColorStop(1, `rgba(${rE},${gE},${bE},${pal.isNordic ? 0.16 : 0.26})`);
+          ctx.fillStyle = gb1; ctx.fill();
+          ctx.beginPath(); ctx.moveTo(0, 0); for (let y = 0; y < h; y += 4) ctx.lineTo(waveX(y, 0, 1.0), y); ctx.lineTo(waveX(h, 0, 1.0), h); ctx.lineTo(0, h); ctx.closePath();
+          const gf = ctx.createLinearGradient(0, 0, Math.max(24, baseX + 12), 0);
+          gf.addColorStop(0, `rgba(${gr},${gg},${gb},${pal.isNordic ? 0.10 : 0.20})`); gf.addColorStop(1, `rgba(${rE},${gE},${bE},${pal.isNordic ? 0.22 : 0.38})`);
+          ctx.fillStyle = gf; ctx.fill();
+          ctx.save(); ctx.clip();
+          rtDemoBubbles.forEach(b => {
+            b.x += b.vx * (rtDemoPlaying ? 1.0 : 0.35) * dt; b.age = Math.min(1, (b.age ?? 1) + dt * 2.8);
+            const by = b.yFrac * h + Math.sin(t * 3.8 + b.phase) * 2.4, sx = waveX(by, 0, 1.0);
+            if (b.x >= sx - 1.5) {
+              if (sx > 12 && rtDemoPopRings.length < 16) rtDemoPopRings.push({ x: sx - 2, y: by, r: b.r * 0.9, maxR: b.r * 3.0, life: 1.0 });
+              b.x = Math.random() < 0.45 ? Math.random() * 14 : Math.random() * Math.max(12, sx * 0.72); b.yFrac = 0.12 + Math.random() * 0.76; b.age = 0;
+            } else if (b.x > 0) {
+              const a = (pal.isNordic ? 0.52 : 0.74) * Math.min(1, b.age, b.x / 14) * Math.min(1, Math.max(0, sx - b.x) / 10);
+              ctx.beginPath(); ctx.arc(b.x, by, b.r * (0.65 + 0.35 * Math.min(1, b.age)), 0, Math.PI * 2);
+              ctx.fillStyle = pal.isNordic ? `rgba(255,255,255,${a.toFixed(2)})` : `rgba(224,242,254,${a.toFixed(2)})`; ctx.fill();
+              ctx.strokeStyle = `rgba(${rE},${gE},${bE},${(a * 0.85).toFixed(2)})`; ctx.lineWidth = 0.85; ctx.stroke();
+            }
+          });
+          ctx.restore();
+          ctx.beginPath(); for (let y = 0; y < h; y += 4) { const px = waveX(y, 0, 1.0); if (y === 0) ctx.moveTo(px, y); else ctx.lineTo(px, y); } ctx.lineTo(waveX(h, 0, 1.0), h);
+          ctx.strokeStyle = `rgba(${rE},${gE},${bE},0.34)`; ctx.lineWidth = 5; ctx.stroke();
+          ctx.strokeStyle = pal.isNordic ? `rgba(${rE},${gE},${bE},0.92)` : 'rgba(224,242,254,0.9)'; ctx.lineWidth = 1.8; ctx.stroke();
+        }
+        for (let i = rtDemoPopRings.length - 1; i >= 0; i--) {
+          const pr = rtDemoPopRings[i]; pr.life -= dt * 2.8;
+          if (pr.life <= 0) { rtDemoPopRings.splice(i, 1); continue; }
+          ctx.beginPath(); ctx.arc(pr.x, pr.y, pr.r + (pr.maxR - pr.r) * (1 - pr.life), 0, Math.PI * 2);
+          ctx.strokeStyle = `rgba(224,242,254,${(pr.life * 0.62).toFixed(2)})`; ctx.lineWidth = 1.1; ctx.stroke();
+        }
+        return;
+      }
+
+      const cv = document.getElementById(forceCanvasId || 'rtbar-demo-slot-cv');
+      if (!cv) return;
+      const w = Math.max(100, Math.round(cv.clientWidth || 300)), h = Math.max(24, Math.round(cv.clientHeight || 30));
+      if (cv.width !== Math.round(w * dpr) || cv.height !== Math.round(h * dpr)) { cv.width = Math.round(w * dpr); cv.height = Math.round(h * dpr); }
+      const c = cv.getContext('2d');
+      c.setTransform(dpr, 0, 0, dpr, 0, 0); c.clearRect(0, 0, w, h);
+
+      if (styleId === '7') {
+        const midY = h * 0.60;
+        c.strokeStyle = pal.isNordic ? 'rgba(3,105,161,0.08)' : 'rgba(56,189,248,0.06)'; c.lineWidth = 1; c.beginPath();
+        for (let gx = 22; gx < w; gx += 22) { c.moveTo(gx + 0.5, 0); c.lineTo(gx + 0.5, h); }
+        c.moveTo(0, midY); c.lineTo(w, midY); c.stroke();
+        const period = 104, goT = Math.max(0, Math.min(1, (22 - rtDemoPct) / 16));
+        rtDemoEcg = (rtDemoEcg + dt * (68 + goT * 30) * (rtDemoPlaying ? 1 : 0.4)) % period;
+        const pad = 6, endX = pad + (rtDemoPct / 100) * (w - pad * 2), fade = Math.max(0, Math.min(1, rtDemoPct / 2.5));
+        if (fade > 0.01) {
+          const [ar, ag, ab] = pal.accentRgb, [gr, gg, gb] = pal.greenRgb;
+          const rgb = `${Math.round(ar + (gr - ar) * goT)},${Math.round(ag + (gg - ag) * goT)},${Math.round(ab + (gb - ab) * goT)}`;
+          const trace = (fill) => {
+            const sc = -rtDemoEcg - period, cnt = Math.ceil((endX + period * 2) / period) + 1;
+            c.beginPath(); if (fill) { c.moveTo(sc, h); c.lineTo(sc, midY); } else c.moveTo(sc, midY);
+            for (let k = 0; k < cnt; k++) {
+              const bx = sc + k * period;
+              c.lineTo(bx + 0.22 * period, midY); c.quadraticCurveTo(bx + 0.28 * period, midY - h * 0.15, bx + 0.34 * period, midY);
+              c.lineTo(bx + 0.39 * period, midY); c.lineTo(bx + 0.43 * period, midY + h * 0.09); c.lineTo(bx + 0.475 * period, midY - h * 0.40);
+              c.lineTo(bx + 0.525 * period, midY + h * 0.22); c.lineTo(bx + 0.565 * period, midY); c.lineTo(bx + 0.64 * period, midY);
+              c.quadraticCurveTo(bx + 0.72 * period, midY - h * 0.26, bx + 0.80 * period, midY); c.lineTo(bx + period, midY);
+            }
+            if (fill) { c.lineTo(sc + cnt * period, h); c.closePath(); }
+          };
+          const ecgY = (x) => {
+            let p = ((x + rtDemoEcg) % period) / period; if (p < 0) p += 1;
+            if (p >= 0.22 && p < 0.34) { const u = (p - 0.22) / 0.12; return midY - 2 * (1 - u) * u * (h * 0.15); }
+            if (p >= 0.39 && p < 0.43) return midY + ((p - 0.39) / 0.04) * (h * 0.09);
+            if (p >= 0.43 && p < 0.475) return (midY + h * 0.09) - ((p - 0.43) / 0.045) * (h * 0.49);
+            if (p >= 0.475 && p < 0.525) return (midY - h * 0.40) + ((p - 0.475) / 0.05) * (h * 0.62);
+            if (p >= 0.525 && p < 0.565) return midY + (h * 0.22) * (1 - (p - 0.525) / 0.04);
+            if (p >= 0.64 && p < 0.80) { const u = (p - 0.64) / 0.16; return midY - 2 * (1 - u) * u * (h * 0.26); }
+            return midY;
+          };
+          c.save(); c.globalAlpha = fade; c.beginPath(); c.rect(pad, 0, Math.max(0, endX - pad), h); c.clip();
+          trace(true); const aura = c.createLinearGradient(0, 3, 0, h); aura.addColorStop(0, `rgba(${rgb},0.25)`); aura.addColorStop(1, `rgba(${rgb},0)`); c.fillStyle = aura; c.fill();
+          trace(false); c.strokeStyle = `rgba(${rgb},0.26)`; c.lineWidth = 4.6; c.lineJoin = 'round'; c.stroke();
+          c.strokeStyle = `rgb(${rgb})`; c.lineWidth = 2.0; c.stroke(); c.restore();
+          const ty = ecgY(endX); c.save(); c.globalAlpha = fade;
+          c.beginPath(); c.arc(endX, ty, 5, 0, Math.PI * 2); c.fillStyle = `rgba(${rgb},0.3)`; c.fill();
+          c.beginPath(); c.arc(endX, ty, 2.4, 0, Math.PI * 2); c.fillStyle = pal.isNordic ? `rgb(${rgb})` : '#ffffff'; c.fill(); c.restore();
+        }
+      } else if (styleId === '8') {
+        const cy = h / 2, startX = 8, endX = startX + (rtDemoPct / 100) * (w - startX * 2);
+        c.beginPath(); if (c.roundRect) c.roundRect(1, cy - 6, w - 2, 12, 6); else c.rect(1, cy - 6, w - 2, 12);
+        c.fillStyle = pal.isNordic ? 'rgba(15,23,42,0.10)' : 'rgba(4,7,13,0.86)'; c.fill();
+        c.strokeStyle = 'rgba(245,158,11,0.28)'; c.lineWidth = 1; c.stroke();
+        c.strokeStyle = 'rgba(148,163,184,0.28)'; c.lineWidth = 3.4; c.lineCap = 'round'; c.beginPath(); c.moveTo(startX, cy); c.lineTo(w - startX, cy); c.stroke();
+        if (rtDemoPct > 0.35) {
+          const g8 = c.createLinearGradient(startX, 0, Math.max(startX + 4, endX), 0);
+          g8.addColorStop(0, pal.accentHex); g8.addColorStop(0.86, '#f59e0b'); g8.addColorStop(1, '#ffffff');
+          c.strokeStyle = 'rgba(245,158,11,0.24)'; c.lineWidth = 9.5; c.beginPath(); c.moveTo(startX, cy); c.lineTo(endX, cy); c.stroke();
+          c.strokeStyle = g8; c.lineWidth = 5.5; c.beginPath(); c.moveTo(startX, cy); c.lineTo(endX, cy); c.stroke();
+          if (Math.random() < (1 - Math.exp(-(rtDemoPlaying ? 56 : 24) * dt)) && rtDemoSparks.length < 24) {
+            const ang = (Math.random() - 0.5) * 2.5, spd = 28 + Math.random() * 52;
+            rtDemoSparks.push({ x: endX, y: cy, vx: Math.cos(ang) * spd + (rtDemoPct > 92 ? -12 : 14), vy: Math.sin(ang) * spd * 0.7 - 5, life: 1, sz: 1.2 + Math.random() * 1.1, gold: Math.random() < 0.7 });
+          }
+          const eR = 3.5 + Math.sin(ts * 0.028) * 0.5;
+          const eg = c.createRadialGradient(endX, cy, 0.5, endX, cy, eR * 3);
+          eg.addColorStop(0, 'rgba(255,255,255,0.96)'); eg.addColorStop(0.35, 'rgba(245,158,11,0.68)'); eg.addColorStop(1, 'rgba(245,158,11,0)');
+          c.beginPath(); c.arc(endX, cy, eR * 3, 0, Math.PI * 2); c.fillStyle = eg; c.fill();
+        }
+        for (let i = rtDemoSparks.length - 1; i >= 0; i--) {
+          const sp = rtDemoSparks[i];
+          sp.x += sp.vx * dt; sp.y += sp.vy * dt; sp.vx *= Math.exp(-dt * 1.7); sp.vy += 58 * dt; sp.life -= dt * 2.4;
+          const ea = Math.min(1, sp.y / 6, (h - sp.y) / 6, sp.x / 6, (w - sp.x) / 6);
+          if (sp.life <= 0 || ea <= 0) { rtDemoSparks.splice(i, 1); continue; }
+          const a = sp.life * ea;
+          c.beginPath(); c.moveTo(sp.x - sp.vx * 0.042, sp.y - sp.vy * 0.042); c.lineTo(sp.x, sp.y);
+          c.strokeStyle = sp.gold ? `rgba(245,158,11,${(a * 0.95).toFixed(2)})` : `rgba(${pal.accentRgb.join(',')},${(a * 0.92).toFixed(2)})`;
+          c.lineWidth = Math.max(0.8, sp.sz * sp.life); c.lineCap = 'round'; c.stroke();
+        }
+      } else if (styleId === '10') {
+        rtDemoEq += dt * (rtDemoPlaying ? 4.8 : 1.8);
+        const cnt = 24, padX = 5, gap = 3, barW = Math.max(2, (w - padX * 2 - gap * (cnt - 1)) / cnt);
+        const exact = (rtDemoPct / 100) * cnt, isGo = rtDemoPct <= 18, midY = h / 2, maxH = h - 6;
+        const grad = c.createLinearGradient(0, 3, 0, h - 3);
+        if (isGo) { grad.addColorStop(0, '#bbf7d0'); grad.addColorStop(0.55, pal.greenHex); grad.addColorStop(1, '#15803d'); }
+        else { grad.addColorStop(0, pal.isNordic ? pal.accentHex : '#e0f2fe'); grad.addColorStop(0.52, pal.accentHex); grad.addColorStop(1, pal.greenHex); }
+        for (let i = 0; i < cnt; i++) {
+          const x = padX + i * (barW + gap), frac = Math.max(0, Math.min(1, exact - i));
+          c.fillStyle = pal.isNordic ? 'rgba(15,23,42,0.12)' : 'rgba(148,163,184,0.16)';
+          c.beginPath(); if (c.roundRect) c.roundRect(x, midY - 2.25, barW, 4.5, barW / 2); else c.rect(x, midY - 2.25, barW, 4.5); c.fill();
+          if (frac > 0.01 && rtDemoPct > 0.25) {
+            const hw = 0.56 + 0.30 * Math.sin(rtDemoEq - i * 0.38) + 0.14 * Math.sin(rtDemoEq * 1.65 + i * 0.24);
+            const th = 4.5 + (maxH * Math.max(0.28, hw) - 4.5) * frac;
+            c.save(); c.globalAlpha = frac; c.fillStyle = grad;
+            c.beginPath(); if (c.roundRect) c.roundRect(x, midY - th / 2, barW, th, barW / 2); else c.rect(x, midY - th / 2, barW, th); c.fill();
+            c.restore();
+          }
+        }
+      }
+    }
+
+    function syncRestBarModalStageHeight() {
+      const stage = document.getElementById('rtm-stage');
+      const pSingle = document.getElementById('rtm-pane-single');
+      const pAll = document.getElementById('rtm-pane-all');
+      if (!stage || !pSingle || !pAll) return;
+      const targetH = rtModalView === 'all' ? Math.min(365, Math.max(250, pAll.scrollHeight)) : pSingle.offsetHeight;
+      if (targetH > 40) stage.style.height = targetH + 'px';
+    }
+
+    function buildRestBarAllGallery() {
+      const box = document.getElementById('rtm-pane-all');
+      if (!box || rtAllGalleryBuilt) return;
+      rtAllGalleryBuilt = true;
+      box.innerHTML = REST_BAR_LIST.map((item, idx) => {
+        const id = item.id;
+        let body = '';
+        if (id === '1') body = '<div class="rt-pb1-track"><div id="rtm-a-pb1" class="rt-pb1-fill" style="width:76%;"><div class="rt-pb1-body"></div></div></div>';
+        else if (id === '2') body = '<div class="rt-pb2-track"><div id="rtm-a-pb2" class="rt-pb2-fill" style="width:76%;"></div></div>';
+        else if (id === '3') body = '<div id="rtm-a-pb3" class="rt-pb3-grid">' + Array.from({ length: 16 }, (_, i) => `<span class="rt-pb3-seg${(i===3||i===7||i===11)?' q-gap':''}"><i class="rt-pb3-glow"></i></span>`).join('') + '</div>';
+        else if (id === '4') body = '<canvas id="rtm-a-cv4" class="rtm-all-bg-cv"></canvas><div style="height:12px;"></div>';
+        else if (id === '5') body = '<div class="rt-pb5-track"><div id="rtm-a-pb5" class="rt-pb5-fill" style="width:76%;"><div class="rt-pb5-body"><div class="rt-pb5-stripes"></div></div><div class="rt-pb5-tip"></div></div><div class="rt-pb5-ticks"><i></i><i></i><i></i></div></div>';
+        else if (id === '6') body = `<svg id="rtm-a-pb6" class="rtm-all-svg6" viewBox="0 0 340 52"><defs><linearGradient id="rtAllPb6Grad" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#e0f2fe"/><stop offset="45%" stop-color="#38bdf8"/><stop offset="100%" stop-color="#10b981"/></linearGradient><linearGradient id="rtAllPb6GradGo" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#dcfce7"/><stop offset="50%" stop-color="#4ade80"/><stop offset="100%" stop-color="#16a34a"/></linearGradient></defs><rect id="rtm-a-pb6-track" class="rt-pb6-track" x="1.5" y="1.5" width="337" height="49" rx="14" ry="14"/><path class="rt-pb6-aura rt-pb6-sym rt-pb6-left" d="M 170 1.5 L 15.5 1.5 A 14 14 0 0 0 1.5 15.5 L 1.5 36.5 A 14 14 0 0 0 15.5 50.5 L 170 50.5" pathLength="100" style="stroke:url(#rtAllPb6Grad);" stroke-dasharray="100 100"/><path class="rt-pb6-aura rt-pb6-sym rt-pb6-right" d="M 170 1.5 L 324.5 1.5 A 14 14 0 0 1 338.5 15.5 L 338.5 36.5 A 14 14 0 0 1 324.5 50.5 L 170 50.5" pathLength="100" style="stroke:url(#rtAllPb6Grad);" stroke-dasharray="100 100"/><path class="rt-pb6-glow rt-pb6-sym rt-pb6-left" d="M 170 1.5 L 15.5 1.5 A 14 14 0 0 0 1.5 15.5 L 1.5 36.5 A 14 14 0 0 0 15.5 50.5 L 170 50.5" pathLength="100" style="stroke:url(#rtAllPb6Grad);" stroke-dasharray="100 100"/><path class="rt-pb6-glow rt-pb6-sym rt-pb6-right" d="M 170 1.5 L 324.5 1.5 A 14 14 0 0 1 338.5 15.5 L 338.5 36.5 A 14 14 0 0 1 324.5 50.5 L 170 50.5" pathLength="100" style="stroke:url(#rtAllPb6Grad);" stroke-dasharray="100 100"/><path class="rt-pb6-stroke rt-pb6-sym rt-pb6-left" d="M 170 1.5 L 15.5 1.5 A 14 14 0 0 0 1.5 15.5 L 1.5 36.5 A 14 14 0 0 0 15.5 50.5 L 170 50.5" pathLength="100" style="stroke:url(#rtAllPb6Grad);" stroke-dasharray="100 100"/><path class="rt-pb6-stroke rt-pb6-sym rt-pb6-right" d="M 170 1.5 L 324.5 1.5 A 14 14 0 0 1 338.5 15.5 L 338.5 36.5 A 14 14 0 0 1 324.5 50.5 L 170 50.5" pathLength="100" style="stroke:url(#rtAllPb6Grad);" stroke-dasharray="100 100"/><path class="rt-pb6-tip rt-pb6-tip-path rt-pb6-left" d="M 170 1.5 L 15.5 1.5 A 14 14 0 0 0 1.5 15.5 L 1.5 36.5 A 14 14 0 0 0 15.5 50.5 L 170 50.5" pathLength="100" stroke-dasharray="2.4 104"/><path class="rt-pb6-tip rt-pb6-tip-path rt-pb6-right" d="M 170 1.5 L 324.5 1.5 A 14 14 0 0 1 338.5 15.5 L 338.5 36.5 A 14 14 0 0 1 324.5 50.5 L 170 50.5" pathLength="100" stroke-dasharray="2.4 104"/></svg><div style="height:8px;"></div>`;
+        else if (id === '7') body = '<div class="rt-cv-wrap ecg" style="height:26px;"><canvas id="rtm-a-cv7"></canvas></div>';
+        else if (id === '8') body = '<div class="rt-cv-wrap fuse" style="height:30px;"><canvas id="rtm-a-cv8"></canvas></div>';
+        else if (id === '9') body = '<div id="rtm-a-t9" class="rt-pb9-track"><div id="rtm-a-pb9" class="rt-pb9-fill" style="width:76%;"></div></div>';
+        else body = '<div class="rt-cv-wrap eq" style="height:22px;"><canvas id="rtm-a-cv10"></canvas></div>';
+        return `<div class="rtm-all-card" data-rt-all="${id}" onclick="pickRestBarFromAll('${id}', false)">
+          <div class="rtm-all-hd">
+            <span class="rtm-all-name"><b>#${id}</b>${item.title.replace(/^#\d+\s*/, '')}</span>
+            <button type="button" class="rtm-zoom-btn" onclick="event.stopPropagation();pickRestBarFromAll('${id}', true)">🔍 1 var.</button>
+          </div>
+          ${body}
+        </div>`;
+      }).join('');
+    }
+
+    function syncRestBarAllPickedUI() {
+      const cur = String(state.restBarStyle || '4');
+      document.querySelectorAll('#rtm-pane-all .rtm-all-card').forEach(el => {
+        el.classList.toggle('picked', el.dataset.rtAll === cur);
+      });
+    }
+
+    function pickRestBarFromAll(id, zoomToSingle) {
+      state.restBarStyle = String(id);
+      saveState();
+      applyAppearanceSettings();
+      if (document.getElementById('rest-timer-bar')?.classList.contains('visible')) buildRestBarSlotMarkup();
+      buildRestBarDemoCard();
+      syncRestBarAllPickedUI();
+      rtDemoSlosh = 0.85;
+      if (zoomToSingle) setRestBarModalView('single');
+    }
+
+    function syncRestAllPb6Geometry() {
+      const card = document.querySelector('#rtm-pane-all .rtm-all-card[data-rt-all="6"]');
+      const svg = document.getElementById('rtm-a-pb6');
+      if (!card || !svg) return;
+      const w = Math.max(160, Math.round(card.clientWidth || 340));
+      const h = Math.max(46, Math.round(card.clientHeight || 56));
+      const pad = 1.5, r = Math.min(14, (h - pad * 2) / 2);
+      const midX = w / 2, x1 = pad, x2 = w - pad, y1 = pad, y2 = h - pad;
+      svg.setAttribute('viewBox', `0 0 ${w} ${h}`);
+      const tr = document.getElementById('rtm-a-pb6-track');
+      if (tr) { tr.setAttribute('x', pad); tr.setAttribute('y', pad); tr.setAttribute('width', w - pad * 2); tr.setAttribute('height', h - pad * 2); tr.setAttribute('rx', r); tr.setAttribute('ry', r); }
+      const dL = `M ${midX} ${y1} L ${x1 + r} ${y1} A ${r} ${r} 0 0 0 ${x1} ${y1 + r} L ${x1} ${y2 - r} A ${r} ${r} 0 0 0 ${x1 + r} ${y2} L ${midX} ${y2}`;
+      const dR = `M ${midX} ${y1} L ${x2 - r} ${y1} A ${r} ${r} 0 0 1 ${x2} ${y1 + r} L ${x2} ${y2 - r} A ${r} ${r} 0 0 1 ${x2 - r} ${y2} L ${midX} ${y2}`;
+      svg.querySelectorAll('.rt-pb6-left').forEach(p => p.setAttribute('d', dL));
+      svg.querySelectorAll('.rt-pb6-right').forEach(p => p.setAttribute('d', dR));
+    }
+
+    function setRestBarModalView(view) {
+      rtModalView = view === 'all' ? 'all' : 'single';
+      const modal = document.getElementById('modal-rest-bar');
+      if (modal) modal.setAttribute('data-view', rtModalView);
+      document.getElementById('rtm-tab-single')?.classList.toggle('active', rtModalView === 'single');
+      document.getElementById('rtm-tab-all')?.classList.toggle('active', rtModalView === 'all');
+      if (rtModalView === 'all') {
+        buildRestBarAllGallery();
+        syncRestBarAllPickedUI();
+      } else {
+        buildRestBarDemoCard();
+      }
+      updateRestDemoVisuals(rtDemoPct);
+      requestAnimationFrame(() => {
+        if (rtModalView === 'all') syncRestAllPb6Geometry();
+        syncRestBarModalStageHeight();
+      });
+    }
+
+    function updateRestAllGalleryDom(pct) {
+      const go = pct <= 18, warn = pct <= 45 && pct > 18;
+      const f1 = document.getElementById('rtm-a-pb1');
+      if (f1) {
+        f1.style.width = pct + '%'; f1.style.opacity = Math.max(0, Math.min(1, pct / 1.5)).toFixed(3);
+        const tf = Math.max(0, Math.min(1, pct / 8));
+        f1.style.setProperty('--tip-op', tf.toFixed(2)); f1.style.setProperty('--tip-scale', (0.35 + 0.65 * tf).toFixed(2));
+        f1.classList.toggle('go', go);
+      }
+      const f2 = document.getElementById('rtm-a-pb2');
+      const c2 = document.querySelector('#rtm-pane-all .rtm-all-card[data-rt-all="2"]');
+      if (f2) { f2.style.width = pct + '%'; f2.style.opacity = pct > 0.25 ? '1' : '0'; }
+      if (c2) { c2.classList.toggle('phase-warn', warn); c2.classList.toggle('phase-go', go); }
+      const g3 = document.getElementById('rtm-a-pb3');
+      if (g3) {
+        g3.classList.toggle('warn', pct <= 40 && pct > 16); g3.classList.toggle('go', pct <= 16);
+        const segs = g3.children, exact = (pct / 100) * segs.length;
+        const tip = pct > 0.2 ? Math.min(segs.length - 1, Math.floor(exact - 0.001)) : -1;
+        for (let i = 0; i < segs.length; i++) {
+          if (segs[i].firstElementChild) segs[i].firstElementChild.style.opacity = Math.max(0, Math.min(1, exact - i)).toFixed(3);
+          segs[i].classList.toggle('active-tip', i === tip);
+        }
+      }
+      const f5 = document.getElementById('rtm-a-pb5');
+      if (f5) {
+        f5.style.width = pct + '%'; f5.style.opacity = Math.max(0, Math.min(1, pct / 1.5)).toFixed(3);
+        const t5 = Math.max(0, Math.min(1, pct / 4));
+        f5.style.setProperty('--tip-o', t5.toFixed(2)); f5.style.setProperty('--tip-s', (0.5 + 0.5 * t5).toFixed(2));
+        f5.classList.toggle('go', go);
+      }
+      const svg6 = document.getElementById('rtm-a-pb6');
+      if (svg6) {
+        const isGo6 = pct <= 20, dashOff = (100 - pct).toFixed(2), tipOff = (108.8 - pct).toFixed(2);
+        const gradUrl = isGo6 ? 'url(#rtAllPb6GradGo)' : 'url(#rtAllPb6Grad)';
+        svg6.querySelectorAll('.rt-pb6-sym').forEach(p => {
+          p.style.stroke = gradUrl; p.setAttribute('stroke-dashoffset', dashOff);
+          p.style.opacity = pct > 0.25 ? (p.classList.contains('rt-pb6-aura') ? '0.42' : (p.classList.contains('rt-pb6-glow') ? '0.68' : '1')) : '0';
+        });
+        svg6.querySelectorAll('.rt-pb6-tip-path').forEach(p => {
+          p.setAttribute('stroke-dashoffset', tipOff); p.style.opacity = pct > 1.2 && pct < 99.6 ? '1' : '0';
+        });
+      }
+      const f9 = document.getElementById('rtm-a-pb9'), t9 = document.getElementById('rtm-a-t9');
+      if (f9) {
+        f9.style.width = pct + '%'; f9.style.opacity = Math.max(0, Math.min(1, pct / 3)).toFixed(3);
+        f9.style.setProperty('--dot-s', Math.max(0, Math.min(1, (pct - 1.5) / 11)).toFixed(3));
+        f9.classList.toggle('go', go);
+      }
+      if (t9) t9.style.setProperty('--conv-glow', (pct > 0.2 && pct < 18 ? (1 - pct / 18) : 0).toFixed(3));
+    }
+
+    function stepRestDemoLoop(ts) {
+      const modal = document.getElementById('modal-rest-bar');
+      if (document.hidden || !modal || !modal.classList.contains('open')) {
+        rtDemoRafId = null; rtDemoLastTs = 0; return;
+      }
+      const dt = rtDemoLastTs ? Math.min(0.05, (ts - rtDemoLastTs) / 1000) : 0.016;
+      rtDemoLastTs = ts;
+      if (rtDemoPlaying) {
+        const next = rtDemoPct - dt * 12.5;
+        if (next <= 0) {
+          rtDemoPct = rtModalView === 'all' ? 100 : 0;
+          if (rtModalView !== 'all') {
+            rtDemoPlaying = false;
+            const pb = document.getElementById('rtbar-demo-play-btn');
+            if (pb) pb.textContent = '▶ Tęsti';
+          } else { rtDemoSlosh = 0.85; }
+        } else {
+          rtDemoPct = next;
+        }
+        updateRestDemoVisuals(rtDemoPct);
+      }
+      if (rtModalView === 'all') {
+        updateRestAllGalleryDom(rtDemoPct);
+        drawRestDemoCanvas(dt, ts, '4', 'rtm-a-cv4');
+        drawRestDemoCanvas(dt, ts, '7', 'rtm-a-cv7');
+        drawRestDemoCanvas(dt, ts, '8', 'rtm-a-cv8');
+        drawRestDemoCanvas(dt, ts, '10', 'rtm-a-cv10');
+      } else if (['4', '7', '8', '10'].includes(String(state.restBarStyle || '4'))) {
+        drawRestDemoCanvas(dt, ts);
+      }
+      rtDemoRafId = requestAnimationFrame(stepRestDemoLoop);
+    }
+
+    function openRestBarModal() {
+      applyAppearanceSettings();
+      openModal('modal-rest-bar');
+      rtDemoPct = 100;
+      rtDemoPlaying = true;
+      rtDemoSlosh = 0.9;
+      rtDemoPopRings.length = 0;
+      rtDemoSparks.length = 0;
+      const pb = document.getElementById('rtbar-demo-play-btn');
+      if (pb) pb.textContent = '⏸ Pauzė';
+      document.getElementById('rtbar-demo-card')?.classList.remove('paused');
+      buildRestBarDemoCard();
+      if (rtModalView === 'all') { buildRestBarAllGallery(); syncRestBarAllPickedUI(); }
+      requestAnimationFrame(() => {
+        if (String(state.restBarStyle) === '6') syncRestDemoPb6Geometry();
+        if (rtModalView === 'all') syncRestAllPb6Geometry();
+        syncRestBarModalStageHeight();
+        if (!rtDemoRafId) { rtDemoLastTs = 0; rtDemoRafId = requestAnimationFrame(stepRestDemoLoop); }
+      });
+    }
+
+    function closeRestBarModal() {
+      rtDemoPlaying = false;
+      if (rtDemoRafId) { cancelAnimationFrame(rtDemoRafId); rtDemoRafId = null; rtDemoLastTs = 0; }
+      closeModal('modal-rest-bar');
+    }
+
+    function replayRestBarDemo() {
+      rtDemoPct = 100;
+      rtDemoPlaying = true;
+      rtDemoSlosh = 1.0;
+      const pb = document.getElementById('rtbar-demo-play-btn');
+      if (pb) pb.textContent = '⏸ Pauzė';
+      document.getElementById('rtbar-demo-card')?.classList.remove('paused');
+      updateRestDemoVisuals(100);
+      if (!rtDemoRafId) { rtDemoLastTs = 0; rtDemoRafId = requestAnimationFrame(stepRestDemoLoop); }
+    }
+
+    function toggleRestBarDemoPlay() {
+      if (rtDemoPct <= 1) { replayRestBarDemo(); return; }
+      rtDemoPlaying = !rtDemoPlaying;
+      const pb = document.getElementById('rtbar-demo-play-btn');
+      if (pb) pb.textContent = rtDemoPlaying ? '⏸ Pauzė' : '▶ Tęsti';
+      const card = document.getElementById('rtbar-demo-card');
+      if (card) card.classList.toggle('paused', !rtDemoPlaying);
+    }
+
+    function nudgeRestBarDemo(deltaSec) {
+      rtDemoSlosh = Math.min(1.8, rtDemoSlosh + 1.0);
+      updateRestDemoVisuals(rtDemoPct + (deltaSec / 120) * 100);
+    }
+
+    function scrubRestBarDemo(val) {
+      const prev = rtDemoPct;
+      rtDemoSlosh = Math.min(1.8, rtDemoSlosh + Math.abs(Number(val) - prev) * 0.05);
+      updateRestDemoVisuals(val);
     }
 
     function openWhatsNewModal() { openModal('modal-whats-new'); }
@@ -9964,7 +11942,18 @@
         warmupInlineOpen = false;
       }
       extraToolsOpen = (state.trainingMode !== 'adaptation');
+      renderWorkoutFlowControls();
       renderWorkoutView();
+      updateScrollEdgeState();
+      window.addEventListener('scroll', updateScrollEdgeState, { passive: true });
+      window.addEventListener('resize', updateScrollEdgeState, { passive: true });
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') {
+          if (document.getElementById('modal-rir-guide')?.classList.contains('open')) closeModal('modal-rir-guide');
+          else if (document.getElementById('modal-edge-glow')?.classList.contains('open')) closeModal('modal-edge-glow');
+          else if (document.getElementById('modal-rest-bar')?.classList.contains('open')) closeRestBarModal();
+        }
+      });
       checkBackupReminder();
       setInterval(updateSessionClock, 1000);
       if (state.lastSeenRelease !== 'v10.0') {
