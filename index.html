@@ -13,7 +13,7 @@
   <link rel="manifest" href="./manifest.json">
   <link id="pwa-favicon" rel="icon" type="image/svg+xml" href="./icon.svg">
   <link id="pwa-apple-icon" rel="apple-touch-icon" sizes="192x192" href="./icon-192.png">
-  <title>LeverLab 193 (v9.0) – Sporto Salės Programa</title>
+  <title>LeverLab 193 (v10.0) – Sporto Salės Programa</title>
   <style>
     /* ==========================================================================
        1. DESIGN TOKENS & 4 SELECTABLE THEMES (ROUND 5 NATIVE HIERARCHY)
@@ -36,6 +36,15 @@
       --yellow-bg: rgba(245, 158, 11, 0.15);
       --red: #ef4444;
       --red-bg: rgba(239, 68, 68, 0.15);
+      --rt-track-bg: rgba(4, 7, 13, 0.84);
+      --rt-track-border: rgba(148, 163, 184, 0.22);
+      --ap-h: 46px;
+      --ap-r: 13px;
+      --ap-max: 274px;
+      --ap-ico: 20px;
+      --ap-pin: 16px;
+      --ap-yt-w: 25px;
+      --ap-yt-h: 18px;
     }
 
     [data-theme="obsidian"] {
@@ -147,6 +156,8 @@
       --green: #15803d;
       --yellow: #b45309;
       --red: #dc2626;
+      --rt-track-bg: rgba(15, 23, 42, 0.09);
+      --rt-track-border: rgba(15, 23, 42, 0.14);
     }
 
     * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
@@ -1121,17 +1132,130 @@
     }
     .ex-pick-row.active .ex-pick-badge { background: var(--accent); color: var(--accent-text); }
 
+    /* v10 Continuous Brushed-Steel Barbell + True Olympic Calibrated Plates + FLIP Sliding Animations */
     .barbell-visual {
-      display: flex; align-items: center; justify-content: center; gap: 3px; min-height: 102px;
-      padding: 10px 8px; background: var(--canvas-bg); border: 1px solid var(--border);
-      border-radius: var(--radius-md); overflow-x: auto;
+      position: relative;
+      display: flex; align-items: center; justify-content: center;
+      height: 174px; flex-shrink: 0;
+      padding: 10px 12px;
+      background: radial-gradient(circle at 50% 50%, color-mix(in srgb, var(--bg-surface) 75%, #060a11), var(--canvas-bg) 100%);
+      border: 1px solid var(--border);
+      border-radius: 15px; margin: 10px 0 2px; overflow-x: auto; overflow-y: hidden;
+      box-shadow: inset 0 2px 10px rgba(0, 0, 0, 0.42);
     }
-    .bar-sleeve { height: 12px; width: 22px; background: #94a3b8; border-radius: 2px; flex-shrink: 0; }
+    [data-theme="nordic"] .barbell-visual {
+      background: radial-gradient(circle at 50% 50%, #eef4fb 0%, #dde6f0 100%);
+      box-shadow: inset 0 2px 8px rgba(15, 23, 42, 0.08);
+    }
+    .bar-rig { display: flex; align-items: center; gap: 0; position: relative; z-index: 2; }
+    .bar-shaft {
+      height: 14px; width: 56px; flex-shrink: 0; border-radius: 4px 0 0 4px;
+      background: linear-gradient(180deg, #f1f5f9 0%, #94a3b8 55%, #475569 100%);
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.4);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 10px; font-weight: 900; color: #0f172a; font-family: var(--font-mono);
+      letter-spacing: -0.03em;
+    }
+    .bar-collar {
+      height: 40px; width: 12px; flex-shrink: 0; border-radius: 3.5px;
+      background: linear-gradient(180deg, #ffffff 0%, #94a3b8 55%, #334155 100%);
+      box-shadow: 2px 0 8px rgba(0, 0, 0, 0.48);
+      position: relative; z-index: 3;
+    }
+    .bar-sleeve-zone {
+      position: relative; display: flex; align-items: center;
+      min-width: 176px; min-height: 152px;
+      padding: 0 28px 0 2px;
+    }
+    .bar-sleeve-zone.mode-free { min-width: 164px; padding: 0 22px 0 10px; }
+    .bar-sleeve-rod {
+      position: absolute; left: -2px; right: 0; top: 50%; transform: translateY(-50%);
+      height: 16px; border-radius: 0 5px 5px 0; z-index: 1; pointer-events: none;
+      background:
+        repeating-linear-gradient(90deg, rgba(255,255,255,0.08) 0 2px, transparent 2px 5px),
+        linear-gradient(180deg, #f1f5f9 0%, #cbd5e1 26%, #94a3b8 58%, #475569 100%);
+      box-shadow: 0 3px 10px rgba(0, 0, 0, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.6);
+    }
+    .bar-sleeve-rod::after {
+      content: ""; position: absolute; right: 4px; top: 2px; bottom: 2px; width: 2px;
+      background: rgba(15, 23, 42, 0.35); border-radius: 1px;
+    }
+    .bar-sleeve-rod.free-rod {
+      left: 0; height: 11px; border-radius: 4px;
+      background: rgba(148, 163, 184, 0.24);
+      border: 1px dashed rgba(148, 163, 184, 0.55);
+      box-shadow: none;
+    }
+    .bar-sleeve-rod.free-rod::after { display: none; }
+    .bar-plates { position: relative; z-index: 2; display: flex; align-items: center; gap: 2px; }
+    @keyframes plateSlideOn {
+      0%   { opacity: 0; transform: translateX(58px); filter: brightness(1.28); }
+      68%  { opacity: 1; transform: translateX(-2px); filter: brightness(1.06); }
+      100% { opacity: 1; transform: translateX(0); filter: brightness(1); }
+    }
+    @keyframes plateGlint {
+      0%   { transform: translateY(-130%); opacity: 0; }
+      30%  { opacity: 0.65; }
+      100% { transform: translateY(150%); opacity: 0; }
+    }
+    @keyframes plateSlideOff {
+      0%   { opacity: 0.96; transform: translateX(0); }
+      100% { opacity: 0; transform: translateX(68px); }
+    }
     .plate-disc {
-      border-radius: 4px; display: flex; align-items: center; justify-content: center;
-      font-size: 10px; font-weight: 900; font-family: var(--font-mono); color: #fff;
-      text-shadow: 0 1px 2px rgba(0,0,0,0.7); border: 1px solid rgba(255,255,255,0.25); flex-shrink: 0;
+      position: relative; overflow: hidden;
+      border-radius: 5.5px; display: flex; align-items: center; justify-content: center;
+      font-weight: 900; font-family: var(--font-mono); letter-spacing: 0.02em;
+      border: 1px solid rgba(255, 255, 255, 0.28); flex-shrink: 0;
+      box-shadow: inset 0 1.5px 0 rgba(255, 255, 255, 0.34), inset 0 -2px 3px rgba(0, 0, 0, 0.35), 0 3px 8px rgba(0, 0, 0, 0.48);
+      white-space: nowrap; will-change: transform, opacity;
     }
+    .plate-disc.entering { animation: plateSlideOn 0.34s cubic-bezier(0.22, 1, 0.36, 1) both; }
+    .plate-disc.entering::after {
+      content: ""; position: absolute; inset: 0; pointer-events: none;
+      background: linear-gradient(180deg, transparent 0%, rgba(255,255,255,0.48) 50%, transparent 100%);
+      animation: plateGlint 0.42s cubic-bezier(0.22, 1, 0.36, 1) both;
+    }
+    .plate-disc.ghost-exit {
+      position: absolute; z-index: 3; pointer-events: none; margin: 0;
+      animation: plateSlideOff 0.24s cubic-bezier(0.4, 0, 1, 1) forwards;
+    }
+    .plate-empty-lbl {
+      position: relative; z-index: 2;
+      font-size: 11.5px; color: var(--text-muted); padding: 3px 9px; font-weight: 800;
+      background: var(--bg-card); border: 1px solid var(--border); border-radius: 999px;
+      margin-left: 16px;
+    }
+    .plate-disc span {
+      display: block; writing-mode: vertical-rl; transform: rotate(180deg); line-height: 1;
+      text-shadow: 0 1px 2px rgba(0, 0, 0, 0.35);
+    }
+    .plate-slider-wrap { margin-top: 10px; padding: 2px 2px 0; }
+    .plate-slider-meta {
+      display: flex; align-items: center; justify-content: space-between;
+      font-size: 10.5px; font-weight: 800; color: var(--text-muted); margin-bottom: 6px;
+    }
+    .plate-slider {
+      -webkit-appearance: none; appearance: none;
+      width: 100%; height: 8px; border-radius: 999px; outline: none;
+      background: var(--bg-surface);
+      background-image: linear-gradient(90deg, var(--accent), color-mix(in srgb, var(--accent) 70%, #0284c7));
+      background-repeat: no-repeat; cursor: pointer; touch-action: pan-y;
+    }
+    .plate-slider::-webkit-slider-thumb {
+      -webkit-appearance: none; appearance: none;
+      width: 26px; height: 26px; border-radius: 50%;
+      background: #f8fafc; border: 3px solid var(--accent);
+      box-shadow: 0 3px 12px rgba(0, 0, 0, 0.45), 0 0 10px var(--accent-glow);
+      transition: transform 0.14s ease;
+    }
+    .plate-slider:active::-webkit-slider-thumb { transform: scale(1.14); }
+    .plate-ticks {
+      display: flex; justify-content: space-between;
+      font-size: 9.5px; font-family: var(--font-mono); color: var(--text-dim); margin-top: 4px; font-weight: 700;
+    }
+    @keyframes wInputBump { 0% { transform: scale(1); } 45% { transform: scale(1.06); color: var(--accent); } 100% { transform: scale(1); } }
+    #plate-weight-input.bump { animation: wInputBump 0.22s cubic-bezier(0.22, 1, 0.36, 1); }
 
     @keyframes modalFadeIn {
       from { opacity: 0; }
@@ -1154,6 +1278,10 @@
     }
     .modal-backdrop.open { display: flex; animation: modalFadeIn 0.2s ease both; }
     .modal-backdrop.align-top { align-items: flex-start; padding-top: calc(env(safe-area-inset-top, 0px) + 16px); }
+    .modal-backdrop.pos-upper { align-items: flex-start; padding-top: calc(env(safe-area-inset-top, 0px) + 12vh); }
+    .modal-backdrop.pos-center { align-items: center; }
+    .modal-backdrop.pos-lower { align-items: flex-end; padding-bottom: calc(env(safe-area-inset-bottom, 0px) + 10vh); }
+    .modal-backdrop.kbd-top { align-items: flex-start !important; padding-top: calc(env(safe-area-inset-top, 0px) + 10px) !important; padding-bottom: 10px !important; }
     .modal-backdrop.align-top .modal-sheet { animation: modalSheetDown 0.24s cubic-bezier(0.22, 1, 0.36, 1) both; }
     @keyframes modalSheetDown {
       from { opacity: 0; transform: translateY(-16px) scale(0.97); }
@@ -1331,9 +1459,9 @@
       background: var(--bg-surface); font-size: 12px; color: var(--text-muted);
     }
 
-    /* Sticky Active Exercise Bar (Always Know Current Exercise & Set While Scrolling) */
+    /* Sticky Active Exercise Bar (v10: Safe-Area Top Offset + Auto-Hide When Collapsed) */
     .active-ex-sticky {
-      position: sticky; top: var(--header-height); z-index: 32;
+      position: sticky; top: calc(var(--header-height) + env(safe-area-inset-top, 0px)); z-index: 32;
       margin: -11px -10px 10px; padding: 7px 12px;
       background: var(--glass-bg);
       border-bottom: 1px solid var(--border);
@@ -1405,25 +1533,29 @@
     }
     .note-textarea:focus { border-color: var(--accent); }
 
-    /* Floating Undo Bar (Warm Amber Frosted Glass – clearly distinct from Rest Timer below) */
+    /* Floating Undo Bar (v10: Compact Centered 2-Line Pill – Zero Text Truncation!) */
     .undo-float-bar {
-      width: 100%;
-      background: linear-gradient(155deg, rgba(245, 158, 11, 0.24), color-mix(in srgb, var(--bg-elevated) 84%, transparent));
+      width: fit-content; max-width: min(334px, 100%); margin: 0 auto;
+      background: linear-gradient(155deg, rgba(245, 158, 11, 0.24), color-mix(in srgb, var(--bg-elevated) 88%, transparent));
       backdrop-filter: blur(24px) saturate(185%);
       -webkit-backdrop-filter: blur(24px) saturate(185%);
-      border: 1.5px solid rgba(251, 191, 36, 0.76);
-      border-radius: 15px; padding: 9px 12px;
+      border: 1.5px solid rgba(251, 191, 36, 0.78);
+      border-radius: 16px; padding: 8px 10px 8px 13px;
       box-shadow: 0 14px 36px rgba(0, 0, 0, 0.68), 0 0 18px rgba(245, 158, 11, 0.22), inset 0 1.5px 0 rgba(255, 255, 255, 0.24);
       display: none; align-items: center; justify-content: space-between; gap: 10px;
       pointer-events: auto;
       animation: floatSlideUp 0.2s cubic-bezier(0.2, 0.8, 0.2, 1);
     }
     [data-theme="nordic"] .undo-float-bar {
-      background: linear-gradient(155deg, rgba(254, 243, 199, 0.92), rgba(255, 255, 255, 0.92));
+      background: linear-gradient(155deg, rgba(254, 243, 199, 0.94), rgba(255, 255, 255, 0.94));
       border-color: rgba(217, 119, 6, 0.55);
       box-shadow: 0 12px 30px rgba(15, 23, 42, 0.16), inset 0 1.5px 0 rgba(255, 255, 255, 0.95);
     }
     .undo-float-bar.visible { display: flex; }
+    .undo-text-stack { min-width: 0; display: flex; flex-direction: column; gap: 1px; }
+    .undo-line-1 { font-size: 11px; font-weight: 800; color: #fcd34d; line-height: 1.2; }
+    [data-theme="nordic"] .undo-line-1 { color: #b45309; }
+    .undo-line-2 { font-size: 12px; font-weight: 700; color: var(--text); line-height: 1.25; }
 
     /* Landscape Mode Optimization (e.g. Galaxy S26 Ultra Sideways) */
     @media (orientation: landscape) and (max-height: 560px) {
@@ -1855,6 +1987,390 @@
                   linear-gradient(120deg, var(--green) 0%, var(--accent) 52%, #38bdf8 100%) border-box;
       box-shadow: var(--shadow), 0 0 22px var(--accent-glow);
     }
+
+    /* ==========================================================================
+       v10.0 UPGRADES: COLLAPSIBLE ACTIVE EXERCISE, 5 ANIM&PIN ICONS, 6 PLATE ICONS,
+       10 REST TIMER BARS (4-THEME + 0 FPS SLEEP), COLLAPSIBLE INFO DRAWER, APPEARANCE MODAL
+       ========================================================================== */
+
+    /* 1) Active Exercise Header Collapse Trigger + Sleek Rotating SVG Chevron */
+    .ex-head-tap { cursor: pointer; -webkit-tap-highlight-color: transparent; }
+    .ex-head-tap:active .ex-chev-pill { transform: scale(0.92); }
+    .ex-chev-pill {
+      width: 30px; height: 30px; border-radius: 10px;
+      background: var(--accent-soft); border: 1px solid var(--accent-glow);
+      color: var(--accent);
+      display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0;
+      transition: transform 0.22s ease, background 0.2s ease;
+    }
+    .ex-chev-pill svg { width: 15px; height: 15px; display: block; transform: rotate(180deg); transition: transform 0.3s cubic-bezier(0.22, 1, 0.36, 1); }
+
+    /* 2) Icon-Only "Animacija & Pin" + YouTube Dual Row (5 Selectable Styles + Height/Width Vars) */
+    .ap-dual-row {
+      display: grid; grid-template-columns: 1.25fr 0.85fr; gap: 8px;
+      width: 100%; max-width: var(--ap-max); margin: 11px auto 0;
+    }
+    .ap-dual-row.single { grid-template-columns: 1fr; max-width: min(var(--ap-max), 220px); }
+    .ap-btn {
+      position: relative; overflow: hidden;
+      height: var(--ap-h); border-radius: var(--ap-r);
+      background: linear-gradient(145deg, color-mix(in srgb, var(--accent) 16%, transparent), color-mix(in srgb, var(--accent) 5%, transparent));
+      border: 1.5px solid color-mix(in srgb, var(--accent) 62%, transparent);
+      color: var(--accent);
+      display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+      transition: transform 0.22s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.28s ease, background 0.22s ease, border-color 0.22s ease;
+    }
+    .ap-btn::after {
+      content: ""; position: absolute; top: 0; left: -120%; width: 70%; height: 100%;
+      background: linear-gradient(105deg, transparent, rgba(255, 255, 255, 0.24), transparent);
+      transform: skewX(-20deg); pointer-events: none;
+      transition: left 0.52s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+    .ap-btn.open::after { left: 150%; }
+    .ap-btn:active { transform: scale(0.94); }
+    .ap-btn.open {
+      background: color-mix(in srgb, var(--accent) 24%, transparent);
+      border-color: var(--accent);
+      box-shadow: 0 0 18px var(--accent-soft), inset 0 1px 0 rgba(255,255,255,0.22);
+    }
+    .ap-btn.ap-glass {
+      background: linear-gradient(155deg, color-mix(in srgb, var(--accent) 20%, transparent), color-mix(in srgb, var(--bg-surface) 88%, transparent));
+      border: 1.5px solid color-mix(in srgb, var(--accent) 52%, rgba(255,255,255,0.4));
+      box-shadow: inset 0 1.5px 0 rgba(255, 255, 255, 0.22), 0 6px 16px rgba(0, 0, 0, 0.24);
+    }
+    /* #5 Brand Lever button: Clean theme accent tint (zero greenish wash!) */
+    .ap-btn.ap-brand {
+      background: linear-gradient(145deg, color-mix(in srgb, var(--accent) 18%, transparent), color-mix(in srgb, var(--accent) 6%, transparent));
+      border: 1.5px solid color-mix(in srgb, var(--accent) 68%, transparent);
+    }
+    .ap-btn .ico-main { width: var(--ap-ico); height: var(--ap-ico); transition: transform 0.36s cubic-bezier(0.22, 1, 0.36, 1); }
+    .ap-btn .ico-pin { width: var(--ap-pin); height: var(--ap-pin); transform-origin: 50% 80%; }
+    .ap-sep { width: 1px; height: 14px; background: color-mix(in srgb, var(--accent) 36%, transparent); }
+    .ap-chev-svg {
+      width: 13px; height: 13px; opacity: 0.82; flex-shrink: 0;
+      transition: transform 0.32s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.2s;
+    }
+    .ap-btn.open .ap-chev-svg { transform: rotate(180deg); opacity: 1; }
+    .yt-ico-btn {
+      position: relative; overflow: hidden; text-decoration: none;
+      height: var(--ap-h); border-radius: var(--ap-r);
+      background: linear-gradient(145deg, rgba(239, 68, 68, 0.16), rgba(239, 68, 68, 0.07));
+      border: 1.5px solid rgba(239, 68, 68, 0.48);
+      display: inline-flex; align-items: center; justify-content: center;
+      transition: transform 0.22s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.26s ease, background 0.2s ease;
+    }
+    .yt-ico-btn.yt-glass {
+      background: linear-gradient(155deg, rgba(239, 68, 68, 0.22), color-mix(in srgb, var(--bg-surface) 88%, transparent));
+      border-color: rgba(252, 165, 165, 0.45);
+      box-shadow: inset 0 1.5px 0 rgba(255, 255, 255, 0.18), 0 6px 16px rgba(0, 0, 0, 0.24);
+    }
+    .yt-ico-btn:active { transform: scale(0.93); }
+    .yt-svg { width: var(--ap-yt-w); height: var(--ap-yt-h); display: block; }
+
+    /* Bespoke SVG Animations for All 5 Animacija & Pin Variants */
+    @keyframes pinPressClick {
+      0%   { transform: rotate(0deg) translateY(0) scale(1); }
+      32%  { transform: rotate(-28deg) translateY(-3px) scale(1.12); }
+      62%  { transform: rotate(-18deg) translateY(1.2px) scale(0.95); }
+      84%  { transform: rotate(-23deg) translateY(-0.6px) scale(1.06); }
+      100% { transform: rotate(-20deg) translateY(0) scale(1.05); }
+    }
+    @keyframes pinRelease {
+      0%   { transform: rotate(-20deg) scale(1.05); }
+      45%  { transform: rotate(5deg) translateY(-1.5px) scale(0.96); }
+      100% { transform: rotate(0deg) translateY(0) scale(1); }
+    }
+    .ap-btn.open .ico-pin { animation: pinPressClick 0.56s cubic-bezier(0.22, 1, 0.36, 1) forwards; }
+    .ap-btn.closing .ico-pin { animation: pinRelease 0.36s cubic-bezier(0.22, 1, 0.36, 1) forwards; }
+
+    /* #1 Athlete Overhead Press */
+    .ap-btn .ico-fig { overflow: visible; }
+    .fig-arm-l, .fig-arm-r { transform-origin: 12px 8.5px; }
+    .fig-body { transform-origin: 12px 14px; }
+    @keyframes figJumpOpen { 0% { transform: translateY(0) scaleY(1); } 24% { transform: translateY(1.6px) scaleY(0.92); } 56% { transform: translateY(-2.4px) scaleY(1.06); } 82% { transform: translateY(0.4px) scaleY(0.99); } 100% { transform: translateY(-0.8px) scaleY(1.02); } }
+    @keyframes figArmLUp { 0% { transform: rotate(0deg); } 22% { transform: rotate(-10deg); } 60% { transform: rotate(62deg); } 82% { transform: rotate(44deg); } 100% { transform: rotate(52deg); } }
+    @keyframes figArmRUp { 0% { transform: rotate(0deg); } 22% { transform: rotate(10deg); } 60% { transform: rotate(-62deg); } 82% { transform: rotate(-44deg); } 100% { transform: rotate(-52deg); } }
+    @keyframes figArmLDown { 0% { transform: rotate(52deg); } 65% { transform: rotate(-6deg); } 100% { transform: rotate(0deg); } }
+    @keyframes figArmRDown { 0% { transform: rotate(-52deg); } 65% { transform: rotate(6deg); } 100% { transform: rotate(0deg); } }
+    .ap-btn.open .fig-body { animation: figJumpOpen 0.62s cubic-bezier(0.22, 1, 0.36, 1) forwards; }
+    .ap-btn.open .fig-arm-l { animation: figArmLUp 0.62s cubic-bezier(0.22, 1, 0.36, 1) forwards; }
+    .ap-btn.open .fig-arm-r { animation: figArmRUp 0.62s cubic-bezier(0.22, 1, 0.36, 1) forwards; }
+    .ap-btn.open .fig-head { fill: var(--accent-soft); }
+    .ap-btn.closing .fig-arm-l { animation: figArmLDown 0.42s cubic-bezier(0.22, 1, 0.36, 1) forwards; }
+    .ap-btn.closing .fig-arm-r { animation: figArmRDown 0.42s cubic-bezier(0.22, 1, 0.36, 1) forwards; }
+
+    /* #2 Trajectory Orbit Dot */
+    @keyframes dotOrbit { 0%, 100% { transform: translate(0, 0); opacity: 0.72; } 50% { transform: translate(5px, -5px); opacity: 1; } }
+    .orbit-dot { animation: dotOrbit 1.7s cubic-bezier(0.45, 0, 0.55, 1) infinite; }
+
+    /* #3 Organic Play Orb + GPS Pin Drop */
+    .ap-btn .ico-play-v3, .ap-btn .ico-mappin { overflow: visible; }
+    .play-orb { transform-origin: 12px 12px; transition: fill-opacity 0.3s ease, stroke-opacity 0.3s ease; }
+    .play-tri { transform-origin: 12px 12px; }
+    .play-ring { transform-origin: 12px 12px; opacity: 0; }
+    @keyframes playOrbBreathe { 0% { transform: scale(1); } 38% { transform: scale(0.91); } 74% { transform: scale(1.09); } 100% { transform: scale(1.04); } }
+    @keyframes playLaunch { 0% { transform: translateX(0) scale(1); } 32% { transform: translateX(-1px) scale(0.86); } 68% { transform: translateX(1.6px) scale(1.16); } 100% { transform: translateX(0.6px) scale(1.06); } }
+    @keyframes playReturn { 0% { transform: translateX(0.6px) scale(1.06); } 100% { transform: translateX(0) scale(1); } }
+    @keyframes playSonar { 0% { transform: scale(0.82); opacity: 0.78; stroke-width: 1.8; } 100% { transform: scale(1.42); opacity: 0; stroke-width: 0.5; } }
+    @keyframes mapPinDrop { 0% { transform: translateY(-5px) scale(0.9, 1.14); } 45% { transform: translateY(1.6px) scale(1.12, 0.86); } 72% { transform: translateY(-2px) scale(0.96, 1.05); } 100% { transform: translateY(0) scale(1, 1); } }
+    @keyframes pinCoreGlow { 0%, 100% { opacity: 0.75; transform: scale(1); } 50% { opacity: 1; transform: scale(1.28); } }
+    .ap-btn.open .play-orb { fill-opacity: 0.28; stroke-opacity: 0.92; animation: playOrbBreathe 0.54s cubic-bezier(0.22, 1, 0.36, 1) forwards; }
+    .ap-btn.open .play-tri { animation: playLaunch 0.52s cubic-bezier(0.22, 1, 0.36, 1) forwards; }
+    .ap-btn.open .play-ring { animation: playSonar 0.66s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+    .ap-btn.closing .play-tri { animation: playReturn 0.32s ease forwards; }
+    .ap-btn.open .ico-mappin { animation: mapPinDrop 0.6s cubic-bezier(0.22, 1, 0.36, 1) forwards; }
+    .ap-btn.closing .ico-mappin { animation: none; }
+    .ap-btn .pin-core { transform-origin: 12px 10px; transition: fill 0.25s ease, stroke 0.25s ease; }
+    .ap-btn.open .pin-core { fill: var(--green); stroke: var(--green); animation: pinCoreGlow 1.3s ease-in-out infinite; }
+
+    /* #4 Glass Monitor OLED Power-On */
+    .ap-btn .ico-screen-v4 { overflow: visible; }
+    .scr-frame, .scr-glow, .scr-play { transform-origin: 12px 11px; }
+    .scr-glow { opacity: 0; }
+    @keyframes scrPowerOn { 0% { transform: scale(0.92); } 48% { transform: scale(1.09); } 100% { transform: scale(1.03); } }
+    @keyframes scrPowerOff { 0% { transform: scale(1.03); } 45% { transform: scale(1.06, 0.82); } 100% { transform: scale(1); } }
+    @keyframes scrGlowOn { 0% { opacity: 0; transform: scaleY(0.12); } 45% { opacity: 0.45; transform: scaleY(1.05); } 100% { opacity: 0.24; transform: scaleY(1); } }
+    @keyframes scrPlayPop { 0% { transform: translateX(0) scale(1); } 42% { transform: translateX(1.8px) scale(1.26); } 100% { transform: translateX(0.8px) scale(1.1); } }
+    .ap-btn.open .scr-frame { animation: scrPowerOn 0.48s cubic-bezier(0.22, 1, 0.36, 1) forwards; }
+    .ap-btn.closing .scr-frame { animation: scrPowerOff 0.34s cubic-bezier(0.22, 1, 0.36, 1) forwards; }
+    .ap-btn.open .scr-glow { animation: scrGlowOn 0.5s cubic-bezier(0.22, 1, 0.36, 1) forwards; }
+    .ap-btn.open .scr-play { animation: scrPlayPop 0.52s cubic-bezier(0.22, 1, 0.36, 1) forwards; }
+
+    /* #5 Brand #8.4 Lever Damped Pendulum Physics */
+    .ap-btn .ico-lever { width: calc(var(--ap-ico) * 1.32); height: calc(var(--ap-ico) * 1.32); overflow: visible; }
+    .lever-beam { transform-origin: 14px 12.2px; transform: rotate(-19deg); }
+    @keyframes leverBalance {
+      0%   { transform: rotate(-19deg); animation-timing-function: cubic-bezier(0.32, 0, 0.55, 1); }
+      26%  { transform: rotate(8.5deg); animation-timing-function: ease-in-out; }
+      48%  { transform: rotate(-4.2deg); animation-timing-function: ease-in-out; }
+      66%  { transform: rotate(2.0deg); animation-timing-function: ease-in-out; }
+      81%  { transform: rotate(-0.8deg); animation-timing-function: ease-in-out; }
+      92%  { transform: rotate(0.3deg); animation-timing-function: ease-in-out; }
+      100% { transform: rotate(0deg); }
+    }
+    @keyframes leverTiltBack {
+      0%   { transform: rotate(0deg); animation-timing-function: cubic-bezier(0.32, 0, 0.55, 1); }
+      32%  { transform: rotate(-24.5deg); animation-timing-function: ease-in-out; }
+      56%  { transform: rotate(-15.8deg); animation-timing-function: ease-in-out; }
+      76%  { transform: rotate(-20.4deg); animation-timing-function: ease-in-out; }
+      90%  { transform: rotate(-18.5deg); animation-timing-function: ease-in-out; }
+      100% { transform: rotate(-19deg); }
+    }
+    .ap-btn.open .lever-beam { animation: leverBalance 0.96s forwards; }
+    .ap-btn.closing .lever-beam { animation: leverTiltBack 0.84s forwards; }
+
+    /* 5) Icon-Only Plate Button + 6 Tap Animations */
+    .plate-ico-btn {
+      width: 34px; height: 34px; border-radius: 10px;
+      background: var(--accent-soft); border: 1px solid color-mix(in srgb, var(--accent) 44%, transparent);
+      color: var(--accent);
+      display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0;
+      transition: transform 0.18s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.25s ease;
+    }
+    .plate-ico-btn:active { transform: scale(0.9); }
+    .plate-ico-btn.glowing { box-shadow: 0 0 0 4px var(--accent-soft), 0 0 16px var(--accent-glow); }
+    .plate-ico-btn svg { width: 19px; height: 19px; display: block; overflow: visible; }
+    @keyframes pSpin180 { 0% { transform: scale(0.92) rotate(0deg); } 55% { transform: scale(1.14) rotate(196deg); } 100% { transform: scale(1) rotate(180deg); } }
+    @keyframes pTri120 { 0% { transform: rotate(0deg) scale(0.94); } 60% { transform: rotate(132deg) scale(1.12); } 100% { transform: rotate(120deg) scale(1); } }
+    @keyframes pBarPump { 0% { transform: translateY(0) scale(1); } 35% { transform: translateY(-4px) scale(1.12); } 65% { transform: translateY(1.5px) scale(0.96); } 100% { transform: translateY(0) scale(1); } }
+    @keyframes pPlateL { 0%, 100% { transform: translateX(0); } 45% { transform: translateX(-2.2px); } }
+    @keyframes pPlateR { 0%, 100% { transform: translateX(0); } 45% { transform: translateX(2.2px); } }
+    @keyframes pSplitFront { 0%, 100% { transform: translate(0, 0) scale(1); } 45% { transform: translate(2.5px, -2px) scale(1.08); } }
+    @keyframes pSplitBack { 0%, 100% { transform: translate(0, 0) scale(1); } 45% { transform: translate(-2.5px, 2px) scale(0.96); } }
+    @keyframes pPro360 { 0% { transform: rotate(0deg) scale(0.95); } 60% { transform: rotate(378deg) scale(1.12); } 100% { transform: rotate(360deg) scale(1); } }
+    @keyframes pRingOut { 0% { transform: rotate(0deg) scale(0.95); } 65% { transform: rotate(192deg) scale(1.08); } 100% { transform: rotate(180deg) scale(1); } }
+    @keyframes pRingIn { 0% { transform: rotate(0deg); } 65% { transform: rotate(-192deg); } 100% { transform: rotate(-180deg); } }
+    @keyframes pCorePop { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.45); } }
+    .plate-ico-btn.anim-spin svg { animation: pSpin180 0.56s cubic-bezier(0.22, 1, 0.36, 1); }
+    .plate-ico-btn.anim-tri svg { animation: pTri120 0.52s cubic-bezier(0.22, 1, 0.36, 1); }
+    .plate-ico-btn.anim-pump svg { animation: pBarPump 0.48s cubic-bezier(0.22, 1, 0.36, 1); }
+    .plate-ico-btn.anim-pump .p-l { animation: pPlateL 0.48s cubic-bezier(0.22, 1, 0.36, 1); }
+    .plate-ico-btn.anim-pump .p-r { animation: pPlateR 0.48s cubic-bezier(0.22, 1, 0.36, 1); }
+    .plate-ico-btn.anim-split .p-front { animation: pSplitFront 0.52s cubic-bezier(0.22, 1, 0.36, 1); }
+    .plate-ico-btn.anim-split .p-back { animation: pSplitBack 0.52s cubic-bezier(0.22, 1, 0.36, 1); }
+    .plate-ico-btn.anim-pro svg { animation: pPro360 0.62s cubic-bezier(0.22, 1, 0.36, 1); }
+    .plate-ico-btn.anim-brand .ring-out { transform-origin: 12px 12px; animation: pRingOut 0.6s cubic-bezier(0.22, 1, 0.36, 1); }
+    .plate-ico-btn.anim-brand .ring-in { transform-origin: 12px 12px; animation: pRingIn 0.6s cubic-bezier(0.22, 1, 0.36, 1); }
+    .plate-ico-btn.anim-brand .ring-core { transform-origin: 12px 12px; animation: pCorePop 0.6s cubic-bezier(0.22, 1, 0.36, 1); }
+
+    /* 7) Collapsible Exercise Info Drawer (Collapsed by Default, Unified Frosted Rotating Chevron) */
+    .ex-info-toggle {
+      width: 100%; margin-top: 9px; margin-bottom: 8px; padding: 6px 7px 6px 11px; border-radius: 12px;
+      background: var(--bg-surface); border: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: space-between; gap: 8px;
+      font-size: 11.5px; font-weight: 700; color: var(--text-muted);
+      transition: background 0.22s ease, border-color 0.22s ease, color 0.22s ease;
+    }
+    .ex-info-toggle.open {
+      background: var(--accent-soft); border-color: color-mix(in srgb, var(--accent) 46%, transparent); color: var(--accent);
+    }
+    .ex-info-chev {
+      width: 26px; height: 26px; border-radius: 8px;
+      background: var(--bg-card); border: 1px solid var(--border); color: var(--text-muted);
+      display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0;
+      transition: background 0.22s ease, border-color 0.22s ease, color 0.22s ease;
+    }
+    .ex-info-chev svg { width: 14px; height: 14px; display: block; transition: transform 0.32s cubic-bezier(0.22, 1, 0.36, 1); }
+    .ex-info-toggle.open .ex-info-chev { background: var(--accent-soft); border-color: color-mix(in srgb, var(--accent) 42%, transparent); color: var(--accent); }
+    .ex-info-toggle.open .ex-info-chev svg { transform: rotate(180deg); }
+
+    /* 6) 10 Selectable Rest Timer Progress Bars (4-Theme Compatible + True 0 FPS Sleep) */
+    .rest-timer-bar { position: relative; overflow: hidden; }
+    .rest-timer-bar > .rest-timer-top,
+    .rest-timer-bar > .rest-controls-row,
+    .rest-timer-bar > .rt-bar-slot { position: relative; z-index: 2; }
+    .rt-bar-slot { margin-top: 9px; }
+    .rt-phase-pill {
+      display: none; font-size: 9.5px; font-weight: 900; text-transform: uppercase; letter-spacing: 0.05em;
+      padding: 2px 7px; border-radius: 999px; flex-shrink: 0;
+      background: var(--accent-soft); color: var(--accent);
+    }
+    .rest-timer-bar[data-rt-style="2"] .rt-phase-pill { display: inline-flex; align-items: center; }
+    .rest-timer-bar.paused * { animation-play-state: paused !important; }
+
+    /* Style #1: Glass Tube + GPU Gloss Sweep + Plasma Tip */
+    .rt-pb1-track {
+      height: 10px; border-radius: 999px; background: var(--rt-track-bg);
+      box-shadow: inset 0 2px 4px rgba(0,0,0,0.45); padding: 1.5px 4px; position: relative;
+    }
+    @keyframes rtPb1Sheen { from { transform: translateX(-120%); } to { transform: translateX(340%); } }
+    .rt-pb1-fill { height: 100%; border-radius: 999px; position: relative; box-shadow: 0 0 12px var(--accent-glow); }
+    .rt-pb1-fill.go { box-shadow: 0 0 14px rgba(34, 197, 94, 0.72); }
+    .rt-pb1-body {
+      position: absolute; inset: 0; border-radius: 999px; overflow: hidden;
+      background: linear-gradient(90deg, var(--green) 0%, var(--accent) 62%, color-mix(in srgb, var(--accent) 55%, #ffffff) 100%);
+      box-shadow: inset 0 1.5px 0 rgba(255,255,255,0.42);
+    }
+    .rt-pb1-fill.go .rt-pb1-body { background: linear-gradient(90deg, #15803d 0%, var(--green) 60%, #bbf7d0 100%); }
+    .rt-pb1-body::before {
+      content: ""; position: absolute; top: 0; bottom: 0; left: 0; width: 42%;
+      background: linear-gradient(105deg, transparent 15%, rgba(255,255,255,0.42) 50%, transparent 85%);
+      animation: rtPb1Sheen 2.4s linear infinite; will-change: transform;
+    }
+    .rt-pb1-fill::after {
+      content: ""; position: absolute; right: 0; top: 50%; width: 9px; height: 9px; border-radius: 50%;
+      transform: translate(50%, -50%) scale(var(--tip-scale, 1)); opacity: var(--tip-op, 1);
+      background: radial-gradient(circle, #ffffff 38%, var(--accent) 78%, transparent 100%);
+      box-shadow: 0 0 8px #ffffff, 0 0 14px var(--accent);
+    }
+    .rt-pb1-fill.go::after { box-shadow: 0 0 8px #ffffff, 0 0 15px var(--green); }
+
+    /* Style #2: Full-Card Dynamic Phase (Theme-Safe High Contrast on Nordic!) */
+    .rest-timer-bar[data-rt-style="2"] { overflow: visible; }
+    .rest-timer-bar[data-rt-style="2"]::after {
+      content: ""; position: absolute; inset: -3px; border-radius: 21px; pointer-events: none; opacity: 0;
+      box-shadow: 0 0 22px 2px rgba(34, 197, 94, 0.48), inset 0 0 12px rgba(34, 197, 94, 0.2);
+    }
+    @keyframes rtCardPulseOp { 0%, 100% { opacity: 0.2; } 50% { opacity: 0.95; } }
+    .rest-timer-bar[data-rt-style="2"].phase-warn { border-color: var(--yellow); }
+    .rest-timer-bar[data-rt-style="2"].phase-go { border-color: var(--green); }
+    .rest-timer-bar[data-rt-style="2"].heartbeat::after { animation: rtCardPulseOp 0.85s ease-in-out infinite; }
+    .rest-timer-bar[data-rt-style="2"].phase-warn .rest-time-readout { color: var(--yellow); }
+    .rest-timer-bar[data-rt-style="2"].phase-go .rest-time-readout { color: var(--green); }
+    .rest-timer-bar[data-rt-style="2"].phase-warn .rt-phase-pill { background: var(--yellow-bg); color: var(--yellow); }
+    .rest-timer-bar[data-rt-style="2"].phase-go .rt-phase-pill { background: var(--green-bg); color: var(--green); }
+    .rt-pb2-track { height: 10px; border-radius: 999px; background: var(--rt-track-bg); padding: 1.5px; box-shadow: inset 0 2px 4px rgba(0,0,0,0.4); }
+    .rt-pb2-fill { height: 100%; border-radius: 999px; background: var(--accent-grad); box-shadow: 0 0 12px var(--accent-glow); transition: background 0.3s ease; }
+    .rest-timer-bar[data-rt-style="2"].phase-warn .rt-pb2-fill { background: linear-gradient(90deg, #b45309, var(--yellow), #fde68a); box-shadow: 0 0 14px rgba(245, 158, 11, 0.58); }
+    .rest-timer-bar[data-rt-style="2"].phase-go .rt-pb2-fill { background: linear-gradient(90deg, #15803d, var(--green), #bbf7d0); box-shadow: 0 0 16px rgba(34, 197, 94, 0.72); }
+
+    /* Style #3: 16 Unclipped Glass LED Cells */
+    .rt-pb3-grid { display: flex; align-items: stretch; gap: 3px; height: 11px; }
+    .rt-pb3-seg { flex: 1; border-radius: 3.5px; background: var(--rt-track-bg); border: 1px solid var(--rt-track-border); position: relative; }
+    .rt-pb3-seg.q-gap { margin-right: 5px; }
+    .rt-pb3-glow {
+      position: absolute; inset: -1px; border-radius: 3.5px; opacity: 0;
+      background: linear-gradient(180deg, color-mix(in srgb, var(--accent) 45%, #ffffff) 0%, var(--accent) 52%, color-mix(in srgb, var(--accent) 70%, #000) 100%);
+      box-shadow: 0 0 8px var(--accent-glow), inset 0 1px 0 rgba(255,255,255,0.45);
+    }
+    @keyframes rtLedPulse { 0%, 100% { filter: brightness(1); } 50% { filter: brightness(1.38); } }
+    .rt-pb3-seg.active-tip .rt-pb3-glow { animation: rtLedPulse 0.75s ease-in-out infinite; }
+    .rt-pb3-grid.warn .rt-pb3-glow { background: linear-gradient(180deg, #fef08a 0%, var(--yellow) 55%, #b45309 100%); box-shadow: 0 0 8px rgba(245,158,11,0.62); }
+    .rt-pb3-grid.go .rt-pb3-glow { background: linear-gradient(180deg, #bbf7d0 0%, var(--green) 55%, #15803d 100%); box-shadow: 0 0 9px rgba(34,197,94,0.72); }
+
+    /* Style #4: Full-Card Canvas Liquid Physics + Bubbles */
+    .rt-bg-canvas {
+      display: none; position: absolute; inset: 0; width: 100%; height: 100%;
+      z-index: 1; pointer-events: none;
+    }
+    .rest-timer-bar[data-rt-style="4"] .rt-bg-canvas { display: block; }
+    .rest-timer-bar[data-rt-style="4"] .rt-bar-slot { display: none; }
+    .rest-timer-bar[data-rt-style="4"] .rest-time-readout { text-shadow: 0 1px 10px rgba(0,0,0,0.42); }
+    [data-theme="nordic"] .rest-timer-bar[data-rt-style="4"] .rest-time-readout { text-shadow: 0 1px 6px rgba(255,255,255,0.85); }
+
+    /* Style #5: Titanium Channel + Seamless 45deg GPU Stripes */
+    .rt-pb5-track { position: relative; height: 12px; border-radius: 999px; background: var(--rt-track-bg); border: 1px solid color-mix(in srgb, var(--accent) 34%, transparent); padding: 1px; }
+    @keyframes rtStripe45 { from { transform: translateX(0); } to { transform: translateX(-20px); } }
+    .rt-pb5-fill { position: relative; height: 100%; border-radius: 999px; box-shadow: 0 0 10px var(--accent-glow); }
+    .rt-pb5-fill.go { box-shadow: 0 0 12px rgba(34,197,94,0.68); }
+    .rt-pb5-body { position: absolute; inset: 0; border-radius: 999px; overflow: hidden; background: var(--accent-grad); }
+    .rt-pb5-fill.go .rt-pb5-body { background: linear-gradient(90deg, #15803d, var(--green), #bbf7d0); }
+    .rt-pb5-stripes {
+      position: absolute; top: 0; bottom: 0; left: 0; right: -24px;
+      background-image: linear-gradient(45deg, rgba(255,255,255,0.22) 25%, transparent 25%, transparent 50%, rgba(255,255,255,0.22) 50%, rgba(255,255,255,0.22) 75%, transparent 75%, transparent);
+      background-size: 20px 20px; animation: rtStripe45 0.9s linear infinite; will-change: transform;
+    }
+    .rt-pb5-tip { position: absolute; right: -1px; top: -1px; bottom: -1px; width: 4px; border-radius: 999px; background: #ffffff; box-shadow: 0 0 8px #ffffff, 0 0 14px var(--accent); transform: scaleY(var(--tip-s, 1)); opacity: var(--tip-o, 1); }
+    .rt-pb5-ticks { position: absolute; inset: 1px; pointer-events: none; display: flex; justify-content: space-evenly; border-radius: 999px; overflow: hidden; }
+    .rt-pb5-ticks i { width: 1.5px; height: 100%; background: rgba(4, 7, 13, 0.42); }
+
+    /* Style #6: Full-Card Symmetric Perimeter SVG Ring (Original Bold Look + Boosted Glow + ResizeObserver Exact) */
+    .rt-pb6-svg { display: none; position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; z-index: 3; overflow: visible; }
+    .rest-timer-bar[data-rt-style="6"] { overflow: visible; border-color: transparent; box-shadow: 0 0 24px var(--accent-soft), 0 18px 42px rgba(0,0,0,0.62); }
+    .rest-timer-bar[data-rt-style="6"].go { box-shadow: 0 0 28px rgba(34,197,94,0.34), 0 18px 42px rgba(0,0,0,0.62); }
+    .rest-timer-bar[data-rt-style="6"] .rt-pb6-svg { display: block; }
+    .rest-timer-bar[data-rt-style="6"] .rt-bar-slot { display: none; }
+    .rt-pb6-track { fill: none; stroke: rgba(148, 163, 184, 0.18); stroke-width: 2.6; }
+    .rt-pb6-aura { fill: none; stroke: url(#rtPb6Grad); stroke-width: 12; stroke-linecap: butt; opacity: 0.46; filter: blur(6px); }
+    .rt-pb6-glow { fill: none; stroke: url(#rtPb6Grad); stroke-width: 7.2; stroke-linecap: butt; opacity: 0.7; filter: blur(3px); }
+    .rt-pb6-stroke { fill: none; stroke: url(#rtPb6Grad); stroke-width: 3.2; stroke-linecap: butt; }
+    .rt-pb6-tip { fill: none; stroke: #ffffff; stroke-width: 3.8; stroke-linecap: round; filter: drop-shadow(0 0 5px #ffffff) drop-shadow(0 0 10px var(--accent)); }
+    .rest-timer-bar[data-rt-style="6"].go .rt-pb6-aura,
+    .rest-timer-bar[data-rt-style="6"].go .rt-pb6-glow,
+    .rest-timer-bar[data-rt-style="6"].go .rt-pb6-stroke { stroke: url(#rtPb6GradGo); }
+    .rest-timer-bar[data-rt-style="6"].go .rt-pb6-tip { filter: drop-shadow(0 0 5px #ffffff) drop-shadow(0 0 11px rgba(74,222,128,0.95)); }
+
+    /* Style #7 ECG, #8 Plasma Fuse, #10 Equalizer Canvas Slots */
+    .rt-cv-wrap { position: relative; width: 100%; border-radius: 9px; overflow: hidden; background: var(--rt-track-bg); border: 1px solid var(--rt-track-border); }
+    .rt-cv-wrap.ecg { height: 32px; }
+    .rt-cv-wrap.fuse { height: 36px; background: transparent; border: none; overflow: visible; margin: -5px 0; }
+    .rt-cv-wrap.eq { height: 26px; border-radius: 10px; }
+    .rt-cv-wrap canvas { width: 100%; height: 100%; display: block; }
+
+    /* Style #9: Symmetric Center-Converging Reactor Beam */
+    .rt-pb9-track {
+      height: 11px; border-radius: 999px; background: var(--rt-track-bg); border: 1px solid var(--rt-track-border);
+      padding: 1.5px 5px; display: flex; align-items: center; justify-content: center; position: relative; overflow: visible;
+    }
+    .rt-pb9-track::before { content: ""; position: absolute; left: 50%; top: -2px; bottom: -2px; width: 2px; transform: translateX(-50%); background: color-mix(in srgb, var(--text) 28%, transparent); border-radius: 2px; }
+    .rt-pb9-track::after { content: ""; position: absolute; left: 50%; top: 50%; width: 38px; height: 18px; border-radius: 999px; transform: translate(-50%, -50%); background: radial-gradient(circle, rgba(74,222,128,0.85) 0%, rgba(34,197,94,0.22) 55%, transparent 76%); opacity: var(--conv-glow, 0); pointer-events: none; }
+    .rt-pb9-fill { height: 100%; border-radius: 999px; position: relative; background: linear-gradient(90deg, var(--accent), var(--green) 50%, var(--accent)); box-shadow: 0 0 12px var(--accent-glow); }
+    .rt-pb9-fill.go { background: linear-gradient(90deg, var(--green), #86efac 50%, var(--green)); box-shadow: 0 0 15px rgba(34,197,94,0.78); }
+    .rt-pb9-fill::before, .rt-pb9-fill::after { content: ""; position: absolute; top: 50%; width: 8px; height: 8px; border-radius: 50%; background: #ffffff; box-shadow: 0 0 8px #ffffff, 0 0 14px var(--accent); }
+    .rt-pb9-fill::before { left: 0; transform: translate(-50%, -50%) scale(var(--dot-s, 1)); }
+    .rt-pb9-fill::after { right: 0; transform: translate(50%, -50%) scale(var(--dot-s, 1)); }
+
+    /* Dedicated Appearance Settings Modal (#modal-appearance) */
+    .app-opt-sec { padding: 11px; border-radius: 14px; background: var(--bg-surface); border: 1px solid var(--border); margin-bottom: 10px; }
+    .app-opt-hd { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-bottom: 8px; font-size: 12.5px; font-weight: 800; color: var(--text); }
+    .app-icon-grid-5 { display: grid; grid-template-columns: repeat(5, 1fr); gap: 6px; }
+    .app-icon-grid-6 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; }
+    .app-icon-grid-10 { display: grid; grid-template-columns: repeat(5, 1fr); gap: 6px; }
+    .app-pick-card {
+      padding: 8px 4px; border-radius: 11px; background: var(--bg-card); border: 1.5px solid var(--border);
+      color: var(--text-muted); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 5px;
+      font-size: 10.5px; font-weight: 800; transition: var(--transition); text-align: center;
+    }
+    .app-pick-card.active { background: var(--accent-soft); border-color: var(--accent); color: var(--accent); box-shadow: 0 0 0 1px var(--accent-soft); }
+    .app-pick-card svg { width: 20px; height: 20px; display: block; overflow: visible; }
+    .app-pill-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 5px; margin-top: 7px; }
+    .app-pill-row.cols-3 { grid-template-columns: repeat(3, 1fr); }
+    .app-pill-row.cols-6 { grid-template-columns: repeat(3, 1fr); }
+    .app-pill-btn {
+      padding: 7px 4px; border-radius: 9px; background: var(--bg-card); border: 1px solid var(--border);
+      color: var(--text-muted); font-size: 11px; font-weight: 800; transition: var(--transition);
+    }
+    .app-pill-btn.active { background: var(--accent); border-color: var(--accent); color: var(--accent-text); }
   </style>
 </head>
 <body>
@@ -2317,25 +2833,15 @@
             <div style="font-size:11px;opacity:0.75;">Švari dienos salė + safyras</div>
           </button>
         </div>
-        <div class="setting-toggle-row mt-12" style="margin-bottom:8px;padding:10px 11px;" onclick="openCardFrameModal()">
-          <div class="row" style="min-width:0;flex:1;gap:9px;">
-            <span style="width:32px;height:32px;border-radius:10px;background:var(--accent-soft);color:var(--accent);display:inline-flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0;">✨</span>
+        <div class="setting-toggle-row mt-12" style="margin-bottom:0;padding:11px 12px;background:var(--accent-soft);border:1.5px solid color-mix(in srgb, var(--accent) 46%, transparent);" onclick="openAppearanceModal()">
+          <div class="row" style="min-width:0;flex:1;gap:10px;">
+            <span style="width:36px;height:36px;border-radius:11px;background:var(--accent);color:var(--accent-text);display:inline-flex;align-items:center;justify-content:center;font-size:17px;flex-shrink:0;">🎨</span>
             <div style="min-width:0;flex:1;">
-              <div style="font-weight:800;font-size:13px;line-height:1.25;">Aktyvaus langelio rėmelis</div>
-              <div id="settings-frame-summary" style="font-size:11.5px;color:var(--accent);font-weight:700;margin-top:2px;line-height:1.25;">#9 Stiklinis šviesos kraštas</div>
+              <div style="font-weight:900;font-size:13.5px;line-height:1.25;color:var(--text);">Išvaizdos nustatymai</div>
+              <div id="settings-appearance-summary" style="font-size:11px;color:var(--accent);font-weight:700;margin-top:2px;line-height:1.3;">Mygtukai #5 (46 px) · Diskas #6 · Poilsis #4 · Rėmelis #9</div>
             </div>
           </div>
-          <span class="pill pill-accent" style="padding:4px 9px;font-size:11px;font-weight:800;">Keisti ▸</span>
-        </div>
-        <div class="setting-toggle-row" style="margin-bottom:0;padding:10px 11px;" onclick="openCardAnimModal()">
-          <div class="row" style="min-width:0;flex:1;gap:9px;">
-            <span style="width:32px;height:32px;border-radius:10px;background:var(--accent-soft);color:var(--accent);display:inline-flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0;">🎬</span>
-            <div style="min-width:0;flex:1;">
-              <div style="font-weight:800;font-size:13px;line-height:1.25;">Pratimų animacija</div>
-              <div id="settings-anim-summary" style="font-size:11.5px;color:var(--accent);font-weight:700;margin-top:2px;line-height:1.25;">#10 Šviesos blyksnis · 1.0×</div>
-            </div>
-          </div>
-          <span class="pill pill-accent" style="padding:4px 9px;font-size:11px;font-weight:800;">Keisti ▸</span>
+          <span class="pill pill-accent" style="padding:5px 10px;font-size:11px;font-weight:900;flex-shrink:0;">Atidaryti ▸</span>
         </div>
       </section>
 
@@ -2454,8 +2960,8 @@
       <!-- PWA Home Screen Info & Release Notes Card -->
       <section class="card">
         <div class="section-title">
-          <span>Programėlė (v9.0) ir darbalaukio PWA</span>
-          <button type="button" class="btn btn-sm btn-ghost" style="min-height:28px;padding:3px 9px;font-size:11px;" onclick="openWhatsNewModal()">✨ Kas naujo v9.0</button>
+          <span>Programėlė (v10.0) ir darbalaukio PWA</span>
+          <button type="button" class="btn btn-sm btn-ghost" style="min-height:28px;padding:3px 9px;font-size:11px;" onclick="openWhatsNewModal()">✨ Kas naujo v10.0</button>
         </div>
         <div class="pwa-hint-box" style="align-items:flex-start;">
           <div style="width:46px;height:46px;border-radius:13px;overflow:hidden;border:1px solid rgba(56,189,248,0.45);flex-shrink:0;margin-top:2px;">
@@ -2483,7 +2989,7 @@
         </div>
         <div class="row-between mt-8" style="flex-wrap:wrap;gap:8px;">
           <button type="button" class="btn btn-sm btn-secondary" onclick="checkForPwaUpdates()">🔄 Patikrinti atnaujinimus</button>
-          <span id="pwa-check-status" style="font-size:11.5px;color:var(--text-muted);">Versija: v9.0</span>
+          <span id="pwa-check-status" style="font-size:11.5px;color:var(--text-muted);">Versija: v10.0</span>
         </div>
       </section>
     </main>
@@ -2491,17 +2997,45 @@
 
   <!-- Unified Floating Stack (Undo sits cleanly above Rest Timer, never overlapping) -->
   <div id="bottom-float-stack" class="bottom-float-stack">
-    <!-- Floating Undo Action Bar -->
+    <!-- Floating Undo Action Bar (v10 Compact 2-Line Pill) -->
     <div id="undo-float-bar" class="undo-float-bar">
-      <span id="undo-float-text" style="font-size:12.5px;font-weight:700;color:var(--text);min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">Veiksmas atliktas</span>
-      <button type="button" class="btn btn-sm btn-amber-ghost" style="flex-shrink:0;" onclick="executeUndo()">↩ Atšaukti</button>
+      <div class="undo-text-stack">
+        <span id="undo-float-line1" class="undo-line-1">✓ Serija atlikta</span>
+        <span id="undo-float-line2" class="undo-line-2">Veiksmas atliktas</span>
+      </div>
+      <button type="button" class="btn btn-sm btn-amber-ghost" style="flex-shrink:0;padding:6px 10px;min-height:32px;font-size:11.5px;" onclick="executeUndo()">↩ Atšaukti</button>
     </div>
 
-    <!-- Floating System-Clock Rest Timer (±15s + Pause + Shrinking Progress Bar) -->
-    <div id="rest-timer-bar" class="rest-timer-bar">
+    <!-- Floating System-Clock Rest Timer (v10: 10 Selectable Visual Bars + 0 FPS Sleep) -->
+    <div id="rest-timer-bar" class="rest-timer-bar" data-rt-style="4">
+      <canvas id="rest-bg-canvas" class="rt-bg-canvas"></canvas>
+      <svg id="rest-pb6-svg" class="rt-pb6-svg" viewBox="0 0 360 108">
+        <defs>
+          <linearGradient id="rtPb6Grad" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#e0f2fe"/>
+            <stop offset="45%" stop-color="#38bdf8"/>
+            <stop offset="100%" stop-color="#10b981"/>
+          </linearGradient>
+          <linearGradient id="rtPb6GradGo" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#dcfce7"/>
+            <stop offset="50%" stop-color="#4ade80"/>
+            <stop offset="100%" stop-color="#16a34a"/>
+          </linearGradient>
+        </defs>
+        <rect id="rest-pb6-track" class="rt-pb6-track" x="1.5" y="1.5" width="357" height="105" rx="18" ry="18"/>
+        <path class="rt-pb6-aura rt-pb6-sym rt-pb6-left" pathLength="100" stroke-dasharray="100 100" stroke-dashoffset="0"/>
+        <path class="rt-pb6-aura rt-pb6-sym rt-pb6-right" pathLength="100" stroke-dasharray="100 100" stroke-dashoffset="0"/>
+        <path class="rt-pb6-glow rt-pb6-sym rt-pb6-left" pathLength="100" stroke-dasharray="100 100" stroke-dashoffset="0"/>
+        <path class="rt-pb6-glow rt-pb6-sym rt-pb6-right" pathLength="100" stroke-dasharray="100 100" stroke-dashoffset="0"/>
+        <path class="rt-pb6-stroke rt-pb6-sym rt-pb6-left" pathLength="100" stroke-dasharray="100 100" stroke-dashoffset="0"/>
+        <path class="rt-pb6-stroke rt-pb6-sym rt-pb6-right" pathLength="100" stroke-dasharray="100 100" stroke-dashoffset="0"/>
+        <path class="rt-pb6-tip rt-pb6-tip-path rt-pb6-left" pathLength="100" stroke-dasharray="2.4 104" stroke-dashoffset="108.8"/>
+        <path class="rt-pb6-tip rt-pb6-tip-path rt-pb6-right" pathLength="100" stroke-dasharray="2.4 104" stroke-dashoffset="108.8"/>
+      </svg>
       <div class="rest-timer-top">
         <div class="rest-timer-meta">
           <div id="rest-time-readout" class="rest-time-readout">02:00</div>
+          <span id="rest-phase-pill" class="rt-phase-pill">Poilsis</span>
           <div id="rest-timer-label" class="rest-timer-lbl">Poilsis tarp serijų</div>
         </div>
         <button class="rest-btn" style="color:var(--accent);" onclick="stopRestTimer()">Praleisti</button>
@@ -2511,7 +3045,7 @@
         <button id="rest-pause-btn" class="rest-btn" style="color:var(--yellow);" onclick="toggleRestPause()">⏸ Pauzė</button>
         <button class="rest-btn" onclick="adjustRestTimer(15)">+15 s</button>
       </div>
-      <div class="rest-progress"><div id="rest-progress-fill" class="rest-progress-fill"></div></div>
+      <div id="rest-bar-slot" class="rt-bar-slot"></div>
     </div>
   </div>
 
@@ -2552,10 +3086,10 @@
     </div>
   </div>
 
-  <!-- Plate Calculator Modal (Top-Aligned above Mobile Keyboard) -->
-  <div id="modal-plates" class="modal-backdrop align-top" onclick="closeModalOnBackdrop(event, 'modal-plates')">
+  <!-- Plate Calculator Modal (v10: Smart Tap-Aware Position + 2.5 kg Slider + Continuous Steel Sleeve) -->
+  <div id="modal-plates" class="modal-backdrop pos-center" onclick="closeModalOnBackdrop(event, 'modal-plates')">
     <div class="modal-sheet">
-      <div class="row-between" style="margin-bottom:12px;">
+      <div class="row-between" style="margin-bottom:11px;">
         <h3 style="margin:0;font-size:17px;display:inline-flex;align-items:center;gap:7px;">
           <svg class="icon-plate-svg" style="width:19px;height:19px;color:var(--accent);" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9.5"/><circle cx="12" cy="12" r="5.5" stroke-opacity="0.45"/><circle cx="12" cy="12" r="2.2"/><path d="M12 2.5v3M12 18.5v3M2.5 12h3M18.5 12h3"/></svg>
           <span>Diskų skaičiuoklė (1 pusei)</span>
@@ -2566,15 +3100,101 @@
         <button id="plate-mode-bar" class="mode-chip active" onclick="setPlateMode(true)">20 kg štanga</button>
         <button id="plate-mode-plates" class="mode-chip" onclick="setPlateMode(false)">Tik diskai (0 kg)</button>
       </div>
-      <div class="row" style="margin-bottom:10px;">
-        <button class="btn btn-secondary" onclick="stepPlateWeight(-5)">-5</button>
-        <button class="btn btn-secondary" onclick="stepPlateWeight(-2.5)">-2.5</button>
-        <input id="plate-weight-input" type="number" step="1.25" value="60" class="input" style="text-align:center;font-weight:900;font-family:var(--font-mono);font-size:18px;" oninput="renderPlateCalculator()">
+      <div class="row" style="margin-bottom:4px;">
+        <button class="btn btn-secondary" onclick="stepPlateWeight(-5)">−5</button>
+        <button class="btn btn-secondary" onclick="stepPlateWeight(-2.5)">−2.5</button>
+        <input id="plate-weight-input" type="number" step="1.25" value="60" class="input" style="text-align:center;font-weight:900;font-family:var(--font-mono);font-size:18px;" oninput="renderPlateCalculator(false, false)" onfocus="document.getElementById('modal-plates').classList.add('kbd-top')" onblur="document.getElementById('modal-plates').classList.remove('kbd-top')">
         <button class="btn btn-secondary" onclick="stepPlateWeight(2.5)">+2.5</button>
         <button class="btn btn-secondary" onclick="stepPlateWeight(5)">+5</button>
       </div>
+      <div class="plate-slider-wrap">
+        <div class="plate-slider-meta">
+          <span>Slinkiklis (žingsnis 2,5 kg)</span>
+          <span id="plate-slider-max-lbl" style="color:var(--accent);font-family:var(--font-mono);">Maks. 100 kg</span>
+        </div>
+        <input id="plate-slider" class="plate-slider" type="range" min="20" max="100" step="2.5" value="60" oninput="onPlateSliderInput(this.value)">
+        <div id="plate-ticks" class="plate-ticks"><span>20</span><span>40</span><span>60</span><span>80</span><span>100</span></div>
+      </div>
       <div id="barbell-visual" class="barbell-visual"></div>
-      <div id="plate-breakdown" style="margin-top:10px;font-size:13.5px;font-weight:700;text-align:center;"></div>
+    </div>
+  </div>
+
+  <!-- Dedicated Appearance Settings Modal (v10: All Customizable Visual Styles in One Clean Place) -->
+  <div id="modal-appearance" class="modal-backdrop" onclick="closeModalOnBackdrop(event, 'modal-appearance')">
+    <div class="modal-sheet">
+      <div class="row-between" style="margin-bottom:10px;">
+        <div>
+          <span class="pill pill-accent" style="font-size:10px;padding:2px 8px;">IŠVAIZDA · v10</span>
+          <h3 style="margin:3px 0 0 0;font-size:17px;">🎨 Išvaizdos nustatymai</h3>
+        </div>
+        <button class="btn btn-sm btn-secondary" onclick="closeModal('modal-appearance')">Uždaryti</button>
+      </div>
+
+      <!-- 1. Animacija & Pin + YouTube Button Style, Height & Width -->
+      <div class="app-opt-sec">
+        <div class="app-opt-hd">
+          <span>Mygtukas „Animacija &amp; Pin“</span>
+          <span id="app-animpin-lbl" class="pill pill-accent" style="font-size:10px;">#5 LeverLab svirtis</span>
+        </div>
+        <div id="app-animpin-grid" class="app-icon-grid-5"></div>
+        <div style="font-size:10.5px;font-weight:800;color:var(--text-muted);margin-top:9px;">Aukštis (numatyta 46 px):</div>
+        <div id="app-aph-row" class="app-pill-row"></div>
+        <div style="font-size:10.5px;font-weight:800;color:var(--text-muted);margin-top:7px;">Plotis (numatyta Vidutiniai):</div>
+        <div id="app-apw-row" class="app-pill-row cols-3"></div>
+      </div>
+
+      <!-- 2. Plate Icon Style & Animation -->
+      <div class="app-opt-sec">
+        <div class="app-opt-hd">
+          <span>Disko ikona ir animacija</span>
+          <span id="app-plateico-lbl" class="pill pill-accent" style="font-size:10px;">#6 Firminis</span>
+        </div>
+        <div id="app-plateico-grid" class="app-icon-grid-6"></div>
+      </div>
+
+      <!-- 3. Rest Timer Progress Bar Style (#1–#10 + Live 6s Test Preview) -->
+      <div class="app-opt-sec">
+        <div class="app-opt-hd">
+          <span>Poilsio laikmačio juosta</span>
+          <button type="button" class="btn btn-sm btn-ghost" style="min-height:26px;padding:2px 9px;font-size:10.5px;" onclick="previewRestBarFromSettings()">▶ 6 s testas</button>
+        </div>
+        <div id="app-rtbar-grid" class="app-icon-grid-10"></div>
+        <div id="app-rtbar-desc" style="font-size:11px;color:var(--text-muted);margin-top:7px;line-height:1.3;">#4 Tikra skysčio fizika + burbuliukai į dešinę</div>
+      </div>
+
+      <!-- 4. Plate Calculator Slider Max Cap -->
+      <div class="app-opt-sec">
+        <div class="app-opt-hd">
+          <span>Diskų slinkiklio maks. riba</span>
+          <span id="app-platemax-lbl" class="pill pill-accent" style="font-size:10px;">100 kg</span>
+        </div>
+        <div id="app-platemax-row" class="app-pill-row cols-6"></div>
+        <div style="font-size:10.5px;color:var(--text-muted);margin-top:6px;">Jei pratimo svoris viršija ribą, slinkiklis automatiškai laikinai prasiplės iki <em>svoris + 20 kg</em>.</div>
+      </div>
+
+      <!-- 5. Active Card Frame & Exercise Switch Animation Shortcuts -->
+      <div class="app-opt-sec" style="margin-bottom:0;">
+        <div class="setting-toggle-row" style="margin-bottom:7px;padding:9px 10px;background:var(--bg-card);" onclick="closeModal('modal-appearance');openCardFrameModal()">
+          <div class="row" style="min-width:0;flex:1;gap:8px;">
+            <span style="width:28px;height:28px;border-radius:8px;background:var(--accent-soft);color:var(--accent);display:inline-flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0;">✨</span>
+            <div style="min-width:0;flex:1;">
+              <div style="font-weight:800;font-size:12.5px;">Aktyvaus langelio rėmelis</div>
+              <div id="settings-frame-summary" style="font-size:11px;color:var(--accent);font-weight:700;">#9 Stiklinis šviesos kraštas</div>
+            </div>
+          </div>
+          <span class="pill pill-accent" style="font-size:10.5px;">Keisti ▸</span>
+        </div>
+        <div class="setting-toggle-row" style="margin-bottom:0;padding:9px 10px;background:var(--bg-card);" onclick="closeModal('modal-appearance');openCardAnimModal()">
+          <div class="row" style="min-width:0;flex:1;gap:8px;">
+            <span style="width:28px;height:28px;border-radius:8px;background:var(--accent-soft);color:var(--accent);display:inline-flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0;">🎬</span>
+            <div style="min-width:0;flex:1;">
+              <div style="font-weight:800;font-size:12.5px;">Pratimų animacija</div>
+              <div id="settings-anim-summary" style="font-size:11px;color:var(--accent);font-weight:700;">#10 Šviesos blyksnis · 1.0×</div>
+            </div>
+          </div>
+          <span class="pill pill-accent" style="font-size:10.5px;">Keisti ▸</span>
+        </div>
+      </div>
     </div>
   </div>
 
@@ -2805,17 +3425,48 @@
     </div>
   </div>
 
-  <!-- What's New in v9.0 + Full Release History Modal -->
+  <!-- What's New in v10.0 + Full Release History Modal -->
   <div id="modal-whats-new" class="modal-backdrop" onclick="closeModalOnBackdrop(event, 'modal-whats-new')">
     <div class="modal-sheet">
       <div class="row-between" style="margin-bottom:8px;">
         <div>
-          <span class="pill pill-accent" style="font-size:10px;padding:2px 8px;">ATNAUJINIMAS · v9.0</span>
-          <h3 style="margin:4px 0 0 0;font-size:18px;">✨ Kas naujo LeverLab 193 v9.0?</h3>
+          <span class="pill pill-accent" style="font-size:10px;padding:2px 8px;">ATNAUJINIMAS · v10.0</span>
+          <h3 style="margin:4px 0 0 0;font-size:18px;">✨ Kas naujo LeverLab 193 v10.0?</h3>
         </div>
         <button class="btn btn-sm btn-secondary" onclick="closeWhatsNewModal()">Uždaryti</button>
       </div>
       <div style="max-height:60vh;overflow-y:auto;padding-right:2px;">
+        <div class="wn-item">
+          <div class="wn-ico">🎨</div>
+          <div>
+            <div class="wn-title">Atskiras „Išvaizdos nustatymai“ meniu (visi stiliai vienoje vietoje)</div>
+            <div class="wn-sub">Nustatymuose pridėtas <strong>🎨 Išvaizdos nustatymai</strong> langas: <strong>5</strong> bežodžiai <em>Animacija &amp; Pin</em> mygtukai (numatytai <code>46 px</code> · <em>Vidutiniai</em>), <strong>6</strong> animuotos disko ikonos, <strong>10</strong> poilsio laikmačio juostų (su 6 s testu ir tikru <code>0 FPS</code> miegu), diskų slinkiklio riba, rėmeliai ir animacijos.</div>
+          </div>
+        </div>
+        <div class="wn-item">
+          <div class="wn-ico">🏋️</div>
+          <div>
+            <div class="wn-title">Išmani diskų skaičiuoklė + 2,5 kg slinkiklis + ištisinis plieninis grifas</div>
+            <div class="wn-sub">Langas atsidaro ten, kur paspaudei (įvedant klaviatūra pakyla virš jos), <code>2,5 kg</code> slinkiklis (maks. <code>100 kg</code>, sunkesniems pratimams pats prasiplės iki <em>+20 kg</em>), o tikrų olimpinių proporcijų blynai sklandžiai slysta vientisu plieniniu strypu be tarpų.</div>
+          </div>
+        </div>
+        <div class="wn-item">
+          <div class="wn-ico">⚡</div>
+          <div>
+            <div class="wn-title">1 ekranas be slinkimo: suskleidžiamas pratimas ir technikos blokas</div>
+            <div class="wn-sub"><em>Technika · Praeitą kartą · Apšilimas</em> numatytai paslėpti (taupo ~270 px), bet progresijos patarimas (<code>+2,5 kg → Taikyti</code>) visada lieka matomas! Aktyvų pratimą galima suskleisti bakstelėjus pavadinimą/rodyklę, o „Atšaukti“ juostelė tapo kompaktiška 2 eilučių kapsule.</div>
+          </div>
+        </div>
+        <div class="wn-item">
+          <div class="wn-ico">🛡️</div>
+          <div>
+            <div class="wn-title">Saugios zonos (S26 Ultra) ir visų 4 temų šlifavimas</div>
+            <div class="wn-sub">Prilimpanti aktyvaus pratimo juostelė atitraukta po viršutine saugia zona (<code>safe-area-inset-top</code>), pritaikytas aukštas kontrastas <em>Nordic Light</em> temai, o <code>−15 s / +15 s</code> gyvai suteliūškuoja skysčio poilsio juostą.</div>
+          </div>
+        </div>
+
+        <div class="wn-ver-divider">Ankstesni atnaujinimai (v9.0)</div>
+
         <div class="wn-item">
           <div class="wn-ico">⌚</div>
           <div>
@@ -3635,7 +4286,7 @@
        2. STATE MANAGEMENT (ROUND 6: BACKUP BEFORE MIGRATION + BACKWARD COMPAT)
        ========================================================================== */
     const STORAGE_KEY = 'leverlab193_v1_state';
-    const MIGRATION_BACKUP_KEY = 'leverlab193_backup_before_v8';
+    const MIGRATION_BACKUP_KEY = 'leverlab193_backup_before_v10';
 
     function todayISO() {
       const d = new Date();
@@ -3644,7 +4295,7 @@
 
     function getDefaultState() {
       return {
-        version: 8,
+        version: 10,
         theme: 'obsidian',
         trainingMode: 'adaptation',
         workingModeStartDate: null,
@@ -3657,6 +4308,12 @@
         cardAnim: '10',
         cardAnimSpeed: 1.0,
         cardFrame: '9',
+        animPinStyle: '5',
+        animPinHeight: 46,
+        animPinWidth: 'md',
+        plateIconStyle: '6',
+        restBarStyle: '4',
+        plateCalcMax: 100,
         timerTone: 'soft',
         timerVolume: 'loud',
         lastSeenRelease: null,
@@ -3685,6 +4342,7 @@
     let activeExId = null;
     let prevRenderedExId = null;
     let openDrawers = new Set();
+    let openExInfo = new Set();
     let openNotes = new Set();
     let programBarOpen = true;
     let warmupInlineOpen = true;
@@ -3719,7 +4377,7 @@
       const merged = {
         ...def,
         ...parsed,
-        version: 8,
+        version: 10,
         timerSound: parsed.timerSound !== undefined ? !!parsed.timerSound : true,
         timerVibrate: parsed.timerVibrate !== undefined ? !!parsed.timerVibrate : true,
         timerNotify: parsed.timerNotify !== undefined ? !!parsed.timerNotify : false,
@@ -3727,6 +4385,12 @@
         cardAnim: parsed.cardAnim !== undefined ? String(parsed.cardAnim) : '10',
         cardAnimSpeed: parsed.cardAnimSpeed ? Math.max(0.4, Math.min(2.2, Number(parsed.cardAnimSpeed))) : 1.0,
         cardFrame: parsed.cardFrame !== undefined ? String(parsed.cardFrame) : '9',
+        animPinStyle: ['1','2','3','4','5'].includes(String(parsed.animPinStyle)) ? String(parsed.animPinStyle) : '5',
+        animPinHeight: [34, 40, 46, 52].includes(Number(parsed.animPinHeight)) ? Number(parsed.animPinHeight) : 46,
+        animPinWidth: ['sm','md','lg'].includes(parsed.animPinWidth) ? parsed.animPinWidth : 'md',
+        plateIconStyle: ['1','2','3','4','5','6'].includes(String(parsed.plateIconStyle)) ? String(parsed.plateIconStyle) : '6',
+        restBarStyle: ['1','2','3','4','5','6','7','8','9','10'].includes(String(parsed.restBarStyle)) ? String(parsed.restBarStyle) : '4',
+        plateCalcMax: [80, 100, 140, 180, 220, 260].includes(Number(parsed.plateCalcMax)) ? Number(parsed.plateCalcMax) : 100,
         timerTone: ['soft', 'double', 'gong'].includes(parsed.timerTone) ? parsed.timerTone : 'soft',
         timerVolume: ['normal', 'loud'].includes(parsed.timerVolume) ? parsed.timerVolume : 'loud',
         lastSeenRelease: parsed.lastSeenRelease || null,
@@ -3759,8 +4423,8 @@
         if (!raw) return getDefaultState();
         const parsed = JSON.parse(raw);
 
-        // Round 6: Safe backup snapshot before upgrading older state schema to v7
-        if (!parsed.version || parsed.version < 8) {
+        // Safe backup snapshot before upgrading older state schema to v10
+        if (!parsed.version || parsed.version < 10) {
           try {
             if (!localStorage.getItem(MIGRATION_BACKUP_KEY)) {
               localStorage.setItem(MIGRATION_BACKUP_KEY, raw);
@@ -4380,13 +5044,23 @@
       };
     }
 
-    function openPlateForSet(exId, setIdx) {
+    function openPlateForSet(exId, setIdx, ev) {
+      if (ev) ev.stopPropagation();
+      const btn = ev && ev.currentTarget ? ev.currentTarget : null;
+      const meta = getPlateIconMeta(state.plateIconStyle || '6');
+      if (btn) {
+        btn.classList.remove('anim-spin', 'anim-tri', 'anim-pump', 'anim-split', 'anim-pro', 'anim-brand', 'glowing');
+        void btn.offsetWidth;
+        btn.classList.add(meta.anim, 'glowing');
+        setTimeout(() => btn.classList.remove(meta.anim, 'glowing'), 620);
+      }
       const ex = getExercise(exId);
       const s = state.draft?.entries?.[exId]?.sets?.[setIdx];
       const w = s ? Number(s.weight) || 0 : 0;
       const isMachineOrSide = ex && /Tik diskai|1 pusės|1 hantelio/i.test(ex.weightLabel || '');
-      setPlateMode(!isMachineOrSide);
-      openPlateModal(w > 0 ? w : 60);
+      setPlateMode(!isMachineOrSide, true);
+      const tapY = (ev && typeof ev.clientY === 'number' && ev.clientY > 0) ? ev.clientY : null;
+      setTimeout(() => openPlateModal(w > 0 ? w : 60, tapY), btn ? 170 : 0);
     }
 
     function ensureDraft(forceType = null) {
@@ -5205,13 +5879,15 @@
       }
 
       const cableBtnHtml = ex.isCable
-        ? `<span class="row" style="gap:4px;"><button class="pill pill-accent" id="cable-btn-${exId}" onclick="toggleCableRatio('${exId}')">Blokas: ${cableRatio} ⇄</button><button type="button" class="cable-q-btn" title="Kaip atskirti 1:1 ir 2:1?" onclick="openCableGuideModal('${exId}')">?</button></span>`
+        ? `<span class="row" style="gap:4px;"><button class="pill pill-accent" id="cable-btn-${exId}" onclick="event.stopPropagation();toggleCableRatio('${exId}')">Blokas: ${cableRatio} ⇄</button><button type="button" class="cable-q-btn" title="Kaip atskirti 1:1 ir 2:1?" onclick="event.stopPropagation();openCableGuideModal('${exId}')">?</button></span>`
         : '';
 
       const isTimeOnly = ex.weightLabel === 'Sekundės';
       const histBestE1 = isTimeOnly ? 0 : getHistoricalBestE1RM(exId);
+      const plateMeta = getPlateIconMeta(state.plateIconStyle || '6');
+      const isInfoOpen = openExInfo.has(exId);
 
-      // Round 5: 3 Distinct Set Visual States (Completed / Active Focus / Waiting)
+      // Round 5 + v10: 3 Distinct Set Visual States (Completed / Active Focus with Icon-Only Plate Button / Waiting)
       const setsHtml = entry.sets.map((s, sIdx) => {
         // 1) Completed Set -> Compact, dimmed, single pill + real timestamp
         if (s.done) {
@@ -5230,7 +5906,7 @@
             </div>`;
         }
 
-        // 2) Active Focus Set ("Serija X iš Y" – Unmistakable + Live PR + 19px Mono + 42x46 Thumb Targets)
+        // 2) Active Focus Set ("Serija X iš Y" + Icon-Only Plate Button + Live PR)
         if (sIdx === firstUndoneIdx) {
           const curE1 = (!isTimeOnly && Number(s.weight) > 0 && Number(s.reps) > 0) ? calcE1RM(s.weight, s.reps) : 0;
           const isLivePr = histBestE1 > 0 && curE1 > histBestE1;
@@ -5244,8 +5920,8 @@
                   <span class="set-num-pill">SERIJA ${sIdx + 1} IŠ ${totalSets}</span>
                   <span style="font-size:11px;color:var(--text-muted);font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${ex.name}</span>
                 </div>
-                <div class="row" style="gap:5px;flex-shrink:0;">
-                  ${showPlatesBtn ? `<button type="button" class="inline-plate-btn" title="Diskų skaičiuoklė šiam svoriui" onclick="openPlateForSet('${exId}', ${sIdx})"><svg class="icon-plate-svg" style="width:13px;height:13px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9.5"/><circle cx="12" cy="12" r="5" stroke-opacity="0.45"/><circle cx="12" cy="12" r="2"/></svg><span>Diskai</span></button>` : ''}
+                <div class="row" style="gap:6px;flex-shrink:0;">
+                  ${showPlatesBtn ? `<button type="button" class="plate-ico-btn" title="Diskų skaičiuoklė šiam svoriui" aria-label="Diskų skaičiuoklė" onclick="openPlateForSet('${exId}', ${sIdx}, event)">${plateMeta.svg}</button>` : ''}
                   <button class="rir-single-btn" id="rir-btn-${exId}-${sIdx}" onclick="cycleSetRir('${exId}', ${sIdx})">
                     RIR ${s.rir} ↻
                   </button>
@@ -5298,10 +5974,12 @@
       }).join('');
 
       const slotHeaderTxt = typeof displayNum === 'number' ? `PRATIMAS ${displayNum} IŠ ${totalSlots}` : `PRIEDAS ${displayNum}`;
+      const canCollapseSelf = typeof displayNum === 'number';
+      const animPinHtml = buildAnimPinDualRowHtml(exId, ex.yt, isDrawerOpen);
 
       card.innerHTML = `
-        <div class="row-between" style="align-items:flex-start;">
-          <div style="min-width:0;flex:1;">
+        <div class="row-between" style="align-items:flex-start;gap:8px;">
+          <div class="${canCollapseSelf ? 'ex-head-tap' : ''}" style="min-width:0;flex:1;" ${canCollapseSelf ? 'onclick="collapseActiveExercise(event)" title="Bakstelėk, kad suskleistum pratimą"' : ''}>
             <div class="ex-active-eyebrow">
               <span>${slotHeaderTxt}</span>
               <span>·</span>
@@ -5316,68 +5994,77 @@
             </div>
           </div>
           <div class="row" style="gap:5px;flex-shrink:0;">
-            ${state.customExercises[exId] ? `<button type="button" class="btn btn-sm btn-danger" style="min-height:33px;padding:5px 9px;" title="Pašalinti savo pratimą" onclick="deleteCustomExercise('${exId}', event)">✕</button>` : ''}
-            <button class="btn btn-sm ${isPlanBSwapped ? 'btn-amber-ghost' : 'btn-ghost'}" style="flex-shrink:0;" onclick="openPlanBModal('${exId}', '${slotKey || ''}')">${isPlanBSwapped ? '↩ Planas A' : '⚡ Planas B'}</button>
+            ${state.customExercises[exId] ? `<button type="button" class="btn btn-sm btn-danger" style="min-height:33px;padding:5px 9px;" title="Pašalinti savo pratimą" onclick="event.stopPropagation();deleteCustomExercise('${exId}', event)">✕</button>` : ''}
+            <button class="btn btn-sm ${isPlanBSwapped ? 'btn-amber-ghost' : 'btn-ghost'}" style="flex-shrink:0;" onclick="event.stopPropagation();openPlanBModal('${exId}', '${slotKey || ''}')">${isPlanBSwapped ? '↩ Planas A' : '⚡ Planas B'}</button>
+            ${canCollapseSelf ? `<button type="button" class="ex-chev-pill" title="Suskleisti pratimą" aria-label="Suskleisti pratimą" onclick="collapseActiveExercise(event)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></button>` : ''}
           </div>
         </div>
 
-        <!-- Visual 3-Sec Summary (Action / Target Muscle / Safety Stop) -->
         <div class="anim-pad">
-        <div class="quick-cues anim-s1">
-          <div class="qc-item">
-            <span class="qc-ico dir" aria-hidden="true">
-              <svg viewBox="0 0 24 24"><path d="M7 17 17 7"/><path d="M8 7h9v9"/></svg>
-            </span>
-            <div class="qc-body">
-              <span class="qc-k qc-dir">Kaip atlikti</span>
-              <span class="qc-txt">${ex.dir || ''}</span>
-            </div>
-          </div>
-          <div class="qc-item">
-            <span class="qc-ico feel" aria-hidden="true">
-              <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="4.5"/><circle cx="12" cy="12" r="1.2" fill="currentColor" stroke="none"/></svg>
-            </span>
-            <div class="qc-body">
-              <span class="qc-k qc-feel">Kur turi dirbti</span>
-              <span class="qc-txt">${ex.feel || ''}</span>
-            </div>
-          </div>
-          <div class="qc-item qc-stop-row">
-            <span class="qc-ico stop" aria-hidden="true">
-              <svg viewBox="0 0 24 24"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0Z"/><path d="M12 9v4"/><path d="M12 17h.01"/></svg>
-            </span>
-            <div class="qc-body">
-              <span class="qc-k qc-stop">Kada sustoti</span>
-              <span class="qc-txt">${ex.stop || ''}</span>
-            </div>
-          </div>
-        </div>
-
-        <div class="ex-prev-line">
-          <div style="flex:1;min-width:0;">${prevHtml}</div>
-          ${prevLog ? `<button class="btn btn-sm btn-ghost" style="min-height:30px;padding:3px 10px;" onclick="copyPreviousSets('${exId}')">Perimti</button>` : ''}
-        </div>
-
+        <!-- v10: Progression Advice ALWAYS Visible Outside Collapsed Info Block -->
         ${prog ? `
-          <div class="prog-advice-box ${prog.type}">
+          <div class="prog-advice-box ${prog.type}" style="margin-top:9px;margin-bottom:4px;">
             <div style="flex:1;min-width:0;">
               <div class="prog-advice-title">${prog.title}</div>
               <div class="prog-advice-sub">${prog.sub}</div>
             </div>
             ${prog.btnLabel ? `<button type="button" class="btn btn-sm btn-secondary" style="flex-shrink:0;" onclick="applySuggestedWeight('${exId}', ${prog.suggestedWeight})">${prog.btnLabel}</button>` : ''}
           </div>` : ''}
-        ${warmupHtml}
+
+        <!-- v10 Sec 7: Collapsible Technique · Previous · Warmup Block (Hidden by Default -> Saves ~270px!) -->
+        <button id="ex-info-btn-${exId}" type="button" class="ex-info-toggle ${isInfoOpen ? 'open' : ''}" onclick="toggleExInfoDrawer('${exId}')">
+          <span style="display:inline-flex;align-items:center;gap:6px;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">
+            <span>ℹ️ Technika · Praeitą kartą${warmupHtml ? ' · Apšilimas' : ''}</span>
+          </span>
+          <span class="ex-info-chev">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+          </span>
+        </button>
+
+        <div id="ex-info-collapse-${exId}" class="collapsible ${isInfoOpen ? '' : 'collapsed'}">
+          <div class="collapsible-inner">
+            <div class="quick-cues anim-s1" style="margin-top:2px;">
+              <div class="qc-item">
+                <span class="qc-ico dir" aria-hidden="true">
+                  <svg viewBox="0 0 24 24"><path d="M7 17 17 7"/><path d="M8 7h9v9"/></svg>
+                </span>
+                <div class="qc-body">
+                  <span class="qc-k qc-dir">Kaip atlikti</span>
+                  <span class="qc-txt">${ex.dir || ''}</span>
+                </div>
+              </div>
+              <div class="qc-item">
+                <span class="qc-ico feel" aria-hidden="true">
+                  <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="4.5"/><circle cx="12" cy="12" r="1.2" fill="currentColor" stroke="none"/></svg>
+                </span>
+                <div class="qc-body">
+                  <span class="qc-k qc-feel">Kur turi dirbti</span>
+                  <span class="qc-txt">${ex.feel || ''}</span>
+                </div>
+              </div>
+              <div class="qc-item qc-stop-row">
+                <span class="qc-ico stop" aria-hidden="true">
+                  <svg viewBox="0 0 24 24"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0Z"/><path d="M12 9v4"/><path d="M12 17h.01"/></svg>
+                </span>
+                <div class="qc-body">
+                  <span class="qc-k qc-stop">Kada sustoti</span>
+                  <span class="qc-txt">${ex.stop || ''}</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="ex-prev-line">
+              <div style="flex:1;min-width:0;">${prevHtml}</div>
+              ${prevLog ? `<button class="btn btn-sm btn-ghost" style="min-height:30px;padding:3px 10px;" onclick="copyPreviousSets('${exId}')">Perimti</button>` : ''}
+            </div>
+            ${warmupHtml}
+          </div>
+        </div>
 
         <div class="sets-list anim-s2">${setsHtml}</div>
 
-        <!-- Variant B: Dual High-Contrast Animacija & Pin + Quick Video Buttons -->
-        <div class="guide-dual-row anim-s3 ${ex.yt ? '' : 'single'}">
-          <button type="button" class="btn-anim-guide" onclick="toggleTechDrawer('${exId}')">
-            <span>🦴 Animacija &amp; Pin</span>
-            <span>${isDrawerOpen ? '▴' : '▾'}</span>
-          </button>
-          ${ex.yt ? `<a class="btn-video-quick" href="${ex.yt}" target="_blank" rel="noopener">▶ Video</a>` : ''}
-        </div>
+        <!-- v10 Sec 2: Icon-Only Animacija & Pin + YouTube Buttons (5 Selectable Styles, Default 46px / Vidutiniai) -->
+        ${animPinHtml}
 
         ${(state.trainingMode !== 'adaptation' || ex.hasStraps) ? `
           <div class="row-between mt-8">
@@ -5385,13 +6072,13 @@
             ${ex.hasStraps ? `<button class="pill ${entry.straps ? 'pill-accent' : ''}" style="padding:7px 11px;" onclick="toggleStraps('${exId}')">${entry.straps ? '🔗 Su diržais' : '✋ Be diržų'}</button>` : ''}
           </div>` : ''}
 
-        <div class="collapsible ${isDrawerOpen ? '' : 'collapsed'}">
+        <div id="tech-drawer-collapse-${exId}" class="collapsible ${isDrawerOpen ? '' : 'collapsed'}">
           <div class="collapsible-inner">
             <div class="tech-drawer">
               <div class="anim-stage">
                 <span class="stage-live-badge">● GYVA SCHEMA</span>
                 <span class="stage-phase-badge ecc">↓ Lėtai (3 s)</span>
-                <canvas class="bio-canvas" data-anim="${ex.anim}" data-open="${isDrawerOpen ? '1' : '0'}"></canvas>
+                <canvas id="bio-cv-${exId}" class="bio-canvas" data-anim="${ex.anim}" data-open="${isDrawerOpen ? '1' : '0'}"></canvas>
               </div>
               <div class="anim-footer-bar">
                 <span><b style="color:var(--green);">●</b> Dirbantis raumuo · <b style="color:var(--yellow);">---</b> Saugi riba</span>
@@ -5685,7 +6372,7 @@
       showToast((origId === newExId ? 'Grąžintas Planas A: ' : 'Pakeista į: ') + getExercise(newExId).name);
     }
 
-    function pushUndoAction(label, startedTimer = false) {
+    function pushUndoAction(label, startedTimer = false, line1 = null) {
       undoSnapshot = {
         draft: JSON.parse(JSON.stringify(state.draft)),
         activeSwaps: JSON.parse(JSON.stringify(state.activeSwaps)),
@@ -5693,8 +6380,10 @@
         startedTimer
       };
       const bar = document.getElementById('undo-float-bar');
-      const txt = document.getElementById('undo-float-text');
-      if (txt) txt.textContent = label;
+      const l1 = document.getElementById('undo-float-line1');
+      const l2 = document.getElementById('undo-float-line2');
+      if (l1) l1.textContent = line1 || '✓ Veiksmas atliktas';
+      if (l2) l2.textContent = label;
       if (bar) {
         const timerVis = document.getElementById('rest-timer-bar')?.classList.contains('visible');
         bar.classList.toggle('above-timer', !!timerVis);
@@ -5723,10 +6412,40 @@
       showToast('↩ Paskutinis veiksmas atšauktas');
     }
 
-    function toggleTechDrawer(exId) {
-      if (openDrawers.has(exId)) openDrawers.delete(exId);
-      else openDrawers.add(exId);
+    function collapseActiveExercise(ev) {
+      if (ev) ev.stopPropagation();
+      activeExId = null;
+      const sBar = document.getElementById('active-ex-sticky');
+      if (sBar) sBar.classList.remove('visible');
       renderWorkoutView();
+    }
+
+    function toggleExInfoDrawer(exId) {
+      const willOpen = !openExInfo.has(exId);
+      if (willOpen) openExInfo.add(exId);
+      else openExInfo.delete(exId);
+      const btn = document.getElementById('ex-info-btn-' + exId);
+      if (btn) btn.classList.toggle('open', willOpen);
+      applyCollapsibleState('ex-info-collapse-' + exId, willOpen);
+    }
+
+    function toggleTechDrawer(exId) {
+      const willOpen = !openDrawers.has(exId);
+      if (willOpen) openDrawers.add(exId);
+      else openDrawers.delete(exId);
+      const btn = document.getElementById('ap-btn-' + exId);
+      if (btn) {
+        btn.classList.remove('closing');
+        btn.classList.toggle('open', willOpen);
+        if (!willOpen) {
+          void btn.offsetWidth;
+          btn.classList.add('closing');
+        }
+      }
+      applyCollapsibleState('tech-drawer-collapse-' + exId, willOpen);
+      const cv = document.getElementById('bio-cv-' + exId);
+      if (cv) cv.dataset.open = willOpen ? '1' : '0';
+      syncBioAnimationLoop();
     }
 
     function toggleNoteField(exId) {
@@ -5842,7 +6561,8 @@
       const entry = state.draft.entries[exId];
       const s = entry.sets[setIdx];
       const willBeDone = !s.done;
-      pushUndoAction(willBeDone ? `✓ Užbaigta ${ex.name} #${setIdx + 1} ser.` : `Atžymėta ${ex.name} #${setIdx + 1} ser.`, willBeDone);
+      const undoSub = ex.weightLabel === 'Sekundės' ? `${ex.name} · ${s.reps} s` : `${ex.name} · ${s.weight} kg × ${s.reps}`;
+      pushUndoAction(undoSub, willBeDone, willBeDone ? `✓ Serija #${setIdx + 1} atlikta` : `↩ Serija #${setIdx + 1} atžymėta`);
       markSessionStartedIfNeeded();
       const prevDoneTs = willBeDone ? getLatestDoneSetTimestamp() : null;
       s.done = willBeDone;
@@ -6148,6 +6868,459 @@
       }, true);
     }
 
+    /* ==========================================================================
+       6B. v10 REST TIMER 10-STYLE VISUAL ENGINE (4-THEME + TRUE 0 FPS SLEEP)
+       ========================================================================== */
+    let restBarPct = 100;
+    let restBarRafId = null;
+    let restBarLastTs = 0;
+    let restLiqSlosh = 0;
+    let restLiqPhase = 0;
+    let restEcgScroll = 0;
+    let restEqPhase = 0;
+    let restLastPhase2 = '';
+    let restLastPhase3 = '';
+    const restLiqPopRings = [];
+    const restFuseSparks = [];
+    const restEqPeaks = new Float32Array(24);
+    const restLiqBubbles = Array.from({ length: 16 }, (_, i) => ({
+      x: (i / 16) * 320 + Math.random() * 18,
+      yFrac: 0.14 + (i % 5) * 0.17 + Math.random() * 0.06,
+      r: 1.5 + (i % 3) * 0.95,
+      vx: 44 + (i % 4) * 14,
+      age: 1.0,
+      phase: Math.random() * Math.PI * 2
+    }));
+    let restResizeObs = null;
+
+    function parseHexToRgb(hex) {
+      const m = String(hex || '').trim().match(/^#?([0-9a-f]{6})$/i);
+      if (!m) return [56, 189, 248];
+      const n = parseInt(m[1], 16);
+      return [(n >> 16) & 255, (n >> 8) & 255, n & 255];
+    }
+
+    function getRestThemeColors() {
+      const st = getComputedStyle(document.documentElement);
+      const accentHex = st.getPropertyValue('--accent').trim() || '#22d3ee';
+      const greenHex = st.getPropertyValue('--green').trim() || '#22c55e';
+      const yellowHex = st.getPropertyValue('--yellow').trim() || '#f59e0b';
+      const isNordic = document.documentElement.getAttribute('data-theme') === 'nordic';
+      return {
+        isNordic,
+        accentHex, greenHex, yellowHex,
+        accentRgb: parseHexToRgb(accentHex),
+        greenRgb: parseHexToRgb(greenHex)
+      };
+    }
+
+    function seedRestLiquidBubbles(fillFrac = 1) {
+      const cv = document.getElementById('rest-bg-canvas');
+      const w = cv ? Math.max(180, cv.clientWidth || 340) : 340;
+      const span = Math.max(30, w * Math.max(0.1, fillFrac));
+      restLiqBubbles.forEach((b, i) => {
+        b.x = ((i + Math.random() * 0.7) / restLiqBubbles.length) * (span - 8);
+        b.yFrac = 0.12 + ((i * 37) % 76) / 100;
+        b.age = 0.45 + Math.random() * 0.55;
+      });
+    }
+
+    function syncRestPb6Geometry() {
+      const bar = document.getElementById('rest-timer-bar');
+      const svg = document.getElementById('rest-pb6-svg');
+      if (!bar || !svg || !bar.classList.contains('visible')) return;
+      const w = Math.max(160, Math.round(bar.clientWidth || 360));
+      const h = Math.max(54, Math.round(bar.clientHeight || 106));
+      const pad = 1.5;
+      const r = Math.min(18, (h - pad * 2) / 2);
+      const midX = w / 2, x1 = pad, x2 = w - pad, y1 = pad, y2 = h - pad;
+      svg.setAttribute('viewBox', `0 0 ${w} ${h}`);
+      const tr = document.getElementById('rest-pb6-track');
+      if (tr) {
+        tr.setAttribute('x', pad); tr.setAttribute('y', pad);
+        tr.setAttribute('width', w - pad * 2); tr.setAttribute('height', h - pad * 2);
+        tr.setAttribute('rx', r); tr.setAttribute('ry', r);
+      }
+      const dLeft = `M ${midX} ${y1} L ${x1 + r} ${y1} A ${r} ${r} 0 0 0 ${x1} ${y1 + r} L ${x1} ${y2 - r} A ${r} ${r} 0 0 0 ${x1 + r} ${y2} L ${midX} ${y2}`;
+      const dRight = `M ${midX} ${y1} L ${x2 - r} ${y1} A ${r} ${r} 0 0 1 ${x2} ${y1 + r} L ${x2} ${y2 - r} A ${r} ${r} 0 0 1 ${x2 - r} ${y2} L ${midX} ${y2}`;
+      svg.querySelectorAll('.rt-pb6-left').forEach(p => p.setAttribute('d', dLeft));
+      svg.querySelectorAll('.rt-pb6-right').forEach(p => p.setAttribute('d', dRight));
+    }
+
+    function buildRestBarSlotMarkup() {
+      const styleId = String(state.restBarStyle || '4');
+      const bar = document.getElementById('rest-timer-bar');
+      const slot = document.getElementById('rest-bar-slot');
+      if (!bar || !slot) return;
+      bar.setAttribute('data-rt-style', styleId);
+      bar.classList.remove('phase-rest', 'phase-warn', 'phase-go', 'heartbeat', 'go');
+      restLastPhase2 = ''; restLastPhase3 = '';
+
+      if (styleId === '1') {
+        slot.innerHTML = '<div class="rt-pb1-track"><div id="rt-pb1-fill" class="rt-pb1-fill" style="width:100%;"><div class="rt-pb1-body"></div></div></div>';
+      } else if (styleId === '2') {
+        slot.innerHTML = '<div class="rt-pb2-track"><div id="rt-pb2-fill" class="rt-pb2-fill" style="width:100%;"></div></div>';
+      } else if (styleId === '3') {
+        slot.innerHTML = '<div id="rt-pb3-grid" class="rt-pb3-grid">' + Array.from({ length: 16 }, (_, idx) => `<span class="rt-pb3-seg${(idx === 3 || idx === 7 || idx === 11) ? ' q-gap' : ''}"><i class="rt-pb3-glow"></i></span>`).join('') + '</div>';
+      } else if (styleId === '5') {
+        slot.innerHTML = '<div class="rt-pb5-track"><div id="rt-pb5-fill" class="rt-pb5-fill" style="width:100%;"><div class="rt-pb5-body"><div class="rt-pb5-stripes"></div></div><div class="rt-pb5-tip"></div></div><div class="rt-pb5-ticks"><i></i><i></i><i></i></div></div>';
+      } else if (styleId === '7') {
+        slot.innerHTML = '<div class="rt-cv-wrap ecg"><canvas id="rt-slot-canvas"></canvas></div>';
+      } else if (styleId === '8') {
+        slot.innerHTML = '<div class="rt-cv-wrap fuse"><canvas id="rt-slot-canvas"></canvas></div>';
+      } else if (styleId === '9') {
+        slot.innerHTML = '<div id="rt-pb9-track" class="rt-pb9-track"><div id="rt-pb9-fill" class="rt-pb9-fill" style="width:100%;"></div></div>';
+      } else if (styleId === '10') {
+        slot.innerHTML = '<div class="rt-cv-wrap eq"><canvas id="rt-slot-canvas"></canvas></div>';
+      } else {
+        slot.innerHTML = '';
+      }
+
+      if (styleId === '6') {
+        requestAnimationFrame(syncRestPb6Geometry);
+        if (!restResizeObs && typeof ResizeObserver !== 'undefined') {
+          restResizeObs = new ResizeObserver(() => { if (String(state.restBarStyle) === '6') syncRestPb6Geometry(); });
+          restResizeObs.observe(bar);
+        }
+      }
+      updateRestBarVisuals(restBarPct);
+      syncRestAnimLoop();
+    }
+
+    function updateRestBarVisuals(pct) {
+      restBarPct = Math.max(0, Math.min(100, Number(pct) || 0));
+      const styleId = String(state.restBarStyle || '4');
+      const bar = document.getElementById('rest-timer-bar');
+      if (!bar) return;
+
+      if (styleId === '1') {
+        const f1 = document.getElementById('rt-pb1-fill');
+        if (f1) {
+          f1.style.width = restBarPct + '%';
+          f1.style.opacity = Math.max(0, Math.min(1, restBarPct / 1.5)).toFixed(3);
+          const tf = Math.max(0, Math.min(1, restBarPct / 8));
+          f1.style.setProperty('--tip-op', tf.toFixed(2));
+          f1.style.setProperty('--tip-scale', (0.35 + 0.65 * tf).toFixed(2));
+          f1.classList.toggle('go', restBarPct <= 18);
+        }
+      } else if (styleId === '2') {
+        const f2 = document.getElementById('rt-pb2-fill');
+        const pill = document.getElementById('rest-phase-pill');
+        if (f2) {
+          f2.style.width = restBarPct + '%';
+          f2.style.opacity = restBarPct > 0.25 ? '1' : '0';
+          const ph = restBarPct > 45 ? 'rest' : (restBarPct > 18 ? 'warn' : 'go');
+          if (ph !== restLastPhase2) {
+            restLastPhase2 = ph;
+            bar.classList.remove('phase-rest', 'phase-warn', 'phase-go');
+            bar.classList.add('phase-' + ph);
+            if (pill) pill.textContent = ph === 'rest' ? 'Poilsis' : (ph === 'warn' ? 'Ruoškis' : 'Startas!');
+          }
+          bar.classList.toggle('heartbeat', ph === 'go' && restBarPct > 0.25 && !restTimerState.paused);
+        }
+      } else if (styleId === '3') {
+        const grid = document.getElementById('rt-pb3-grid');
+        if (grid) {
+          const p3 = restBarPct <= 16 ? 'go' : (restBarPct <= 40 ? 'warn' : 'rest');
+          if (p3 !== restLastPhase3) {
+            restLastPhase3 = p3;
+            grid.classList.toggle('warn', p3 === 'warn');
+            grid.classList.toggle('go', p3 === 'go');
+          }
+          const segs = grid.children;
+          const exactLit = (restBarPct / 100) * segs.length;
+          const tipIdx = restBarPct > 0.2 ? Math.min(segs.length - 1, Math.floor(exactLit - 0.001)) : -1;
+          for (let i = 0; i < segs.length; i++) {
+            const alpha = Math.max(0, Math.min(1, exactLit - i));
+            if (segs[i].firstElementChild) segs[i].firstElementChild.style.opacity = alpha.toFixed(3);
+            segs[i].classList.toggle('active-tip', i === tipIdx);
+          }
+        }
+      } else if (styleId === '5') {
+        const f5 = document.getElementById('rt-pb5-fill');
+        if (f5) {
+          f5.style.width = restBarPct + '%';
+          f5.style.opacity = Math.max(0, Math.min(1, restBarPct / 1.5)).toFixed(3);
+          const t5 = Math.max(0, Math.min(1, restBarPct / 4));
+          f5.style.setProperty('--tip-o', t5.toFixed(2));
+          f5.style.setProperty('--tip-s', (0.5 + 0.5 * t5).toFixed(2));
+          f5.classList.toggle('go', restBarPct <= 18);
+        }
+      } else if (styleId === '6') {
+        bar.classList.toggle('go', restBarPct <= 20);
+        const dashOff = (100 - restBarPct).toFixed(2);
+        const tipOff = (108.8 - restBarPct).toFixed(2);
+        const showSym = restBarPct > 0.25;
+        bar.querySelectorAll('.rt-pb6-sym').forEach(p => {
+          p.setAttribute('stroke-dashoffset', dashOff);
+          p.style.opacity = showSym ? (p.classList.contains('rt-pb6-aura') ? '0.46' : (p.classList.contains('rt-pb6-glow') ? '0.70' : '1')) : '0';
+        });
+        const showTip = restBarPct > 1.2 && restBarPct < 99.6;
+        bar.querySelectorAll('.rt-pb6-tip-path').forEach(p => {
+          p.setAttribute('stroke-dashoffset', tipOff);
+          p.style.opacity = showTip ? '1' : '0';
+        });
+      } else if (styleId === '9') {
+        const f9 = document.getElementById('rt-pb9-fill');
+        const t9 = document.getElementById('rt-pb9-track');
+        if (f9) {
+          f9.style.width = restBarPct + '%';
+          f9.style.opacity = Math.max(0, Math.min(1, restBarPct / 3)).toFixed(3);
+          f9.style.setProperty('--dot-s', Math.max(0, Math.min(1, (restBarPct - 1.5) / 11)).toFixed(3));
+          f9.classList.toggle('go', restBarPct <= 18);
+        }
+        if (t9) {
+          const cg = restBarPct > 0.2 && restBarPct < 18 ? (1 - restBarPct / 18) : 0;
+          t9.style.setProperty('--conv-glow', cg.toFixed(3));
+        }
+      }
+    }
+
+    function drawRestCanvasFrame(dt, ts) {
+      const styleId = String(state.restBarStyle || '4');
+      const pal = getRestThemeColors();
+      const dpr = Math.min(window.devicePixelRatio || 1, 2);
+
+      if (styleId === '4') {
+        const cv = document.getElementById('rest-bg-canvas');
+        if (!cv) return;
+        const w = Math.max(120, Math.round(cv.clientWidth || 340));
+        const h = Math.max(54, Math.round(cv.clientHeight || 106));
+        if (cv.width !== Math.round(w * dpr) || cv.height !== Math.round(h * dpr)) { cv.width = Math.round(w * dpr); cv.height = Math.round(h * dpr); }
+        const ctx = cv.getContext('2d');
+        ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+        ctx.clearRect(0, 0, w, h);
+
+        restLiqPhase += dt;
+        restLiqSlosh = Math.max(0, restLiqSlosh * Math.exp(-dt * 2.4));
+
+        if (restBarPct > 0.3) {
+          const t = restLiqPhase;
+          const baseX = (restBarPct / 100) * w;
+          const edgeDamp = Math.min(1, restBarPct / 10, (100 - restBarPct) / 6);
+          const amp = (3.4 + restLiqSlosh * 4.8) * Math.max(0, edgeDamp);
+          const goT = Math.max(0, Math.min(1, (20 - restBarPct) / 18));
+          const [ar, ag, ab] = pal.accentRgb;
+          const [gr, gg, gb] = pal.greenRgb;
+          const rE = Math.round(ar + (gr - ar) * goT);
+          const gE = Math.round(ag + (gg - ag) * goT);
+          const bE = Math.round(ab + (gb - ab) * goT);
+          const bodyAlpha = pal.isNordic ? 0.22 : 0.38;
+
+          const waveX = (y, ps, mult) =>
+            Math.max(0, Math.min(w, baseX + Math.sin((y / h) * Math.PI * 2.2 + t * 3.1 + ps) * amp * mult + Math.sin((y / h) * Math.PI * 4.5 - t * 4.8 + ps * 1.4) * (amp * 0.36 * mult)));
+
+          ctx.beginPath(); ctx.moveTo(0, 0);
+          for (let y = 0; y < h; y += 4) ctx.lineTo(waveX(y, 1.8, 0.92), y);
+          ctx.lineTo(waveX(h, 1.8, 0.92), h); ctx.lineTo(0, h); ctx.closePath();
+          const gBack = ctx.createLinearGradient(0, 0, Math.max(24, baseX + 12), 0);
+          gBack.addColorStop(0, `rgba(${gr}, ${gg}, ${gb}, ${pal.isNordic ? 0.08 : 0.14})`);
+          gBack.addColorStop(1, `rgba(${rE}, ${gE}, ${bE}, ${pal.isNordic ? 0.16 : 0.26})`);
+          ctx.fillStyle = gBack; ctx.fill();
+
+          ctx.beginPath(); ctx.moveTo(0, 0);
+          for (let y = 0; y < h; y += 4) ctx.lineTo(waveX(y, 0, 1.0), y);
+          ctx.lineTo(waveX(h, 0, 1.0), h); ctx.lineTo(0, h); ctx.closePath();
+          const gFront = ctx.createLinearGradient(0, 0, Math.max(24, baseX + 12), 0);
+          gFront.addColorStop(0, `rgba(${gr}, ${gg}, ${gb}, ${pal.isNordic ? 0.10 : 0.20})`);
+          gFront.addColorStop(1, `rgba(${rE}, ${gE}, ${bE}, ${bodyAlpha})`);
+          ctx.fillStyle = gFront; ctx.fill();
+
+          ctx.save(); ctx.clip();
+          restLiqBubbles.forEach(b => {
+            b.x += b.vx * dt;
+            b.age = Math.min(1, (b.age ?? 1) + dt * 2.8);
+            const by = b.yFrac * h + Math.sin(t * 3.8 + b.phase) * 2.4;
+            const surfX = waveX(by, 0, 1.0);
+            if (b.x >= surfX - 1.5) {
+              if (surfX > 12 && restLiqPopRings.length < 16) restLiqPopRings.push({ x: surfX - 2, y: by, r: b.r * 0.9, maxR: b.r * 3.0, life: 1.0 });
+              b.x = Math.random() < 0.45 ? Math.random() * 14 : Math.random() * Math.max(12, surfX * 0.72);
+              b.yFrac = 0.12 + Math.random() * 0.76; b.age = 0;
+            } else if (b.x > 0) {
+              const alpha = (pal.isNordic ? 0.52 : 0.72) * Math.min(1, b.age, b.x / 14) * Math.min(1, Math.max(0, surfX - b.x) / 10);
+              ctx.beginPath(); ctx.arc(b.x, by, b.r * (0.65 + 0.35 * Math.min(1, b.age)), 0, Math.PI * 2);
+              ctx.fillStyle = pal.isNordic ? `rgba(255, 255, 255, ${alpha.toFixed(2)})` : `rgba(224, 242, 254, ${alpha.toFixed(2)})`;
+              ctx.fill();
+              ctx.strokeStyle = `rgba(${rE}, ${gE}, ${bE}, ${(alpha * 0.85).toFixed(2)})`;
+              ctx.lineWidth = 0.85; ctx.stroke();
+            }
+          });
+          ctx.restore();
+
+          ctx.beginPath();
+          for (let y = 0; y < h; y += 4) { const px = waveX(y, 0, 1.0); if (y === 0) ctx.moveTo(px, y); else ctx.lineTo(px, y); }
+          ctx.lineTo(waveX(h, 0, 1.0), h);
+          ctx.strokeStyle = `rgba(${rE}, ${gE}, ${bE}, 0.34)`; ctx.lineWidth = 5; ctx.stroke();
+          ctx.strokeStyle = pal.isNordic ? `rgba(${rE}, ${gE}, ${bE}, 0.92)` : 'rgba(224, 242, 254, 0.9)'; ctx.lineWidth = 1.8; ctx.stroke();
+        }
+        for (let i = restLiqPopRings.length - 1; i >= 0; i--) {
+          const pr = restLiqPopRings[i]; pr.life -= dt * 2.8;
+          if (pr.life <= 0) { restLiqPopRings.splice(i, 1); continue; }
+          ctx.beginPath(); ctx.arc(pr.x, pr.y, pr.r + (pr.maxR - pr.r) * (1 - pr.life), 0, Math.PI * 2);
+          ctx.strokeStyle = pal.isNordic ? `rgba(${pal.accentRgb.join(',')}, ${(pr.life * 0.6).toFixed(2)})` : `rgba(224, 242, 254, ${(pr.life * 0.62).toFixed(2)})`;
+          ctx.lineWidth = 1.1; ctx.stroke();
+        }
+        return;
+      }
+
+      const cv = document.getElementById('rt-slot-canvas');
+      if (!cv) return;
+      const w = Math.max(100, Math.round(cv.clientWidth || 320));
+      const h = Math.max(24, Math.round(cv.clientHeight || 30));
+      if (cv.width !== Math.round(w * dpr) || cv.height !== Math.round(h * dpr)) { cv.width = Math.round(w * dpr); cv.height = Math.round(h * dpr); }
+      const c = cv.getContext('2d');
+      c.setTransform(dpr, 0, 0, dpr, 0, 0);
+      c.clearRect(0, 0, w, h);
+
+      if (styleId === '7') {
+        const midY = h * 0.60;
+        c.strokeStyle = pal.isNordic ? 'rgba(3, 105, 161, 0.08)' : 'rgba(56, 189, 248, 0.06)';
+        c.lineWidth = 1; c.beginPath();
+        for (let gx = 22; gx < w; gx += 22) { c.moveTo(gx + 0.5, 0); c.lineTo(gx + 0.5, h); }
+        c.moveTo(0, midY); c.lineTo(w, midY); c.stroke();
+
+        const period = 104, goT = Math.max(0, Math.min(1, (22 - restBarPct) / 16));
+        restEcgScroll = (restEcgScroll + dt * (68 + goT * 30)) % period;
+        const pad = 6, endX = pad + (restBarPct / 100) * (w - pad * 2);
+        const fade = Math.max(0, Math.min(1, restBarPct / 2.5));
+        if (fade > 0.01) {
+          const [ar, ag, ab] = pal.accentRgb, [gr, gg, gb] = pal.greenRgb;
+          const rgb = `${Math.round(ar + (gr - ar) * goT)}, ${Math.round(ag + (gg - ag) * goT)}, ${Math.round(ab + (gb - ab) * goT)}`;
+          const trace = (fill) => {
+            const sc = -restEcgScroll - period, cnt = Math.ceil((endX + period * 2) / period) + 1;
+            c.beginPath(); if (fill) { c.moveTo(sc, h); c.lineTo(sc, midY); } else c.moveTo(sc, midY);
+            for (let k = 0; k < cnt; k++) {
+              const bx = sc + k * period;
+              c.lineTo(bx + 0.22 * period, midY);
+              c.quadraticCurveTo(bx + 0.28 * period, midY - h * 0.15, bx + 0.34 * period, midY);
+              c.lineTo(bx + 0.39 * period, midY);
+              c.lineTo(bx + 0.43 * period, midY + h * 0.09);
+              c.lineTo(bx + 0.475 * period, midY - h * 0.40);
+              c.lineTo(bx + 0.525 * period, midY + h * 0.22);
+              c.lineTo(bx + 0.565 * period, midY);
+              c.lineTo(bx + 0.64 * period, midY);
+              c.quadraticCurveTo(bx + 0.72 * period, midY - h * 0.26, bx + 0.80 * period, midY);
+              c.lineTo(bx + period, midY);
+            }
+            if (fill) { c.lineTo(sc + cnt * period, h); c.closePath(); }
+          };
+          const ecgY = (x) => {
+            let p = ((x + restEcgScroll) % period) / period; if (p < 0) p += 1;
+            if (p >= 0.22 && p < 0.34) { const u = (p - 0.22) / 0.12; return midY - 2 * (1 - u) * u * (h * 0.15); }
+            if (p >= 0.39 && p < 0.43) return midY + ((p - 0.39) / 0.04) * (h * 0.09);
+            if (p >= 0.43 && p < 0.475) return (midY + h * 0.09) - ((p - 0.43) / 0.045) * (h * 0.49);
+            if (p >= 0.475 && p < 0.525) return (midY - h * 0.40) + ((p - 0.475) / 0.05) * (h * 0.62);
+            if (p >= 0.525 && p < 0.565) return midY + (h * 0.22) * (1 - (p - 0.525) / 0.04);
+            if (p >= 0.64 && p < 0.80) { const u = (p - 0.64) / 0.16; return midY - 2 * (1 - u) * u * (h * 0.26); }
+            return midY;
+          };
+          c.save(); c.globalAlpha = fade; c.beginPath(); c.rect(pad, 0, Math.max(0, endX - pad), h); c.clip();
+          trace(true);
+          const aura = c.createLinearGradient(0, 3, 0, h);
+          aura.addColorStop(0, `rgba(${rgb}, 0.25)`); aura.addColorStop(1, `rgba(${rgb}, 0)`);
+          c.fillStyle = aura; c.fill();
+          trace(false);
+          c.strokeStyle = `rgba(${rgb}, 0.26)`; c.lineWidth = 4.6; c.lineJoin = 'round'; c.stroke();
+          c.strokeStyle = `rgb(${rgb})`; c.lineWidth = 2.0; c.stroke();
+          c.restore();
+          const tipY = ecgY(endX);
+          c.save(); c.globalAlpha = fade;
+          c.beginPath(); c.arc(endX, tipY, 5, 0, Math.PI * 2); c.fillStyle = `rgba(${rgb}, 0.3)`; c.fill();
+          c.beginPath(); c.arc(endX, tipY, 2.4, 0, Math.PI * 2); c.fillStyle = pal.isNordic ? `rgb(${rgb})` : '#ffffff'; c.fill();
+          c.restore();
+        }
+      } else if (styleId === '8') {
+        const cy = h / 2, startX = 8, endX = startX + (restBarPct / 100) * (w - startX * 2);
+        const chH = 12, chY = cy - chH / 2;
+        c.beginPath(); if (c.roundRect) c.roundRect(1, chY, w - 2, chH, 6); else c.rect(1, chY, w - 2, chH);
+        c.fillStyle = pal.isNordic ? 'rgba(15, 23, 42, 0.10)' : 'rgba(4, 7, 13, 0.86)'; c.fill();
+        c.strokeStyle = 'rgba(245, 158, 11, 0.28)'; c.lineWidth = 1; c.stroke();
+        c.strokeStyle = 'rgba(148, 163, 184, 0.28)'; c.lineWidth = 3.4; c.lineCap = 'round';
+        c.beginPath(); c.moveTo(startX, cy); c.lineTo(w - startX, cy); c.stroke();
+        if (restBarPct > 0.35) {
+          const g8 = c.createLinearGradient(startX, 0, Math.max(startX + 4, endX), 0);
+          g8.addColorStop(0, pal.accentHex); g8.addColorStop(0.86, '#f59e0b'); g8.addColorStop(1, '#ffffff');
+          c.strokeStyle = 'rgba(245, 158, 11, 0.24)'; c.lineWidth = 9.5; c.beginPath(); c.moveTo(startX, cy); c.lineTo(endX, cy); c.stroke();
+          c.strokeStyle = g8; c.lineWidth = 5.5; c.beginPath(); c.moveTo(startX, cy); c.lineTo(endX, cy); c.stroke();
+          if (Math.random() < (1 - Math.exp(-56 * dt)) && restFuseSparks.length < 26) {
+            const ang = (Math.random() - 0.5) * 2.5, spd = 28 + Math.random() * 52;
+            restFuseSparks.push({ x: endX, y: cy, vx: Math.cos(ang) * spd + (restBarPct > 92 ? -12 : 14), vy: Math.sin(ang) * spd * 0.7 - 5, life: 1, sz: 1.2 + Math.random() * 1.1, gold: Math.random() < 0.7 });
+          }
+          const eR = 3.5 + Math.sin(ts * 0.028) * 0.5;
+          const eg = c.createRadialGradient(endX, cy, 0.5, endX, cy, eR * 3);
+          eg.addColorStop(0, 'rgba(255,255,255,0.96)'); eg.addColorStop(0.35, 'rgba(245,158,11,0.68)'); eg.addColorStop(1, 'rgba(245,158,11,0)');
+          c.beginPath(); c.arc(endX, cy, eR * 3, 0, Math.PI * 2); c.fillStyle = eg; c.fill();
+        }
+        for (let i = restFuseSparks.length - 1; i >= 0; i--) {
+          const sp = restFuseSparks[i];
+          sp.x += sp.vx * dt; sp.y += sp.vy * dt; sp.vx *= Math.exp(-dt * 1.7); sp.vy += 58 * dt; sp.life -= dt * 2.4;
+          const ea = Math.min(1, sp.y / 6, (h - sp.y) / 6, sp.x / 6, (w - sp.x) / 6);
+          if (sp.life <= 0 || ea <= 0) { restFuseSparks.splice(i, 1); continue; }
+          const a = sp.life * ea;
+          c.beginPath(); c.moveTo(sp.x - sp.vx * 0.042, sp.y - sp.vy * 0.042); c.lineTo(sp.x, sp.y);
+          c.strokeStyle = sp.gold ? `rgba(245, 158, 11, ${(a * 0.95).toFixed(2)})` : `rgba(${pal.accentRgb.join(',')}, ${(a * 0.92).toFixed(2)})`;
+          c.lineWidth = Math.max(0.8, sp.sz * sp.life); c.lineCap = 'round'; c.stroke();
+        }
+      } else if (styleId === '10') {
+        restEqPhase += dt * 4.8;
+        const cnt = 24, padX = 5, gap = 3, barW = Math.max(2, (w - padX * 2 - gap * (cnt - 1)) / cnt);
+        const exact = (restBarPct / 100) * cnt, isGo = restBarPct <= 18, midY = h / 2, maxH = h - 6;
+        const grad = c.createLinearGradient(0, 3, 0, h - 3);
+        if (isGo) { grad.addColorStop(0, '#bbf7d0'); grad.addColorStop(0.55, pal.greenHex); grad.addColorStop(1, '#15803d'); }
+        else { grad.addColorStop(0, pal.isNordic ? pal.accentHex : '#e0f2fe'); grad.addColorStop(0.52, pal.accentHex); grad.addColorStop(1, pal.greenHex); }
+        for (let i = 0; i < cnt; i++) {
+          const x = padX + i * (barW + gap), frac = Math.max(0, Math.min(1, exact - i));
+          c.fillStyle = pal.isNordic ? 'rgba(15, 23, 42, 0.12)' : 'rgba(148, 163, 184, 0.16)';
+          c.beginPath(); if (c.roundRect) c.roundRect(x, midY - 2.25, barW, 4.5, barW / 2); else c.rect(x, midY - 2.25, barW, 4.5); c.fill();
+          if (frac > 0.01 && restBarPct > 0.25) {
+            const hw = 0.56 + 0.30 * Math.sin(restEqPhase - i * 0.38) + 0.14 * Math.sin(restEqPhase * 1.65 + i * 0.24);
+            const th = 4.5 + (maxH * Math.max(0.28, hw) - 4.5) * frac;
+            restEqPeaks[i] = Math.max(th, restEqPeaks[i] - dt * 26);
+            c.save(); c.globalAlpha = frac; c.fillStyle = grad;
+            c.beginPath(); if (c.roundRect) c.roundRect(x, midY - th / 2, barW, th, barW / 2); else c.rect(x, midY - th / 2, barW, th); c.fill();
+            c.restore();
+          } else {
+            restEqPeaks[i] = Math.max(0, restEqPeaks[i] - dt * 36);
+          }
+        }
+      }
+    }
+
+    function syncRestAnimLoop() {
+      const bar = document.getElementById('rest-timer-bar');
+      const styleId = String(state.restBarStyle || '4');
+      const isCanvasStyle = ['4', '7', '8', '10'].includes(styleId);
+      const isRunning = !!(bar && bar.classList.contains('visible') && restTimerState.endTime && !restTimerState.paused && !restTimerState.finished && !document.hidden);
+
+      if (!isRunning) {
+        if (restBarRafId) { cancelAnimationFrame(restBarRafId); restBarRafId = null; restBarLastTs = 0; }
+        // Draw one clean static frame when paused/visible so bar state stays crisp at 0 FPS
+        if (isCanvasStyle && bar && bar.classList.contains('visible') && !document.hidden) {
+          drawRestCanvasFrame(0.001, performance.now());
+        }
+        return;
+      }
+
+      if (!restBarRafId) {
+        restBarLastTs = 0;
+        function frame(ts) {
+          if (document.hidden || !restTimerState.endTime || restTimerState.paused || restTimerState.finished) {
+            restBarRafId = null; restBarLastTs = 0; return;
+          }
+          const dt = restBarLastTs ? Math.min(0.05, (ts - restBarLastTs) / 1000) : 0.016;
+          restBarLastTs = ts;
+          const remMs = Math.max(0, restTimerState.endTime - Date.now());
+          const pct = Math.max(0, Math.min(100, (remMs / (restTimerState.duration * 1000)) * 100));
+          updateRestBarVisuals(pct);
+          if (['4', '7', '8', '10'].includes(String(state.restBarStyle || '4'))) {
+            drawRestCanvasFrame(dt, ts);
+          }
+          restBarRafId = requestAnimationFrame(frame);
+        }
+        restBarRafId = requestAnimationFrame(frame);
+      }
+    }
+
     function startRestTimer(seconds, label) {
       if (restTimerState.autoHideId) { clearTimeout(restTimerState.autoHideId); restTimerState.autoHideId = null; }
       restTimerState.duration = seconds;
@@ -6156,35 +7329,46 @@
       restTimerState.paused = false;
       restTimerState.pausedRemainingMs = 0;
       restTimerState.label = label;
+      restLiqSlosh = 0.9;
+      restLiqPopRings.length = 0;
+      restFuseSparks.length = 0;
       document.getElementById('rest-timer-label').textContent = `Poilsis · ${label}`;
       const pBtn = document.getElementById('rest-pause-btn');
       if (pBtn) pBtn.textContent = '⏸ Pauzė';
       const bar = document.getElementById('rest-timer-bar');
-      bar.classList.remove('finished'); bar.classList.add('visible');
+      bar.classList.remove('finished', 'paused'); bar.classList.add('visible');
+      buildRestBarSlotMarkup();
+      seedRestLiquidBubbles(1);
       const undoBar = document.getElementById('undo-float-bar');
       if (undoBar && undoBar.classList.contains('visible')) undoBar.classList.add('above-timer');
       if (restTimerState.intervalId) clearInterval(restTimerState.intervalId);
       tickRestTimer();
+      syncRestAnimLoop();
       updateLiveShadeNotification(true);
       restTimerState.intervalId = setInterval(tickRestTimer, 250);
     }
 
     function toggleRestPause() {
       if (!restTimerState.endTime && !restTimerState.paused) return;
+      const bar = document.getElementById('rest-timer-bar');
       const pBtn = document.getElementById('rest-pause-btn');
       const lbl = document.getElementById('rest-timer-label');
       if (!restTimerState.paused) {
         restTimerState.pausedRemainingMs = Math.max(1000, restTimerState.endTime - Date.now());
         restTimerState.paused = true;
+        if (bar) bar.classList.add('paused');
         if (pBtn) pBtn.textContent = '▶ Tęsti';
         if (lbl) lbl.textContent = `⏸ Pristabdyta · ${restTimerState.label || 'Poilsis'}`;
+        syncRestAnimLoop();
         updateLiveShadeNotification(true);
       } else {
         restTimerState.endTime = Date.now() + restTimerState.pausedRemainingMs;
         restTimerState.paused = false;
+        if (bar) bar.classList.remove('paused');
         if (pBtn) pBtn.textContent = '⏸ Pauzė';
         if (lbl) lbl.textContent = `Poilsis · ${restTimerState.label || ''}`;
         tickRestTimer();
+        syncRestAnimLoop();
         updateLiveShadeNotification(true);
       }
     }
@@ -6194,14 +7378,14 @@
       const remMs = restTimerState.endTime - Date.now();
       const readout = document.getElementById('rest-time-readout');
       const bar = document.getElementById('rest-timer-bar');
-      const fill = document.getElementById('rest-progress-fill');
 
       if (remMs <= 0) {
         readout.textContent = '00:00';
-        fill.style.width = '0%';
+        updateRestBarVisuals(0);
         if (!restTimerState.finished) {
           restTimerState.finished = true;
           bar.classList.add('finished');
+          syncRestAnimLoop();
           document.getElementById('rest-timer-label').textContent = 'Poilsis baigtas – kitas priėjimas!';
           playChime(); vibrateDevice([220, 90, 220, 90, 220]);
           sendRestSystemNotification(`Poilsis baigtas · ${restTimerState.label || 'kitas priėjimas'}`);
@@ -6215,18 +7399,21 @@
       const sec = Math.ceil(remMs / 1000);
       readout.textContent = `${String(Math.floor(sec/60)).padStart(2,'0')}:${String(sec%60).padStart(2,'0')}`;
       const pct = Math.max(0, Math.min(100, (remMs / (restTimerState.duration * 1000)) * 100));
-      fill.style.width = pct + '%';
+      updateRestBarVisuals(pct);
       updateLiveShadeNotification(false);
     }
 
     function adjustRestTimer(deltaSec) {
       if (!restTimerState.endTime && !restTimerState.paused) return;
       if (restTimerState.autoHideId) { clearTimeout(restTimerState.autoHideId); restTimerState.autoHideId = null; }
+      restLiqSlosh = Math.min(1.8, restLiqSlosh + 0.95);
       if (restTimerState.paused) {
         restTimerState.pausedRemainingMs = Math.max(3000, restTimerState.pausedRemainingMs + deltaSec * 1000);
         restTimerState.duration = Math.max(15, restTimerState.duration + deltaSec);
         const sec = Math.ceil(restTimerState.pausedRemainingMs / 1000);
         document.getElementById('rest-time-readout').textContent = `${String(Math.floor(sec/60)).padStart(2,'0')}:${String(sec%60).padStart(2,'0')}`;
+        updateRestBarVisuals((restTimerState.pausedRemainingMs / (restTimerState.duration * 1000)) * 100);
+        syncRestAnimLoop();
         updateLiveShadeNotification(true);
         return;
       }
@@ -6236,14 +7423,17 @@
       restTimerState.finished = false;
       document.getElementById('rest-timer-bar').classList.remove('finished');
       tickRestTimer();
+      syncRestAnimLoop();
       updateLiveShadeNotification(true);
     }
 
     function stopRestTimer() {
       if (restTimerState.intervalId) clearInterval(restTimerState.intervalId);
       if (restTimerState.autoHideId) clearTimeout(restTimerState.autoHideId);
+      if (restBarRafId) { cancelAnimationFrame(restBarRafId); restBarRafId = null; restBarLastTs = 0; }
       restTimerState.intervalId = null; restTimerState.autoHideId = null; restTimerState.endTime = null; restTimerState.finished = false; restTimerState.paused = false; restTimerState.pausedRemainingMs = 0;
-      document.getElementById('rest-timer-bar').classList.remove('visible', 'finished');
+      const bar = document.getElementById('rest-timer-bar');
+      if (bar) bar.classList.remove('visible', 'finished', 'paused', 'heartbeat');
       const undoBar = document.getElementById('undo-float-bar');
       if (undoBar) undoBar.classList.remove('above-timer');
       clearLiveShadeNotification();
@@ -6257,12 +7447,14 @@
       });
     }
 
-    /* Round 6: Visibility Listener (Auto-Restore Wake Lock + Pause/Resume Bio Canvas + Resync Clocks) */
+    /* Round 6 + v10: Visibility Listener (Auto-Restore Wake Lock + 0 FPS Sleep for Bio & Rest Canvas + Resync Clocks) */
     document.addEventListener('visibilitychange', () => {
       if (document.hidden) {
         if (bioRafId) { cancelAnimationFrame(bioRafId); bioRafId = null; }
+        if (restBarRafId) { cancelAnimationFrame(restBarRafId); restBarRafId = null; restBarLastTs = 0; }
       } else {
         tickRestTimer();
+        syncRestAnimLoop();
         tickWarmupTimer();
         updateSessionClock();
         syncBioAnimationLoop();
@@ -6272,52 +7464,193 @@
     });
 
     /* ==========================================================================
-       7. PLATE CALCULATOR
+       7. PLATE CALCULATOR (v10: SMART POSITION + 2.5 KG SLIDER + CONTINUOUS SLEEVE FLIP)
        ========================================================================== */
-    function openPlateModal(weight = null) {
-      if (weight !== null && !isNaN(weight) && weight > 0) document.getElementById('plate-weight-input').value = weight;
-      renderPlateCalculator();
+    let lastPlateRenderKey = '';
+    let lastPlateRenderMode = null;
+
+    function openPlateModal(weight = null, tapY = null) {
+      const inp = document.getElementById('plate-weight-input');
+      if (weight !== null && !isNaN(weight) && weight > 0 && inp) inp.value = weight;
+      const modal = document.getElementById('modal-plates');
+      if (modal) {
+        modal.classList.remove('pos-upper', 'pos-center', 'pos-lower', 'kbd-top', 'align-top');
+        const ratio = (typeof tapY === 'number' && tapY > 0) ? (tapY / Math.max(1, window.innerHeight)) : 0.5;
+        if (ratio < 0.36) modal.classList.add('pos-upper');
+        else if (ratio > 0.64) modal.classList.add('pos-lower');
+        else modal.classList.add('pos-center');
+      }
+      lastPlateRenderKey = '';
+      renderPlateCalculator(true, false);
       openModal('modal-plates');
     }
-    function setPlateMode(useBar) {
+    function setPlateMode(useBar, silent = false) {
       plateUseBar = useBar;
-      document.getElementById('plate-mode-bar').classList.toggle('active', useBar);
-      document.getElementById('plate-mode-plates').classList.toggle('active', !useBar);
-      renderPlateCalculator();
+      document.getElementById('plate-mode-bar')?.classList.toggle('active', useBar);
+      document.getElementById('plate-mode-plates')?.classList.toggle('active', !useBar);
+      if (!silent) {
+        lastPlateRenderKey = '';
+        renderPlateCalculator(true, false);
+      }
     }
     function stepPlateWeight(delta) {
       const inp = document.getElementById('plate-weight-input');
-      inp.value = Math.max(0, +((parseFloat(inp.value) || 0) + delta).toFixed(2));
-      renderPlateCalculator();
+      const minW = plateUseBar ? 20 : 0;
+      inp.value = Math.max(minW, +((parseFloat(inp.value) || 0) + delta).toFixed(2));
+      renderPlateCalculator(false, true);
     }
-    function renderPlateCalculator() {
-      const total = parseFloat(document.getElementById('plate-weight-input').value) || 0;
+    function onPlateSliderInput(val) {
+      const inp = document.getElementById('plate-weight-input');
+      const next = parseFloat(val) || 0;
+      if (inp && parseFloat(inp.value) !== next) {
+        inp.value = next;
+        vibrateDevice(6);
+        renderPlateCalculator(false, true);
+      }
+    }
+    function createPlateDiscEl(p, delayMs) {
+      const el = document.createElement('div');
+      el.className = 'plate-disc entering';
+      el.dataset.pw = String(p.w);
+      el.style.background = p.c;
+      el.style.color = p.tc;
+      el.style.height = p.h + 'px';
+      el.style.width = p.wd + 'px';
+      el.style.fontSize = p.fs + 'px';
+      if (delayMs > 0) el.style.animationDelay = delayMs + 'ms';
+      el.innerHTML = `<span>${p.w}</span>`;
+      el.addEventListener('animationend', (ev) => {
+        if (ev.animationName === 'plateSlideOn') { el.classList.remove('entering'); el.style.animationDelay = ''; }
+      });
+      return el;
+    }
+    function renderPlateCalculator(forceReplay = false, bumpInput = false) {
+      const inp = document.getElementById('plate-weight-input');
+      const total = Math.max(0, parseFloat(inp?.value) || 0);
+      if (inp && bumpInput) { inp.classList.remove('bump'); void inp.offsetWidth; inp.classList.add('bump'); }
+
+      // Auto-expand slider cap temporarily if exercise weight exceeds state.plateCalcMax (default 100 kg)
+      const sl = document.getElementById('plate-slider');
+      const ticks = document.getElementById('plate-ticks');
+      const maxLbl = document.getElementById('plate-slider-max-lbl');
+      const minW = plateUseBar ? 20 : 0;
+      const baseMax = Math.max(minW + 20, Number(state.plateCalcMax) || 100);
+      const effMax = total > baseMax ? Math.ceil((total + 20) / 10) * 10 : baseMax;
+      if (sl) {
+        sl.min = minW; sl.max = effMax;
+        const clamped = Math.max(minW, Math.min(effMax, total));
+        sl.value = clamped;
+        sl.style.backgroundSize = (((clamped - minW) / Math.max(1, effMax - minW)) * 100) + '% 100%';
+      }
+      if (maxLbl) maxLbl.textContent = total > baseMax ? `Auto maks. ${effMax} kg` : `Maks. ${effMax} kg`;
+      if (ticks) {
+        const s4 = (effMax - minW) / 4;
+        ticks.innerHTML = [0, 1, 2, 3, 4].map(i => `<span>${Math.round(minW + i * s4)}</span>`).join('');
+      }
+
       const barW = plateUseBar ? 20 : 0;
-      const vis = document.getElementById('barbell-visual');
-      const info = document.getElementById('plate-breakdown');
-      if (total < barW) {
-        vis.innerHTML = '<span style="color:var(--text-muted);font-size:13px;">Svoris mažesnis už 20 kg štangą</span>';
-        info.textContent = 'Perjunk į „Tik diskai“ arba padidink svorį.';
-        return;
-      }
-      let perSide = (total - barW) / 2;
+      let perSide = Math.max(0, (total - barW) / 2);
       const catalog = [
-        { w: 25, color: '#dc2626', h: 82, wd: 22 }, { w: 20, color: '#2563eb', h: 78, wd: 20 },
-        { w: 15, color: '#eab308', h: 70, wd: 18 }, { w: 10, color: '#16a34a', h: 62, wd: 17 },
-        { w: 5, color: '#64748b', h: 50, wd: 15 }, { w: 2.5, color: '#0f172a', h: 40, wd: 14 },
-        { w: 1.25, color: '#94a3b8', h: 34, wd: 13 }
+        { w: 25,   c: 'linear-gradient(180deg,#ef4444,#b91c1c)', tc: '#ffffff', h: 148, wd: 34, fs: 20 },
+        { w: 20,   c: 'linear-gradient(180deg,#3b82f6,#1d4ed8)', tc: '#ffffff', h: 142, wd: 29, fs: 19 },
+        { w: 15,   c: 'linear-gradient(180deg,#facc15,#ca8a04)', tc: '#181002', h: 126, wd: 26, fs: 18 },
+        { w: 10,   c: 'linear-gradient(180deg,#22c55e,#15803d)', tc: '#ffffff', h: 106, wd: 24, fs: 17 },
+        { w: 5,    c: 'linear-gradient(180deg,#64748b,#334155)', tc: '#ffffff', h: 76,  wd: 22, fs: 15 },
+        { w: 2.5,  c: 'linear-gradient(180deg,#334155,#0f172a)', tc: '#f8fafc', h: 62,  wd: 19, fs: 13 },
+        { w: 1.25, c: 'linear-gradient(180deg,#e2e8f0,#94a3b8)', tc: '#0f172a', h: 52,  wd: 17, fs: 11.5 }
       ];
-      const plates = [];
-      catalog.forEach(p => { while (perSide >= p.w - 0.001) { plates.push(p); perSide = +(perSide - p.w).toFixed(2); } });
-      if (!plates.length) {
-        vis.innerHTML = '<div class="bar-sleeve" style="width:110px;"></div>';
-        info.textContent = plateUseBar ? 'Tik tuščia 20 kg štanga.' : '0 kg – diskų nereikia.';
+      const list = [];
+      catalog.forEach(p => { while (perSide >= p.w - 0.001) { list.push(p); perSide = +(perSide - p.w).toFixed(2); } });
+
+      const key = (plateUseBar ? 'B:' : 'F:') + list.map(p => p.w).join(',');
+      if (!forceReplay && key === lastPlateRenderKey) return;
+      lastPlateRenderKey = key;
+
+      const vis = document.getElementById('barbell-visual');
+      if (!vis) return;
+      const modeChanged = lastPlateRenderMode !== plateUseBar || !vis.querySelector('.bar-sleeve-zone');
+      lastPlateRenderMode = plateUseBar;
+
+      if (modeChanged || forceReplay) {
+        vis.innerHTML = '';
+        const rig = document.createElement('div');
+        rig.className = 'bar-rig';
+        if (plateUseBar) rig.innerHTML = '<div class="bar-shaft">20 kg</div><div class="bar-collar"></div>';
+        const zone = document.createElement('div');
+        zone.className = 'bar-sleeve-zone' + (plateUseBar ? '' : ' mode-free');
+        const rod = document.createElement('div');
+        rod.className = 'bar-sleeve-rod' + (plateUseBar ? '' : ' free-rod');
+        zone.appendChild(rod);
+        const platesWrap = document.createElement('div');
+        platesWrap.className = 'bar-plates';
+        if (list.length) list.forEach((p, idx) => platesWrap.appendChild(createPlateDiscEl(p, idx * 34)));
+        else if (!plateUseBar) {
+          const empty = document.createElement('span'); empty.className = 'plate-empty-lbl'; empty.textContent = '0 kg'; platesWrap.appendChild(empty);
+        }
+        zone.appendChild(platesWrap);
+        rig.appendChild(zone);
+        vis.appendChild(rig);
         return;
       }
-      vis.innerHTML = `<div class="bar-sleeve"></div>` + plates.map(p => `<div class="plate-disc" style="background:${p.color};height:${p.h}px;width:${p.wd}px;">${p.w}</div>`).join('') + `<div class="bar-sleeve" style="width:14px;"></div>`;
-      const counts = {};
-      plates.forEach(p => { counts[p.w] = (counts[p.w] || 0) + 1; });
-      info.innerHTML = `Ant vienos pusės: <span style="color:var(--accent);">${Object.entries(counts).map(([w, c]) => `${c}× ${w} kg`).join(' + ')}</span>`;
+
+      const zone = vis.querySelector('.bar-sleeve-zone');
+      const platesWrap = zone.querySelector('.bar-plates');
+      const zoneRect = zone.getBoundingClientRect();
+      const canMeasure = zoneRect.width > 0;
+      const oldDiscs = [...platesWrap.querySelectorAll('.plate-disc')];
+      platesWrap.querySelector('.plate-empty-lbl')?.remove();
+
+      const beforeX = new Map();
+      if (canMeasure) oldDiscs.forEach(el => beforeX.set(el, el.getBoundingClientRect().left));
+
+      const poolByW = new Map();
+      oldDiscs.forEach(el => {
+        const wKey = el.dataset.pw;
+        if (!poolByW.has(wKey)) poolByW.set(wKey, []);
+        poolByW.get(wKey).push(el);
+      });
+      const keptSet = new Set();
+      const finalNodes = [];
+      let enterIdx = 0;
+      list.forEach(p => {
+        const b = poolByW.get(String(p.w));
+        if (b && b.length) { const reused = b.shift(); keptSet.add(reused); finalNodes.push(reused); }
+        else { finalNodes.push(createPlateDiscEl(p, enterIdx * 32)); enterIdx++; }
+      });
+
+      if (canMeasure) {
+        const ghosts = [...zone.querySelectorAll('.plate-disc.ghost-exit')];
+        while (ghosts.length > 5) ghosts.shift().remove();
+        oldDiscs.forEach(el => {
+          if (!keptSet.has(el)) {
+            const r = el.getBoundingClientRect();
+            const g = el.cloneNode(true);
+            g.classList.remove('entering'); g.classList.add('ghost-exit');
+            g.style.left = (r.left - zoneRect.left) + 'px'; g.style.top = (r.top - zoneRect.top) + 'px';
+            g.style.transform = ''; g.style.transition = ''; g.style.animationDelay = '';
+            zone.appendChild(g);
+            setTimeout(() => g.remove(), 260);
+          }
+        });
+      }
+
+      platesWrap.innerHTML = '';
+      if (finalNodes.length) finalNodes.forEach(n => platesWrap.appendChild(n));
+      else if (!plateUseBar) {
+        const empty = document.createElement('span'); empty.className = 'plate-empty-lbl'; empty.textContent = '0 kg'; platesWrap.appendChild(empty);
+      }
+
+      if (canMeasure) {
+        const glideList = finalNodes.filter(n => keptSet.has(n));
+        glideList.forEach(el => { el.style.transition = 'none'; el.style.transform = ''; });
+        const deltas = glideList.map(el => typeof beforeX.get(el) === 'number' ? (beforeX.get(el) - el.getBoundingClientRect().left) : 0);
+        glideList.forEach((el, i) => { if (Math.abs(deltas[i]) > 0.5) el.style.transform = `translateX(${deltas[i].toFixed(1)}px)`; });
+        void zone.offsetWidth;
+        glideList.forEach((el, i) => {
+          if (Math.abs(deltas[i]) > 0.5) { el.style.transition = 'transform 0.28s cubic-bezier(0.22, 1, 0.36, 1)'; el.style.transform = 'translateX(0)'; }
+          else el.style.transition = '';
+        });
+      }
     }
 
     /* ==========================================================================
@@ -8130,6 +9463,7 @@
       setTheme(state.theme, true);
       applyCardFrameSettings();
       applyCardAnimSettings();
+      applyAppearanceSettings();
       renderTimerSignalControls();
       const p = state.profile;
       document.getElementById('prof-height').value = p.height;
@@ -8332,6 +9666,7 @@
       state.cardFrame = String(id);
       saveState();
       applyCardFrameSettings();
+      applyAppearanceSettings();
     }
 
     const CARD_ANIM_LIST = [
@@ -8400,11 +9735,144 @@
       if (state.cardAnim !== '0') stage.classList.add('anim-enter');
     }
 
+    /* ==========================================================================
+       10. v10 APPEARANCE ENGINE (5 ANIM&PIN ICONS, 6 PLATE ICONS, 10 REST BARS)
+       ========================================================================== */
+    const ANIM_PIN_LIST = [
+      { id: '1', name: '#1 Žmogeliukas', short: '#1', ico: '<svg class="ico-main ico-fig" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><g class="fig-body"><circle class="fig-head" cx="12" cy="4.5" r="2"/><path class="fig-arm-l" d="M12 8.5 6.5 10"/><path class="fig-arm-r" d="M12 8.5 17.5 10"/><path d="M12 8.5v5.5l-3.5 5.5M12 14l3.5 5.5"/></g></svg>', pin: '<svg class="ico-pin" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 17v5"/><path d="M9 10.76a2 2 0 0 1-1.11 1.79l-1.78.9A2 2 0 0 0 5 15.24V17h14v-1.76a2 2 0 0 0-1.11-1.79l-1.78-.9A2 2 0 0 1 15 10.76V6a1 1 0 0 1 1-1h.5a.5.5 0 0 0 0-1h-9a.5.5 0 0 0 0 1H8a1 1 0 0 1 1 1z"/></svg>', cls: '', ytCls: '' },
+      { id: '2', name: '#2 Trajektorija', short: '#2', ico: '<svg class="ico-main" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 17c2.5-6 6.5-10 13-11" stroke-dasharray="2.5 2.5" opacity="0.65"/><path d="M13 5h5v5"/><circle class="orbit-dot" cx="8.5" cy="12.5" r="2.4" fill="var(--green)" stroke="none"/></svg>', pin: '<svg class="ico-pin" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 17v5"/><path d="M9 10.76a2 2 0 0 1-1.11 1.79l-1.78.9A2 2 0 0 0 5 15.24V17h14v-1.76a2 2 0 0 0-1.11-1.79l-1.78-.9A2 2 0 0 1 15 10.76V6a1 1 0 0 1 1-1h.5a.5.5 0 0 0 0-1h-9a.5.5 0 0 0 0 1H8a1 1 0 0 1 1 1z"/></svg>', cls: '', ytCls: '' },
+      { id: '3', name: '#3 Play + žymeklis', short: '#3', ico: '<svg class="ico-main ico-play-v3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><circle class="play-ring" cx="12" cy="12" r="9.8" stroke="currentColor" fill="none"/><circle class="play-orb" cx="12" cy="12" r="9.8" fill="currentColor" fill-opacity="0.13" stroke="currentColor" stroke-opacity="0.52" stroke-width="1.5"/><path class="play-tri" d="M9.4 8.55c0-.93 1.02-1.5 1.82-1.02l5.13 3.45c.77.46.77 1.58 0 2.04l-5.13 3.45c-.8.48-1.82-.09-1.82-1.02V8.55Z" fill="currentColor" stroke="none"/></svg>', pin: '<svg class="ico-pin ico-mappin" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.85" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2.2a7.8 7.8 0 0 0-7.8 7.8c0 5.25 6.8 11.2 7.1 11.5a1 1 0 0 0 1.4 0c.3-.3 7.1-6.25 7.1-11.5A7.8 7.8 0 0 0 12 2.2Z" fill="currentColor" fill-opacity="0.13"/><circle class="pin-core" cx="12" cy="10" r="2.8" fill="currentColor" fill-opacity="0.35"/></svg>', cls: '', ytCls: '' },
+      { id: '4', name: '#4 Stikliniai', short: '#4', ico: '<svg class="ico-main ico-screen-v4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><g class="scr-frame"><rect class="scr-glow" x="3.5" y="5" width="17" height="12" rx="2" fill="currentColor" stroke="none"/><rect x="2.5" y="4" width="19" height="14" rx="3"/><path class="scr-play" d="M10 8.5 15 11l-5 2.5v-5Z" fill="currentColor" stroke="none"/></g><path d="M8 21h8"/></svg>', pin: '<svg class="ico-pin" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 17v5"/><path d="M9 10.76a2 2 0 0 1-1.11 1.79l-1.78.9A2 2 0 0 0 5 15.24V17h14v-1.76a2 2 0 0 0-1.11-1.79l-1.78-.9A2 2 0 0 1 15 10.76V6a1 1 0 0 1 1-1h.5a.5.5 0 0 0 0-1h-9a.5.5 0 0 0 0 1H8a1 1 0 0 1 1 1z"/></svg>', cls: 'ap-glass', ytCls: 'yt-glass' },
+      { id: '5', name: '#5 LeverLab svirtis', short: '#5', ico: '<svg class="ico-main ico-lever" viewBox="0 0 28 28" fill="none"><g class="lever-beam"><path d="M3.5 12.2L24.5 12.2" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/><circle cx="4.5" cy="12.2" r="2.9" fill="var(--green)"/><circle cx="23.5" cy="12.2" r="3.4" fill="currentColor"/></g><path d="M14 14 L8.4 24.4 H19.6 Z" fill="var(--accent-soft)" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg>', pin: '<svg class="ico-pin" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 17v5"/><path d="M9 10.76a2 2 0 0 1-1.11 1.79l-1.78.9A2 2 0 0 0 5 15.24V17h14v-1.76a2 2 0 0 0-1.11-1.79l-1.78-.9A2 2 0 0 1 15 10.76V6a1 1 0 0 1 1-1h.5a.5.5 0 0 0 0-1h-9a.5.5 0 0 0 0 1H8a1 1 0 0 1 1 1z"/></svg>', cls: 'ap-brand', ytCls: '' }
+    ];
+
+    const PLATE_ICON_LIST = [
+      { id: '1', name: '#1 Olimpinis', anim: 'anim-spin', svg: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="9.3"/><circle cx="12" cy="12" r="5.3" stroke-opacity="0.45"/><circle cx="12" cy="12" r="2"/><path d="M12 2.7v2.8M12 18.5v2.8M2.7 12h2.8M18.5 12h2.8"/></svg>' },
+      { id: '2', name: '#2 Tri-Grip', anim: 'anim-tri', svg: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="9.3"/><circle cx="12" cy="12" r="2.2"/><path d="M9.6 7.0a5.6 5.6 0 0 1 4.8 0" stroke-width="2.1"/><path d="M17.5 12.5a5.6 5.6 0 0 1-2.4 4.1" stroke-width="2.1"/><path d="M8.9 16.6a5.6 5.6 0 0 1-2.4-4.1" stroke-width="2.1"/></svg>' },
+      { id: '3', name: '#3 Štanga', anim: 'anim-pump', svg: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2.5 12h19"/><g class="p-l"><rect x="4.5" y="7" width="3.2" height="10" rx="1.2" fill="currentColor" fill-opacity="0.22"/><path d="M2.6 9.2v5.6" stroke-width="2.3"/></g><g class="p-r"><rect x="16.3" y="7" width="3.2" height="10" rx="1.2" fill="currentColor" fill-opacity="0.22"/><path d="M21.4 9.2v5.6" stroke-width="2.3"/></g></svg>' },
+      { id: '4', name: '#4 2 diskai', anim: 'anim-split', svg: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><g class="p-back" opacity="0.52"><circle cx="9.2" cy="14.2" r="6.8"/><circle cx="9.2" cy="14.2" r="2"/></g><g class="p-front"><circle cx="14.6" cy="9.8" r="6.8" fill="var(--bg-card)"/><circle cx="14.6" cy="9.8" r="3.6" stroke-opacity="0.45"/><circle cx="14.6" cy="9.8" r="1.6" fill="currentColor" stroke="none"/></g></svg>' },
+      { id: '5', name: '#5 Pro Eleiko', anim: 'anim-pro', svg: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9.4"/><circle cx="12" cy="12" r="6.2" stroke-dasharray="3.2 2.4" stroke-width="1.8" stroke-opacity="0.82"/><circle cx="12" cy="12" r="2.2" fill="currentColor" fill-opacity="0.25"/></svg>' },
+      { id: '6', name: '#6 Firminis', anim: 'anim-brand', svg: '<svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><g class="ring-out"><circle cx="12" cy="12" r="9.3" stroke="currentColor"/><path d="M12 2.7v2.6M12 18.7v2.6" stroke="currentColor"/></g><g class="ring-in"><path d="M8.4 8.4a5.1 5.1 0 0 1 7.2 0M15.6 15.6a5.1 5.1 0 0 1-7.2 0" stroke="var(--green)" stroke-width="2.1"/></g><circle class="ring-core" cx="12" cy="12" r="2" fill="currentColor" stroke="none"/></svg>' }
+    ];
+
+    const REST_BAR_LIST = [
+      { id: '1', title: '#1 Storas gradientas + kibirkštis', desc: '10 px stiklinis vamzdelis su GPU blizgesiu ir šviesos kibirkštimi' },
+      { id: '2', title: '#2 Dinaminė fazė (kortelė + pulsas)', desc: 'Mėlyna „Poilsis“ → gintarinė „Ruoškis“ → žalia „Startas!“' },
+      { id: '3', title: '#3 16 stiklinių LED segmentų', desc: '4 ketvirčių grupės su švytinčiu lygiu gesimu' },
+      { id: '4', title: '#4 Tikra skysčio fizika + burbuliukai', desc: 'Standartinis · Gyvos bangos, burbuliukai į dešinę ir teliūškavimas per ±15 s' },
+      { id: '5', title: '#5 Įgilintas kanalas + juostelės', desc: 'Besiūlės 45° kinetinės juostelės su baltu galiuku' },
+      { id: '6', title: '#6 Simetriškas perimetro rėmelis', desc: 'Švytintis rėmelis aplink visą poilsio kortelę iš abiejų pusių' },
+      { id: '7', title: '#7 Gyvas EKG pulso signalas', desc: 'Vektorinė P–Q–R–S–T širdies kreivė su švytinčia aura' },
+      { id: '8', title: '#8 Deganti plazmos dagtis', desc: 'Deganti dagtis su skriejančiomis kibirkštimis' },
+      { id: '9', title: '#9 Simetriškas susitraukimas į centrą', desc: 'Dvi kryptys susieina į žalią centro švytėjimą' },
+      { id: '10', title: '#10 Gyva 24 stulpelių energijos banga', desc: 'Dviejų harmonikų ekvalaizeris ant lengvo <canvas>' }
+    ];
+
+    function getPlateIconMeta(id) {
+      return PLATE_ICON_LIST.find(x => x.id === String(id)) || PLATE_ICON_LIST[5];
+    }
+
+    function buildAnimPinDualRowHtml(exId, ytUrl, isOpen) {
+      const m = ANIM_PIN_LIST.find(x => x.id === String(state.animPinStyle || '5')) || ANIM_PIN_LIST[4];
+      const ytHtml = ytUrl
+        ? `<a class="yt-ico-btn ${m.ytCls}" href="${ytUrl}" target="_blank" rel="noopener" title="Žiūrėti YouTube" aria-label="Žiūrėti YouTube"><svg class="yt-svg" viewBox="0 0 28 20" fill="none"><rect width="28" height="20" rx="5.5" fill="#ef4444"/><path d="M11.4 6.2 18.2 10l-6.8 3.8V6.2Z" fill="#fff"/></svg></a>`
+        : '';
+      return `
+        <div class="ap-dual-row anim-s3 ${ytUrl ? '' : 'single'}">
+          <button id="ap-btn-${exId}" type="button" class="ap-btn ${m.cls} ${isOpen ? 'open' : ''}" onclick="toggleTechDrawer('${exId}')" title="Animacija ir Pin nustatymai" aria-label="Animacija ir Pin nustatymai">
+            ${m.ico}
+            <span class="ap-sep"></span>
+            ${m.pin}
+            <svg class="ap-chev-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+          </button>
+          ${ytHtml}
+        </div>`;
+    }
+
+    function applyAppearanceSettings() {
+      const h = [34, 40, 46, 52].includes(Number(state.animPinHeight)) ? Number(state.animPinHeight) : 46;
+      const wMode = ['sm', 'md', 'lg'].includes(state.animPinWidth) ? state.animPinWidth : 'md';
+      const hPresets = {
+        34: { r: 10, ico: 16, pin: 14, yw: 22, yh: 15.5 },
+        40: { r: 12, ico: 18, pin: 15, yw: 24, yh: 17 },
+        46: { r: 13, ico: 20, pin: 16, yw: 25, yh: 18 },
+        52: { r: 14, ico: 22, pin: 17, yw: 27, yh: 19 }
+      };
+      const wPresets = { sm: '216px', md: '274px', lg: '100%' };
+      const hp = hPresets[h] || hPresets[46];
+      const root = document.documentElement.style;
+      root.setProperty('--ap-h', h + 'px');
+      root.setProperty('--ap-r', hp.r + 'px');
+      root.setProperty('--ap-max', wPresets[wMode]);
+      root.setProperty('--ap-ico', hp.ico + 'px');
+      root.setProperty('--ap-pin', hp.pin + 'px');
+      root.setProperty('--ap-yt-w', hp.yw + 'px');
+      root.setProperty('--ap-yt-h', hp.yh + 'px');
+
+      const apId = String(state.animPinStyle || '5');
+      const piId = String(state.plateIconStyle || '6');
+      const rtId = String(state.restBarStyle || '4');
+      const frId = String(state.cardFrame || '9');
+      const pMax = Number(state.plateCalcMax) || 100;
+
+      const sumEl = document.getElementById('settings-appearance-summary');
+      if (sumEl) sumEl.textContent = `Mygtukai #${apId} (${h} px) · Diskas #${piId} · Poilsis #${rtId} · Rėmelis #${frId}`;
+
+      const apGrid = document.getElementById('app-animpin-grid');
+      if (apGrid) {
+        apGrid.innerHTML = ANIM_PIN_LIST.map(a => `<button type="button" class="app-pick-card ${a.id === apId ? 'active' : ''}" onclick="pickAnimPinStyle('${a.id}')">${a.ico}<span>${a.short}</span></button>`).join('');
+      }
+      const apLbl = document.getElementById('app-animpin-lbl');
+      const apMeta = ANIM_PIN_LIST.find(x => x.id === apId) || ANIM_PIN_LIST[4];
+      if (apLbl) apLbl.textContent = apMeta.name;
+
+      const hRow = document.getElementById('app-aph-row');
+      if (hRow) hRow.innerHTML = [34, 40, 46, 52].map(v => `<button type="button" class="app-pill-btn ${v === h ? 'active' : ''}" onclick="setAnimPinHeight(${v})">${v} px</button>`).join('');
+      const wRow = document.getElementById('app-apw-row');
+      if (wRow) wRow.innerHTML = [['sm','Siauri'], ['md','Vidutiniai'], ['lg','Platūs']].map(([k, l]) => `<button type="button" class="app-pill-btn ${k === wMode ? 'active' : ''}" onclick="setAnimPinWidth('${k}')">${l}</button>`).join('');
+
+      const piGrid = document.getElementById('app-plateico-grid');
+      if (piGrid) piGrid.innerHTML = PLATE_ICON_LIST.map(p => `<button type="button" class="app-pick-card ${p.id === piId ? 'active' : ''}" onclick="pickPlateIconStyle('${p.id}')">${p.svg}<span>${p.name}</span></button>`).join('');
+      const piLbl = document.getElementById('app-plateico-lbl');
+      if (piLbl) piLbl.textContent = getPlateIconMeta(piId).name;
+
+      const rtGrid = document.getElementById('app-rtbar-grid');
+      if (rtGrid) rtGrid.innerHTML = REST_BAR_LIST.map(r => `<button type="button" class="app-pill-btn ${r.id === rtId ? 'active' : ''}" onclick="pickRestBarStyle('${r.id}')">#${r.id}</button>`).join('');
+      const rtDesc = document.getElementById('app-rtbar-desc');
+      const rtMeta = REST_BAR_LIST.find(x => x.id === rtId) || REST_BAR_LIST[3];
+      if (rtDesc) rtDesc.innerHTML = `<strong style="color:var(--text);">${rtMeta.title}:</strong> ${rtMeta.desc}`;
+
+      const pmRow = document.getElementById('app-platemax-row');
+      if (pmRow) pmRow.innerHTML = [80, 100, 140, 180, 220, 260].map(v => `<button type="button" class="app-pill-btn ${v === pMax ? 'active' : ''}" onclick="setPlateCalcMaxSetting(${v})">${v} kg</button>`).join('');
+      const pmLbl = document.getElementById('app-platemax-lbl');
+      if (pmLbl) pmLbl.textContent = pMax + ' kg';
+    }
+
+    function openAppearanceModal() {
+      applyCardFrameSettings();
+      applyCardAnimSettings();
+      applyAppearanceSettings();
+      openModal('modal-appearance');
+    }
+    function pickAnimPinStyle(id) { state.animPinStyle = String(id); saveState(); applyAppearanceSettings(); renderWorkoutView(); }
+    function setAnimPinHeight(px) { state.animPinHeight = Number(px); saveState(); applyAppearanceSettings(); }
+    function setAnimPinWidth(w) { state.animPinWidth = w; saveState(); applyAppearanceSettings(); }
+    function pickPlateIconStyle(id) { state.plateIconStyle = String(id); saveState(); applyAppearanceSettings(); renderWorkoutView(); }
+    function pickRestBarStyle(id) {
+      state.restBarStyle = String(id); saveState(); applyAppearanceSettings();
+      if (document.getElementById('rest-timer-bar')?.classList.contains('visible')) buildRestBarSlotMarkup();
+    }
+    function setPlateCalcMaxSetting(kg) { state.plateCalcMax = Number(kg) || 100; saveState(); applyAppearanceSettings(); }
+    function previewRestBarFromSettings() {
+      closeModal('modal-appearance');
+      startRestTimer(6, `Peržiūra #${state.restBarStyle || '4'}`);
+    }
+
     function openWhatsNewModal() { openModal('modal-whats-new'); }
     function closeWhatsNewModal() {
       closeModal('modal-whats-new');
-      if (state.lastSeenRelease !== 'v9.0') {
-        state.lastSeenRelease = 'v9.0';
+      if (state.lastSeenRelease !== 'v10.0') {
+        state.lastSeenRelease = 'v10.0';
         saveState();
       }
     }
@@ -8439,7 +9907,7 @@
       try {
         const reg = await navigator.serviceWorker.getRegistration();
         if (!reg) {
-          if (st) st.textContent = 'Naudoji naujausią versiją (v9.0)';
+          if (st) st.textContent = 'Naudoji naujausią versiją (v10.0)';
           return;
         }
         await reg.update();
@@ -8450,7 +9918,7 @@
         } else if (reg.installing) {
           if (st) st.textContent = 'Atsisiunčiama nauja versija...';
         } else {
-          if (st) st.textContent = '✓ Naudoji naujausią versiją (v9.0)';
+          if (st) st.textContent = '✓ Naudoji naujausią versiją (v10.0)';
           showToast('✓ Turi naujausią versiją');
         }
       } catch (e) {
@@ -8488,6 +9956,7 @@
       setTheme(state.theme, true);
       applyCardFrameSettings();
       applyCardAnimSettings();
+      applyAppearanceSettings();
       ensureDraft();
       sanitizeStaleDraftClock();
       if (state.draft && state.draft.startedAt) {
@@ -8498,7 +9967,7 @@
       renderWorkoutView();
       checkBackupReminder();
       setInterval(updateSessionClock, 1000);
-      if (state.lastSeenRelease !== 'v9.0') {
+      if (state.lastSeenRelease !== 'v10.0') {
         setTimeout(() => openWhatsNewModal(), 350);
       }
     };
