@@ -13,10 +13,10 @@
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="apple-mobile-web-app-title" content="LeverLab 193">
-    <link rel="manifest" href="./manifest.json">
-  <link rel="icon" type="image/svg+xml" href="./icon.svg">
+  <link rel="manifest" href="./manifest.json">
+  <link id="pwa-favicon" rel="icon" type="image/svg+xml" href="./icon.svg">
   <link rel="apple-touch-icon" href="./icon-192.png">
-  <title>LeverLab 193 (v10.0) – Sporto Salės Programa</title>
+  <title>LeverLab 193 (v10.1) – Sporto Salės Programa</title>
   <style>
     /* ==========================================================================
        1. DESIGN TOKENS & 4 SELECTABLE THEMES (ROUND 5 NATIVE HIERARCHY)
@@ -48,6 +48,8 @@
       --ap-pin: 16px;
       --ap-yt-w: 25px;
       --ap-yt-h: 18px;
+      --text-soft: var(--text-muted);
+      --bg-nav: var(--glass-bg);
     }
 
     [data-theme="obsidian"] {
@@ -232,9 +234,9 @@
       backdrop-filter: blur(18px) saturate(160%);
       -webkit-backdrop-filter: blur(18px) saturate(160%);
       border-bottom: 1px solid var(--border);
-      padding: 7px 11px;
+      padding: calc(env(safe-area-inset-top, 0px) + 7px) 11px 7px;
       display: flex; align-items: center; justify-content: space-between; gap: 8px;
-      min-height: var(--header-height);
+      min-height: calc(var(--header-height) + env(safe-area-inset-top, 0px));
     }
 
     .brand-group { display: flex; align-items: center; gap: 8px; min-width: 0; flex: 1; }
@@ -2429,9 +2431,20 @@
     /* Dedicated Appearance Settings Modal (#modal-appearance) */
     .app-opt-sec { padding: 11px; border-radius: 14px; background: var(--bg-surface); border: 1px solid var(--border); margin-bottom: 10px; }
     .app-opt-hd { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-bottom: 8px; font-size: 12.5px; font-weight: 800; color: var(--text); }
-    .app-icon-grid-5 { display: grid; grid-template-columns: repeat(5, 1fr); gap: 6px; }
-    .app-icon-grid-6 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; }
+    .app-icon-grid-5, .app-pick-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 6px; }
+    .app-icon-grid-6, .app-pick-grid.cols-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; }
     .app-icon-grid-10 { display: grid; grid-template-columns: repeat(5, 1fr); gap: 6px; }
+    .app-section { display: flex; flex-direction: column; }
+    .app-section-hdr { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+    .app-section-hdr h4 { margin: 0; font-size: 11.5px; font-weight: 800; color: var(--text-muted); }
+    .app-val { font-size: 10.5px; font-family: var(--font-mono); color: var(--accent); font-weight: 800; }
+    .note-chip-inline-form { display: flex; align-items: center; gap: 6px; margin: 4px 0 8px; }
+    .note-chip-inline-form .input { min-height: 32px; padding: 4px 9px; font-size: 12px; flex: 1; }
+    .edit-sess-comfort-row { display: flex; align-items: center; gap: 5px; margin-top: 7px; flex-wrap: wrap; }
+    .edit-sess-cbtn { padding: 4px 9px; border-radius: 999px; font-size: 11px; font-weight: 800; background: var(--bg-card); border: 1px solid var(--border); color: var(--text-muted); transition: var(--transition); }
+    .edit-sess-cbtn.g.active { background: var(--green-bg); border-color: var(--green); color: var(--green); }
+    .edit-sess-cbtn.y.active { background: var(--yellow-bg); border-color: var(--yellow); color: var(--yellow); }
+    .edit-sess-cbtn.r.active { background: var(--red-bg); border-color: var(--red); color: var(--red); }
     .app-pick-card {
       padding: 8px 4px; border-radius: 11px; background: var(--bg-card); border: 1.5px solid var(--border);
       color: var(--text-muted); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 5px;
@@ -3577,7 +3590,7 @@
 
         <!-- Round 4: Expandable Plain-Language e1RM Example -->
         <div style="margin-bottom:8px;">
-          <button id="btn-e1rm-help" type="button" class="btn btn-sm btn-ghost" onclick="toggleE1RMHelp()">ℹ️ Kaip skaičiuojama?</button>
+          <button id="btn-e1rm-help" type="button" class="btn btn-sm btn-ghost" onclick="toggleE1RMHelp()"><svg style="width:13px;height:13px;stroke:currentColor;fill:none;stroke-width:2.1;stroke-linecap:round;stroke-linejoin:round;" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9.5"/><path d="M12 16v-4.5"/><circle cx="12" cy="8.2" r="0.6" fill="currentColor" stroke="none"/></svg><span>Kaip skaičiuojama?</span></button>
         </div>
         <div id="e1rm-help-collapse" class="collapsible collapsed">
           <div class="collapsible-inner">
@@ -3916,8 +3929,8 @@
       <!-- PWA Home Screen Info & Release Notes Card -->
       <section class="card">
         <div class="section-title">
-          <span>Programėlė (v10.0) ir darbalaukio PWA</span>
-          <button type="button" class="btn btn-sm btn-ghost" style="min-height:28px;padding:3px 9px;font-size:11px;" onclick="openWhatsNewModal()">✨ Kas naujo v10.0</button>
+          <span>Programėlė (v10.1) ir darbalaukio PWA</span>
+          <button type="button" class="btn btn-sm btn-ghost" style="min-height:28px;padding:3px 9px;font-size:11px;" onclick="openWhatsNewModal()">✨ Kas naujo v10.1</button>
         </div>
         <div class="pwa-hint-box" style="align-items:flex-start;">
           <div style="width:46px;height:46px;border-radius:13px;overflow:hidden;border:1px solid rgba(56,189,248,0.45);flex-shrink:0;margin-top:2px;">
@@ -3945,7 +3958,7 @@
         </div>
         <div class="row-between mt-8" style="flex-wrap:wrap;gap:8px;">
           <button type="button" class="btn btn-sm btn-secondary" onclick="checkForPwaUpdates()">🔄 Patikrinti atnaujinimus</button>
-          <span id="pwa-check-status" style="font-size:11.5px;color:var(--text-muted);">Versija: v10.0</span>
+          <span id="pwa-check-status" style="font-size:11.5px;color:var(--text-muted);">Versija: v10.1</span>
         </div>
       </section>
 
@@ -4091,7 +4104,7 @@
     <div class="modal-sheet">
       <div class="row-between" style="margin-bottom:10px;">
         <div>
-          <span class="pill pill-accent" style="font-size:10px;padding:2px 8px;">IŠVAIZDA · v10</span>
+          <span class="pill pill-accent" style="font-size:10px;padding:2px 8px;">IŠVAIZDA · v10.1</span>
           <h3 style="margin:3px 0 0 0;font-size:17px;">🎨 Išvaizdos nustatymai</h3>
         </div>
         <button class="btn btn-sm btn-secondary" onclick="closeModal('modal-appearance')">Uždaryti</button>
@@ -4099,17 +4112,17 @@
 
       <!-- All Appearance Pickers Grouped Cleanly as Live-Demo Rows (1 Variant <-> All Live) -->
       <div class="grid-2" style="gap:7px;margin-bottom:8px;">
-        <button type="button" class="app-pick-card" style="padding:10px 9px;align-items:flex-start;text-align:left;gap:3px;background:var(--bg-surface);" onclick="closeModal('modal-appearance');openCardFrameModal()">
+        <button type="button" class="app-pick-card" style="padding:10px 9px;align-items:flex-start;text-align:left;gap:3px;background:var(--bg-surface);" onclick="openAppearanceSubModal('frame')">
           <span style="font-size:12px;font-weight:800;color:var(--text);">Langelio rėmelis</span>
           <span id="settings-frame-summary" style="font-size:10.5px;color:var(--accent);font-weight:700;line-height:1.25;">#9 Stiklinis šviesos kraštas</span>
         </button>
-        <button type="button" class="app-pick-card" style="padding:10px 9px;align-items:flex-start;text-align:left;gap:3px;background:var(--bg-surface);" onclick="closeModal('modal-appearance');openCardAnimModal()">
+        <button type="button" class="app-pick-card" style="padding:10px 9px;align-items:flex-start;text-align:left;gap:3px;background:var(--bg-surface);" onclick="openAppearanceSubModal('anim')">
           <span style="font-size:12px;font-weight:800;color:var(--text);">Pratimų animacija</span>
           <span id="settings-anim-summary" style="font-size:10.5px;color:var(--accent);font-weight:700;line-height:1.25;">#10 Šviesos blyksnis · 1.0×</span>
         </button>
       </div>
 
-      <div class="setting-toggle-row" style="margin-bottom:8px;padding:10px 11px;background:var(--bg-surface);border:1.5px solid var(--border);" onclick="closeModal('modal-appearance');openRestBarModal()">
+      <div class="setting-toggle-row" style="margin-bottom:8px;padding:10px 11px;background:var(--bg-surface);border:1.5px solid var(--border);" onclick="openAppearanceSubModal('rest')">
         <div class="row" style="min-width:0;flex:1;gap:9px;">
           <span style="width:30px;height:30px;border-radius:9px;background:var(--accent-soft);color:var(--accent);display:inline-flex;align-items:center;justify-content:center;flex-shrink:0;">
             <svg style="width:16px;height:16px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;" viewBox="0 0 24 24"><circle cx="12" cy="13" r="8"/><path d="M12 9v4l2.5 1.5M9 2h6"/></svg>
@@ -4122,7 +4135,7 @@
         <span class="pill pill-accent" style="padding:4px 9px;font-size:10.5px;font-weight:800;flex-shrink:0;">Keisti ▸</span>
       </div>
 
-      <div class="setting-toggle-row" style="margin-bottom:8px;padding:10px 11px;background:var(--bg-surface);border:1.5px solid var(--border);" onclick="closeModal('modal-appearance');openEdgeGlowModal()">
+      <div class="setting-toggle-row" style="margin-bottom:8px;padding:10px 11px;background:var(--bg-surface);border:1.5px solid var(--border);" onclick="openAppearanceSubModal('edge')">
         <div class="row" style="min-width:0;flex:1;gap:9px;">
           <span style="width:30px;height:30px;border-radius:9px;background:var(--accent-soft);color:var(--accent);display:inline-flex;align-items:center;justify-content:center;flex-shrink:0;">
             <svg style="width:16px;height:16px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;" viewBox="0 0 24 24"><path d="M4 5h16M4 19h16"/><path d="M7 9h10M9 15h6" opacity="0.55"/></svg>
@@ -4135,7 +4148,7 @@
         <span class="pill pill-accent" style="padding:4px 9px;font-size:10.5px;font-weight:800;flex-shrink:0;">Keisti ▸</span>
       </div>
 
-      <div class="setting-toggle-row" style="margin-bottom:8px;padding:10px 11px;background:var(--bg-surface);border:1.5px solid var(--border);" onclick="closeModal('modal-appearance');openNavAnimModal()">
+      <div class="setting-toggle-row" style="margin-bottom:8px;padding:10px 11px;background:var(--bg-surface);border:1.5px solid var(--border);" onclick="openAppearanceSubModal('nav')">
         <div class="row" style="min-width:0;flex:1;gap:9px;">
           <span style="width:30px;height:30px;border-radius:9px;background:var(--accent-soft);color:var(--accent);display:inline-flex;align-items:center;justify-content:center;flex-shrink:0;">
             <svg style="width:16px;height:16px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;" viewBox="0 0 24 24"><rect x="3" y="14" width="18" height="7" rx="2"/><path d="M7 17.5h2M11 17.5h2M15 17.5h2M9 10l3-3 3 3"/></svg>
@@ -4148,7 +4161,7 @@
         <span class="pill pill-accent" style="padding:4px 9px;font-size:10.5px;font-weight:800;flex-shrink:0;">Keisti ▸</span>
       </div>
 
-      <div class="setting-toggle-row" style="margin-bottom:8px;padding:10px 11px;background:var(--bg-surface);border:1.5px solid var(--border);" onclick="closeModal('modal-appearance');openJointStyleModal()">
+      <div class="setting-toggle-row" style="margin-bottom:8px;padding:10px 11px;background:var(--bg-surface);border:1.5px solid var(--border);" onclick="openAppearanceSubModal('jointStyle')">
         <div class="row" style="min-width:0;flex:1;gap:9px;">
           <span style="width:30px;height:30px;border-radius:9px;background:var(--green-bg);color:var(--green);display:inline-flex;align-items:center;justify-content:center;flex-shrink:0;">
             <svg style="width:16px;height:16px;" viewBox="0 0 24 24"><circle cx="6.5" cy="12" r="3" fill="var(--green)"/><circle cx="12.5" cy="12" r="2.4" fill="var(--yellow)"/><circle cx="18" cy="12" r="2.4" fill="var(--red)"/></svg>
@@ -4161,7 +4174,7 @@
         <span class="pill pill-accent" style="padding:4px 9px;font-size:10.5px;font-weight:800;flex-shrink:0;">Keisti ▸</span>
       </div>
 
-      <div class="setting-toggle-row" style="margin-bottom:8px;padding:10px 11px;background:var(--bg-surface);border:1.5px solid var(--border);" onclick="closeModal('modal-appearance');openJointBtnModal()">
+      <div class="setting-toggle-row" style="margin-bottom:8px;padding:10px 11px;background:var(--bg-surface);border:1.5px solid var(--border);" onclick="openAppearanceSubModal('jointBtn')">
         <div class="row" style="min-width:0;flex:1;gap:9px;">
           <span style="width:30px;height:30px;border-radius:9px;background:var(--accent-soft);color:var(--accent);display:inline-flex;align-items:center;justify-content:center;flex-shrink:0;">
             <svg style="width:15px;height:15px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;" viewBox="0 0 24 24"><path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 1 1 3 3L7 19l-4 1 1-4Z"/></svg>
@@ -4174,7 +4187,7 @@
         <span class="pill pill-accent" style="padding:4px 9px;font-size:10.5px;font-weight:800;flex-shrink:0;">Keisti ▸</span>
       </div>
 
-      <div class="setting-toggle-row" style="margin-bottom:8px;padding:10px 11px;background:var(--bg-surface);border:1.5px solid var(--border);" onclick="closeModal('modal-appearance');openAnimPinModal()">
+      <div class="setting-toggle-row" style="margin-bottom:8px;padding:10px 11px;background:var(--bg-surface);border:1.5px solid var(--border);" onclick="openAppearanceSubModal('animPin')">
         <div class="row" style="min-width:0;flex:1;gap:9px;">
           <span style="width:30px;height:30px;border-radius:9px;background:var(--accent-soft);color:var(--accent);display:inline-flex;align-items:center;justify-content:center;flex-shrink:0;">
             <svg style="width:17px;height:17px;" viewBox="0 0 28 28" fill="none"><path d="M4 12.2L24 12.2" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/><circle cx="5" cy="12.2" r="2.6" fill="var(--green)"/><circle cx="23" cy="12.2" r="3" fill="currentColor"/><path d="M14 14 L8.8 23.5 H19.2 Z" fill="var(--accent-soft)" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg>
@@ -4187,7 +4200,7 @@
         <span class="pill pill-accent" style="padding:4px 9px;font-size:10.5px;font-weight:800;flex-shrink:0;">Keisti ▸</span>
       </div>
 
-      <div class="setting-toggle-row" style="margin-bottom:0;padding:10px 11px;background:var(--bg-surface);border:1.5px solid var(--border);" onclick="closeModal('modal-appearance');openPlateIconModal()">
+      <div class="setting-toggle-row" style="margin-bottom:0;padding:10px 11px;background:var(--bg-surface);border:1.5px solid var(--border);" onclick="openAppearanceSubModal('plateIcon')">
         <div class="row" style="min-width:0;flex:1;gap:9px;">
           <span style="width:30px;height:30px;border-radius:9px;background:var(--accent-soft);color:var(--accent);display:inline-flex;align-items:center;justify-content:center;flex-shrink:0;">
             <svg style="width:16px;height:16px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="4.8" stroke-opacity="0.45"/><circle cx="12" cy="12" r="1.8" fill="currentColor" stroke="none"/></svg>
@@ -4361,7 +4374,7 @@
           <span class="pill pill-accent" style="font-size:10px;padding:2px 8px;">GYVA DEMONSTRACIJA</span>
           <h3 style="margin:4px 0 0 0;font-size:17px;">Aktyvaus langelio rėmelis</h3>
         </div>
-        <button class="btn btn-sm btn-secondary" onclick="closeModal('modal-card-frame')">Uždaryti</button>
+        <button class="btn btn-sm btn-secondary app-back-close-btn" onclick="closeModal('modal-card-frame')">Uždaryti</button>
       </div>
       <div class="mview-sw" role="tablist">
         <div class="mview-thumb"></div>
@@ -4409,7 +4422,7 @@
           <span class="pill pill-accent" style="font-size:10px;padding:2px 8px;">GYVA DEMONSTRACIJA</span>
           <h3 style="margin:4px 0 0 0;font-size:17px;">Pratimų perjungimo animacija</h3>
         </div>
-        <button class="btn btn-sm btn-secondary" onclick="closeModal('modal-card-anim')">Uždaryti</button>
+        <button class="btn btn-sm btn-secondary app-back-close-btn" onclick="closeModal('modal-card-anim')">Uždaryti</button>
       </div>
       <div class="mview-sw" role="tablist">
         <div class="mview-thumb"></div>
@@ -4461,7 +4474,7 @@
           <span class="pill pill-accent" style="font-size:10px;padding:2px 8px;">GYVA DEMONSTRACIJA</span>
           <h3 style="margin:4px 0 0 0;font-size:17px;">⏱ Poilsio laikmačio juosta</h3>
         </div>
-        <button class="btn btn-sm btn-secondary" onclick="closeRestBarModal()">Uždaryti</button>
+        <button class="btn btn-sm btn-secondary app-back-close-btn" onclick="closeRestBarModal()">Uždaryti</button>
       </div>
 
       <!-- Clean Native Segmented Mode Toggle (1 Variant <-> All 10 Live) -->
@@ -4556,13 +4569,17 @@
           <span class="pill pill-accent" style="font-size:10px;padding:2px 8px;">GYVA DEMONSTRACIJA</span>
           <h3 style="margin:4px 0 0 0;font-size:17px;">Viršaus / apačios ribos švytėjimas</h3>
         </div>
-        <button class="btn btn-sm btn-secondary" onclick="closeModal('modal-edge-glow')">Uždaryti</button>
+        <button class="btn btn-sm btn-secondary app-back-close-btn" onclick="closeModal('modal-edge-glow')">Uždaryti</button>
       </div>
 
       <div class="mview-sw" data-mode="single" role="tablist">
         <div class="mview-thumb" aria-hidden="true"></div>
-        <button type="button" class="mview-btn active" data-v="single" onclick="setModalGalleryView('modal-edge-glow','single')">1 variantas</button>
-        <button type="button" class="mview-btn" data-v="all" onclick="setModalGalleryView('modal-edge-glow','all')">Visi 10 gyvai</button>
+        <button type="button" class="mview-btn active" data-mv="single" onclick="setModalGalleryView('modal-edge-glow','single')">
+          <svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="3"/></svg><span>1 variantas</span>
+        </button>
+        <button type="button" class="mview-btn" data-mv="all" onclick="setModalGalleryView('modal-edge-glow','all')">
+          <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="4" rx="1.5"/><rect x="3" y="10" width="18" height="4" rx="1.5"/><rect x="3" y="16" width="18" height="4" rx="1.5"/></svg><span>Visi 10 gyvai</span>
+        </button>
       </div>
 
       <div id="eg-pane-single" class="mview-pane-single">
@@ -4625,13 +4642,17 @@
           <span class="pill pill-accent" style="font-size:10px;padding:2px 8px;">GYVA DEMONSTRACIJA</span>
           <h3 style="margin:4px 0 0 0;font-size:17px;">Apatinio meniu animacija</h3>
         </div>
-        <button type="button" class="btn btn-sm btn-secondary" onclick="closeNavAnimModal()">Uždaryti</button>
+        <button type="button" class="btn btn-sm btn-secondary app-back-close-btn" onclick="closeNavAnimModal()">Uždaryti</button>
       </div>
 
       <div class="mview-sw" data-mode="single" role="tablist">
         <div class="mview-thumb" aria-hidden="true"></div>
-        <button type="button" class="mview-btn active" data-v="single" onclick="setModalGalleryView('modal-nav-anim','single')">1 variantas</button>
-        <button type="button" class="mview-btn" data-v="all" onclick="setModalGalleryView('modal-nav-anim','all')">Visi 6 gyvai</button>
+        <button type="button" class="mview-btn active" data-mv="single" onclick="setModalGalleryView('modal-nav-anim','single')">
+          <svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="3"/></svg><span>1 variantas</span>
+        </button>
+        <button type="button" class="mview-btn" data-mv="all" onclick="setModalGalleryView('modal-nav-anim','all')">
+          <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="4" rx="1.5"/><rect x="3" y="10" width="18" height="4" rx="1.5"/><rect x="3" y="16" width="18" height="4" rx="1.5"/></svg><span>Visi 6 gyvai</span>
+        </button>
       </div>
 
       <div id="na-pane-single" class="mview-pane-single">
@@ -4683,13 +4704,17 @@
           <span class="pill pill-accent" style="font-size:10px;padding:2px 8px;">GYVA DEMONSTRACIJA</span>
           <h3 style="margin:4px 0 0 0;font-size:17px;">Sąnarių šviesoforas („Laisvai“)</h3>
         </div>
-        <button type="button" class="btn btn-sm btn-secondary" onclick="closeModal('modal-joint-style')">Uždaryti</button>
+        <button type="button" class="btn btn-sm btn-secondary app-back-close-btn" onclick="closeModal('modal-joint-style')">Uždaryti</button>
       </div>
 
       <div class="mview-sw" data-mode="single" role="tablist">
         <div class="mview-thumb" aria-hidden="true"></div>
-        <button type="button" class="mview-btn active" data-v="single" onclick="setModalGalleryView('modal-joint-style','single')">1 variantas</button>
-        <button type="button" class="mview-btn" data-v="all" onclick="setModalGalleryView('modal-joint-style','all')">Visi 4 gyvai</button>
+        <button type="button" class="mview-btn active" data-mv="single" onclick="setModalGalleryView('modal-joint-style','single')">
+          <svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="3"/></svg><span>1 variantas</span>
+        </button>
+        <button type="button" class="mview-btn" data-mv="all" onclick="setModalGalleryView('modal-joint-style','all')">
+          <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="4" rx="1.5"/><rect x="3" y="10" width="18" height="4" rx="1.5"/><rect x="3" y="16" width="18" height="4" rx="1.5"/></svg><span>Visi 4 gyvai</span>
+        </button>
       </div>
 
       <div id="js-pane-single" class="mview-pane-single" data-joint-style="2">
@@ -4734,13 +4759,17 @@
           <span class="pill pill-accent" style="font-size:10px;padding:2px 8px;">GYVA DEMONSTRACIJA</span>
           <h3 style="margin:4px 0 0 0;font-size:17px;">„Ką reiškia?“ ir „Pastaba“</h3>
         </div>
-        <button type="button" class="btn btn-sm btn-secondary" onclick="closeModal('modal-joint-btn')">Uždaryti</button>
+        <button type="button" class="btn btn-sm btn-secondary app-back-close-btn" onclick="closeModal('modal-joint-btn')">Uždaryti</button>
       </div>
 
       <div class="mview-sw" data-mode="single" role="tablist">
         <div class="mview-thumb" aria-hidden="true"></div>
-        <button type="button" class="mview-btn active" data-v="single" onclick="setModalGalleryView('modal-joint-btn','single')">1 variantas</button>
-        <button type="button" class="mview-btn" data-v="all" onclick="setModalGalleryView('modal-joint-btn','all')">Visi 11 gyvai</button>
+        <button type="button" class="mview-btn active" data-mv="single" onclick="setModalGalleryView('modal-joint-btn','single')">
+          <svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="3"/></svg><span>1 variantas</span>
+        </button>
+        <button type="button" class="mview-btn" data-mv="all" onclick="setModalGalleryView('modal-joint-btn','all')">
+          <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="4" rx="1.5"/><rect x="3" y="10" width="18" height="4" rx="1.5"/><rect x="3" y="16" width="18" height="4" rx="1.5"/></svg><span>Visi 11 gyvai</span>
+        </button>
       </div>
 
       <div id="jb-pane-single" class="mview-pane-single" data-joint-style="2">
@@ -4790,13 +4819,17 @@
           <span class="pill pill-accent" style="font-size:10px;padding:2px 8px;">GYVA DEMONSTRACIJA</span>
           <h3 style="margin:4px 0 0 0;font-size:17px;">Mygtukas „Animacija &amp; Pin“</h3>
         </div>
-        <button type="button" class="btn btn-sm btn-secondary" onclick="closeModal('modal-anim-pin')">Uždaryti</button>
+        <button type="button" class="btn btn-sm btn-secondary app-back-close-btn" onclick="closeModal('modal-anim-pin')">Uždaryti</button>
       </div>
 
       <div class="mview-sw" data-mode="single" role="tablist">
         <div class="mview-thumb" aria-hidden="true"></div>
-        <button type="button" class="mview-btn active" data-v="single" onclick="setModalGalleryView('modal-anim-pin','single')">1 variantas</button>
-        <button type="button" class="mview-btn" data-v="all" onclick="setModalGalleryView('modal-anim-pin','all')">Visi 5 gyvai</button>
+        <button type="button" class="mview-btn active" data-mv="single" onclick="setModalGalleryView('modal-anim-pin','single')">
+          <svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="3"/></svg><span>1 variantas</span>
+        </button>
+        <button type="button" class="mview-btn" data-mv="all" onclick="setModalGalleryView('modal-anim-pin','all')">
+          <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="4" rx="1.5"/><rect x="3" y="10" width="18" height="4" rx="1.5"/><rect x="3" y="16" width="18" height="4" rx="1.5"/></svg><span>Visi 5 gyvai</span>
+        </button>
       </div>
 
       <div id="ap-pane-single" class="mview-pane-single">
@@ -4814,7 +4847,7 @@
       <div id="ap-pane-all" class="mview-pane-all"></div>
 
       <div class="app-section" style="margin:10px 0 0 0;">
-        <div class="app-section-hdr" style="margin-bottom:4px;"><h4>Mygtuko aukštis</h4><span class="app-val">px</span></div>
+        <div class="app-section-hdr" style="margin-bottom:4px;"><h4>Mygtuko aukštis</h4><span id="app-aph-val" class="app-val">46 px</span></div>
         <div id="app-aph-row" class="app-pill-row cols-3" style="margin-top:0;"></div>
         <div class="app-section-hdr" style="margin:10px 0 4px 0;"><h4>Mygtukų eilės plotis</h4></div>
         <div id="app-apw-row" class="app-pill-row cols-3" style="margin-top:0;"></div>
@@ -4832,13 +4865,17 @@
           <span class="pill pill-accent" style="font-size:10px;padding:2px 8px;">GYVA DEMONSTRACIJA</span>
           <h3 style="margin:4px 0 0 0;font-size:17px;">Disko ikona ir animacija</h3>
         </div>
-        <button type="button" class="btn btn-sm btn-secondary" onclick="closeModal('modal-plate-icon')">Uždaryti</button>
+        <button type="button" class="btn btn-sm btn-secondary app-back-close-btn" onclick="closeModal('modal-plate-icon')">Uždaryti</button>
       </div>
 
       <div class="mview-sw" data-mode="single" role="tablist">
         <div class="mview-thumb" aria-hidden="true"></div>
-        <button type="button" class="mview-btn active" data-v="single" onclick="setModalGalleryView('modal-plate-icon','single')">1 variantas</button>
-        <button type="button" class="mview-btn" data-v="all" onclick="setModalGalleryView('modal-plate-icon','all')">Visi 6 gyvai</button>
+        <button type="button" class="mview-btn active" data-mv="single" onclick="setModalGalleryView('modal-plate-icon','single')">
+          <svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="3"/></svg><span>1 variantas</span>
+        </button>
+        <button type="button" class="mview-btn" data-mv="all" onclick="setModalGalleryView('modal-plate-icon','all')">
+          <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="4" rx="1.5"/><rect x="3" y="10" width="18" height="4" rx="1.5"/><rect x="3" y="16" width="18" height="4" rx="1.5"/></svg><span>Visi 6 gyvai</span>
+        </button>
       </div>
 
       <div id="pi-pane-single" class="mview-pane-single">
@@ -4906,22 +4943,44 @@
     </div>
   </div>
 
-  <!-- What's New in v10.0 + Full Release History Modal -->
+  <!-- What's New in v10.1 + Full Release History Modal -->
   <div id="modal-whats-new" class="modal-backdrop" onclick="if(event.target===this) closeWhatsNewModal();">
     <div class="modal-sheet">
       <div class="row-between" style="margin-bottom:8px;">
         <div>
-          <span class="pill pill-accent" style="font-size:10px;padding:2px 8px;">ATNAUJINIMAS · v10.0</span>
-          <h3 style="margin:4px 0 0 0;font-size:18px;">✨ Kas naujo LeverLab 193 v10.0?</h3>
+          <span class="pill pill-accent" style="font-size:10px;padding:2px 8px;">ATNAUJINIMAS · v10.1</span>
+          <h3 style="margin:4px 0 0 0;font-size:18px;">✨ Kas naujo LeverLab 193 v10.1?</h3>
         </div>
         <button class="btn btn-sm btn-secondary" onclick="closeWhatsNewModal()">Uždaryti</button>
       </div>
       <div style="max-height:60vh;overflow-y:auto;padding-right:2px;">
         <div class="wn-item">
+          <div class="wn-ico">🛠️</div>
+          <div>
+            <div class="wn-title">Veikiantis „+ / − Serija“, išliekantis laikmatis ir saugus PWA atnaujinimas</div>
+            <div class="wn-sub">Pridėta papildoma serija (<strong>+ Serija</strong> / <strong>− Serija</strong>) nebepanaikinama perpiešiant ekraną, poilsio laikmatis išlieka net perkrovus skirtuką, o naujos <code>PWA</code> versijos nebeperkrauna programėlės vidury serijos be tavo paspaudimo.</div>
+          </div>
+        </div>
+        <div class="wn-item">
+          <div class="wn-ico">📐</div>
+          <div>
+            <div class="wn-title">Tikslesnė 193 cm progresija, tonažas ir 7 d. pečių krūvis</div>
+            <div class="wn-sub">Dviguba progresija reikalauja pasiekti pakartojimų viršų visose tikslinėse serijose su darbiniu svoriu; <em>Plate Pinch</em> (sekundės) nebeiškreipia tonažo ir <code>e1RM</code>, o spaudimas virš galvos priskiriamas <strong>Pečiams</strong>.</div>
+          </div>
+        </div>
+        <div class="wn-item">
+          <div class="wn-ico">📝</div>
+          <div>
+            <div class="wn-title">Pilnas istorijos redagavimas, CSV apimtys ir „← Stiliai“ navigacija</div>
+            <div class="wn-sub">Istorijos redaktoriuje galima keisti ir sąnarių būseną bei pastabas, CSV eksportuoja visas 8 kūno apimtis, o visi 9 išvaizdos langai grąžina atgal į <strong>🎨 Išvaizdos nustatymai</strong>.</div>
+          </div>
+        </div>
+        <div class="wn-ver-divider">Ankstesni atnaujinimai · v10.0</div>
+        <div class="wn-item">
           <div class="wn-ico">🎨</div>
           <div>
             <div class="wn-title">Atskiras „Išvaizdos nustatymai“ meniu (visi stiliai vienoje vietoje)</div>
-            <div class="wn-sub">Nustatymuose pridėtas <strong>🎨 Išvaizdos nustatymai</strong> langas: <strong>5</strong> bežodžiai <em>Animacija &amp; Pin</em> mygtukai (numatytai <code>46 px</code> · <em>Vidutiniai</em>), <strong>6</strong> animuotos disko ikonos, <strong>10</strong> poilsio laikmačio juostų (su 6 s testu ir tikru <code>0 FPS</code> miegu), diskų slinkiklio riba, rėmeliai ir animacijos.</div>
+            <div class="wn-sub">Nustatymuose pridėtas <strong>🎨 Išvaizdos nustatymai</strong> langas: <strong>5</strong> bežodžiai <em>Animacija &amp; Pin</em> mygtukai (numatytai <code>46 px</code> · <em>Vidutiniai</em>), <strong>6</strong> animuotos disko ikonos, <strong>10</strong> poilsio laikmačio juostų (su 8 s testu ir tikru <code>0 FPS</code> miegu), rėmeliai ir animacijos.</div>
           </div>
         </div>
         <div class="wn-item">
@@ -5767,7 +5826,7 @@
        2. STATE MANAGEMENT (ROUND 6: BACKUP BEFORE MIGRATION + BACKWARD COMPAT)
        ========================================================================== */
     const STORAGE_KEY = 'leverlab193_v1_state';
-    const MIGRATION_BACKUP_KEY = 'leverlab193_backup_before_v10';
+    const MIGRATION_BACKUP_KEY = 'leverlab193_backup_before_v10_1';
 
     function todayISO() {
       const d = new Date();
@@ -5776,7 +5835,7 @@
 
     function getDefaultState() {
       return {
-        version: 10,
+        version: 10.1,
         theme: 'obsidian',
         trainingMode: 'adaptation',
         workingModeStartDate: null,
@@ -5821,6 +5880,7 @@
         weights: [{ date: todayISO(), kg: 75.0 }],
         measurements: [],
         habits: {},
+        activeRestTimer: null,
         draft: null
       };
     }
@@ -5859,17 +5919,20 @@
     let cableGuideExId = null;
     let cableGuideRafId = null;
     let pwaWaitingWorker = null;
+    let pwaUpdateAccepted = false;
     let wakeLockObj = null;
     let wakeLockWanted = false;
     let bioRafId = null;
     let confirmCallback = null;
+    let sharedAudioCtx = null;
+    let customChipFormExId = null;
 
     function mergeLoadedState(parsed) {
       const def = getDefaultState();
       const merged = {
         ...def,
         ...parsed,
-        version: 10,
+        version: 10.1,
         timerSound: parsed.timerSound !== undefined ? !!parsed.timerSound : true,
         timerVibrate: parsed.timerVibrate !== undefined ? !!parsed.timerVibrate : true,
         timerNotify: parsed.timerNotify !== undefined ? !!parsed.timerNotify : false,
@@ -5906,7 +5969,8 @@
         history: Array.isArray(parsed.history) ? parsed.history : [],
         weights: Array.isArray(parsed.weights) && parsed.weights.length ? parsed.weights : def.weights,
         measurements: Array.isArray(parsed.measurements) ? parsed.measurements : [],
-        habits: parsed.habits || {}
+        habits: parsed.habits || {},
+        activeRestTimer: (parsed.activeRestTimer && typeof parsed.activeRestTimer === 'object') ? parsed.activeRestTimer : null
       };
       if (!merged.lastCompletedAt && merged.history.length > 0) {
         const lastSess = merged.history[merged.history.length - 1];
@@ -5921,8 +5985,8 @@
         if (!raw) return getDefaultState();
         const parsed = JSON.parse(raw);
 
-        // Safe backup snapshot before upgrading older state schema to v10
-        if (!parsed.version || parsed.version < 10) {
+        // Safe backup snapshot before upgrading older state schema to v10.1
+        if (!parsed.version || parsed.version < 10.1) {
           try {
             if (!localStorage.getItem(MIGRATION_BACKUP_KEY)) {
               localStorage.setItem(MIGRATION_BACKUP_KEY, raw);
@@ -5942,6 +6006,10 @@
 
     function getAllExercisesMap() { return { ...EXERCISE_DB, ...state.customExercises }; }
     function getExercise(id) { return state.customExercises[id] || EXERCISE_DB[id]; }
+    function isSecondsOnlyEx(ex) { return !!(ex && ex.weightLabel === 'Sekundės'); }
+    function isIsometricHoldEx(ex) { return !!(ex && ex.id === 'plate_pinch'); }
+    function isRepUnitSeconds(ex) { return isSecondsOnlyEx(ex) || isIsometricHoldEx(ex); }
+    function isE1rmEligibleEx(ex) { return !!(ex && !isSecondsOnlyEx(ex) && !isIsometricHoldEx(ex)); }
 
     /* ==========================================================================
        3. AUDIO, VIBRATION, TOASTS & MODALS
@@ -5951,7 +6019,10 @@
       try {
         const AudioCtx = window.AudioContext || window.webkitAudioContext;
         if (!AudioCtx) return;
-        const ctx = new AudioCtx();
+        if (!sharedAudioCtx || sharedAudioCtx.state === 'closed') {
+          sharedAudioCtx = new AudioCtx();
+        }
+        const ctx = sharedAudioCtx;
         if (ctx.state === 'suspended') ctx.resume().catch(() => {});
         const comp = ctx.createDynamicsCompressor();
         comp.threshold.value = -10;
@@ -5960,6 +6031,7 @@
         comp.attack.value = 0.003;
         comp.release.value = 0.15;
         comp.connect(ctx.destination);
+        setTimeout(() => { try { comp.disconnect(); } catch (_) {} }, 1100);
 
         const now = ctx.currentTime + 0.02;
         const tone = forceTone || state.timerTone || 'soft';
@@ -6157,6 +6229,12 @@
       } catch (e) {}
     }
 
+    function hasExternalPwaAssets() {
+      const fav = document.getElementById('pwa-favicon');
+      const href = fav ? (fav.getAttribute('href') || '') : '';
+      return !!href && !href.startsWith('data:');
+    }
+
     let lastShadeNotifyAt = 0;
     async function updateLiveShadeNotification(force = false) {
       if (!state.timerLiveShade || !state.timerNotify || !('Notification' in window) || Notification.permission !== 'granted') return;
@@ -6176,7 +6254,6 @@
         : `⏱ Poilsis: ${mmss} · Baigsis ${endClock}`;
       const opts = {
         body: `${restTimerState.label || 'Poilsis tarp serijų'} · Laikrodis suvibruos pabaigoje`,
-        badge: './badge-96.png',
         tag: 'leverlab193-rest-live',
         silent: true,
         renotify: false,
@@ -6186,6 +6263,7 @@
           { action: 'stop', title: 'Praleisti' }
         ]
       };
+      if (hasExternalPwaAssets()) opts.badge = './badge-96.png';
       try { await reg.showNotification(title, opts); } catch (e) {}
     }
 
@@ -6194,13 +6272,13 @@
       await clearLiveShadeNotification();
       const opts = {
         body: bodyText || 'Poilsis baigtas – kitas priėjimas!',
-        badge: './badge-96.png',
         tag: 'leverlab193-rest',
         renotify: true,
         silent: false,
         requireInteraction: false,
         vibrate: [250, 100, 250]
       };
+      if (hasExternalPwaAssets()) opts.badge = './badge-96.png';
       const reg = await getActiveSwReg();
       if (reg) {
         try {
@@ -6344,8 +6422,41 @@
       }, 2150);
     }
 
-    function openModal(id) { document.getElementById(id).classList.add('open'); }
-    function closeModal(id) { document.getElementById(id).classList.remove('open'); }
+    const APPEARANCE_SUBMODAL_IDS = new Set([
+      'modal-card-frame', 'modal-card-anim', 'modal-rest-bar', 'modal-edge-glow',
+      'modal-nav-anim', 'modal-joint-style', 'modal-joint-btn', 'modal-anim-pin', 'modal-plate-icon'
+    ]);
+    let returnToAppearanceModal = false;
+
+    function syncSubmodalBackButtons() {
+      const lbl = returnToAppearanceModal ? '← Stiliai' : 'Uždaryti';
+      document.querySelectorAll('.app-back-close-btn').forEach(btn => { btn.textContent = lbl; });
+    }
+
+    function openAppearanceSubModal(which) {
+      document.getElementById('modal-appearance')?.classList.remove('open');
+      returnToAppearanceModal = true;
+      syncSubmodalBackButtons();
+      if (which === 'frame') openCardFrameModal();
+      else if (which === 'anim') openCardAnimModal();
+      else if (which === 'rest') openRestBarModal();
+      else if (which === 'edge') openEdgeGlowModal();
+      else if (which === 'nav') openNavAnimModal();
+      else if (which === 'jointStyle') openJointStyleModal();
+      else if (which === 'jointBtn') openJointBtnModal();
+      else if (which === 'animPin') openAnimPinModal();
+      else if (which === 'plateIcon') openPlateIconModal();
+    }
+
+    function openModal(id) { document.getElementById(id)?.classList.add('open'); }
+    function closeModal(id) {
+      document.getElementById(id)?.classList.remove('open');
+      if (returnToAppearanceModal && APPEARANCE_SUBMODAL_IDS.has(id)) {
+        returnToAppearanceModal = false;
+        syncSubmodalBackButtons();
+        openAppearanceModal();
+      }
+    }
     function closeModalOnBackdrop(e, id) { if (e.target.id === id) closeModal(id); }
 
     function askConfirm(title, msg, onConfirm, isDanger = false, alignTop = false) {
@@ -6477,7 +6588,7 @@
           type: 'stop',
           suggestedWeight: redW,
           title: `🔴 Praeitą kartą buvo skausmas – mažink −10 % (${redW} kg)`,
-          sub: 'Saugok sausgyslę: pradėk lengviau arba perjunk į ⚡ Planą B.',
+          sub: 'Saugok sausgyslę: pradėk lengviau arba perjunk į Planą B.',
           btnLabel: `Taikyti ${redW} kg`
         };
       }
@@ -6492,7 +6603,9 @@
         };
       }
 
-      const allHitUpper = doneSets.length >= 2 && doneSets.every(s => Number(s.reps) >= ex.maxReps);
+      const unitLbl = isRepUnitSeconds(ex) ? 'sek.' : 'pak.';
+      const reqSets = getTargetSetCount(!!ex.isGrip);
+      const allHitUpper = doneSets.length >= reqSets && doneSets.every(s => (Number(s.weight) >= lastWeight) && Number(s.reps) >= ex.maxReps);
       if (allHitUpper) {
         const inc = ex.isLower ? 5 : (ex.step === 1.25 ? 1.25 : 2.5);
         const nextW = +(lastWeight + inc).toFixed(2);
@@ -6500,7 +6613,7 @@
           type: 'increase',
           suggestedWeight: nextW,
           title: `📈 Šiandien bandyk +${inc} kg → ${nextW} kg`,
-          sub: `Praeitą kartą pasiekei ${ex.maxReps} pak. su 🟢 Laisvai sąnariais.`,
+          sub: `Praeitą kartą visose ${doneSets.length} ser. pasiekei ${ex.maxReps} ${unitLbl} su 🟢 Laisvai.`,
           btnLabel: `Taikyti ${nextW} kg`
         };
       }
@@ -6508,8 +6621,8 @@
       return {
         type: 'hold',
         suggestedWeight: lastWeight,
-        title: `🎯 Lik prie ${lastWeight} kg – siek ${ex.maxReps} pak.`,
-        sub: 'Pirmiausia užpildyk pakartojimų viršų visose serijose, tik tada kelk svorį.',
+        title: `🎯 Lik prie ${lastWeight} kg – siek ${ex.maxReps} ${unitLbl}`,
+        sub: `Pirmiausia užpildyk ${ex.maxReps} ${unitLbl} visose ${reqSets} serijose su ${lastWeight} kg, tik tada kelk svorį.`,
         btnLabel: null
       };
     }
@@ -6602,7 +6715,7 @@
       for (let i = 0; i < setCount; i++) {
         sets.push({ weight: ex.weightLabel === 'Sekundės' ? 0 : adjW, reps: ex.minReps, rir: getDefaultRir(), done: false });
       }
-      return { sets, straps: prev ? !!prev.straps : false, comfort: 'green', note: '', warmupDone: false };
+      return { sets, straps: prev ? !!prev.straps : false, comfort: 'green', note: '', warmupDone: false, extraSets: 0 };
     }
 
     function syncDraftWithModeAndSlots() {
@@ -6617,11 +6730,13 @@
           if (!entry.comfort) entry.comfort = 'green';
           if (entry.warmupDone === undefined) entry.warmupDone = false;
           const targetSets = getTargetSetCount(!!ex.isGrip);
-          while (entry.sets.length < targetSets) {
+          const extra = state.trainingMode === 'adaptation' ? 0 : Math.max(0, Number(entry.extraSets) || 0);
+          const desiredSets = targetSets + extra;
+          while (entry.sets.length < desiredSets) {
             const last = entry.sets[entry.sets.length - 1] || { weight: 20, reps: ex.minReps, rir: getDefaultRir() };
             entry.sets.push({ weight: last.weight, reps: last.reps, rir: getDefaultRir(), done: false });
           }
-          while (entry.sets.length > targetSets && !entry.sets[entry.sets.length - 1].done) {
+          while (entry.sets.length > desiredSets && !entry.sets[entry.sets.length - 1].done) {
             entry.sets.pop();
           }
         }
@@ -6907,7 +7022,7 @@
                     <span class="warmup-dose-tag">${w.dose}</span>
                   </div>
                 </button>
-                <button type="button" class="warmup-guide-btn ${isOpen ? 'open' : ''}" onclick="toggleWarmupGuide('${w.id}', event)">${isOpen ? '▲ Slėpti' : 'ℹ️ Patarimai'}</button>
+                <button type="button" class="warmup-guide-btn ${isOpen ? 'open' : ''}" onclick="toggleWarmupGuide('${w.id}', event)">${isOpen ? '▲ Slėpti' : '<svg style="width:12px;height:12px;stroke:currentColor;fill:none;stroke-width:2.1;stroke-linecap:round;stroke-linejoin:round;vertical-align:-1.5px;margin-right:3px;" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9.5"/><path d="M12 16v-4.5"/><circle cx="12" cy="8.2" r="0.6" fill="currentColor" stroke="none"/></svg>Patarimai'}</button>
                 <button type="button" class="warmup-chk-btn" aria-label="Pažymėti ${w.title}" onclick="toggleWarmupItem('${w.id}')">${done ? '✓' : ''}</button>
               </div>
               <div class="collapsible ${isOpen ? '' : 'collapsed'}">
@@ -7140,10 +7255,10 @@
     function handleSessionClockTap() {
       if (!state.draft || !state.draft.startedAt) return;
       askConfirm('Nustatyti laikrodį iš naujo?', 'Treniruotės laikrodis bus atstatytas į 00:00 (atliktos serijos išliks).', () => {
-        state.draft.startedAt = null;
+        state.draft.startedAt = Date.now();
         saveState();
         updateSessionClock();
-        showToast('Laikrodis atstatytas');
+        showToast('Laikrodis atstatytas į 00:00');
       }, false, true);
     }
 
@@ -7288,7 +7403,8 @@
       const allDone = doneCnt === totalCnt && totalCnt > 0;
       const w0 = entry.sets[0] ? entry.sets[0].weight : 0;
       const r0 = entry.sets[0] ? entry.sets[0].reps : ex.minReps;
-      const summary = ex.weightLabel === 'Sekundės' ? `${r0}s` : (w0 > 0 ? `${w0} kg × ${r0}` : `${ex.minReps}–${ex.maxReps} pak.`);
+      const unitTxt = isRepUnitSeconds(ex) ? 'sek.' : 'pak.';
+      const summary = isSecondsOnlyEx(ex) ? `${r0} sek.` : (w0 > 0 ? `${w0} kg × ${r0}${isIsometricHoldEx(ex) ? ' sek.' : ''}` : `${ex.minReps}–${ex.maxReps} ${unitTxt}`);
       const isCustom = !!state.customExercises[exId];
 
       const div = document.createElement('div');
@@ -7307,7 +7423,7 @@
         <div class="row" style="min-width:0;flex:1;">
           <span class="ex-num">${allDone ? '✓' : displayNum}</span>
           <div style="min-width:0;">
-            <div style="font-weight:700;font-size:14.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${ex.name}</div>
+            <div style="font-weight:700;font-size:14.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${escapeAttr(ex.name)}</div>
             <div class="tabular" style="font-size:11.5px;color:var(--text-muted);">${summary}</div>
           </div>
         </div>
@@ -7333,7 +7449,7 @@
       bar.innerHTML = `
         <div class="row" style="min-width:0;flex:1;gap:6px;">
           <span class="pill pill-accent" style="padding:2px 7px;font-size:10.5px;">#${idx + 1}/${exIds.length}</span>
-          <span class="active-ex-sticky-name">${ex.name}</span>
+          <span class="active-ex-sticky-name">${escapeAttr(ex.name)}</span>
         </div>
         <div class="row" style="gap:5px;flex-shrink:0;">
           <span class="active-ex-sticky-set">${setLabel}</span>
@@ -7393,7 +7509,7 @@
 
       let prevHtml = '<span style="color:var(--text-dim);">Praeitą kartą: dar nėra įrašų</span>';
       if (prevLog) {
-        const sTxt = prevLog.sets.filter(s => s.done).map(s => ex.weightLabel === 'Sekundės' ? `${s.reps}s` : `${s.weight}kg×${s.reps}`).join(', ');
+        const sTxt = prevLog.sets.filter(s => s.done).map(s => isSecondsOnlyEx(ex) ? `${s.reps}s` : `${s.weight}kg×${s.reps}${isIsometricHoldEx(ex) ? 's' : ''}`).join(', ');
         prevHtml = `<span><strong>Praeitą (${prevLog.date}):</strong> <span class="tabular" style="font-family:var(--font-mono);">${sTxt}</span></span>`;
       }
 
@@ -7424,8 +7540,10 @@
         ? `<span class="row" style="gap:4px;"><button class="pill pill-accent" id="cable-btn-${exId}" onclick="event.stopPropagation();toggleCableRatio('${exId}')">Blokas: ${cableRatio} ⇄</button><button type="button" class="cable-q-btn" title="Kaip atskirti 1:1 ir 2:1?" onclick="event.stopPropagation();openCableGuideModal('${exId}')">?</button></span>`
         : '';
 
-      const isTimeOnly = ex.weightLabel === 'Sekundės';
-      const histBestE1 = isTimeOnly ? 0 : getHistoricalBestE1RM(exId);
+      const isTimeOnly = isSecondsOnlyEx(ex);
+      const isHoldSec = isIsometricHoldEx(ex);
+      const canCalcPr = isE1rmEligibleEx(ex);
+      const histBestE1 = canCalcPr ? getHistoricalBestE1RM(exId) : 0;
       const plateMeta = getPlateIconMeta(state.plateIconStyle || '6');
       const isInfoOpen = openExInfo.has(exId);
 
@@ -7433,7 +7551,7 @@
       const setsHtml = entry.sets.map((s, sIdx) => {
         // 1) Completed Set -> Compact 1-Row + Tap-to-Edit Inline Drawer (keeps original timestamp & Done status)
         if (s.done) {
-          const readout = isTimeOnly ? `${s.reps} sek.` : `${s.weight} kg × ${s.reps}`;
+          const readout = isTimeOnly ? `${s.reps} sek.` : `${s.weight} kg × ${s.reps}${isHoldSec ? ' sek.' : ''}`;
           const tsTxt = s.doneAt ? formatClockHM(s.doneAt) : '';
           const editKey = `${exId}:${sIdx}`;
           const isEd = editingDoneSets.has(editKey);
@@ -7484,7 +7602,7 @@
 
         // 2) Active Focus Set ("Serija X iš Y" + Icon-Only Plate Button + Live PR)
         if (sIdx === firstUndoneIdx) {
-          const curE1 = (!isTimeOnly && Number(s.weight) > 0 && Number(s.reps) > 0) ? calcE1RM(s.weight, s.reps) : 0;
+          const curE1 = (canCalcPr && Number(s.weight) > 0 && Number(s.reps) > 0) ? calcE1RM(s.weight, s.reps) : 0;
           const isLivePr = histBestE1 > 0 && curE1 > histBestE1;
           const prHtml = isLivePr
             ? `<span class="pr-live-pill">🏆 Naujas PR! ${curE1} kg (+${+(curE1 - histBestE1).toFixed(1)} kg)</span>`
@@ -7494,7 +7612,7 @@
               <div class="active-top-row">
                 <div style="min-width:0;display:flex;flex-direction:column;gap:2px;">
                   <span class="set-num-pill">SERIJA ${sIdx + 1} IŠ ${totalSets}</span>
-                  <span style="font-size:11px;color:var(--text-muted);font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${ex.name}</span>
+                  <span style="font-size:11px;color:var(--text-muted);font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${escapeAttr(ex.name)}</span>
                 </div>
                 <div class="row" style="gap:6px;flex-shrink:0;">
                   ${showPlatesBtn ? `<button type="button" class="plate-ico-btn" title="Diskų skaičiuoklė šiam svoriui" aria-label="Diskų skaičiuoklė" onclick="openPlateForSet('${exId}', ${sIdx}, event)">${plateMeta.svg}</button>` : ''}
@@ -7543,7 +7661,7 @@
         }
 
         // 3) Waiting Set -> Quiet, dashed, non-distracting
-        const waitTxt = isTimeOnly ? `${s.reps} sek.` : `${s.weight} kg × ${s.reps}`;
+        const waitTxt = isTimeOnly ? `${s.reps} sek.` : `${s.weight} kg × ${s.reps}${isHoldSec ? ' sek.' : ''}`;
         return `
           <div class="set-upcoming" id="setrow-${exId}-${sIdx}">
             <div class="row" style="gap:9px;">
@@ -7558,6 +7676,7 @@
       const slotHeaderTxt = typeof displayNum === 'number' ? `PRATIMAS ${displayNum} IŠ ${totalSlots}` : `PRIEDAS ${displayNum}`;
       const canCollapseSelf = (typeof displayNum === 'number') && (state.allowCollapseActiveEx !== false);
       const animPinHtml = buildAnimPinDualRowHtml(exId, ex.yt, isDrawerOpen);
+      const canRemoveExtraSet = state.trainingMode !== 'adaptation' && (Number(entry.extraSets) || 0) > 0 && entry.sets.length > 1 && !entry.sets[entry.sets.length - 1].done;
 
       card.innerHTML = `
         <div class="row-between" style="align-items:flex-start;gap:8px;">
@@ -7568,9 +7687,9 @@
               <span class="tabular">${doneCount}/${totalSets} ser.</span>
               ${isPlanBSwapped ? '<span class="pill pill-yellow" style="padding:1px 6px;font-size:9.5px;">Planas B</span>' : ''}
             </div>
-            <h3 class="ex-title"><span class="ex-num">${allDone ? '✓' : displayNum}</span><span>${ex.name}</span></h3>
+            <h3 class="ex-title"><span class="ex-num">${allDone ? '✓' : displayNum}</span><span>${escapeAttr(ex.name)}</span></h3>
             <div class="row-wrap ex-pills-row" style="margin-top:7px;">
-              <span class="pill">Tikslas: ${ex.minReps}–${ex.maxReps} ${isTimeOnly ? 'sek.' : 'pak.'}</span>
+              <span class="pill">Tikslas: ${ex.minReps}–${ex.maxReps} ${isRepUnitSeconds(ex) ? 'sek.' : 'pak.'}</span>
               <span class="pill">Poilsis: ${Math.floor(ex.rest/60)}:${String(ex.rest%60).padStart(2,'0')}</span>
               ${cableBtnHtml}
             </div>
@@ -7660,7 +7779,10 @@
 
         ${(state.trainingMode !== 'adaptation' || ex.hasStraps) ? `
           <div class="row-between mt-8">
-            <div>${state.trainingMode !== 'adaptation' ? `<button class="btn btn-sm btn-secondary" onclick="addSetToExercise('${exId}')">+ Serija</button>` : ''}</div>
+            <div class="row" style="gap:6px;">
+              ${state.trainingMode !== 'adaptation' ? `<button class="btn btn-sm btn-secondary" onclick="addSetToExercise('${exId}')">+ Serija</button>` : ''}
+              ${canRemoveExtraSet ? `<button class="btn btn-sm btn-ghost" onclick="removeExtraSetFromExercise('${exId}')">− Serija</button>` : ''}
+            </div>
             ${ex.hasStraps ? `<button class="pill ${entry.straps ? 'pill-accent' : ''}" style="padding:7px 11px;" onclick="toggleStraps('${exId}')">${entry.straps ? '🔗 Su diržais' : '✋ Be diržų'}</button>` : ''}
           </div>` : ''}
 
@@ -7764,22 +7886,32 @@
       const ex = getExercise(exId);
       const entry = state.draft?.entries?.[exId];
       if (!ex || !entry) return '';
+      const lockSvg = noteChipsUnlocked
+        ? '<svg style="width:12px;height:12px;stroke:currentColor;fill:none;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round;vertical-align:-1.5px;margin-right:3px;" viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 9.9-1"/></svg>'
+        : '<svg style="width:12px;height:12px;stroke:currentColor;fill:none;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round;vertical-align:-1.5px;margin-right:3px;" viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>';
+      const notePenSvg = '<svg style="width:13px;height:13px;stroke:currentColor;fill:none;stroke-width:2.1;stroke-linecap:round;stroke-linejoin:round;vertical-align:-2px;margin-right:4px;" viewBox="0 0 24 24"><path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 1 1 3 3L7 19l-4 1 1-4Z"/></svg>';
+      const showChipForm = customChipFormExId === exId;
       return `<div class="note-box">
         <div class="note-box-hd">
-          <span>📝 Pastaba („${ex.name}“)</span>
+          <span>${notePenSvg}Pastaba („${escapeAttr(ex.name)}“)</span>
           <div class="row" style="gap:6px;">
-            <button type="button" class="note-lock-btn ${noteChipsUnlocked ? 'unlocked' : ''}" title="${noteChipsUnlocked ? 'Užrakinti greitus mygtukus' : 'Atrakinti žymeklių redagavimą'}" onclick="toggleNoteChipsLock()">${noteChipsUnlocked ? '🔓 Redaguoti' : '🔒 Užrakinta'}</button>
+            <button type="button" class="note-lock-btn ${noteChipsUnlocked ? 'unlocked' : ''}" title="${noteChipsUnlocked ? 'Užrakinti greitus mygtukus' : 'Atrakinti žymeklių redagavimą'}" onclick="toggleNoteChipsLock()">${lockSvg}${noteChipsUnlocked ? 'Redaguoti' : 'Užrakinta'}</button>
             <button id="note-clr-${exId}" type="button" style="font-size:11px;color:var(--text-muted);display:${entry.note ? '' : 'none'};" onclick="clearExerciseNote('${exId}')">Išvalyti</button>
           </div>
         </div>
         <div class="note-chips ${noteChipsUnlocked ? '' : 'locked'}">
           ${(state.noteChips || []).map((chip, cIdx) => `
             <span class="note-chip-wrap">
-              <button type="button" class="note-chip-add" onclick="appendQuickNote('${exId}', '${escapeAttr(chip).replace(/'/g, '&#39;')}')">+ ${escapeAttr(chip)}</button>
+              <button type="button" class="note-chip-add" onclick="appendQuickNoteByIdx('${exId}', ${cIdx})">+ ${escapeAttr(chip)}</button>
               <button type="button" class="note-chip-del" title="Pašalinti žymeklį" onclick="deleteCustomNoteChip(${cIdx})">×</button>
             </span>`).join('')}
-          <button type="button" class="note-chip note-chip-custom-add" style="border-style:dashed;color:var(--accent);" onclick="addCustomNoteChip('${exId}')">+ Pridėti savo</button>
+          <button type="button" class="note-chip note-chip-custom-add" style="border-style:dashed;color:var(--accent);" onclick="addCustomNoteChip('${exId}')">${showChipForm ? '✕ Atšaukti' : '+ Pridėti savo'}</button>
         </div>
+        ${showChipForm ? `
+          <div class="note-chip-inline-form">
+            <input id="custom-chip-inp-${exId}" type="text" maxlength="42" class="input" placeholder="Pvz., Lėtesnis leidimas..." onkeydown="if(event.key==='Enter'){event.preventDefault();submitCustomNoteChip('${exId}');}">
+            <button type="button" class="btn btn-sm btn-primary" style="min-height:32px;padding:4px 10px;" onclick="submitCustomNoteChip('${exId}')">Pridėti</button>
+          </div>` : ''}
         <textarea id="note-ta-${exId}" class="note-textarea" rows="2" placeholder="${entry.comfort === 'red' ? 'Kur ir kada suskaudo? (pvz., dūris peties priekyje...)' : entry.comfort === 'yellow' ? 'Kur jautėsi įtampa? (pvz., kelis apačioje, kairė alkūnė...)' : 'Įrašyk pastabą šiam pratimui (išsisaugos Progreso istorijoje)...'}" oninput="setExerciseNote('${exId}', this.value)">${escapeAttr(entry.note || '')}</textarea>
       </div>`;
     }
@@ -7796,13 +7928,18 @@
 
     function appendQuickNote(exId, snippet) {
       const entry = state.draft?.entries?.[exId];
-      if (!entry) return;
+      if (!entry || !snippet) return;
       const cur = (entry.note || '').trim();
       entry.note = cur ? `${cur}; ${snippet}` : snippet;
       saveState();
       const ta = document.getElementById('note-ta-' + exId);
       if (ta) ta.value = entry.note;
       syncJointNoteDotInPlace(exId);
+    }
+
+    function appendQuickNoteByIdx(exId, cIdx) {
+      const chip = (state.noteChips || [])[cIdx];
+      if (chip) appendQuickNote(exId, chip);
     }
 
     function clearExerciseNote(exId) {
@@ -7814,21 +7951,36 @@
     }
 
     function addCustomNoteChip(exId) {
-      const raw = window.prompt('Įvesk naują greitos pastabos žymeklį (pvz., „Lėtesnis leidimas“):', '');
-      if (!raw) return;
-      const txt = raw.trim().slice(0, 42);
-      if (!txt) return;
+      customChipFormExId = (customChipFormExId === exId) ? null : exId;
+      const slot = document.getElementById('joint-note-slot-' + exId);
+      if (slot) {
+        slot.innerHTML = buildJointNoteHtml(exId);
+        if (customChipFormExId === exId) {
+          requestAnimationFrame(() => document.getElementById('custom-chip-inp-' + exId)?.focus());
+        }
+      } else {
+        renderWorkoutView();
+      }
+    }
+
+    function submitCustomNoteChip(exId) {
+      const inp = document.getElementById('custom-chip-inp-' + exId);
+      const txt = (inp ? inp.value : '').trim().slice(0, 42);
+      if (!txt) { showToast('Įvesk žymeklio tekstą'); return; }
       if (!Array.isArray(state.noteChips)) state.noteChips = [];
       if (!state.noteChips.includes(txt)) state.noteChips.push(txt);
+      customChipFormExId = null;
       saveState();
-      renderWorkoutView();
+      const slot = document.getElementById('joint-note-slot-' + exId);
+      if (slot) slot.innerHTML = buildJointNoteHtml(exId);
+      else renderWorkoutView();
       showToast('Pridėtas tavo žymeklis: ' + txt);
     }
 
     function toggleNoteChipsLock() {
       noteChipsUnlocked = !noteChipsUnlocked;
       renderWorkoutView();
-      showToast(noteChipsUnlocked ? '🔓 Žymekliai atrakinti redagavimui' : '🔒 Žymekliai užrakinti');
+      showToast(noteChipsUnlocked ? 'Žymekliai atrakinti redagavimui' : 'Žymekliai užrakinti');
     }
 
     function deleteCustomNoteChip(idx) {
@@ -7996,13 +8148,13 @@
           html += `
             <div style="font-size:12.5px;color:var(--text-muted);margin-bottom:9px;">Šiuo metu pasirinktas <strong>Planas B</strong>. Gali bet kada grąžinti pagrindinį pratimą (Planą A):</div>
             <button class="btn btn-primary btn-full" onclick="swapExercise('${slotKey}', '${altEx.id}');closeModal('modal-planb');">
-              ↩ Grąžinti Planą A: ${altEx.name}
+              ↩ Grąžinti Planą A: ${escapeAttr(altEx.name)}
             </button>`;
         } else {
           html += `
             <div style="font-size:12.5px;color:var(--text-muted);margin-bottom:9px;">Jei treniruoklis užimtas arba netinka sąnariams – pakeisk į <strong>Planą B</strong> (statistika išliks atskira):</div>
             <button class="btn btn-primary btn-full" onclick="swapExercise('${slotKey}', '${altEx.id}');closeModal('modal-planb');">
-              ⇄ Pakeisti į Planą B: ${altEx.name}
+              ⇄ Pakeisti į Planą B: ${escapeAttr(altEx.name)}
             </button>`;
         }
       }
@@ -8279,9 +8431,9 @@
       const ex = getExercise(exId);
       const s = state.draft?.entries?.[exId]?.sets?.[setIdx];
       if (!ex || !s) return;
-      const isTimeOnly = ex.weightLabel === 'Sekundės';
+      const isTimeOnly = isSecondsOnlyEx(ex);
       const ro = document.getElementById(`done-readout-${exId}-${setIdx}`);
-      if (ro) ro.textContent = isTimeOnly ? `${s.reps} sek.` : `${s.weight} kg × ${s.reps}`;
+      if (ro) ro.textContent = isTimeOnly ? `${s.reps} sek.` : `${s.weight} kg × ${s.reps}${isIsometricHoldEx(ex) ? ' sek.' : ''}`;
       const meta = document.getElementById(`done-meta-${exId}-${setIdx}`);
       const tsTxt = s.doneAt ? formatClockHM(s.doneAt) : '';
       if (meta) meta.textContent = `RIR ${s.rir}${tsTxt ? ' · ' + tsTxt : ''}`;
@@ -8377,7 +8529,7 @@
       const ex = getExercise(exId);
       const s = state.draft?.entries?.[exId]?.sets?.[idx];
       if (!el || !ex || !s) return;
-      el.textContent = ex.weightLabel === 'Sekundės' ? `${s.reps} sek.` : `${s.weight} kg × ${s.reps}`;
+      el.textContent = isSecondsOnlyEx(ex) ? `${s.reps} sek.` : `${s.weight} kg × ${s.reps}${isIsometricHoldEx(ex) ? ' sek.' : ''}`;
     }
 
     function syncSubsequentWeightsInPlace(exId, setIdx, prevVal, nextVal) {
@@ -8395,7 +8547,7 @@
       const s = state.draft?.entries?.[exId]?.sets?.[setIdx];
       const slot = document.getElementById(`live-pr-${exId}-${setIdx}`);
       const row = document.getElementById(`setrow-${exId}-${setIdx}`);
-      if (!ex || !s || !slot || ex.weightLabel === 'Sekundės') return;
+      if (!ex || !s || !slot || !isE1rmEligibleEx(ex)) return;
       const histBest = getHistoricalBestE1RM(exId);
       const curE1 = (Number(s.weight) > 0 && Number(s.reps) > 0) ? calcE1RM(s.weight, s.reps) : 0;
       const isPr = histBest > 0 && curE1 > histBest;
@@ -8414,9 +8566,9 @@
       const inp = document.getElementById(`inp-${field === 'weight' ? 'w' : 'r'}-${exId}-${setIdx}`);
       if (inp) inp.value = next;
 
-      if (field === 'weight' && setIdx === 0) {
+      if (field === 'weight') {
         syncSubsequentWeightsInPlace(exId, setIdx, cur, next);
-        updateWarmupCalcInPlace(exId);
+        if (setIdx === 0) updateWarmupCalcInPlace(exId);
       }
       updateLivePrInPlace(exId, setIdx);
       saveState();
@@ -8428,9 +8580,9 @@
       const cur = Number(entry.sets[setIdx][field]) || 0;
       const next = Math.max(0, Number(val) || 0);
       entry.sets[setIdx][field] = next;
-      if (field === 'weight' && setIdx === 0) {
+      if (field === 'weight') {
         syncSubsequentWeightsInPlace(exId, setIdx, cur, next);
-        updateWarmupCalcInPlace(exId);
+        if (setIdx === 0) updateWarmupCalcInPlace(exId);
       }
       updateLivePrInPlace(exId, setIdx);
       saveState();
@@ -8534,7 +8686,7 @@
       const entry = state.draft.entries[exId];
       const s = entry.sets[setIdx];
       const willBeDone = !s.done;
-      const undoSub = ex.weightLabel === 'Sekundės' ? `${ex.name} · ${s.reps} s` : `${ex.name} · ${s.weight} kg × ${s.reps}`;
+      const undoSub = isSecondsOnlyEx(ex) ? `${ex.name} · ${s.reps} s` : `${ex.name} · ${s.weight} kg × ${s.reps}${isIsometricHoldEx(ex) ? ' s' : ''}`;
       pushUndoAction(undoSub, willBeDone, willBeDone ? `✓ Serija #${setIdx + 1} atlikta` : `↩ Serija #${setIdx + 1} atžymėta`);
       markSessionStartedIfNeeded();
       const prevDoneTs = willBeDone ? getLatestDoneSetTimestamp() : null;
@@ -8595,18 +8747,32 @@
     }
 
     function copyPreviousSets(exId) {
-      markSessionStartedIfNeeded();
       const ex = getExercise(exId);
       const prev = getLastExerciseLog(exId);
-      if (!prev || !prev.sets) return;
+      const entry = state.draft?.entries?.[exId];
+      if (!ex || !prev || !prev.sets || !entry) return;
+      if (entry.sets.every(s => s.done)) {
+        showToast('Visos serijos jau atliktos');
+        return;
+      }
+      pushUndoAction(`${ex.name} · ankstesni skaičiai`, false, '✓ Perimti ankstesni skaičiai');
+      markSessionStartedIfNeeded();
       const prog = evaluateDoubleProgression(ex, prev);
-      const entry = state.draft.entries[exId];
       entry.sets.forEach((s, idx) => {
+        if (s.done) return;
         const src = prev.sets[idx] || prev.sets[prev.sets.length - 1];
         if (!src) return;
-        if (prog && prog.type === 'increase') { s.weight = prog.suggestedWeight; s.reps = ex.minReps; }
-        else if (prog && prog.type === 'deload') { s.weight = prog.suggestedWeight; s.reps = Number(src.reps) || ex.minReps; }
-        else { s.weight = Number(src.weight) || 0; s.reps = Number(src.reps) || ex.minReps; }
+        const rawW = Number(src.weight) || 0;
+        if (isSecondsOnlyEx(ex)) {
+          s.weight = 0;
+          s.reps = Number(src.reps) || ex.minReps;
+        } else if (prog && (prog.type === 'deload' || prog.type === 'stop')) {
+          s.weight = prog.suggestedWeight;
+          s.reps = Number(src.reps) || ex.minReps;
+        } else {
+          s.weight = rawW;
+          s.reps = Number(src.reps) || ex.minReps;
+        }
       });
       saveState();
       renderWorkoutView();
@@ -8614,11 +8780,29 @@
     }
 
     function addSetToExercise(exId) {
-      const entry = state.draft.entries[exId];
+      const entry = state.draft?.entries?.[exId];
+      if (!entry) return;
+      entry.extraSets = Math.max(0, Number(entry.extraSets) || 0) + 1;
       const last = entry.sets[entry.sets.length - 1] || { weight: 20, reps: 10, rir: getDefaultRir() };
       entry.sets.push({ weight: last.weight, reps: last.reps, rir: last.rir, done: false });
       saveState();
       renderWorkoutView();
+      showToast(`Pridėta #${entry.sets.length} serija`);
+    }
+
+    function removeExtraSetFromExercise(exId) {
+      const entry = state.draft?.entries?.[exId];
+      if (!entry || !(Number(entry.extraSets) > 0)) return;
+      const last = entry.sets[entry.sets.length - 1];
+      if (!last || last.done) {
+        showToast('Pirma atžymėk paskutinę seriją');
+        return;
+      }
+      entry.extraSets = Math.max(0, (Number(entry.extraSets) || 0) - 1);
+      entry.sets.pop();
+      saveState();
+      renderWorkoutView();
+      showToast('Papildoma serija pašalinta');
     }
 
     function toggleStraps(exId) { state.draft.entries[exId].straps = !state.draft.entries[exId].straps; saveState(); renderWorkoutView(); }
@@ -8705,7 +8889,7 @@
           totalSets++;
           if (s.done) {
             doneSets++;
-            if (ex.weightLabel !== 'Sekundės') {
+            if (isE1rmEligibleEx(ex)) {
               const mult = (ex.weightLabel === '1 hantelio kg' || ex.weightLabel === '1 pusės kg') ? 2 : 1;
               totalVolume += (Number(s.weight) || 0) * (Number(s.reps) || 0) * mult;
             }
@@ -8781,21 +8965,23 @@
         const doneSets = entry.sets.filter(s => s.done);
         if (!doneSets.length) return;
 
-        const prevBest = getHistoricalBestE1RM(exId);
+        const canCalc = isE1rmEligibleEx(ex);
+        const prevBest = canCalc ? getHistoricalBestE1RM(exId) : 0;
         let sessionBest = 0;
         doneSets.forEach(s => {
           doneSetsCount++;
-          if (ex.weightLabel !== 'Sekundės') {
+          if (canCalc) {
             const mult = (ex.weightLabel === '1 hantelio kg' || ex.weightLabel === '1 pusės kg') ? 2 : 1;
             totalVolume += (Number(s.weight) || 0) * (Number(s.reps) || 0) * mult;
             const e1 = calcE1RM(s.weight, s.reps);
             if (e1 > sessionBest) sessionBest = e1;
           }
         });
-        if (prevBest > 0 && sessionBest > prevBest) newPRs.push({ name: ex.name, prev: prevBest, now: sessionBest });
+        if (canCalc && prevBest > 0 && sessionBest > prevBest) newPRs.push({ name: ex.name, prev: prevBest, now: sessionBest });
 
         loggedExercises.push({
-          exerciseId: exId, name: ex.name, sets: doneSets.map(s => ({ ...s })),
+          exerciseId: exId, name: ex.name, weightLabel: ex.weightLabel, isIsometricHold: isIsometricHoldEx(ex),
+          sets: doneSets.map(s => ({ ...s })),
           straps: !!entry.straps, comfort: entry.comfort, note: entry.note || '',
           cableRatio: ex.isCable ? (state.cableRatios[exId] || '2:1') : null
         });
@@ -8832,7 +9018,7 @@
       document.getElementById('sum-vol').textContent = `${sessionObj.totalVolume.toLocaleString('lt-LT')} kg`;
       document.getElementById('sum-sets').textContent = `${doneSetsCount}`;
       document.getElementById('summary-prs').innerHTML = newPRs.length
-        ? `<div style="padding:10px;border-radius:11px;background:var(--green-bg);border-left:3px solid var(--green);font-size:12.5px;"><strong>🏆 Nauji e1RM rekordai:</strong>${newPRs.map(p => `<div>${p.name}: ${p.prev} → <strong>${p.now} kg</strong></div>`).join('')}</div>`
+        ? `<div style="padding:10px;border-radius:11px;background:var(--green-bg);border-left:3px solid var(--green);font-size:12.5px;"><strong>🏆 Nauji e1RM rekordai:</strong>${newPRs.map(p => `<div>${escapeAttr(p.name)}: ${p.prev} → <strong>${p.now} kg</strong></div>`).join('')}</div>`
         : '';
 
       openModal('modal-summary');
@@ -9352,6 +9538,72 @@
       }
     }
 
+    function persistRestTimerState() {
+      if ((restTimerState.endTime || restTimerState.paused) && !restTimerState.finished) {
+        state.activeRestTimer = {
+          endTime: restTimerState.endTime,
+          duration: restTimerState.duration,
+          paused: !!restTimerState.paused,
+          pausedRemainingMs: restTimerState.pausedRemainingMs || 0,
+          label: restTimerState.label || ''
+        };
+      } else {
+        state.activeRestTimer = null;
+      }
+      saveState();
+    }
+
+    function restorePersistedRestTimer() {
+      const saved = state.activeRestTimer;
+      if (!saved || typeof saved !== 'object') return;
+      const dur = Math.max(15, Number(saved.duration) || 90);
+      const lbl = saved.label || 'Poilsis';
+      if (saved.paused && Number(saved.pausedRemainingMs) > 1000) {
+        restTimerState.duration = dur;
+        restTimerState.endTime = null;
+        restTimerState.finished = false;
+        restTimerState.paused = true;
+        restTimerState.pausedRemainingMs = Number(saved.pausedRemainingMs);
+        restTimerState.label = lbl;
+        const sec = Math.ceil(restTimerState.pausedRemainingMs / 1000);
+        const bar = document.getElementById('rest-timer-bar');
+        const pBtn = document.getElementById('rest-pause-btn');
+        const lEl = document.getElementById('rest-timer-label');
+        const rEl = document.getElementById('rest-time-readout');
+        if (bar) { bar.classList.remove('finished'); bar.classList.add('visible', 'paused'); }
+        if (pBtn) pBtn.textContent = '▶ Tęsti';
+        if (lEl) lEl.textContent = `⏸ Pristabdyta · ${lbl}`;
+        if (rEl) rEl.textContent = `${String(Math.floor(sec / 60)).padStart(2, '0')}:${String(sec % 60).padStart(2, '0')}`;
+        buildRestBarSlotMarkup();
+        updateRestBarVisuals((restTimerState.pausedRemainingMs / (dur * 1000)) * 100);
+        if (restTimerState.intervalId) clearInterval(restTimerState.intervalId);
+        restTimerState.intervalId = setInterval(tickRestTimer, 250);
+        return;
+      }
+      if (!saved.paused && Number(saved.endTime) > Date.now() + 800) {
+        restTimerState.duration = dur;
+        restTimerState.endTime = Number(saved.endTime);
+        restTimerState.finished = false;
+        restTimerState.paused = false;
+        restTimerState.pausedRemainingMs = 0;
+        restTimerState.label = lbl;
+        document.getElementById('rest-timer-label').textContent = `Poilsis · ${lbl}`;
+        const pBtn = document.getElementById('rest-pause-btn');
+        if (pBtn) pBtn.textContent = '⏸ Pauzė';
+        const bar = document.getElementById('rest-timer-bar');
+        if (bar) { bar.classList.remove('finished', 'paused'); bar.classList.add('visible'); }
+        buildRestBarSlotMarkup();
+        seedRestLiquidBubbles(Math.max(0.15, (restTimerState.endTime - Date.now()) / (dur * 1000)));
+        if (restTimerState.intervalId) clearInterval(restTimerState.intervalId);
+        tickRestTimer();
+        syncRestAnimLoop();
+        restTimerState.intervalId = setInterval(tickRestTimer, 250);
+        return;
+      }
+      state.activeRestTimer = null;
+      saveState();
+    }
+
     function startRestTimer(seconds, label) {
       if (restTimerState.autoHideId) { clearTimeout(restTimerState.autoHideId); restTimerState.autoHideId = null; }
       restTimerState.duration = seconds;
@@ -9360,6 +9612,7 @@
       restTimerState.paused = false;
       restTimerState.pausedRemainingMs = 0;
       restTimerState.label = label;
+      persistRestTimerState();
       restLiqSlosh = 0.9;
       restLiqPopRings.length = 0;
       restFuseSparks.length = 0;
@@ -9387,6 +9640,7 @@
       if (!restTimerState.paused) {
         restTimerState.pausedRemainingMs = Math.max(1000, restTimerState.endTime - Date.now());
         restTimerState.paused = true;
+        persistRestTimerState();
         if (bar) bar.classList.add('paused');
         if (pBtn) pBtn.textContent = '▶ Tęsti';
         if (lbl) lbl.textContent = `⏸ Pristabdyta · ${restTimerState.label || 'Poilsis'}`;
@@ -9395,6 +9649,7 @@
       } else {
         restTimerState.endTime = Date.now() + restTimerState.pausedRemainingMs;
         restTimerState.paused = false;
+        persistRestTimerState();
         if (bar) bar.classList.remove('paused');
         if (pBtn) pBtn.textContent = '⏸ Pauzė';
         if (lbl) lbl.textContent = `Poilsis · ${restTimerState.label || ''}`;
@@ -9415,6 +9670,8 @@
         updateRestBarVisuals(0);
         if (!restTimerState.finished) {
           restTimerState.finished = true;
+          state.activeRestTimer = null;
+          saveState();
           bar.classList.add('finished');
           syncRestAnimLoop();
           document.getElementById('rest-timer-label').textContent = 'Poilsis baigtas – kitas priėjimas!';
@@ -9441,6 +9698,7 @@
       if (restTimerState.paused) {
         restTimerState.pausedRemainingMs = Math.max(3000, restTimerState.pausedRemainingMs + deltaSec * 1000);
         restTimerState.duration = Math.max(15, restTimerState.duration + deltaSec);
+        persistRestTimerState();
         const sec = Math.ceil(restTimerState.pausedRemainingMs / 1000);
         document.getElementById('rest-time-readout').textContent = `${String(Math.floor(sec/60)).padStart(2,'0')}:${String(sec%60).padStart(2,'0')}`;
         updateRestBarVisuals((restTimerState.pausedRemainingMs / (restTimerState.duration * 1000)) * 100);
@@ -9452,6 +9710,7 @@
       restTimerState.endTime = Math.max(Date.now() + 3000, base + deltaSec * 1000);
       restTimerState.duration = Math.max(15, restTimerState.duration + deltaSec);
       restTimerState.finished = false;
+      persistRestTimerState();
       document.getElementById('rest-timer-bar').classList.remove('finished');
       tickRestTimer();
       syncRestAnimLoop();
@@ -9463,6 +9722,10 @@
       if (restTimerState.autoHideId) clearTimeout(restTimerState.autoHideId);
       if (restBarRafId) { cancelAnimationFrame(restBarRafId); restBarRafId = null; restBarLastTs = 0; }
       restTimerState.intervalId = null; restTimerState.autoHideId = null; restTimerState.endTime = null; restTimerState.finished = false; restTimerState.paused = false; restTimerState.pausedRemainingMs = 0;
+      if (state.activeRestTimer) {
+        state.activeRestTimer = null;
+        saveState();
+      }
       const bar = document.getElementById('rest-timer-bar');
       if (bar) bar.classList.remove('visible', 'finished', 'paused', 'heartbeat');
       const undoBar = document.getElementById('undo-float-bar');
@@ -9483,6 +9746,7 @@
       if (document.hidden) {
         if (bioRafId) { cancelAnimationFrame(bioRafId); bioRafId = null; }
         if (restBarRafId) { cancelAnimationFrame(restBarRafId); restBarRafId = null; restBarLastTs = 0; }
+        stopCableGuideAnim();
       } else {
         tickRestTimer();
         syncRestAnimLoop();
@@ -9490,6 +9754,9 @@
         updateSessionClock();
         syncBioAnimationLoop();
         renderTimerSignalControls();
+        if (document.getElementById('modal-cable-guide')?.classList.contains('open')) {
+          startCableGuideAnim();
+        }
         if (document.getElementById('modal-rest-bar')?.classList.contains('open') && !rtDemoRafId) {
           rtDemoLastTs = 0;
           rtDemoRafId = requestAnimationFrame(stepRestDemoLoop);
@@ -9523,6 +9790,10 @@
       plateUseBar = useBar;
       document.getElementById('plate-mode-bar')?.classList.toggle('active', useBar);
       document.getElementById('plate-mode-plates')?.classList.toggle('active', !useBar);
+      const inp = document.getElementById('plate-weight-input');
+      if (useBar && inp && (parseFloat(inp.value) || 0) < 20) {
+        inp.value = 20;
+      }
       if (!silent) {
         lastPlateRenderKey = '';
         renderPlateCalculator(true, false);
@@ -9567,7 +9838,6 @@
       // Auto-expand slider cap temporarily if exercise weight exceeds state.plateCalcMax (default 100 kg)
       const sl = document.getElementById('plate-slider');
       const ticks = document.getElementById('plate-ticks');
-      const maxLbl = document.getElementById('plate-slider-max-lbl');
       const minW = plateUseBar ? 20 : 0;
       const baseMax = Math.max(minW + 20, Number(state.plateCalcMax) || 100);
       const effMax = total > baseMax ? Math.ceil((total + 20) / 10) * 10 : baseMax;
@@ -9577,7 +9847,6 @@
         sl.value = clamped;
         sl.style.backgroundSize = (((clamped - minW) / Math.max(1, effMax - minW)) * 100) + '% 100%';
       }
-      if (maxLbl) maxLbl.textContent = total > baseMax ? `Auto maks. ${effMax} kg` : `Maks. ${effMax} kg`;
       if (ticks) {
         const s4 = (effMax - minW) / 4;
         ticks.innerHTML = [0, 1, 2, 3, 4].map(i => `<span>${Math.round(minW + i * s4)}</span>`).join('');
@@ -10774,7 +11043,9 @@
       e1rmHelpOpen = !e1rmHelpOpen;
       applyCollapsibleState('e1rm-help-collapse', e1rmHelpOpen);
       const btn = document.getElementById('btn-e1rm-help');
-      if (btn) btn.textContent = e1rmHelpOpen ? '▲ Slėpti pavyzdį' : 'ℹ️ Kaip skaičiuojama?';
+      if (btn) btn.innerHTML = e1rmHelpOpen
+        ? '▲ Slėpti pavyzdį'
+        : '<svg style="width:13px;height:13px;stroke:currentColor;fill:none;stroke-width:2.1;stroke-linecap:round;stroke-linejoin:round;" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9.5"/><path d="M12 16v-4.5"/><circle cx="12" cy="8.2" r="0.6" fill="currentColor" stroke="none"/></svg><span>Kaip skaičiuojama?</span>';
     }
 
     function getProgressExerciseMeta(exId) {
@@ -10790,6 +11061,8 @@
       const stats = {};
       state.history.forEach(sess => {
         (sess.exercises || []).forEach(e => {
+          const exMeta = getExercise(e.exerciseId);
+          if (e.isIsometricHold || e.weightLabel === 'Sekundės' || (exMeta && !isE1rmEligibleEx(exMeta))) return;
           let best = 0;
           (e.sets || []).forEach(s => { if (s.done) { const v = calcE1RM(s.weight, s.reps); if (v > best) best = v; } });
           if (!stats[e.exerciseId]) stats[e.exerciseId] = { count: 0, latest: 0 };
@@ -10827,13 +11100,13 @@
 
       const allMap = getAllExercisesMap();
       const stats = getProgressExerciseStatsMap();
-      const eligible = Object.values(allMap).filter(ex => ex.weightLabel !== 'Sekundės');
+      const eligible = Object.values(allMap).filter(ex => isE1rmEligibleEx(ex));
 
       let items = [];
       if (progressPickerTab === 'A') {
-        items = WORKOUT_TEMPLATES.A.map(id => allMap[id]).filter(ex => ex && ex.weightLabel !== 'Sekundės');
+        items = WORKOUT_TEMPLATES.A.map(id => allMap[id]).filter(ex => isE1rmEligibleEx(ex));
       } else if (progressPickerTab === 'B') {
-        items = WORKOUT_TEMPLATES.B.map(id => allMap[id]).filter(ex => ex && ex.weightLabel !== 'Sekundės');
+        items = WORKOUT_TEMPLATES.B.map(id => allMap[id]).filter(ex => isE1rmEligibleEx(ex));
       } else if (progressPickerTab === 'logged') {
         items = eligible.filter(ex => stats[ex.id] && stats[ex.id].count > 0)
           .sort((a, b) => (stats[b.id].count - stats[a.id].count));
@@ -10861,7 +11134,7 @@
             <div class="row" style="min-width:0;flex:1;">
               <span class="ex-pick-badge">${active ? '✓' : meta.short}</span>
               <div style="min-width:0;">
-                <div style="font-size:13.5px;font-weight:800;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${ex.name}</div>
+                <div style="font-size:13.5px;font-weight:800;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${escapeAttr(ex.name)}</div>
                 <div style="font-size:11px;color:var(--text-muted);">${meta.group}</div>
               </div>
             </div>
@@ -10873,8 +11146,8 @@
     function renderProgressPickerUI() {
       const allMap = getAllExercisesMap();
       const stats = getProgressExerciseStatsMap();
-      if (!selectedProgressExId || !allMap[selectedProgressExId] || allMap[selectedProgressExId].weightLabel === 'Sekundės') {
-        const firstLogged = Object.keys(stats).find(id => allMap[id] && allMap[id].weightLabel !== 'Sekundės');
+      if (!selectedProgressExId || !isE1rmEligibleEx(allMap[selectedProgressExId])) {
+        const firstLogged = Object.keys(stats).find(id => isE1rmEligibleEx(allMap[id]));
         selectedProgressExId = firstLogged || WORKOUT_TEMPLATES.A[0];
       }
 
@@ -10890,18 +11163,18 @@
       if (lblEl && ex) lblEl.textContent = ex.name;
 
       // Build quick 1-tap strip: logged exercises first, or active A/B main lifts
-      const loggedIds = Object.keys(stats).filter(id => allMap[id] && allMap[id].weightLabel !== 'Sekundės');
+      const loggedIds = Object.keys(stats).filter(id => isE1rmEligibleEx(allMap[id]));
       const fallbackIds = meta.tab === 'B' ? WORKOUT_TEMPLATES.B : WORKOUT_TEMPLATES.A;
       const quickIds = loggedIds.length >= 2
         ? Array.from(new Set([selectedProgressExId, ...loggedIds]))
-        : Array.from(new Set([selectedProgressExId, ...fallbackIds.filter(id => allMap[id] && allMap[id].weightLabel !== 'Sekundės')]));
+        : Array.from(new Set([selectedProgressExId, ...fallbackIds.filter(id => isE1rmEligibleEx(allMap[id]))]));
 
       const strip = document.getElementById('progress-quick-strip');
       if (strip) {
         strip.innerHTML = quickIds.map(id => {
           const item = allMap[id];
           const shortName = item.name.length > 22 ? item.name.slice(0, 21) + '…' : item.name;
-          return `<button type="button" class="ex-quick-chip ${id === selectedProgressExId ? 'active' : ''}" onclick="selectProgressExercise('${id}')">${shortName}</button>`;
+          return `<button type="button" class="ex-quick-chip ${id === selectedProgressExId ? 'active' : ''}" onclick="selectProgressExercise('${id}')">${escapeAttr(shortName)}</button>`;
         }).join('');
       }
     }
@@ -10928,7 +11201,11 @@
       };
 
       const sessByDate = {};
-      state.history.forEach(s => { if (s.date) sessByDate[s.date] = s; });
+      state.history.forEach(s => {
+        if (!s.date) return;
+        if (!sessByDate[s.date]) sessByDate[s.date] = [];
+        sessByDate[s.date].push(s);
+      });
 
       const habitList = state.showCollagenHabit ? [...BASE_HABITS, COLLAGEN_HABIT] : BASE_HABITS;
       const habitTotal = habitList.length;
@@ -10940,15 +11217,16 @@
         d.setDate(startDate.getDate() + i);
         const iso = fmtISO(d);
         const isFuture = iso > today;
-        const sess = sessByDate[iso] || null;
-        if (sess && !isFuture) workouts28++;
+        const daySessions = sessByDate[iso] || [];
+        const sess = daySessions.length ? daySessions[daySessions.length - 1] : null;
+        if (daySessions.length && !isFuture) workouts28 += daySessions.length;
         const dayH = state.habits[iso] || {};
         const hDone = habitList.filter(h => !!dayH[h.id]).length;
         if (!isFuture && hDone > 0) habitLoggedDays++;
         if (!isFuture && hDone === habitTotal && habitTotal > 0) habitFullDays++;
-        const hasRed = sess && (sess.exercises || []).some(e => e.comfort === 'red');
-        const hasYellow = sess && (sess.exercises || []).some(e => e.comfort === 'yellow');
-        days.push({ iso, dayNum: d.getDate(), isFuture, sess, hDone, hasRed, hasYellow });
+        const hasRed = daySessions.some(sn => (sn.exercises || []).some(e => e.comfort === 'red'));
+        const hasYellow = daySessions.some(sn => (sn.exercises || []).some(e => e.comfort === 'yellow'));
+        days.push({ iso, dayNum: d.getDate(), isFuture, sess, daySessions, hDone, hasRed, hasYellow });
       }
 
       // Compute weekly streak (consecutive calendar weeks with >= 1 workout, looking back from current or last week)
@@ -10984,16 +11262,27 @@
           d.iso === today ? 'is-today' : '',
           d.iso === selectedCalDate ? 'selected' : ''
         ].filter(Boolean).join(' ');
-        const lbl = d.sess ? d.sess.type : (d.isFuture ? '' : d.dayNum);
+        let lbl = d.isFuture ? '' : d.dayNum;
+        if (d.daySessions.length === 1) lbl = d.daySessions[0].type;
+        else if (d.daySessions.length > 1) {
+          const uniq = Array.from(new Set(d.daySessions.map(x => x.type)));
+          lbl = uniq.length > 1 ? uniq.join('+') : `${d.daySessions.length}×${uniq[0]}`;
+        }
         const flagHtml = d.hasRed ? '<span class="cal-cell-flag red"></span>' : (d.hasYellow ? '<span class="cal-cell-flag"></span>' : '');
         const dotHtml = (!d.isFuture && d.hDone === habitTotal && habitTotal > 0) ? '<span class="cal-cell-dot"></span>' : '';
         return `<button type="button" class="${cls}" style="${d.isFuture ? 'opacity:0.28;' : ''}" onclick="selectConsistencyDay('${d.iso}')"><span>${lbl}</span>${flagHtml}${dotHtml}</button>`;
       }).join('');
 
       const sel = days.find(d => d.iso === selectedCalDate) || days[days.length - 1];
-      const leftTxt = sel.sess
-        ? `<strong>${fmtShort(sel.iso)}:</strong> Treniruotė <strong>${sel.sess.type}</strong> · ${sel.sess.doneSetsCount} ser. · ${sel.sess.durationMin} min`
-        : (sel.isFuture ? `<strong>${fmtShort(sel.iso)}:</strong> Būsima diena` : `<strong>${fmtShort(sel.iso)}:</strong> Poilsio diena`);
+      let leftTxt;
+      if (sel.daySessions.length > 0) {
+        const totSets = sel.daySessions.reduce((a, x) => a + (Number(x.doneSetsCount) || 0), 0);
+        const totDur = sel.daySessions.reduce((a, x) => a + (Number(x.durationMin) || 0), 0);
+        const tLbl = sel.daySessions.map(x => x.type).join('+');
+        leftTxt = `<strong>${fmtShort(sel.iso)}:</strong> Treniruotė <strong>${tLbl}</strong> · ${totSets} ser. · ${totDur} min`;
+      } else {
+        leftTxt = sel.isFuture ? `<strong>${fmtShort(sel.iso)}:</strong> Būsima diena` : `<strong>${fmtShort(sel.iso)}:</strong> Poilsio diena`;
+      }
       const rightTxt = sel.isFuture ? '' : (sel.hDone === habitTotal
         ? `<span style="color:var(--green);font-weight:800;">● Režimas ${sel.hDone}/${habitTotal}</span>`
         : `<span style="color:var(--text-muted);">○ Režimas ${sel.hDone}/${habitTotal}</span>`);
@@ -11030,7 +11319,8 @@
           const doneSets = (exItem.sets || []).filter(s => s.done !== false).length;
           if (!doneSets) return;
           const meta = getExercise(exItem.exerciseId);
-          const grp = MUSCLE_GROUPS.find(g => g.ids.includes(exItem.exerciseId) || (meta && g.anims.includes(meta.anim)));
+          const grp = MUSCLE_GROUPS.find(g => g.ids.includes(exItem.exerciseId))
+            || MUSCLE_GROUPS.find(g => meta && g.anims.includes(meta.anim));
           if (grp) counts[grp.key] += doneSets;
         });
       });
@@ -11117,22 +11407,29 @@
         return;
       }
       const modeNames = { adaptation: 'Adaptacija', working: 'Darbinis', deload: 'Deload' };
+      const editSvg = '<svg style="width:13px;height:13px;stroke:currentColor;fill:none;stroke-width:2.1;stroke-linecap:round;stroke-linejoin:round;" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 1 1 3 3L7 19l-4 1 1-4Z"/></svg>';
       list.innerHTML = [...state.history].reverse().map(sess => {
         const flags = (sess.exercises || []).filter(e => e.comfort === 'yellow' || e.comfort === 'red');
         const flagHtml = flags.length
-          ? `<div class="row-wrap mt-8">${flags.map(f => `<span class="pill ${f.comfort === 'red' ? 'pill-red' : 'pill-yellow'}">${f.name}: ${f.comfort === 'red' ? 'skausmas' : 'įtampa'}${f.note ? ' – ' + escapeAttr(f.note) : ''}</span>`).join('')}</div>`
+          ? `<div class="row-wrap mt-8">${flags.map(f => `<span class="pill ${f.comfort === 'red' ? 'pill-red' : 'pill-yellow'}">${escapeAttr(f.name)}: ${f.comfort === 'red' ? 'skausmas' : 'įtampa'}${f.note ? ' – ' + escapeAttr(f.note) : ''}</span>`).join('')}</div>`
           : '';
         const timeRange = (sess.startedAt && sess.finishedAt)
           ? ` · ${formatClockHM(sess.startedAt)}–${formatClockHM(sess.finishedAt)}`
           : (sess.timestamp ? ` · ${formatClockHM(sess.timestamp)}` : '');
         const details = (sess.exercises || []).map(e => {
+          const exMeta = getExercise(e.exerciseId);
+          const wLbl = e.weightLabel || (exMeta ? exMeta.weightLabel : '');
+          const isSecOnly = wLbl === 'Sekundės';
+          const isHold = !!(e.isIsometricHold || e.exerciseId === 'plate_pinch');
           const setsTxt = (e.sets || []).map(s => {
             const hm = s.doneAt ? formatClockHM(s.doneAt) : '';
             const gap = (s.intervalSec !== undefined && s.intervalSec !== null) ? formatGapLabel(s.intervalSec) : '';
             const meta = hm ? ` <span style="opacity:0.7;font-size:10.5px;">(${hm}${gap ? ' ' + gap : ''})</span>` : '';
-            return `${s.weight}×${s.reps}${meta}`;
+            const valTxt = isSecOnly ? `${s.reps} sek.` : (isHold ? `${s.weight} kg × ${s.reps} s` : `${s.weight}×${s.reps}`);
+            return `${valTxt}${meta}`;
           }).join(', ');
-          return `<div style="font-size:12px;color:var(--text-muted);margin-top:3px;"><strong>${e.name}</strong>${e.cableRatio ? `<span class="cable-badge">${e.cableRatio}</span>` : ''}: <span class="tabular">${setsTxt}</span>${e.straps ? ' [diržai]' : ''}</div>`;
+          const noteSuffix = (e.comfort === 'green' && e.note) ? ` <span style="color:var(--accent);">· ${escapeAttr(e.note)}</span>` : '';
+          return `<div style="font-size:12px;color:var(--text-muted);margin-top:3px;"><strong>${escapeAttr(e.name)}</strong>${e.cableRatio ? `<span class="cable-badge">${escapeAttr(e.cableRatio)}</span>` : ''}: <span class="tabular">${setsTxt}</span>${e.straps ? ' [diržai]' : ''}${noteSuffix}</div>`;
         }).join('');
         return `
           <div class="history-item">
@@ -11140,8 +11437,8 @@
               <div><strong>Treniruotė ${sess.type}</strong> <span style="font-size:12px;color:var(--text-muted);">${sess.date}${timeRange}</span></div>
               <div class="row" style="gap:5px;">
                 <span class="pill">${modeNames[sess.mode] || sess.mode}</span>
-                <button class="btn btn-sm btn-ghost" style="min-height:28px;padding:2px 9px;" title="Redaguoti treniruotę" onclick="openEditSessionModal('${sess.id}')">✏️</button>
-                <button class="btn btn-sm btn-danger" style="min-height:28px;padding:2px 9px;" title="Ištrinti treniruotę" onclick="deleteSession('${sess.id}')">✕</button>
+                <button class="btn btn-sm btn-ghost" style="min-height:28px;padding:2px 9px;" title="Redaguoti treniruotę" aria-label="Redaguoti treniruotę" onclick="openEditSessionModal('${sess.id}')">${editSvg}</button>
+                <button class="btn btn-sm btn-danger" style="min-height:28px;padding:2px 9px;" title="Ištrinti treniruotę" aria-label="Ištrinti treniruotę" onclick="deleteSession('${sess.id}')">✕</button>
               </div>
             </div>
             <div class="tabular" style="font-size:12px;color:var(--accent);font-family:var(--font-mono);font-weight:700;margin-top:5px;">
@@ -11155,8 +11452,22 @@
 
     function deleteSession(sessId) {
       askConfirm('Ištrinti treniruotę?', 'Šis veiksmas negrįžtamas.', () => {
-        state.history = state.history.filter(s => s.id !== sessId); saveState(); renderProgressTab();
+        state.history = state.history.filter(s => s.id !== sessId);
+        const last = state.history.length ? state.history[state.history.length - 1] : null;
+        state.lastCompletedType = last ? last.type : null;
+        state.lastCompletedAt = last ? (last.finishedAt || last.timestamp || null) : null;
+        saveState();
+        renderProgressTab();
+        renderWorkoutView();
+        showToast('Treniruotė ištrinta');
       }, true);
+    }
+
+    function setEditSessionComfort(exIdx, status) {
+      const wrap = document.getElementById(`ed-comf-wrap-${exIdx}`);
+      if (!wrap) return;
+      wrap.dataset.comfort = status;
+      wrap.querySelectorAll('.edit-sess-cbtn').forEach(b => b.classList.toggle('active', b.dataset.c === status));
     }
 
     function openEditSessionModal(sessId) {
@@ -11164,21 +11475,35 @@
       if (!sess) return;
       editingSessionId = sessId;
       document.getElementById('edit-sess-title').textContent = `Redaguoti · Treniruotė ${sess.type}`;
-      document.getElementById('edit-sess-sub').textContent = `${sess.date} · pataisyk svorį ar pakartojimus (e1RM persiskaičiuos automatiškai)`;
+      document.getElementById('edit-sess-sub').textContent = `${sess.date} · svoris, pakartojimai, sąnariai ir pastabos`;
       const body = document.getElementById('edit-sess-body');
       body.innerHTML = (sess.exercises || []).map((exItem, exIdx) => {
         const meta = getExercise(exItem.exerciseId);
-        const isTime = meta && meta.weightLabel === 'Sekundės';
+        const wLbl = exItem.weightLabel || (meta ? meta.weightLabel : '');
+        const isTime = wLbl === 'Sekundės';
+        const isHold = !!(exItem.isIsometricHold || exItem.exerciseId === 'plate_pinch');
+        const stepVal = (meta && meta.step) ? meta.step : 0.25;
+        const comf = exItem.comfort || 'green';
         const rows = (exItem.sets || []).map((s, sIdx) => `
           <div class="edit-sess-row">
             <span class="tabular" style="color:var(--text-muted);font-weight:800;">#${sIdx + 1}</span>
             <div class="row" style="gap:5px;">
-              ${!isTime ? `<input id="ed-w-${exIdx}-${sIdx}" type="number" step="0.5" value="${Number(s.weight) || 0}" class="edit-num-inp"><span style="color:var(--text-muted);">kg ×</span>` : ''}
+              ${!isTime ? `<input id="ed-w-${exIdx}-${sIdx}" type="number" step="${stepVal}" value="${Number(s.weight) || 0}" class="edit-num-inp"><span style="color:var(--text-muted);">kg ×</span>` : ''}
               <input id="ed-r-${exIdx}-${sIdx}" type="number" step="1" value="${Number(s.reps) || 0}" class="edit-num-inp" style="width:56px;">
-              <span style="color:var(--text-muted);">${isTime ? 'sek.' : 'pak.'}</span>
+              <span style="color:var(--text-muted);">${isTime || isHold ? 'sek.' : 'pak.'}</span>
             </div>
           </div>`).join('');
-        return `<div class="edit-sess-ex"><div style="font-weight:800;font-size:13.5px;">${escapeAttr(exItem.name)}</div>${rows}</div>`;
+        return `
+          <div class="edit-sess-ex">
+            <div style="font-weight:800;font-size:13.5px;">${escapeAttr(exItem.name)}</div>
+            ${rows}
+            <div id="ed-comf-wrap-${exIdx}" class="edit-sess-comfort-row" data-comfort="${comf}">
+              <button type="button" class="edit-sess-cbtn g ${comf === 'green' ? 'active' : ''}" data-c="green" onclick="setEditSessionComfort(${exIdx}, 'green')">🟢 Laisvai</button>
+              <button type="button" class="edit-sess-cbtn y ${comf === 'yellow' ? 'active' : ''}" data-c="yellow" onclick="setEditSessionComfort(${exIdx}, 'yellow')">🟡 Įtampa</button>
+              <button type="button" class="edit-sess-cbtn r ${comf === 'red' ? 'active' : ''}" data-c="red" onclick="setEditSessionComfort(${exIdx}, 'red')">🔴 Skausmas</button>
+            </div>
+            <input id="ed-note-${exIdx}" type="text" class="input mt-8" style="min-height:33px;padding:4px 9px;font-size:12px;" placeholder="Pastaba šiam pratimui..." value="${escapeAttr(exItem.note || '')}">
+          </div>`;
       }).join('');
       openModal('modal-edit-session');
     }
@@ -11189,8 +11514,14 @@
       let totalVol = 0, doneSets = 0;
       (sess.exercises || []).forEach((exItem, exIdx) => {
         const meta = getExercise(exItem.exerciseId);
-        const isTime = meta && meta.weightLabel === 'Sekundės';
-        const mult = (meta && (meta.weightLabel === '1 hantelio kg' || meta.weightLabel === '1 pusės kg')) ? 2 : 1;
+        const wLbl = exItem.weightLabel || (meta ? meta.weightLabel : '');
+        const isTime = wLbl === 'Sekundės';
+        const isHold = !!(exItem.isIsometricHold || exItem.exerciseId === 'plate_pinch');
+        const mult = (wLbl === '1 hantelio kg' || wLbl === '1 pusės kg') ? 2 : 1;
+        const cWrap = document.getElementById(`ed-comf-wrap-${exIdx}`);
+        if (cWrap && cWrap.dataset.comfort) exItem.comfort = cWrap.dataset.comfort;
+        const nInp = document.getElementById(`ed-note-${exIdx}`);
+        if (nInp) exItem.note = nInp.value.trim();
         (exItem.sets || []).forEach((s, sIdx) => {
           if (!isTime) {
             const wInp = document.getElementById(`ed-w-${exIdx}-${sIdx}`);
@@ -11200,7 +11531,7 @@
           if (rInp) s.reps = Math.max(0, parseInt(rInp.value, 10) || 0);
           if (s.done !== false) {
             doneSets++;
-            if (!isTime) totalVol += (Number(s.weight) || 0) * (Number(s.reps) || 0) * mult;
+            if (!isTime && !isHold) totalVol += (Number(s.weight) || 0) * (Number(s.reps) || 0) * mult;
           }
         });
       });
@@ -11210,6 +11541,7 @@
       closeModal('modal-edit-session');
       editingSessionId = null;
       renderProgressTab();
+      renderWorkoutView();
       showToast('Treniruotės įrašas ir e1RM atnaujinti');
     }
 
@@ -11484,7 +11816,7 @@
         barEl.style.width = `${Math.min(100, Math.max(2, pct))}%`;
 
         if (statusEl) {
-          const hasSafetyBackup = !!localStorage.getItem(MIGRATION_BACKUP_KEY);
+          const hasSafetyBackup = !!(localStorage.getItem(MIGRATION_BACKUP_KEY) || localStorage.getItem('leverlab193_backup_before_v10'));
           statusEl.textContent = hasSafetyBackup
             ? '✓ Apsauginė kopija išsaugota · užteks >10 metų istorijos 100 % offline.'
             : 'Užteks >10 metų treniruočių istorijos 100 % offline.';
@@ -11615,21 +11947,31 @@
     }
 
     function exportCSV() {
-      const rows = [['Tipas', 'Data', 'Pradzia', 'Pabaiga', 'Treniruote', 'Pratimas', 'Blokas', 'Serija', 'Serija_atlikta', 'Tarpas_s', 'Svoris_kg', 'Pakartojimai', 'RIR', 'Dirzai', 'Sanariai', 'Pastaba']];
+      const modeNames = { adaptation: 'Adaptacija', working: 'Darbinis', deload: 'Deload' };
+      const rows = [['Tipas', 'Data', 'Pradzia', 'Pabaiga', 'Treniruote', 'Rezimas', 'Trukme_min', 'Pratimas_ar_rodiklis', 'Blokas', 'Serija', 'Serija_atlikta', 'Tarpas_s', 'Svoris_kg_ar_cm', 'Pakartojimai_ar_sek', 'RIR', 'Dirzai', 'Sanariai', 'Pastaba']];
       state.history.forEach(sess => {
         const startHM = sess.startedAt ? formatClockHM(sess.startedAt) : '';
         const endHM = sess.finishedAt ? formatClockHM(sess.finishedAt) : (sess.timestamp ? formatClockHM(sess.timestamp) : '');
+        const mLbl = modeNames[sess.mode] || sess.mode || '';
+        const durMin = sess.durationMin !== undefined ? sess.durationMin : '';
         (sess.exercises || []).forEach(ex => {
           (ex.sets || []).forEach((s, i) => {
             rows.push([
-              'Treniruote', sess.date, startHM, endHM, sess.type, `"${ex.name.replace(/"/g, '""')}"`, ex.cableRatio || '',
+              'Treniruote', sess.date, startHM, endHM, sess.type, mLbl, durMin, `"${(ex.name || '').replace(/"/g, '""')}"`, ex.cableRatio || '',
               i + 1, s.doneAt ? formatClockHM(s.doneAt) : '', (s.intervalSec !== undefined && s.intervalSec !== null) ? s.intervalSec : '',
               s.weight, s.reps, s.rir, ex.straps ? 'Taip' : 'Ne', ex.comfort, `"${(ex.note || '').replace(/"/g, '""')}"`
             ]);
           });
         });
       });
-      state.weights.forEach(w => rows.push(['Svoris', w.date, '', '', '', 'Kuno svoris', '', '', '', '', w.kg, '', '', '', '', '']));
+      (state.weights || []).forEach(w => rows.push(['Svoris', w.date, '', '', '', '', '', 'Kuno svoris (kg)', '', '', '', '', w.kg, '', '', '', '', '']));
+      (state.measurements || []).forEach(m => {
+        Object.keys(MEASURE_LABELS).forEach(k => {
+          if (m[k] !== undefined && m[k] !== null && m[k] !== '') {
+            rows.push(['Apimtis', m.date, '', '', '', '', '', `"${MEASURE_LABELS[k]} (cm)"`, '', '', '', '', m[k], '', '', '', '', '']);
+          }
+        });
+      });
       downloadFile('\uFEFF' + rows.map(r => r.join(',')).join('\n'), `leverlab193_eksportas_${todayISO()}.csv`, 'text/csv;charset=utf-8;');
       showToast('CSV failas eksportuotas');
     }
@@ -11951,7 +12293,8 @@
       if (!modal) return;
       const v = view === 'all' ? 'all' : 'single';
       modal.setAttribute('data-view', v);
-      modal.querySelectorAll('.mview-btn').forEach(b => b.classList.toggle('active', b.dataset.mv === v));
+      modal.querySelector('.mview-sw')?.setAttribute('data-mode', v);
+      modal.querySelectorAll('.mview-btn').forEach(b => b.classList.toggle('active', (b.dataset.mv || b.dataset.v) === v));
       if (v === 'all') {
         if (modalId === 'modal-card-frame') renderCardFrameAllGallery();
         else if (modalId === 'modal-card-anim') { renderCardAnimAllGallery(); setTimeout(replayCardAnimDemo, 40); }
@@ -12434,6 +12777,8 @@
 
       const hRow = document.getElementById('app-aph-row');
       if (hRow) hRow.innerHTML = [34, 40, 46, 52, 60, 70].map(v => `<button type="button" class="app-pill-btn ${v === h ? 'active' : ''}" onclick="setAnimPinHeight(${v})">${v} px</button>`).join('');
+      const hValEl = document.getElementById('app-aph-val');
+      if (hValEl) hValEl.textContent = `${h} px`;
       const wRow = document.getElementById('app-apw-row');
       if (wRow) wRow.innerHTML = [['sm','Siauri'], ['md','Vidutiniai'], ['lg','Platūs']].map(([k, l]) => `<button type="button" class="app-pill-btn ${k === wMode ? 'active' : ''}" onclick="setAnimPinWidth('${k}')">${l}</button>`).join('');
 
@@ -12516,6 +12861,8 @@
     }
 
     function openAppearanceModal() {
+      returnToAppearanceModal = false;
+      syncSubmodalBackButtons();
       applyCardFrameSettings();
       applyCardAnimSettings();
       applyAppearanceSettings();
@@ -12561,7 +12908,6 @@
         replayRestBarDemo();
       }
     }
-    function setPlateCalcMaxSetting(kg) { state.plateCalcMax = Number(kg) || 100; saveState(); applyAppearanceSettings(); }
 
     /* Live Interactive Preview Engine for #modal-rest-bar (1 Variant <-> All 10 Live, True 0 FPS when closed!) */
     let rtModalView = 'single';
@@ -13106,8 +13452,8 @@
     function openWhatsNewModal() { openModal('modal-whats-new'); }
     function closeWhatsNewModal() {
       closeModal('modal-whats-new');
-      if (state.lastSeenRelease !== 'v10.0') {
-        state.lastSeenRelease = 'v10.0';
+      if (state.lastSeenRelease !== 'v10.1') {
+        state.lastSeenRelease = 'v10.1';
         saveState();
       }
     }
@@ -13119,6 +13465,7 @@
     }
 
     function applyPwaUpdate() {
+      pwaUpdateAccepted = true;
       if (pwaWaitingWorker) {
         pwaWaitingWorker.postMessage({ type: 'SKIP_WAITING' });
       } else {
@@ -13142,7 +13489,7 @@
       try {
         const reg = await navigator.serviceWorker.getRegistration();
         if (!reg) {
-          if (st) st.textContent = 'Naudoji naujausią versiją (v10.0)';
+          if (st) st.textContent = 'Naudoji naujausią versiją (v10.1)';
           return;
         }
         await reg.update();
@@ -13153,7 +13500,7 @@
         } else if (reg.installing) {
           if (st) st.textContent = 'Atsisiunčiama nauja versija...';
         } else {
-          if (st) st.textContent = '✓ Naudoji naujausią versiją (v10.0)';
+          if (st) st.textContent = '✓ Naudoji naujausią versiją (v10.1)';
           showToast('✓ Turi naujausią versiją');
         }
       } catch (e) {
@@ -13163,24 +13510,24 @@
     }
 
     function initPwaManifest() {
-      if ('serviceWorker' in navigator) {
-        window.addEventListener('load', () => {
-          navigator.serviceWorker.register('./sw.js').then(reg => {
-            if (reg.waiting) reg.waiting.postMessage({ type: 'SKIP_WAITING' });
-            reg.addEventListener('updatefound', () => {
-              const nw = reg.installing;
-              if (!nw) return;
-              nw.addEventListener('statechange', () => {
-                if (nw.state === 'installed' && navigator.serviceWorker.controller) {
-                  nw.postMessage({ type: 'SKIP_WAITING' });
-                }
-              });
+      if ('serviceWorker' in navigator && (location.protocol === 'https:' || location.hostname === 'localhost')) {
+        navigator.serviceWorker.register('./sw.js').then(reg => {
+          if (reg.waiting && navigator.serviceWorker.controller) {
+            showPwaUpdateBanner(reg.waiting);
+          }
+          reg.addEventListener('updatefound', () => {
+            const nw = reg.installing;
+            if (!nw) return;
+            nw.addEventListener('statechange', () => {
+              if (nw.state === 'installed' && navigator.serviceWorker.controller) {
+                showPwaUpdateBanner(nw);
+              }
             });
-          }).catch(() => {});
-        });
+          });
+        }).catch(() => {});
         let swReloaded = false;
         navigator.serviceWorker.addEventListener('controllerchange', () => {
-          if (swReloaded) return;
+          if (!pwaUpdateAccepted || swReloaded) return;
           swReloaded = true;
           window.location.reload();
         });
@@ -13203,26 +13550,25 @@
       extraToolsOpen = (state.trainingMode !== 'adaptation');
       renderWorkoutFlowControls();
       renderWorkoutView();
+      restorePersistedRestTimer();
       updateScrollEdgeState();
       window.addEventListener('scroll', updateScrollEdgeState, { passive: true });
       window.addEventListener('resize', updateScrollEdgeState, { passive: true });
       document.addEventListener('keydown', (e) => {
         if (e.key === 'Escape') {
-          if (document.getElementById('modal-rir-guide')?.classList.contains('open')) closeModal('modal-rir-guide');
-          else if (document.getElementById('modal-edge-glow')?.classList.contains('open')) closeModal('modal-edge-glow');
-          else if (document.getElementById('modal-rest-bar')?.classList.contains('open')) closeRestBarModal();
-          else if (document.getElementById('modal-nav-anim')?.classList.contains('open')) closeNavAnimModal();
-          else if (document.getElementById('modal-joint-style')?.classList.contains('open')) closeModal('modal-joint-style');
-          else if (document.getElementById('modal-joint-btn')?.classList.contains('open')) closeModal('modal-joint-btn');
-          else if (document.getElementById('modal-anim-pin')?.classList.contains('open')) closeModal('modal-anim-pin');
-          else if (document.getElementById('modal-plate-icon')?.classList.contains('open')) closeModal('modal-plate-icon');
-          else if (document.getElementById('modal-card-frame')?.classList.contains('open')) closeModal('modal-card-frame');
-          else if (document.getElementById('modal-card-anim')?.classList.contains('open')) closeModal('modal-card-anim');
+          const openModals = Array.from(document.querySelectorAll('.modal-backdrop.open'));
+          if (!openModals.length) return;
+          const topId = openModals[openModals.length - 1].id;
+          if (topId === 'modal-rest-bar') closeRestBarModal();
+          else if (topId === 'modal-nav-anim') closeNavAnimModal();
+          else if (topId === 'modal-cable-guide') closeCableGuideModal();
+          else if (topId === 'modal-whats-new') closeWhatsNewModal();
+          else if (topId) closeModal(topId);
         }
       });
       checkBackupReminder();
       setInterval(updateSessionClock, 1000);
-      if (state.lastSeenRelease !== 'v10.0') {
+      if (state.lastSeenRelease !== 'v10.1') {
         setTimeout(() => openWhatsNewModal(), 350);
       }
     };
