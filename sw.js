@@ -1,4 +1,4 @@
-const CACHE_NAME = 'leverlab193-v10-0-cache-7';
+const CACHE_NAME = 'leverlab193-v10-0-cache-9';
 const ASSETS = [
   './',
   './index.html',

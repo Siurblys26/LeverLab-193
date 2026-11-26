@@ -13,9 +13,9 @@
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="apple-mobile-web-app-title" content="LeverLab 193">
-  <link rel="manifest" href="./manifest.json">
-  <link id="pwa-favicon" rel="icon" type="image/svg+xml" href="./icon.svg">
-  <link id="pwa-apple-icon" rel="apple-touch-icon" sizes="192x192" href="./icon-192.png">
+    <link rel="manifest" href="./manifest.json">
+  <link rel="icon" type="image/svg+xml" href="./icon.svg">
+  <link rel="apple-touch-icon" href="./icon-192.png">
   <title>LeverLab 193 (v10.0) – Sporto Salės Programa</title>
   <style>
     /* ==========================================================================
@@ -673,29 +673,100 @@
       background: var(--accent-soft); font-size: 12px;
       display: flex; align-items: center; justify-content: space-between; gap: 6px;
     }
+    .warmup-ex-wrap {
+      display: grid; grid-template-rows: 1fr; opacity: 1; margin-top: 8px;
+      transition: grid-template-rows 0.30s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.22s ease, margin-top 0.28s ease;
+    }
+    .warmup-ex-wrap.is-done { grid-template-rows: 0fr; opacity: 0; margin-top: 0; pointer-events: none; }
+    .warmup-ex-wrap > div { overflow: hidden; }
+    .warmup-ex-bar {
+      width: 100%; padding: 8px 10px 8px 11px; border-radius: 13px; text-align: left;
+      background: linear-gradient(135deg, var(--accent-soft), color-mix(in srgb, var(--bg-surface) 88%, transparent));
+      border: 1.5px solid color-mix(in srgb, var(--accent) 56%, transparent);
+      box-shadow: 0 0 14px color-mix(in srgb, var(--accent) 18%, transparent);
+      display: flex; align-items: center; justify-content: space-between; gap: 8px;
+      font-size: 12px; color: var(--text); cursor: pointer;
+      transition: background 0.22s ease, border-color 0.22s ease, transform 0.14s ease;
+    }
+    .warmup-ex-bar:active { transform: scale(0.985); }
+    .warmup-ex-bar.flash-ok { background: var(--green-bg); border-color: var(--green); }
+    .warmup-ex-info { display: flex; flex-direction: column; gap: 2px; min-width: 0; flex: 1; }
+    .warmup-ex-lbl { font-size: 9.5px; font-weight: 900; text-transform: uppercase; letter-spacing: 0.05em; color: var(--accent); }
+    .warmup-ex-vals { font-size: 12px; color: var(--text); line-height: 1.3; }
+    .warmup-ex-check {
+      padding: 5px 10px; border-radius: 999px; flex-shrink: 0;
+      background: var(--bg-card); border: 1px solid color-mix(in srgb, var(--accent) 48%, transparent);
+      color: var(--accent); font-size: 11px; font-weight: 800; white-space: nowrap;
+    }
+    .warmup-ex-bar.flash-ok .warmup-ex-check { background: var(--green); color: #052e16; border-color: var(--green); }
+    .warmup-done-undo {
+      margin-top: 8px; padding: 7px 10px; border-radius: 11px;
+      background: var(--green-bg); border: 1px solid color-mix(in srgb, var(--green) 36%, transparent);
+      display: flex; align-items: center; justify-content: space-between; gap: 8px;
+      font-size: 11.5px; color: var(--green); font-weight: 700;
+    }
 
     /* ==========================================================================
        7. THREE DISTINCT SET STATES (ROUND 5: COMPLETED / ACTIVE FOCUS / WAITING)
        ========================================================================== */
     .sets-list { margin-top: 13px; display: flex; flex-direction: column; gap: 9px; }
 
-    /* State 1: Completed Set (Dimmed, Compact 1-Row) */
+    /* State 1: Completed Set (Dimmed, Compact 1-Row + Tap-to-Edit Inline Drawer) */
     .set-done-compact {
-      display: flex; align-items: center; justify-content: space-between; gap: 8px;
+      display: flex; flex-direction: column; align-items: stretch;
       padding: 10px 12px; border-radius: 14px;
-      background: var(--bg-surface); opacity: 0.68;
-      transition: var(--transition);
+      background: var(--bg-surface); border: 1px solid transparent; opacity: 0.72;
+      transition: opacity 0.2s ease, border-color 0.22s ease, box-shadow 0.22s ease, background 0.2s ease;
     }
-    .set-done-compact:hover { opacity: 0.92; }
-    .done-left { display: flex; align-items: center; gap: 9px; min-width: 0; flex-wrap: wrap; }
+    .set-done-compact:hover { opacity: 0.94; }
+    .set-done-compact.is-editing {
+      opacity: 1; border-color: color-mix(in srgb, var(--accent) 46%, var(--border));
+      box-shadow: 0 0 0 1px var(--accent-soft);
+    }
+    .done-main-row { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+    .done-left {
+      display: flex; align-items: center; gap: 8px; min-width: 0; flex: 1; flex-wrap: wrap;
+      cursor: pointer; padding: 2px 0; -webkit-tap-highlight-color: transparent;
+    }
+    .done-edit-pen {
+      width: 12px; height: 12px; stroke: currentColor; fill: none; stroke-width: 2.1;
+      stroke-linecap: round; stroke-linejoin: round; color: var(--text-dim); opacity: 0.65;
+      flex-shrink: 0; transition: color 0.2s ease, opacity 0.2s ease, transform 0.2s ease;
+    }
+    .set-done-compact:hover .done-edit-pen,
+    .set-done-compact.is-editing .done-edit-pen { color: var(--accent); opacity: 1; transform: rotate(-10deg); }
     .done-idx { font-size: 11px; font-weight: 800; color: var(--text-dim); font-family: var(--font-mono); }
     .done-readout { font-size: 14px; font-weight: 800; color: var(--text); font-variant-numeric: tabular-nums; }
     .done-check-pill {
-      min-width: 40px; height: 32px; padding: 0 10px; border-radius: 999px;
+      min-width: 40px; height: 32px; padding: 0 10px; border-radius: 999px; flex-shrink: 0;
       background: var(--green-bg); color: var(--green);
       font-size: 12px; font-weight: 900;
       display: inline-flex; align-items: center; justify-content: center; gap: 4px;
     }
+    .done-edit-box {
+      margin-top: 10px; padding-top: 10px; border-top: 1px dashed var(--border);
+      display: flex; flex-direction: column; gap: 9px;
+    }
+    .done-edit-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+    .done-edit-grid.single-col { grid-template-columns: 1fr; }
+    .done-step-wrap { display: flex; flex-direction: column; gap: 4px; }
+    .done-step-lbl { font-size: 10px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.04em; color: var(--text-muted); }
+    .done-stepper {
+      display: flex; align-items: center; gap: 4px; padding: 3px; border-radius: 11px;
+      background: var(--bg-card); border: 1px solid var(--border);
+    }
+    .done-step-btn {
+      width: 36px; height: 36px; border-radius: 8px; flex-shrink: 0;
+      background: var(--bg-surface-2); color: var(--text); font-size: 18px; font-weight: 800;
+      display: inline-flex; align-items: center; justify-content: center;
+      transition: transform 0.12s ease, background 0.15s ease;
+    }
+    .done-step-btn:active { transform: scale(0.92); background: var(--accent-soft); color: var(--accent); }
+    .done-step-inp {
+      flex: 1; min-width: 0; width: 100%; text-align: center; background: transparent; border: none; outline: none;
+      color: var(--text); font-size: 16px; font-weight: 900; font-family: var(--font-mono); font-variant-numeric: tabular-nums;
+    }
+    .done-edit-actions { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
 
     /* State 2: Active Focus Set (#9 Frosted Specular Glass Rim + 22px Tabular + 48px Thumb Targets) */
     .set-active-focus {
@@ -1255,7 +1326,7 @@
     .plate-slider:active::-webkit-slider-thumb { transform: scale(1.14); }
     .plate-ticks {
       display: flex; justify-content: space-between;
-      font-size: 9.5px; font-family: var(--font-mono); color: var(--text-dim); margin-top: 4px; font-weight: 700;
+      font-size: 11px; font-family: var(--font-mono); color: var(--accent); margin-top: 5px; font-weight: 800;
     }
     @keyframes wInputBump { 0% { transform: scale(1); } 45% { transform: scale(1.06); color: var(--accent); } 100% { transform: scale(1); } }
     #plate-weight-input.bump { animation: wInputBump 0.22s cubic-bezier(0.22, 1, 0.36, 1); }
@@ -2735,19 +2806,181 @@
     .rir-guide-item strong { color: var(--text); }
 
     /* Clean Hidden Scrollbars Inside Modals & Drawers (No Ugly White Windows Bars) */
-    .modal-sheet, .rtm-pane-all, .eg-demo-scroll, .picker-list, #edit-sess-body, #modal-whats-new .modal-sheet > div {
+    .modal-sheet, .rtm-pane-all, .mview-pane-all, .eg-demo-scroll, .picker-list, #edit-sess-body, #modal-whats-new .modal-sheet > div {
       scrollbar-width: none; -ms-overflow-style: none;
     }
-    .modal-sheet::-webkit-scrollbar, .rtm-pane-all::-webkit-scrollbar, .eg-demo-scroll::-webkit-scrollbar,
+    .modal-sheet::-webkit-scrollbar, .rtm-pane-all::-webkit-scrollbar, .mview-pane-all::-webkit-scrollbar, .eg-demo-scroll::-webkit-scrollbar,
     .picker-list::-webkit-scrollbar, #edit-sess-body::-webkit-scrollbar, #modal-whats-new .modal-sheet > div::-webkit-scrollbar { display: none; }
 
-    /* Smooth Fold-Up Collapse Animation on Active Exercise */
+    /* Zero-Jump True-Height Accordion Collapse (Exact Crossfade Into Real Compact Strip) */
     .ex-active-card.collapsing-out {
-      opacity: 0 !important;
-      transform: translate3d(0, -6px, 0) scale(0.97) !important;
-      transition: opacity 0.17s ease, transform 0.18s cubic-bezier(0.22, 1, 0.36, 1) !important;
+      position: relative !important;
+      overflow: hidden !important;
+      padding: 0 !important;
+      border-radius: 15px !important;
+      background: var(--bg-card) !important;
+      border: 1px solid var(--border) !important;
+      box-shadow: none !important;
+      transition: height calc(0.27s * var(--anim-spd)) cubic-bezier(0.22, 1, 0.36, 1),
+                  border-color 0.2s ease, box-shadow 0.2s ease, background 0.2s ease !important;
       pointer-events: none;
     }
+    .ex-active-card.collapsing-out > :not(.collapse-strip-ghost) {
+      opacity: 0 !important;
+      transform: translate3d(0, -6px, 0) !important;
+      transition: opacity 0.11s ease, transform 0.14s ease !important;
+    }
+    .collapse-strip-ghost {
+      position: absolute; inset: 0; padding: 11px 14px;
+      display: flex; align-items: center; justify-content: space-between; gap: 10px;
+      opacity: 0; pointer-events: none;
+      transition: opacity 0.15s ease 0.08s;
+    }
+    .ex-active-card.collapsing-out .collapse-strip-ghost { opacity: 1; }
+
+    /* Clean Theme-Matched Planas B / A Button (Zero System Emoji) */
+    .planb-btn {
+      display: inline-flex; align-items: center; justify-content: center; gap: 5px;
+      min-height: 30px; padding: 0 10px; border-radius: 10px; flex-shrink: 0;
+      font-size: 11.5px; font-weight: 800; white-space: nowrap;
+      border: 1px solid color-mix(in srgb, var(--accent) 34%, transparent);
+    }
+    .planb-btn.btn-amber-ghost { border-color: color-mix(in srgb, var(--yellow) 45%, transparent); }
+    .planb-btn svg {
+      width: 13.5px; height: 13.5px; stroke: currentColor; fill: none;
+      stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round; flex-shrink: 0;
+    }
+
+    /* 14 p. #1 (A) Single Morphing Card: 3 Flying Icons (↗ / ◎ / ⚠) + Zero-Blink WAAPI FLIP */
+    .ex-info-wrap {
+      position: relative; margin-top: 9px; margin-bottom: 8px;
+      border-radius: 14px; background: var(--bg-surface); border: 1px solid var(--border);
+      overflow: hidden;
+      transition: height 0.34s cubic-bezier(0.22, 1, 0.36, 1), border-color 0.26s ease, box-shadow 0.26s ease;
+    }
+    .ex-info-wrap.no-trans, .ex-info-wrap.no-trans * { transition: none !important; animation: none !important; }
+    .ex-info-wrap.open {
+      border-color: color-mix(in srgb, var(--accent) 44%, transparent);
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.18);
+    }
+    .ex-info-wrap .ex-info-bar-wrap { position: relative; }
+    .ex-info-wrap.open .ex-info-bar-wrap { display: none; }
+    .ex-info-wrap .ex-info-toggle {
+      width: 100%; margin: 0; padding: 6px 7px 6px 8px; border-radius: 14px;
+      background: transparent; border: none;
+      display: flex; align-items: center; justify-content: space-between; gap: 8px;
+    }
+    .ex-info-dock { display: inline-flex; align-items: center; gap: 7px; }
+    .ex-info-dock .qc-ico { margin-top: 0; }
+    .ex-info-wrap.is-flying .ex-info-dock,
+    .ex-info-wrap.is-flying .qc-fly-t { visibility: hidden; }
+    .ex-info-wrap .ex-info-body { display: none; }
+    .ex-info-wrap.open .ex-info-body { display: block; }
+    .ex-info-wrap .quick-cues { margin-top: 0; background: transparent; border-radius: 0; padding: 10px 10px 8px; }
+    .ex-info-wrap .ex-prev-line { margin: 0 10px 9px; background: var(--bg-card); border: 1px solid var(--border); }
+    .ex-info-wrap .warmup-done-undo { margin: 0 10px 9px; }
+    .ex-merge-close {
+      width: 26px; height: 26px; border-radius: 8px; flex-shrink: 0;
+      background: var(--accent-soft); border: 1px solid color-mix(in srgb, var(--accent) 42%, transparent);
+      color: var(--accent); display: inline-flex; align-items: center; justify-content: center; cursor: pointer;
+      transition: transform 0.16s ease;
+    }
+    .ex-merge-close:active { transform: scale(0.9); }
+    .ex-merge-close svg { width: 14px; height: 14px; stroke: currentColor; fill: none; stroke-width: 2.4; stroke-linecap: round; stroke-linejoin: round; transform: rotate(180deg); }
+    .ex-fly-clone {
+      position: absolute; left: 0; top: 0; z-index: 40; pointer-events: none;
+      margin: 0 !important; will-change: transform;
+    }
+
+    /* Reusable Segmented 1-Variant <-> All-Live Switcher Across All Appearance Modals */
+    .mview-sw {
+      position: relative; display: grid; grid-template-columns: 1fr 1fr;
+      padding: 3px; border-radius: 12px; margin: 2px 0 10px;
+      background: var(--bg); border: 1px solid var(--border);
+    }
+    .mview-thumb {
+      position: absolute; top: 3px; left: 3px; width: calc(50% - 3px); height: calc(100% - 6px);
+      border-radius: 9px; background: var(--bg-surface-2);
+      box-shadow: 0 3px 10px rgba(0, 0, 0, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.14);
+      transform: translate3d(0, 0, 0); transition: transform 0.32s cubic-bezier(0.22, 1, 0.36, 1);
+      pointer-events: none;
+    }
+    [data-theme="nordic"] .mview-thumb { background: var(--bg-card); box-shadow: 0 2px 8px rgba(15, 23, 42, 0.12); }
+    .mview-modal[data-view="all"] .mview-thumb { transform: translate3d(100%, 0, 0); }
+    .mview-btn {
+      position: relative; z-index: 1; padding: 7px 6px; border-radius: 9px;
+      font-size: 11.5px; font-weight: 800; color: var(--text-muted);
+      display: inline-flex; align-items: center; justify-content: center; gap: 6px;
+      transition: color 0.2s ease;
+    }
+    .mview-btn svg { width: 14px; height: 14px; stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; flex-shrink: 0; }
+    .mview-btn.active { color: var(--accent); }
+    .mview-pane-single { display: block; }
+    .mview-modal[data-view="all"] .mview-pane-single { display: none; }
+    .mview-pane-all {
+      display: none; max-height: 390px; overflow-y: auto; padding: 2px 2px 8px;
+      flex-direction: column; gap: 9px;
+    }
+    .mview-modal[data-view="all"] .mview-pane-all { display: flex; }
+    .mview-all-card {
+      position: relative; padding: 10px 11px; border-radius: 15px; flex-shrink: 0;
+      background: var(--bg-surface); border: 1.5px solid var(--border); cursor: pointer;
+      transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    }
+    .mview-all-card.picked { border-color: var(--accent); box-shadow: 0 0 0 1px var(--accent-soft), 0 6px 18px var(--accent-glow); }
+    .mview-all-hd { display: flex; align-items: center; justify-content: space-between; gap: 6px; margin-bottom: 8px; }
+    .mview-all-name { font-size: 11.5px; font-weight: 800; color: var(--text); }
+    .mview-all-name b { color: var(--accent); font-family: var(--font-mono); margin-right: 4px; }
+    .mview-zoom {
+      padding: 2px 7px; border-radius: 8px; font-size: 10px; font-weight: 800;
+      background: var(--bg-card); border: 1px solid var(--border); color: var(--text-muted);
+    }
+    .mview-all-card.picked .mview-zoom { background: var(--accent-soft); border-color: var(--accent); color: var(--accent); }
+    .eg-all-strip {
+      position: relative; height: 42px; border-radius: 11px; overflow: hidden;
+      background: var(--bg-card); border: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: space-between; padding: 0 10px;
+      font-size: 11px; font-weight: 700; color: var(--text-muted);
+    }
+    .eg-all-strip .edge-glow-top { top: 0; }
+    .eg-all-strip .edge-glow-bot { bottom: 0; }
+    .pi-demo-hdr {
+      display: flex; align-items: center; justify-content: space-between; gap: 8px;
+      padding: 10px 12px; border-radius: 14px; background: var(--bg-card); border: 1px solid var(--border);
+    }
+
+    /* Interactive Live-Demo Appearance Modals */
+    .live-demo-stage {
+      padding: 13px; border-radius: 16px; margin: 10px 0 4px;
+      background: var(--bg); border: 1.5px solid var(--border);
+    }
+    .nav-demo-shell {
+      border-radius: 16px; overflow: hidden;
+      background: var(--bg-nav); border: 1.5px solid var(--border);
+      box-shadow: var(--shadow);
+    }
+    .nav-demo-shell .bottom-nav-inner { height: 60px; max-width: none; }
+    .joint-demo-card {
+      padding: 12px 13px; border-radius: 15px;
+      background: var(--bg-card); border: 1.5px solid var(--border);
+    }
+    .joint-demo-card .joint-section { margin-top: 0; padding-top: 0; border-top: none; }
+    .joint-demo-feedback {
+      margin-top: 8px; padding: 7px 10px; border-radius: 10px;
+      background: var(--bg-surface); border: 1px solid var(--border);
+      font-size: 11px; color: var(--text-muted); line-height: 1.38;
+    }
+    .jb-grp-lbl {
+      font-size: 10px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.05em;
+      color: var(--text-muted); margin: 8px 0 5px;
+    }
+    .jb-demo-chip {
+      display: inline-flex; align-items: center; gap: 6px; padding: 5px 10px; border-radius: 999px;
+      background: var(--bg-surface); border: 1px solid var(--border); color: var(--text-muted);
+      font-size: 11px; font-weight: 700; margin-top: 8px; transition: var(--transition);
+    }
+    .jb-demo-chip.on { background: var(--accent-soft); border-color: var(--accent); color: var(--accent); }
+    .jb-demo-chip i { width: 6px; height: 6px; border-radius: 50%; background: currentColor; display: inline-block; }
 
     /* v10+: Rest Timer Modal Clean Elevated Segmented Switcher + Fixed 10-Bar Gallery */
     .rtm-view-sw {
@@ -2885,7 +3118,7 @@
       width: 24px; height: 3px; border-radius: 0 0 99px 99px;
       background: #ffffff; box-shadow: 0 0 10px #ffffff, 0 0 18px var(--accent);
     }
-    [data-theme="nordic"][data-nav-anim="3"] .nav-slide-ind::before {
+    [data-theme="nordic"] [data-nav-anim="3"] .nav-slide-ind::before {
       background: var(--accent); box-shadow: 0 2px 10px var(--accent-glow);
     }
     [data-nav-anim="3"] .nav-slide-ind::after {
@@ -2989,10 +3222,11 @@
     .jb-2c-n.on { background: var(--green-bg); color: var(--green); border-color: var(--green); }
     .jb-2c-n.has-note-dot::after { background: var(--green); box-shadow: 0 0 6px var(--green); }
 
-    .jb-2d-i { width: 29px; height: 29px; border-radius: 999px; background: var(--bg-surface-2); color: var(--text-muted); border: 1px solid transparent; }
+    .jb-2d-i { width: 32px; height: 32px; border-radius: 999px; background: var(--bg-surface-2); color: var(--text-muted); border: 1px solid transparent; }
     .jb-2d-i.on { background: var(--accent); color: var(--accent-text); box-shadow: 0 0 12px var(--accent-glow); }
     .jb-2d-n { width: 35px; height: 35px; border-radius: 999px; background: var(--bg-surface-2); color: var(--text); border: 1px solid transparent; }
     .jb-2d-n.on { background: var(--accent); color: var(--accent-text); box-shadow: 0 0 14px var(--accent-glow); }
+    .jb-2d-n.has-note-dot::after { top: 1px; right: 1px; width: 6px; height: 6px; box-shadow: 0 0 0 2px var(--bg-card), 0 0 6px var(--accent); }
     .jb-2d-n.has-note-dot.on::after { display: none; }
 
     .jb-2e-i { width: 29px; height: 29px; border-radius: 999px; background: transparent; color: var(--text-muted); }
@@ -3068,7 +3302,7 @@
   </style>
 </head>
 <body>
-  <div class="app-shell">
+  <div id="app-shell" class="app-shell">
     <!-- PWA New Version Available Banner -->
     <div id="pwa-update-bar" class="pwa-update-bar">
       <span><strong>🔄 Yra nauja LeverLab 193 versija!</strong> Atnaujink (duomenys išliks).</span>
@@ -3780,7 +4014,7 @@
   </div>
 
   <!-- Fixed Bottom Navigation -->
-  <nav class="bottom-nav">
+  <nav id="bottom-nav" class="bottom-nav" data-nav-anim="1">
     <div id="app-edge-bot" class="edge-glow-bot" data-edge-style="1" aria-hidden="true">
       <div class="edge-fx-depth"></div>
       <div class="edge-fx-bloom"></div>
@@ -3816,7 +4050,7 @@
   <div id="modal-planb" class="modal-backdrop" onclick="closeModalOnBackdrop(event, 'modal-planb')">
     <div class="modal-sheet">
       <div class="row-between" style="margin-bottom:11px;">
-        <h3 id="planb-title" style="margin:0;font-size:17px;">⚡ Planas B / Keisti pratimą</h3>
+        <h3 id="planb-title" style="margin:0;font-size:17px;">Planas B / Keisti pratimą</h3>
         <button class="btn btn-sm btn-secondary" onclick="closeModal('modal-planb')">Uždaryti</button>
       </div>
       <div id="planb-body"></div>
@@ -3845,10 +4079,6 @@
         <button class="btn btn-secondary" onclick="stepPlateWeight(5)">+5</button>
       </div>
       <div class="plate-slider-wrap">
-        <div class="plate-slider-meta">
-          <span>Slinkiklis (žingsnis 2,5 kg)</span>
-          <span id="plate-slider-max-lbl" style="color:var(--accent);font-family:var(--font-mono);">Maks. 100 kg</span>
-        </div>
         <input id="plate-slider" class="plate-slider" type="range" min="20" max="100" step="2.5" value="60" oninput="onPlateSliderInput(this.value)">
         <div id="plate-ticks" class="plate-ticks"><span>20</span><span>40</span><span>60</span><span>80</span><span>100</span></div>
       </div>
@@ -3867,20 +4097,23 @@
         <button class="btn btn-sm btn-secondary" onclick="closeModal('modal-appearance')">Uždaryti</button>
       </div>
 
-      <!-- 0. Active Card Frame, Exercise Animation & Rest Timer Bar Live-Demo Pickers -->
-      <div class="grid-2" style="gap:7px;margin-bottom:7px;">
+      <!-- All Appearance Pickers Grouped Cleanly as Live-Demo Rows (1 Variant <-> All Live) -->
+      <div class="grid-2" style="gap:7px;margin-bottom:8px;">
         <button type="button" class="app-pick-card" style="padding:10px 9px;align-items:flex-start;text-align:left;gap:3px;background:var(--bg-surface);" onclick="closeModal('modal-appearance');openCardFrameModal()">
-          <span style="font-size:12px;font-weight:800;color:var(--text);">✨ Langelio rėmelis</span>
+          <span style="font-size:12px;font-weight:800;color:var(--text);">Langelio rėmelis</span>
           <span id="settings-frame-summary" style="font-size:10.5px;color:var(--accent);font-weight:700;line-height:1.25;">#9 Stiklinis šviesos kraštas</span>
         </button>
         <button type="button" class="app-pick-card" style="padding:10px 9px;align-items:flex-start;text-align:left;gap:3px;background:var(--bg-surface);" onclick="closeModal('modal-appearance');openCardAnimModal()">
-          <span style="font-size:12px;font-weight:800;color:var(--text);">🎬 Pratimų animacija</span>
+          <span style="font-size:12px;font-weight:800;color:var(--text);">Pratimų animacija</span>
           <span id="settings-anim-summary" style="font-size:10.5px;color:var(--accent);font-weight:700;line-height:1.25;">#10 Šviesos blyksnis · 1.0×</span>
         </button>
       </div>
+
       <div class="setting-toggle-row" style="margin-bottom:8px;padding:10px 11px;background:var(--bg-surface);border:1.5px solid var(--border);" onclick="closeModal('modal-appearance');openRestBarModal()">
         <div class="row" style="min-width:0;flex:1;gap:9px;">
-          <span style="width:30px;height:30px;border-radius:9px;background:var(--accent-soft);color:var(--accent);display:inline-flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0;">⏱</span>
+          <span style="width:30px;height:30px;border-radius:9px;background:var(--accent-soft);color:var(--accent);display:inline-flex;align-items:center;justify-content:center;flex-shrink:0;">
+            <svg style="width:16px;height:16px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;" viewBox="0 0 24 24"><circle cx="12" cy="13" r="8"/><path d="M12 9v4l2.5 1.5M9 2h6"/></svg>
+          </span>
           <div style="min-width:0;flex:1;">
             <div style="font-weight:800;font-size:12.5px;color:var(--text);line-height:1.2;">Poilsio laikmačio juosta</div>
             <div id="settings-rtbar-summary" style="font-size:11px;color:var(--accent);font-weight:700;margin-top:2px;line-height:1.2;">#4 Tikra skysčio fizika + burbuliukai</div>
@@ -3888,75 +4121,83 @@
         </div>
         <span class="pill pill-accent" style="padding:4px 9px;font-size:10.5px;font-weight:800;flex-shrink:0;">Keisti ▸</span>
       </div>
-      <div class="setting-toggle-row" style="margin-bottom:10px;padding:10px 11px;background:var(--bg-surface);border:1.5px solid var(--border);" onclick="closeModal('modal-appearance');openEdgeGlowModal()">
+
+      <div class="setting-toggle-row" style="margin-bottom:8px;padding:10px 11px;background:var(--bg-surface);border:1.5px solid var(--border);" onclick="closeModal('modal-appearance');openEdgeGlowModal()">
         <div class="row" style="min-width:0;flex:1;gap:9px;">
-          <span style="width:30px;height:30px;border-radius:9px;background:var(--accent-soft);color:var(--accent);display:inline-flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0;">🌌</span>
+          <span style="width:30px;height:30px;border-radius:9px;background:var(--accent-soft);color:var(--accent);display:inline-flex;align-items:center;justify-content:center;flex-shrink:0;">
+            <svg style="width:16px;height:16px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;" viewBox="0 0 24 24"><path d="M4 5h16M4 19h16"/><path d="M7 9h10M9 15h6" opacity="0.55"/></svg>
+          </span>
           <div style="min-width:0;flex:1;">
             <div style="font-weight:800;font-size:12.5px;color:var(--text);line-height:1.2;">Viršaus / apačios ribos švytėjimas</div>
-            <div id="settings-edgeglow-summary" style="font-size:11px;color:var(--accent);font-weight:700;margin-top:2px;line-height:1.2;">#1 Neoninis horizontas (10 stilių)</div>
+            <div id="settings-edgeglow-summary" style="font-size:11px;color:var(--accent);font-weight:700;margin-top:2px;line-height:1.2;">#1 Neoninis horizontas</div>
           </div>
         </div>
         <span class="pill pill-accent" style="padding:4px 9px;font-size:10.5px;font-weight:800;flex-shrink:0;">Keisti ▸</span>
       </div>
 
-      <!-- 1. Animacija & Pin + YouTube Button Style, Height & Width -->
-      <div class="app-opt-sec">
-        <div class="app-opt-hd">
-          <span>Mygtukas „Animacija &amp; Pin“</span>
-          <span id="app-animpin-lbl" class="pill pill-accent" style="font-size:10px;">#5 LeverLab svirtis</span>
+      <div class="setting-toggle-row" style="margin-bottom:8px;padding:10px 11px;background:var(--bg-surface);border:1.5px solid var(--border);" onclick="closeModal('modal-appearance');openNavAnimModal()">
+        <div class="row" style="min-width:0;flex:1;gap:9px;">
+          <span style="width:30px;height:30px;border-radius:9px;background:var(--accent-soft);color:var(--accent);display:inline-flex;align-items:center;justify-content:center;flex-shrink:0;">
+            <svg style="width:16px;height:16px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;" viewBox="0 0 24 24"><rect x="3" y="14" width="18" height="7" rx="2"/><path d="M7 17.5h2M11 17.5h2M15 17.5h2M9 10l3-3 3 3"/></svg>
+          </span>
+          <div style="min-width:0;flex:1;">
+            <div style="font-weight:800;font-size:12.5px;color:var(--text);line-height:1.2;">Apatinio meniu animacija</div>
+            <div id="settings-navanim-summary" style="font-size:11px;color:var(--accent);font-weight:700;margin-top:2px;line-height:1.2;">#1 Slenkanti juostelė</div>
+          </div>
         </div>
-        <div id="app-animpin-grid" class="app-icon-grid-5"></div>
-        <div style="font-size:10.5px;font-weight:800;color:var(--text-muted);margin-top:9px;">Aukštis (numatyta 46 px):</div>
-        <div id="app-aph-row" class="app-pill-row cols-6"></div>
-        <div style="font-size:10.5px;font-weight:800;color:var(--text-muted);margin-top:7px;">Plotis (numatyta Vidutiniai):</div>
-        <div id="app-apw-row" class="app-pill-row cols-3"></div>
+        <span class="pill pill-accent" style="padding:4px 9px;font-size:10.5px;font-weight:800;flex-shrink:0;">Keisti ▸</span>
       </div>
 
-      <!-- 2. Plate Icon Style & Animation -->
-      <div class="app-opt-sec">
-        <div class="app-opt-hd">
-          <span>Disko ikona ir animacija</span>
-          <span id="app-plateico-lbl" class="pill pill-accent" style="font-size:10px;">#6 Firminis</span>
+      <div class="setting-toggle-row" style="margin-bottom:8px;padding:10px 11px;background:var(--bg-surface);border:1.5px solid var(--border);" onclick="closeModal('modal-appearance');openJointStyleModal()">
+        <div class="row" style="min-width:0;flex:1;gap:9px;">
+          <span style="width:30px;height:30px;border-radius:9px;background:var(--green-bg);color:var(--green);display:inline-flex;align-items:center;justify-content:center;flex-shrink:0;">
+            <svg style="width:16px;height:16px;" viewBox="0 0 24 24"><circle cx="6.5" cy="12" r="3" fill="var(--green)"/><circle cx="12.5" cy="12" r="2.4" fill="var(--yellow)"/><circle cx="18" cy="12" r="2.4" fill="var(--red)"/></svg>
+          </span>
+          <div style="min-width:0;flex:1;">
+            <div style="font-weight:800;font-size:12.5px;color:var(--text);line-height:1.2;">Sąnarių šviesoforas („Laisvai“)</div>
+            <div id="settings-jointstyle-summary" style="font-size:11px;color:var(--accent);font-weight:700;margin-top:2px;line-height:1.2;">#2 Vientisas kanalas</div>
+          </div>
         </div>
-        <div id="app-plateico-grid" class="app-icon-grid-6"></div>
+        <span class="pill pill-accent" style="padding:4px 9px;font-size:10.5px;font-weight:800;flex-shrink:0;">Keisti ▸</span>
       </div>
 
-      <!-- 3. Bottom Navigation Animation Style (11 p.) -->
-      <div class="app-opt-sec">
-        <div class="app-opt-hd">
-          <span>Apatinio meniu animacija</span>
-          <span id="app-navanim-lbl" class="pill pill-accent" style="font-size:10px;">#1 Slenkanti juostelė</span>
+      <div class="setting-toggle-row" style="margin-bottom:8px;padding:10px 11px;background:var(--bg-surface);border:1.5px solid var(--border);" onclick="closeModal('modal-appearance');openJointBtnModal()">
+        <div class="row" style="min-width:0;flex:1;gap:9px;">
+          <span style="width:30px;height:30px;border-radius:9px;background:var(--accent-soft);color:var(--accent);display:inline-flex;align-items:center;justify-content:center;flex-shrink:0;">
+            <svg style="width:15px;height:15px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;" viewBox="0 0 24 24"><path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 1 1 3 3L7 19l-4 1 1-4Z"/></svg>
+          </span>
+          <div style="min-width:0;flex:1;">
+            <div style="font-weight:800;font-size:12.5px;color:var(--text);line-height:1.2;">„Ką reiškia?“ ir „Pastaba“ stilius</div>
+            <div id="settings-jointbtn-summary" style="font-size:11px;color:var(--accent);font-weight:700;margin-top:2px;line-height:1.2;">#2D Apvalūs dvyniai</div>
+          </div>
         </div>
-        <div id="app-navanim-row" class="app-pill-row"></div>
-        <div id="app-navanim-desc" style="font-size:10.5px;color:var(--text-muted);margin-top:5px;">Skystai slystanti viršutinė šviesos juostelė + gyvos ikonų animacijos.</div>
+        <span class="pill pill-accent" style="padding:4px 9px;font-size:10.5px;font-weight:800;flex-shrink:0;">Keisti ▸</span>
       </div>
 
-      <!-- 4. Morphing Joint Traffic Light Style (13 p., Default #2) -->
-      <div class="app-opt-sec">
-        <div class="app-opt-hd">
-          <span>Sąnarių šviesoforas („Laisvai“)</span>
-          <span id="app-jointstyle-lbl" class="pill pill-accent" style="font-size:10px;">#2 Vientisas kanalas</span>
+      <div class="setting-toggle-row" style="margin-bottom:8px;padding:10px 11px;background:var(--bg-surface);border:1.5px solid var(--border);" onclick="closeModal('modal-appearance');openAnimPinModal()">
+        <div class="row" style="min-width:0;flex:1;gap:9px;">
+          <span style="width:30px;height:30px;border-radius:9px;background:var(--accent-soft);color:var(--accent);display:inline-flex;align-items:center;justify-content:center;flex-shrink:0;">
+            <svg style="width:17px;height:17px;" viewBox="0 0 28 28" fill="none"><path d="M4 12.2L24 12.2" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/><circle cx="5" cy="12.2" r="2.6" fill="var(--green)"/><circle cx="23" cy="12.2" r="3" fill="currentColor"/><path d="M14 14 L8.8 23.5 H19.2 Z" fill="var(--accent-soft)" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg>
+          </span>
+          <div style="min-width:0;flex:1;">
+            <div style="font-weight:800;font-size:12.5px;color:var(--text);line-height:1.2;">Mygtukas „Animacija &amp; Pin“</div>
+            <div id="settings-animpin-summary" style="font-size:11px;color:var(--accent);font-weight:700;margin-top:2px;line-height:1.2;">#5 LeverLab svirtis · 46 px · Vidutiniai</div>
+          </div>
         </div>
-        <div id="app-jointstyle-row" class="app-pill-row"></div>
+        <span class="pill pill-accent" style="padding:4px 9px;font-size:10.5px;font-weight:800;flex-shrink:0;">Keisti ▸</span>
       </div>
 
-      <!-- 5. "Ką reiškia?" & "Pastaba" Button Style (12 p., Default #2D) -->
-      <div class="app-opt-sec">
-        <div class="app-opt-hd">
-          <span>„Ką reiškia?“ ir „Pastaba“ stilius</span>
-          <span id="app-jointbtn-lbl" class="pill pill-accent" style="font-size:10px;">#2D Apvalūs dvyniai</span>
+      <div class="setting-toggle-row" style="margin-bottom:0;padding:10px 11px;background:var(--bg-surface);border:1.5px solid var(--border);" onclick="closeModal('modal-appearance');openPlateIconModal()">
+        <div class="row" style="min-width:0;flex:1;gap:9px;">
+          <span style="width:30px;height:30px;border-radius:9px;background:var(--accent-soft);color:var(--accent);display:inline-flex;align-items:center;justify-content:center;flex-shrink:0;">
+            <svg style="width:16px;height:16px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="4.8" stroke-opacity="0.45"/><circle cx="12" cy="12" r="1.8" fill="currentColor" stroke="none"/></svg>
+          </span>
+          <div style="min-width:0;flex:1;">
+            <div style="font-weight:800;font-size:12.5px;color:var(--text);line-height:1.2;">Disko ikona ir animacija</div>
+            <div id="settings-plateico-summary" style="font-size:11px;color:var(--accent);font-weight:700;margin-top:2px;line-height:1.2;">#6 Firminis</div>
+          </div>
         </div>
-        <div id="app-jointbtn-row" class="app-pill-row"></div>
-      </div>
-
-      <!-- 6. Plate Calculator Slider Max Cap -->
-      <div class="app-opt-sec" style="margin-bottom:0;">
-        <div class="app-opt-hd">
-          <span>Diskų slinkiklio maks. riba</span>
-          <span id="app-platemax-lbl" class="pill pill-accent" style="font-size:10px;">100 kg</span>
-        </div>
-        <div id="app-platemax-row" class="app-pill-row cols-6"></div>
-        <div style="font-size:10.5px;color:var(--text-muted);margin-top:6px;">Jei pratimo svoris viršija ribą, slinkiklis automatiškai laikinai prasiplės iki <em>svoris + 20 kg</em>.</div>
+        <span class="pill pill-accent" style="padding:4px 9px;font-size:10.5px;font-weight:800;flex-shrink:0;">Keisti ▸</span>
       </div>
     </div>
   </div>
@@ -4107,81 +4348,105 @@
       </div>
 
       <div style="padding:9px 11px;border-radius:11px;background:var(--yellow-bg);border-left:3px solid var(--yellow);font-size:11.5px;line-height:1.38;">
-        <strong>⚡ 3 sek. testas salėje:</strong> patrauk rankeną per sprindį (~20 cm) – jei plytelės pakilo tiek pat, tai <strong>1:1</strong>; jei pusę tiek – <strong>2:1</strong>. Svorį visada rašyk tokį, kokį matai ant plytelės.
+        <strong style="color:var(--yellow);">3 sek. testas salėje:</strong> patrauk rankeną per sprindį (~20 cm) – jei plytelės pakilo tiek pat, tai <strong>1:1</strong>; jei pusę tiek – <strong>2:1</strong>. Svorį visada rašyk tokį, kokį matai ant plytelės.
       </div>
     </div>
   </div>
 
-  <!-- Active Card Frame / Border Picker & Live Demo Modal (v8.5) -->
-  <div id="modal-card-frame" class="modal-backdrop" onclick="closeModalOnBackdrop(event, 'modal-card-frame')">
+  <!-- Active Card Frame / Border Picker & Live Demo Modal (1 Variant <-> All 10 Live) -->
+  <div id="modal-card-frame" class="modal-backdrop mview-modal" data-view="single" onclick="closeModalOnBackdrop(event, 'modal-card-frame')">
     <div class="modal-sheet">
-      <div class="row-between" style="margin-bottom:8px;">
+      <div class="row-between" style="margin-bottom:6px;">
         <div>
-          <span class="pill pill-accent" style="font-size:10px;padding:2px 8px;">10 VARIANTŲ · DEMO</span>
-          <h3 style="margin:4px 0 0 0;font-size:17px;">✨ Aktyvaus langelio rėmelis</h3>
+          <span class="pill pill-accent" style="font-size:10px;padding:2px 8px;">GYVA DEMONSTRACIJA</span>
+          <h3 style="margin:4px 0 0 0;font-size:17px;">Aktyvaus langelio rėmelis</h3>
         </div>
         <button class="btn btn-sm btn-secondary" onclick="closeModal('modal-card-frame')">Uždaryti</button>
       </div>
-      <div id="frame-pick-grid" class="frame-pick-grid"></div>
-      <div style="margin-bottom:9px;">
-        <div id="frame-pick-title" style="font-size:12.5px;font-weight:800;color:var(--accent);">#9 Stiklinis šviesos kraštas</div>
-        <div id="frame-pick-desc" style="font-size:11px;color:var(--text-muted);">Įstrižas stiklo atspindys + vidinis švytėjimas</div>
+      <div class="mview-sw" role="tablist">
+        <div class="mview-thumb"></div>
+        <button type="button" class="mview-btn active" data-mv="single" onclick="setModalGalleryView('modal-card-frame', 'single')">
+          <svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="3"/></svg><span>1 variantas</span>
+        </button>
+        <button type="button" class="mview-btn" data-mv="all" onclick="setModalGalleryView('modal-card-frame', 'all')">
+          <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="4" rx="1.5"/><rect x="3" y="10" width="18" height="4" rx="1.5"/><rect x="3" y="16" width="18" height="4" rx="1.5"/></svg><span>Visi 10 gyvai</span>
+        </button>
       </div>
-      <div class="frame-demo-box">
-        <div class="row-between" style="margin-bottom:8px;">
-          <span class="pill pill-accent" style="font-size:10px;font-family:var(--font-mono);font-weight:900;">SERIJA 1 IŠ 2</span>
-          <span class="pill" style="font-size:10.5px;font-family:var(--font-mono);">RIR 3 ↻</span>
+      <div id="cf-pane-single" class="mview-pane-single" data-card-frame="9">
+        <div id="frame-pick-grid" class="frame-pick-grid"></div>
+        <div style="margin-bottom:9px;">
+          <div id="frame-pick-title" style="font-size:12.5px;font-weight:800;color:var(--accent);">#9 Stiklinis šviesos kraštas</div>
+          <div id="frame-pick-desc" style="font-size:11px;color:var(--text-muted);">Įstrižas stiklo atspindys + vidinis švytėjimas</div>
         </div>
-        <div class="grid-2" style="margin-bottom:8px;">
-          <div style="background:var(--bg-card);border:1px solid var(--card-rim);border-radius:11px;padding:7px;text-align:center;">
-            <div style="font-size:18px;font-weight:900;font-family:var(--font-mono);">60</div>
-            <div style="font-size:10px;color:var(--text-muted);">kg</div>
+        <div class="frame-demo-box">
+          <div class="row-between" style="margin-bottom:8px;">
+            <span class="pill pill-accent" style="font-size:10px;font-family:var(--font-mono);font-weight:900;">SERIJA 1 IŠ 2</span>
+            <span class="pill" style="font-size:10.5px;font-family:var(--font-mono);">RIR 3 ↻</span>
           </div>
-          <div style="background:var(--bg-card);border:1px solid var(--card-rim);border-radius:11px;padding:7px;text-align:center;">
-            <div style="font-size:18px;font-weight:900;font-family:var(--font-mono);">10</div>
-            <div style="font-size:10px;color:var(--text-muted);">pak.</div>
+          <div class="grid-2" style="margin-bottom:8px;">
+            <div style="background:var(--bg-card);border:1px solid var(--card-rim);border-radius:11px;padding:7px;text-align:center;">
+              <div style="font-size:18px;font-weight:900;font-family:var(--font-mono);">60</div>
+              <div style="font-size:10px;color:var(--text-muted);">kg</div>
+            </div>
+            <div style="background:var(--bg-card);border:1px solid var(--card-rim);border-radius:11px;padding:7px;text-align:center;">
+              <div style="font-size:18px;font-weight:900;font-family:var(--font-mono);">10</div>
+              <div style="font-size:10px;color:var(--text-muted);">pak.</div>
+            </div>
           </div>
+          <div style="height:38px;border-radius:11px;background:var(--accent-grad);color:var(--accent-text);font-size:13px;font-weight:900;display:flex;align-items:center;justify-content:center;">✓ Užbaigti 1 / 2 seriją</div>
         </div>
-        <div style="height:38px;border-radius:11px;background:var(--accent-grad);color:var(--accent-text);font-size:13px;font-weight:900;display:flex;align-items:center;justify-content:center;">✓ Užbaigti 1 / 2 seriją</div>
       </div>
-      <button type="button" class="btn btn-primary btn-full" onclick="closeModal('modal-card-frame');showToast('Rėmelio stilius išsaugotas!');">✓ Taikyti rėmelį</button>
+      <div id="cf-pane-all" class="mview-pane-all"></div>
+      <button type="button" class="btn btn-primary btn-full mt-8" onclick="closeModal('modal-card-frame');showToast('Rėmelio stilius išsaugotas!');">✓ Taikyti rėmelį</button>
     </div>
   </div>
 
-  <!-- Card Transition Animation Picker & Live Demo Modal (v8.4) -->
-  <div id="modal-card-anim" class="modal-backdrop" onclick="closeModalOnBackdrop(event, 'modal-card-anim')">
+  <!-- Card Transition Animation Picker & Live Demo Modal (1 Variant <-> All 10 Live) -->
+  <div id="modal-card-anim" class="modal-backdrop mview-modal" data-view="single" onclick="closeModalOnBackdrop(event, 'modal-card-anim')">
     <div class="modal-sheet">
-      <div class="row-between" style="margin-bottom:8px;">
+      <div class="row-between" style="margin-bottom:6px;">
         <div>
           <span class="pill pill-accent" style="font-size:10px;padding:2px 8px;">GYVA DEMONSTRACIJA</span>
-          <h3 style="margin:4px 0 0 0;font-size:17px;">🎬 Pratimų perjungimo animacija</h3>
+          <h3 style="margin:4px 0 0 0;font-size:17px;">Pratimų perjungimo animacija</h3>
         </div>
         <button class="btn btn-sm btn-secondary" onclick="closeModal('modal-card-anim')">Uždaryti</button>
       </div>
-      <div id="anim-pick-grid" class="anim-pick-grid"></div>
-      <div style="margin-bottom:8px;">
-        <div id="anim-pick-title" style="font-size:12.5px;font-weight:800;color:var(--accent);">#1 Tikra spyruoklė</div>
-        <div id="anim-pick-desc" style="font-size:11px;color:var(--text-muted);">Visa kortelė gyvai atšoka ir nusėda su tikra spyruoklės fizika</div>
+      <div class="mview-sw" role="tablist">
+        <div class="mview-thumb"></div>
+        <button type="button" class="mview-btn active" data-mv="single" onclick="setModalGalleryView('modal-card-anim', 'single')">
+          <svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="3"/></svg><span>1 variantas</span>
+        </button>
+        <button type="button" class="mview-btn" data-mv="all" onclick="setModalGalleryView('modal-card-anim', 'all')">
+          <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="4" rx="1.5"/><rect x="3" y="10" width="18" height="4" rx="1.5"/><rect x="3" y="16" width="18" height="4" rx="1.5"/></svg><span>Visi 10 gyvai</span>
+        </button>
       </div>
       <div class="anim-spd-row">
-        <span>⏱ Greitis:</span>
+        <span>Greitis:</span>
         <span style="color:var(--text-muted);font-size:10px;">Lėtai</span>
         <input id="anim-spd-slider" type="range" min="0.4" max="2.2" step="0.1" value="1.0" oninput="setCardAnimSpeed(this.value)">
         <span style="color:var(--text-muted);font-size:10px;">Greitai</span>
         <span id="anim-spd-val" style="min-width:38px;text-align:right;font-family:var(--font-mono);color:var(--accent);">1.0×</span>
       </div>
-      <div id="anim-demo-stage" class="anim-demo-card" onclick="replayCardAnimDemo()">
-        <div class="row-between">
-          <strong style="font-size:13.5px;">🏋️ Hack Squat · Serija 1/2</strong>
-          <span class="pill pill-accent" style="font-size:10px;">Paspausk = pakartoti</span>
+      <div id="ca-pane-single" class="mview-pane-single" data-card-anim="10">
+        <div id="anim-pick-grid" class="anim-pick-grid"></div>
+        <div style="margin-bottom:8px;">
+          <div id="anim-pick-title" style="font-size:12.5px;font-weight:800;color:var(--accent);">#10 Šviesos blyksnis</div>
+          <div id="anim-pick-desc" style="font-size:11px;color:var(--text-muted);">Standartinis · Ryškus įstrižas metalo šviesos blyksnis per visą kortelę</div>
         </div>
-        <div class="anim-pad">
-          <div class="anim-demo-s anim-s1" style="border-left:3px solid var(--accent);"><strong>Kryptis:</strong> Stumk kulnais įstrižai aukštyn</div>
-          <div class="anim-demo-s anim-s2"><strong>60 kg × 10</strong> · RIR 3</div>
-          <div class="anim-demo-s anim-s3" style="text-align:center;font-weight:900;background:var(--accent-grad);color:var(--accent-text);">✓ Užbaigti 1 / 2 seriją</div>
+        <div id="anim-demo-stage" class="anim-demo-card" onclick="replayCardAnimDemo()">
+          <div class="row-between">
+            <strong style="font-size:13.5px;">Hack Squat · Serija 1/2</strong>
+            <span class="pill pill-accent" style="font-size:10px;">Paspausk = pakartoti</span>
+          </div>
+          <div class="anim-pad">
+            <div class="anim-demo-s anim-s1" style="border-left:3px solid var(--accent);"><strong>Kryptis:</strong> Stumk kulnais įstrižai aukštyn</div>
+            <div class="anim-demo-s anim-s2"><strong>60 kg × 10</strong> · RIR 3</div>
+            <div class="anim-demo-s anim-s3" style="text-align:center;font-weight:900;background:var(--accent-grad);color:var(--accent-text);">✓ Užbaigti 1 / 2 seriją</div>
+          </div>
         </div>
       </div>
-      <div class="grid-2">
+      <div id="ca-pane-all" class="mview-pane-all"></div>
+      <div class="grid-2 mt-8">
         <button type="button" class="btn btn-sm btn-secondary" onclick="replayCardAnimDemo()">▶ Pakartoti</button>
         <button type="button" class="btn btn-sm btn-primary" onclick="closeModal('modal-card-anim');showToast('Animacija išsaugota!');">✓ Taikyti</button>
       </div>
@@ -4284,60 +4549,319 @@
   </div>
 
   <!-- Scroll Boundary Edge Glow Picker & Live Mini-Phone Preview Modal (10 Flagship Styles + Off) -->
-  <div id="modal-edge-glow" class="modal-backdrop" onclick="closeModalOnBackdrop(event, 'modal-edge-glow')">
+  <div id="modal-edge-glow" class="modal-backdrop mview-modal" data-view="single" onclick="closeModalOnBackdrop(event, 'modal-edge-glow')">
     <div class="modal-sheet">
       <div class="row-between" style="margin-bottom:8px;">
         <div>
           <span class="pill pill-accent" style="font-size:10px;padding:2px 8px;">GYVA DEMONSTRACIJA</span>
-          <h3 style="margin:4px 0 0 0;font-size:17px;">🌌 Viršaus / apačios ribos švytėjimas</h3>
+          <h3 style="margin:4px 0 0 0;font-size:17px;">Viršaus / apačios ribos švytėjimas</h3>
         </div>
         <button class="btn btn-sm btn-secondary" onclick="closeModal('modal-edge-glow')">Uždaryti</button>
       </div>
-      <div id="eg-pick-grid" class="anim-pick-grid"></div>
-      <div style="margin-bottom:9px;">
-        <div id="eg-pick-title" style="font-size:12.5px;font-weight:800;color:var(--accent);">#1 Neoninis horizontas</div>
-        <div id="eg-pick-desc" style="font-size:11px;color:var(--text-muted);">2 sluoksnių tūrinė šviesa ir ryški gija pasiekus viršų ar apačią.</div>
+
+      <div class="mview-sw" data-mode="single" role="tablist">
+        <div class="mview-thumb" aria-hidden="true"></div>
+        <button type="button" class="mview-btn active" data-v="single" onclick="setModalGalleryView('modal-edge-glow','single')">1 variantas</button>
+        <button type="button" class="mview-btn" data-v="all" onclick="setModalGalleryView('modal-edge-glow','all')">Visi 10 gyvai</button>
       </div>
 
-      <div class="app-pill-row cols-3" style="margin:0 0 8px 0;">
-        <button type="button" class="app-pill-btn" onclick="jumpEdgeDemoScroll('top')">↑ Viršuje (0%)</button>
-        <button type="button" class="app-pill-btn" onclick="jumpEdgeDemoScroll('mid')">↕ Viduryje</button>
-        <button type="button" class="app-pill-btn" onclick="jumpEdgeDemoScroll('bot')">↓ Apačioje (100%)</button>
+      <div id="eg-pane-single" class="mview-pane-single">
+        <div id="eg-pick-grid" class="anim-pick-grid"></div>
+        <div style="margin-bottom:9px;">
+          <div id="eg-pick-title" style="font-size:12.5px;font-weight:800;color:var(--accent);">#1 Neoninis horizontas</div>
+          <div id="eg-pick-desc" style="font-size:11px;color:var(--text-muted);">2 sluoksnių tūrinė šviesa ir ryški gija pasiekus viršų ar apačią.</div>
+        </div>
+
+        <div class="app-pill-row cols-3" style="margin:0 0 8px 0;">
+          <button type="button" class="app-pill-btn" onclick="jumpEdgeDemoScroll('top')">↑ Viršuje (0%)</button>
+          <button type="button" class="app-pill-btn" onclick="jumpEdgeDemoScroll('mid')">↕ Viduryje</button>
+          <button type="button" class="app-pill-btn" onclick="jumpEdgeDemoScroll('bot')">↓ Apačioje (100%)</button>
+        </div>
+
+        <div id="eg-demo-phone" class="eg-demo-phone">
+          <span id="eg-demo-pos-pill" class="eg-pos-pill">↑ VIRŠUS · 0%</span>
+          <div class="eg-demo-hdr">
+            <div style="font-size:12px;font-weight:900;">LeverLab 193 <span style="color:var(--accent);font-family:var(--font-mono);font-size:10.5px;margin-left:4px;">02:29</span></div>
+            <span style="font-size:11px;color:var(--accent);font-weight:800;">☀</span>
+            <div id="eg-demo-edge-top" class="edge-glow-top is-at-edge" data-edge-style="1">
+              <div class="edge-fx-depth"></div>
+              <div class="edge-fx-bloom"></div>
+              <div class="edge-fx-line"></div>
+              <div class="edge-fx-notch"></div>
+            </div>
+          </div>
+          <div id="eg-demo-scroll" class="eg-demo-scroll" onscroll="updateEdgeDemoScroll()">
+            <div class="eg-demo-card active"><strong>Treniruotė B · Darbinis</strong><span style="color:var(--accent);font-weight:800;">Keisti ▾</span></div>
+            <div class="eg-demo-card"><span>🔥 5 min. apšilimas (5/5)</span><span style="color:var(--green);font-weight:900;">✓</span></div>
+            <div class="eg-demo-card active"><span>1. Rumuniška mirties trauka</span><span style="color:var(--accent);font-weight:800;">70 kg</span></div>
+            <div class="eg-demo-card"><span>2. Vertikalus traukimas klūpint</span><span style="color:var(--text-muted);">▾</span></div>
+            <div class="eg-demo-card"><span>3. 30° spaudimas hanteliais</span><span style="color:var(--text-muted);">▾</span></div>
+            <div class="eg-demo-card"><span>4. Kojų lenkimas gulint</span><span style="color:var(--text-muted);">▾</span></div>
+            <div class="eg-demo-card" style="justify-content:center;color:var(--green);border-color:var(--green);font-weight:900;">✓ Išsaugoti treniruotę (apačia)</div>
+          </div>
+          <div class="eg-demo-bnav">
+            <div id="eg-demo-edge-bot" class="edge-glow-bot" data-edge-style="1">
+              <div class="edge-fx-depth"></div>
+              <div class="edge-fx-bloom"></div>
+              <div class="edge-fx-line"></div>
+              <div class="edge-fx-notch"></div>
+            </div>
+            <span class="on">Treniruotė</span><span>Progresas</span><span>Kūnas</span><span>Nustatymai</span>
+          </div>
+        </div>
       </div>
 
-      <div id="eg-demo-phone" class="eg-demo-phone">
-        <span id="eg-demo-pos-pill" class="eg-pos-pill">↑ VIRŠUS · 0%</span>
-        <div class="eg-demo-hdr">
-          <div style="font-size:12px;font-weight:900;">LeverLab 193 <span style="color:var(--accent);font-family:var(--font-mono);font-size:10.5px;margin-left:4px;">02:29</span></div>
-          <span style="font-size:11px;color:var(--accent);font-weight:800;">☀</span>
-          <div id="eg-demo-edge-top" class="edge-glow-top is-at-edge" data-edge-style="1">
-            <div class="edge-fx-depth"></div>
-            <div class="edge-fx-bloom"></div>
-            <div class="edge-fx-line"></div>
-            <div class="edge-fx-notch"></div>
-          </div>
-        </div>
-        <div id="eg-demo-scroll" class="eg-demo-scroll" onscroll="updateEdgeDemoScroll()">
-          <div class="eg-demo-card active"><strong>Treniruotė B · Darbinis</strong><span style="color:var(--accent);font-weight:800;">Keisti ▾</span></div>
-          <div class="eg-demo-card"><span>🔥 5 min. apšilimas (5/5)</span><span style="color:var(--green);font-weight:900;">✓</span></div>
-          <div class="eg-demo-card active"><span>1. Rumuniška mirties trauka</span><span style="color:var(--accent);font-weight:800;">70 kg</span></div>
-          <div class="eg-demo-card"><span>2. Vertikalus traukimas klūpint</span><span style="color:var(--text-muted);">▾</span></div>
-          <div class="eg-demo-card"><span>3. 30° spaudimas hanteliais</span><span style="color:var(--text-muted);">▾</span></div>
-          <div class="eg-demo-card"><span>4. Kojų lenkimas gulint</span><span style="color:var(--text-muted);">▾</span></div>
-          <div class="eg-demo-card" style="justify-content:center;color:var(--green);border-color:var(--green);font-weight:900;">✓ Išsaugoti treniruotę (apačia)</div>
-        </div>
-        <div class="eg-demo-bnav">
-          <div id="eg-demo-edge-bot" class="edge-glow-bot" data-edge-style="1">
-            <div class="edge-fx-depth"></div>
-            <div class="edge-fx-bloom"></div>
-            <div class="edge-fx-line"></div>
-            <div class="edge-fx-notch"></div>
-          </div>
-          <span class="on">Treniruotė</span><span>Progresas</span><span>Kūnas</span><span>Nustatymai</span>
-        </div>
-      </div>
+      <div id="eg-pane-all" class="mview-pane-all"></div>
 
       <button type="button" class="btn btn-primary mt-12" style="width:100%;" onclick="closeModal('modal-edge-glow')">✓ Taikyti</button>
+    </div>
+  </div>
+
+  <!-- Interactive Live-Demo Modal: Bottom Navigation Animations (6 Styles + Off) -->
+  <div id="modal-nav-anim" class="modal-backdrop mview-modal" data-view="single" onclick="if(event.target===this) closeNavAnimModal();">
+    <div class="modal-sheet">
+      <div class="row-between" style="margin-bottom:8px;">
+        <div>
+          <span class="pill pill-accent" style="font-size:10px;padding:2px 8px;">GYVA DEMONSTRACIJA</span>
+          <h3 style="margin:4px 0 0 0;font-size:17px;">Apatinio meniu animacija</h3>
+        </div>
+        <button type="button" class="btn btn-sm btn-secondary" onclick="closeNavAnimModal()">Uždaryti</button>
+      </div>
+
+      <div class="mview-sw" data-mode="single" role="tablist">
+        <div class="mview-thumb" aria-hidden="true"></div>
+        <button type="button" class="mview-btn active" data-v="single" onclick="setModalGalleryView('modal-nav-anim','single')">1 variantas</button>
+        <button type="button" class="mview-btn" data-v="all" onclick="setModalGalleryView('modal-nav-anim','all')">Visi 6 gyvai</button>
+      </div>
+
+      <div id="na-pane-single" class="mview-pane-single">
+        <div id="navanim-pick-grid" class="anim-pick-grid"></div>
+        <div style="margin-bottom:6px;">
+          <div id="navanim-pick-title" style="font-size:12.5px;font-weight:800;color:var(--accent);">#1 Slenkanti juostelė</div>
+          <div id="navanim-pick-desc" style="font-size:11px;color:var(--text-muted);">Standartinis · Skystai slystanti viršutinė šviesos juostelė + gyvos ikonų animacijos.</div>
+        </div>
+        <div class="live-demo-stage">
+          <div style="font-size:10.5px;color:var(--text-muted);margin-bottom:8px;text-align:center;">Spustelk bet kurį skirtuką žemiau – išbandyk animaciją gyvai:</div>
+          <div id="nav-demo-shell" class="nav-demo-shell" data-nav-anim="1">
+            <div id="nav-demo-inner" class="bottom-nav-inner" style="--nav-idx:0;">
+              <div class="nav-slide-ind" aria-hidden="true"></div>
+              <button type="button" class="nav-item active" data-dtab="0" onclick="tapNavDemoTab(0)">
+                <span class="nav-ico-wrap"><svg class="nv-ico-w" viewBox="0 0 24 24"><path d="M6 5v14M18 5v14M2 9v6M22 9v6M6 12h12"/></svg></span>
+                <span>Treniruotė</span>
+              </button>
+              <button type="button" class="nav-item" data-dtab="1" onclick="tapNavDemoTab(1)">
+                <span class="nav-ico-wrap"><svg class="nv-ico-p" viewBox="0 0 24 24"><path d="M3 3v18h18"/><path class="nv-line" pathLength="100" d="m19 9-5 5-4-4-3 3"/></svg></span>
+                <span>Progresas</span>
+              </button>
+              <button type="button" class="nav-item" data-dtab="2" onclick="tapNavDemoTab(2)">
+                <span class="nav-ico-wrap"><svg class="nv-ico-b" viewBox="0 0 24 24"><circle cx="12" cy="5" r="3"/><path d="M12 8v8M8 12h8M9 21l3-5 3 5"/></svg></span>
+                <span>Kūnas</span>
+              </button>
+              <button type="button" class="nav-item" data-dtab="3" onclick="tapNavDemoTab(3)">
+                <span class="nav-ico-wrap"><svg class="nv-ico-s" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9c.26.6.85 1 1.51 1H21a2 2 0 1 1 0 4h-.09c-.66 0-1.25.4-1.51 1Z"/></svg></span>
+                <span>Nustatymai</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div id="na-pane-all" class="mview-pane-all"></div>
+
+      <div class="grid-2 mt-12">
+        <button type="button" class="btn btn-secondary" onclick="playNavDemoTour()">▶ Perbėgti 4</button>
+        <button type="button" class="btn btn-primary" onclick="closeNavAnimModal()">✓ Taikyti</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Interactive Live-Demo Modal: Morphing Joint Traffic Light (4 Styles) -->
+  <div id="modal-joint-style" class="modal-backdrop mview-modal" data-view="single" onclick="closeModalOnBackdrop(event, 'modal-joint-style')">
+    <div class="modal-sheet">
+      <div class="row-between" style="margin-bottom:8px;">
+        <div>
+          <span class="pill pill-accent" style="font-size:10px;padding:2px 8px;">GYVA DEMONSTRACIJA</span>
+          <h3 style="margin:4px 0 0 0;font-size:17px;">Sąnarių šviesoforas („Laisvai“)</h3>
+        </div>
+        <button type="button" class="btn btn-sm btn-secondary" onclick="closeModal('modal-joint-style')">Uždaryti</button>
+      </div>
+
+      <div class="mview-sw" data-mode="single" role="tablist">
+        <div class="mview-thumb" aria-hidden="true"></div>
+        <button type="button" class="mview-btn active" data-v="single" onclick="setModalGalleryView('modal-joint-style','single')">1 variantas</button>
+        <button type="button" class="mview-btn" data-v="all" onclick="setModalGalleryView('modal-joint-style','all')">Visi 4 gyvai</button>
+      </div>
+
+      <div id="js-pane-single" class="mview-pane-single" data-joint-style="2">
+        <div id="jointstyle-pick-grid" class="app-pill-row" style="margin-bottom:9px;"></div>
+        <div style="margin-bottom:6px;">
+          <div id="jointstyle-pick-title" style="font-size:12.5px;font-weight:800;color:var(--accent);">#2 Vientisas kanalas</div>
+          <div id="jointstyle-pick-desc" style="font-size:11px;color:var(--text-muted);">Standartinis · Visi 3 burbuliukai vienoje kapsulėje; paspaudus sklandžiai išsiskleidžia žodis.</div>
+        </div>
+        <div class="live-demo-stage">
+          <div style="font-size:10.5px;color:var(--text-muted);margin-bottom:8px;text-align:center;">Spustelk žalią, geltoną arba raudoną burbuliuką:</div>
+          <div class="joint-demo-card">
+            <div class="joint-section">
+              <div class="joint-header">
+                <span class="joint-title">Sąnarių ir sausgyslių pojūtis</span>
+                <span id="js-demo-info-slot"></span>
+              </div>
+              <div class="silent-footer">
+                <div class="joint-dots morph" id="js-demo-dots">
+                  <button type="button" class="j-dot g active" data-c="green" onclick="tapJointStyleDemo('green')"><span class="j-orb"></span><span class="j-txt">Laisvai</span></button>
+                  <button type="button" class="j-dot y" data-c="yellow" onclick="tapJointStyleDemo('yellow')"><span class="j-orb"></span><span class="j-txt">Įtampa</span></button>
+                  <button type="button" class="j-dot r" data-c="red" onclick="tapJointStyleDemo('red')"><span class="j-orb"></span><span class="j-txt">Skausmas</span></button>
+                </div>
+                <span id="js-demo-note-slot"></span>
+              </div>
+            </div>
+            <div id="js-demo-status" class="joint-demo-feedback"><strong style="color:var(--green);">Laisvai:</strong> dirba tik raumuo – nieko spausti nereikia.</div>
+          </div>
+        </div>
+      </div>
+
+      <div id="js-pane-all" class="mview-pane-all"></div>
+
+      <button type="button" class="btn btn-primary mt-12" style="width:100%;" onclick="closeModal('modal-joint-style')">✓ Taikyti</button>
+    </div>
+  </div>
+
+  <!-- Interactive Live-Demo Modal: "Ką reiškia?" & "Pastaba" Button Styles (11 Styles) -->
+  <div id="modal-joint-btn" class="modal-backdrop mview-modal" data-view="single" onclick="closeModalOnBackdrop(event, 'modal-joint-btn')">
+    <div class="modal-sheet">
+      <div class="row-between" style="margin-bottom:8px;">
+        <div>
+          <span class="pill pill-accent" style="font-size:10px;padding:2px 8px;">GYVA DEMONSTRACIJA</span>
+          <h3 style="margin:4px 0 0 0;font-size:17px;">„Ką reiškia?“ ir „Pastaba“</h3>
+        </div>
+        <button type="button" class="btn btn-sm btn-secondary" onclick="closeModal('modal-joint-btn')">Uždaryti</button>
+      </div>
+
+      <div class="mview-sw" data-mode="single" role="tablist">
+        <div class="mview-thumb" aria-hidden="true"></div>
+        <button type="button" class="mview-btn active" data-v="single" onclick="setModalGalleryView('modal-joint-btn','single')">1 variantas</button>
+        <button type="button" class="mview-btn" data-v="all" onclick="setModalGalleryView('modal-joint-btn','all')">Visi 11 gyvai</button>
+      </div>
+
+      <div id="jb-pane-single" class="mview-pane-single" data-joint-style="2">
+        <div class="jb-grp-lbl" style="margin-top:2px;">Tik ikonos (6 variacijos)</div>
+        <div id="jointbtn-pick-icons" class="app-pill-row" style="grid-template-columns:repeat(6,1fr);margin-top:0;"></div>
+        <div class="jb-grp-lbl">Su tekstu (5 stiliai)</div>
+        <div id="jointbtn-pick-text" class="app-pill-row" style="grid-template-columns:repeat(5,1fr);margin-top:0;margin-bottom:9px;"></div>
+        <div style="margin-bottom:6px;">
+          <div id="jointbtn-pick-title" style="font-size:12.5px;font-weight:800;color:var(--accent);">#2D Apvalūs dvyniai</div>
+          <div id="jointbtn-pick-desc" style="font-size:11px;color:var(--text-muted);">Standartinis · Apvalios monochrominės ikonos su ryškiu aktyviu akcentu.</div>
+        </div>
+        <div class="live-demo-stage">
+          <div class="joint-demo-card">
+            <div class="joint-section">
+              <div class="joint-header">
+                <span class="joint-title">Sąnarių ir sausgyslių pojūtis</span>
+                <span id="jb-demo-info-slot"></span>
+              </div>
+              <div class="silent-footer">
+                <div class="joint-dots morph" id="jb-demo-dots">
+                  <button type="button" class="j-dot g active" data-c="green" onclick="tapJointBtnDemoColor('green')"><span class="j-orb"></span><span class="j-txt">Laisvai</span></button>
+                  <button type="button" class="j-dot y" data-c="yellow" onclick="tapJointBtnDemoColor('yellow')"><span class="j-orb"></span><span class="j-txt">Įtampa</span></button>
+                  <button type="button" class="j-dot r" data-c="red" onclick="tapJointBtnDemoColor('red')"><span class="j-orb"></span><span class="j-txt">Skausmas</span></button>
+                </div>
+                <span id="jb-demo-note-slot"></span>
+              </div>
+            </div>
+            <div id="jb-demo-feedback" class="joint-demo-feedback">Spustelk <strong>Ką reiškia?</strong> arba <strong>Pastaba</strong> mygtukus kortelėje viršuje.</div>
+          </div>
+          <div style="text-align:center;">
+            <button id="jb-demo-dot-btn" type="button" class="jb-demo-chip" onclick="toggleJointBtnDemoHasNote()"><i></i>Imituoti išsaugotą pastabą (taškelis)</button>
+          </div>
+        </div>
+      </div>
+
+      <div id="jb-pane-all" class="mview-pane-all"></div>
+
+      <button type="button" class="btn btn-primary mt-12" style="width:100%;" onclick="closeModal('modal-joint-btn')">✓ Taikyti</button>
+    </div>
+  </div>
+
+  <!-- Interactive Live-Demo Modal: Animacija & Pin Button Styles (5 Styles + Size) -->
+  <div id="modal-anim-pin" class="modal-backdrop mview-modal" data-view="single" onclick="closeModalOnBackdrop(event, 'modal-anim-pin')">
+    <div class="modal-sheet">
+      <div class="row-between" style="margin-bottom:8px;">
+        <div>
+          <span class="pill pill-accent" style="font-size:10px;padding:2px 8px;">GYVA DEMONSTRACIJA</span>
+          <h3 style="margin:4px 0 0 0;font-size:17px;">Mygtukas „Animacija &amp; Pin“</h3>
+        </div>
+        <button type="button" class="btn btn-sm btn-secondary" onclick="closeModal('modal-anim-pin')">Uždaryti</button>
+      </div>
+
+      <div class="mview-sw" data-mode="single" role="tablist">
+        <div class="mview-thumb" aria-hidden="true"></div>
+        <button type="button" class="mview-btn active" data-v="single" onclick="setModalGalleryView('modal-anim-pin','single')">1 variantas</button>
+        <button type="button" class="mview-btn" data-v="all" onclick="setModalGalleryView('modal-anim-pin','all')">Visi 5 gyvai</button>
+      </div>
+
+      <div id="ap-pane-single" class="mview-pane-single">
+        <div class="row-between" style="margin-bottom:6px;">
+          <span style="font-size:11.5px;color:var(--text-muted);font-weight:700;">Stilius (5 variantai)</span>
+          <span id="app-animpin-lbl" style="font-size:11.5px;color:var(--accent);font-weight:800;">#5 Firminė svirtis</span>
+        </div>
+        <div id="app-animpin-grid" class="app-pick-grid" style="margin-bottom:10px;"></div>
+        <div class="live-demo-stage" style="display:flex;flex-direction:column;align-items:center;gap:8px;">
+          <div style="font-size:10.5px;color:var(--text-muted);text-align:center;">Spustelk mygtuką – išbandyk atidarymo / uždarymo animaciją:</div>
+          <div id="ap-demo-single-stage" style="width:100%;display:flex;justify-content:center;"></div>
+        </div>
+      </div>
+
+      <div id="ap-pane-all" class="mview-pane-all"></div>
+
+      <div class="app-section" style="margin:10px 0 0 0;">
+        <div class="app-section-hdr" style="margin-bottom:4px;"><h4>Mygtuko aukštis</h4><span class="app-val">px</span></div>
+        <div id="app-aph-row" class="app-pill-row cols-3" style="margin-top:0;"></div>
+        <div class="app-section-hdr" style="margin:10px 0 4px 0;"><h4>Mygtukų eilės plotis</h4></div>
+        <div id="app-apw-row" class="app-pill-row cols-3" style="margin-top:0;"></div>
+      </div>
+
+      <button type="button" class="btn btn-primary mt-12" style="width:100%;" onclick="closeModal('modal-anim-pin')">✓ Taikyti</button>
+    </div>
+  </div>
+
+  <!-- Interactive Live-Demo Modal: Plate Icon & Animation Styles (6 Styles) -->
+  <div id="modal-plate-icon" class="modal-backdrop mview-modal" data-view="single" onclick="closeModalOnBackdrop(event, 'modal-plate-icon')">
+    <div class="modal-sheet">
+      <div class="row-between" style="margin-bottom:8px;">
+        <div>
+          <span class="pill pill-accent" style="font-size:10px;padding:2px 8px;">GYVA DEMONSTRACIJA</span>
+          <h3 style="margin:4px 0 0 0;font-size:17px;">Disko ikona ir animacija</h3>
+        </div>
+        <button type="button" class="btn btn-sm btn-secondary" onclick="closeModal('modal-plate-icon')">Uždaryti</button>
+      </div>
+
+      <div class="mview-sw" data-mode="single" role="tablist">
+        <div class="mview-thumb" aria-hidden="true"></div>
+        <button type="button" class="mview-btn active" data-v="single" onclick="setModalGalleryView('modal-plate-icon','single')">1 variantas</button>
+        <button type="button" class="mview-btn" data-v="all" onclick="setModalGalleryView('modal-plate-icon','all')">Visi 6 gyvai</button>
+      </div>
+
+      <div id="pi-pane-single" class="mview-pane-single">
+        <div class="row-between" style="margin-bottom:6px;">
+          <span style="font-size:11.5px;color:var(--text-muted);font-weight:700;">Ikona prie RIR (6 stiliai)</span>
+          <span id="app-plateico-lbl" style="font-size:11.5px;color:var(--accent);font-weight:800;">#6 Firminis sukimas</span>
+        </div>
+        <div id="app-plateico-grid" class="app-pick-grid cols-3" style="margin-bottom:10px;"></div>
+        <div class="live-demo-stage">
+          <div style="font-size:10.5px;color:var(--text-muted);margin-bottom:8px;text-align:center;">Spustelk disko ikoną – pažiūrėk sukimosi efektą prie serijos:</div>
+          <div class="pi-demo-hdr">
+            <span class="set-num-pill">SERIJA 1 IŠ 2</span>
+            <div class="row" style="gap:6px;">
+              <button id="pi-demo-live-btn" type="button" class="plate-ico-btn" onclick="triggerPlateIconDemoBtn(this, state.plateIconStyle || '6')"></button>
+              <span class="rir-single-btn">RIR 3 ↻</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div id="pi-pane-all" class="mview-pane-all"></div>
+
+      <button type="button" class="btn btn-primary mt-12" style="width:100%;" onclick="closeModal('modal-plate-icon')">✓ Taikyti</button>
     </div>
   </div>
 
@@ -4417,8 +4941,8 @@
         <div class="wn-item">
           <div class="wn-ico">🛡️</div>
           <div>
-            <div class="wn-title">Saugios zonos, RIR gidas, meniu animacijos ir „Laisvai“ šviesoforas</div>
-            <div class="wn-sub">Palaikius <code>RIR</code> mygtuką iššoka animuota 193 cm adaptacijos gido kortelė; pridėtas <strong>10 stilių</strong> viršaus/apačios ribų švytėjimas su gyvu mini-telefonu; poilsio juostų lange – švarus perjungiklis <strong>1 variantas ↔ Visi 10 gyvai</strong>; <em>Išvaizdos nustatymuose</em> – <strong>6</strong> apatinio meniu animacijos (numatytai <code>#1</code>), sklandžiai išsiskleidžiantis <strong>„Laisvai“</strong> šviesoforas (<strong>4</strong> stiliai, numatytai <code>#2</code>) ir organiški <em>„Ką reiškia?“ / „Pastaba“</em> mygtukai (<strong>11</strong> stilių, numatytai <code>#2D Apvalūs dvyniai</code>); <em>Nustatymų</em> apačioje – autorių teisių apsauga.</div>
+            <div class="wn-title">Vienos kortelės technikos susiliejimas, apšilimo juosta ir „Visi gyvai“ galerijos</div>
+            <div class="wn-sub">Visi <strong>9</strong> <em>Išvaizdos nustatymų</em> stiliai sujungti į vienodą tvarkingą sąrašą su <code>1 variantas ↔ Visi gyvai</code> perjungikliu (<em>Rėmeliai</em>, <em>Animacijos</em>, <em>Poilsio juostos</em>, <em>Ribų švytėjimas</em>, <em>Meniu</em>, <em>„Laisvai“</em>, <em>Pastaba</em>, <em>Animacija &amp; Pin</em>, <em>Diskai</em>); 3 technikos ikonėlės (<code>↗ / ◎ / ⚠</code>) dabar sklandžiai <strong>susilieja į vieną kortelę be skylių ir mirktelėjimo</strong>; pratimo <strong>apšilimo serijos (50 % / 75 %)</strong> visada šviečia lauke, kol nepažymi <code>○ Atlikta</code>; <code>1:1</code> vs <code>2:1</code> bloko animacija turi maksimalią amplitudę; pratimai užsidaro be jokio šuolio, o atliktų serijų duomenis galima redaguoti tiesiog bakstelėjus ant serijos!</div>
           </div>
         </div>
 
@@ -5310,6 +5834,8 @@
     let openExInfo = new Set();
     let openNotes = new Set();
     let closedNotes = new Set();
+    let editingDoneSets = new Set();
+    const exInfoFlightState = new Map();
     let programBarOpen = true;
     let warmupInlineOpen = true;
     let extraToolsOpen = false;
@@ -6076,7 +6602,7 @@
       for (let i = 0; i < setCount; i++) {
         sets.push({ weight: ex.weightLabel === 'Sekundės' ? 0 : adjW, reps: ex.minReps, rir: getDefaultRir(), done: false });
       }
-      return { sets, straps: prev ? !!prev.straps : false, comfort: 'green', note: '' };
+      return { sets, straps: prev ? !!prev.straps : false, comfort: 'green', note: '', warmupDone: false };
     }
 
     function syncDraftWithModeAndSlots() {
@@ -6089,6 +6615,7 @@
         } else {
           const entry = state.draft.entries[exId];
           if (!entry.comfort) entry.comfort = 'green';
+          if (entry.warmupDone === undefined) entry.warmupDone = false;
           const targetSets = getTargetSetCount(!!ex.isGrip);
           while (entry.sets.length < targetSets) {
             const last = entry.sets[entry.sets.length - 1] || { weight: 20, reps: ex.minReps, rir: getDefaultRir() };
@@ -6493,11 +7020,11 @@
       const hasDone = state.draft && Object.values(state.draft.entries).some(e => e.sets.some(s => s.done));
       if (hasDone) {
         askConfirm(`Perjungti į Treniruotę ${type}?`, 'Jau pažymėtos serijos bus išvalytos.', () => {
-          openNotes.clear(); closedNotes.clear();
+          openNotes.clear(); closedNotes.clear(); editingDoneSets.clear();
           state.draft = null; ensureDraft(type); renderWorkoutView();
         });
       } else {
-        openNotes.clear(); closedNotes.clear();
+        openNotes.clear(); closedNotes.clear(); editingDoneSets.clear();
         state.draft = null; ensureDraft(type); renderWorkoutView();
       }
     }
@@ -6870,11 +7397,27 @@
         prevHtml = `<span><strong>Praeitą (${prevLog.date}):</strong> <span class="tabular" style="font-family:var(--font-mono);">${sTxt}</span></span>`;
       }
 
-      let warmupHtml = '';
+      let warmupOuterHtml = '';
+      let warmupInsideUndoHtml = '';
       if (ex.warmupCalc && ex.weightLabel !== 'Sekundės') {
         const w = Number(entry.sets[0]?.weight) || 0;
         const fmt = formatWarmupSets(ex, w);
-        warmupHtml = `<div class="warmup-calc-bar" id="warmup-calc-${exId}">${fmt.inlineHtml}</div>`;
+        const isWupDone = !!entry.warmupDone;
+        warmupOuterHtml = `
+          <div id="warmup-ex-wrap-${exId}" class="warmup-ex-wrap ${isWupDone ? 'is-done' : ''}">
+            <div>
+              <button type="button" id="warmup-ex-bar-${exId}" class="warmup-ex-bar" onclick="toggleExerciseWarmupDone('${exId}', true)">
+                <div class="warmup-ex-info">
+                  <span class="warmup-ex-lbl">Apšilimo serijos prieš darbinį svorį</span>
+                  <span id="warmup-calc-${exId}" class="warmup-ex-vals">${fmt.inlineHtml}</span>
+                </div>
+                <span class="warmup-ex-check">○ Atlikta</span>
+              </button>
+            </div>
+          </div>`;
+        warmupInsideUndoHtml = isWupDone
+          ? `<div id="warmup-undo-${exId}" class="warmup-done-undo"><span>✓ Apšilimo serijos atliktos</span><button type="button" class="btn btn-sm btn-ghost" style="min-height:26px;padding:2px 8px;font-size:11px;" onclick="toggleExerciseWarmupDone('${exId}', false)">Rodyti vėl</button></div>`
+          : `<div id="warmup-undo-${exId}" style="display:none;"></div>`;
       }
 
       const cableBtnHtml = ex.isCable
@@ -6888,20 +7431,54 @@
 
       // Round 5 + v10: 3 Distinct Set Visual States (Completed / Active Focus with Icon-Only Plate Button / Waiting)
       const setsHtml = entry.sets.map((s, sIdx) => {
-        // 1) Completed Set -> Compact, dimmed, single pill + real timestamp
+        // 1) Completed Set -> Compact 1-Row + Tap-to-Edit Inline Drawer (keeps original timestamp & Done status)
         if (s.done) {
           const readout = isTimeOnly ? `${s.reps} sek.` : `${s.weight} kg × ${s.reps}`;
           const tsTxt = s.doneAt ? formatClockHM(s.doneAt) : '';
+          const editKey = `${exId}:${sIdx}`;
+          const isEd = editingDoneSets.has(editKey);
           return `
-            <div class="set-done-compact" id="setrow-${exId}-${sIdx}">
-              <div class="done-left">
-                <span class="done-idx">#${sIdx + 1}</span>
-                <span class="done-readout">${readout}</span>
-                <span class="tabular" style="font-size:11px;color:var(--text-dim);">RIR ${s.rir}${tsTxt ? ' · ' + tsTxt : ''}</span>
+            <div class="set-done-compact ${isEd ? 'is-editing' : ''}" id="setrow-${exId}-${sIdx}">
+              <div class="done-main-row">
+                <div class="done-left" role="button" tabindex="0" title="Bakstelėk, kad pataisytum svorį, pakartojimus ar RIR" onclick="toggleDoneSetEditor('${exId}', ${sIdx})">
+                  <span class="done-idx">#${sIdx + 1}</span>
+                  <span id="done-readout-${exId}-${sIdx}" class="done-readout">${readout}</span>
+                  <span id="done-meta-${exId}-${sIdx}" class="tabular" style="font-size:11px;color:var(--text-dim);">RIR ${s.rir}${tsTxt ? ' · ' + tsTxt : ''}</span>
+                  <svg class="done-edit-pen" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 1 1 3 3L7 19l-4 1 1-4Z"/></svg>
+                </div>
+                <button class="done-check-pill" title="Atžymėti seriją" onclick="toggleSetDone('${exId}', ${sIdx})">
+                  ✓ Atlikta
+                </button>
               </div>
-              <button class="done-check-pill" title="Atžymėti seriją" onclick="toggleSetDone('${exId}', ${sIdx})">
-                ✓ Atlikta
-              </button>
+              <div id="done-edit-${exId}-${sIdx}" class="collapsible ${isEd ? '' : 'collapsed'}">
+                <div class="collapsible-inner">
+                  <div class="done-edit-box">
+                    <div class="done-edit-grid ${isTimeOnly ? 'single-col' : ''}">
+                      ${!isTimeOnly ? `
+                        <div class="done-step-wrap">
+                          <span class="done-step-lbl">${ex.weightLabel}</span>
+                          <div class="done-stepper">
+                            <button type="button" class="done-step-btn" aria-label="Mažinti svorį" onclick="stepDoneSetValue('${exId}', ${sIdx}, 'weight', -${ex.step})">−</button>
+                            <input id="done-inp-w-${exId}-${sIdx}" type="number" step="${ex.step}" class="done-step-inp" value="${s.weight}" onchange="updateDoneSetField('${exId}', ${sIdx}, 'weight', parseFloat(this.value)||0)">
+                            <button type="button" class="done-step-btn" aria-label="Didinti svorį" onclick="stepDoneSetValue('${exId}', ${sIdx}, 'weight', ${ex.step})">+</button>
+                          </div>
+                        </div>` : ''}
+                      <div class="done-step-wrap">
+                        <span class="done-step-lbl">${isTimeOnly || ex.id === 'plate_pinch' ? 'Sekundės' : 'Pakartojimai'}</span>
+                        <div class="done-stepper">
+                          <button type="button" class="done-step-btn" aria-label="Mažinti pakartojimus" onclick="stepDoneSetValue('${exId}', ${sIdx}, 'reps', -1)">−</button>
+                          <input id="done-inp-r-${exId}-${sIdx}" type="number" step="1" class="done-step-inp" value="${s.reps}" onchange="updateDoneSetField('${exId}', ${sIdx}, 'reps', parseInt(this.value)||0)">
+                          <button type="button" class="done-step-btn" aria-label="Didinti pakartojimus" onclick="stepDoneSetValue('${exId}', ${sIdx}, 'reps', 1)">+</button>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="done-edit-actions">
+                      <button id="done-rir-btn-${exId}-${sIdx}" type="button" class="rir-single-btn" onclick="cycleDoneSetRir('${exId}', ${sIdx})">RIR ${s.rir} ↻</button>
+                      <button type="button" class="btn btn-sm btn-primary" style="min-height:30px;padding:4px 12px;" onclick="toggleDoneSetEditor('${exId}', ${sIdx})">✓ Išsaugoti</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>`;
         }
 
@@ -6992,7 +7569,7 @@
               ${isPlanBSwapped ? '<span class="pill pill-yellow" style="padding:1px 6px;font-size:9.5px;">Planas B</span>' : ''}
             </div>
             <h3 class="ex-title"><span class="ex-num">${allDone ? '✓' : displayNum}</span><span>${ex.name}</span></h3>
-            <div class="row-wrap" style="margin-top:7px;">
+            <div class="row-wrap ex-pills-row" style="margin-top:7px;">
               <span class="pill">Tikslas: ${ex.minReps}–${ex.maxReps} ${isTimeOnly ? 'sek.' : 'pak.'}</span>
               <span class="pill">Poilsis: ${Math.floor(ex.rest/60)}:${String(ex.rest%60).padStart(2,'0')}</span>
               ${cableBtnHtml}
@@ -7000,7 +7577,7 @@
           </div>
           <div class="row" style="gap:5px;flex-shrink:0;">
             ${state.customExercises[exId] ? `<button type="button" class="btn btn-sm btn-danger" style="min-height:33px;padding:5px 9px;" title="Pašalinti savo pratimą" onclick="event.stopPropagation();deleteCustomExercise('${exId}', event)">✕</button>` : ''}
-            <button class="btn btn-sm ${isPlanBSwapped ? 'btn-amber-ghost' : 'btn-ghost'}" style="flex-shrink:0;" onclick="event.stopPropagation();openPlanBModal('${exId}', '${slotKey || ''}')">${isPlanBSwapped ? '↩ Planas A' : '⚡ Planas B'}</button>
+            <button type="button" class="btn btn-sm planb-btn ${isPlanBSwapped ? 'btn-amber-ghost' : 'btn-ghost'}" onclick="event.stopPropagation();openPlanBModal('${exId}', '${slotKey || ''}')">${buildPlanBIconSvg(isPlanBSwapped)}<span>${isPlanBSwapped ? 'Planas A' : 'Planas B'}</span></button>
             ${canCollapseSelf ? `<button type="button" class="ex-chev-pill" title="Suskleisti pratimą" aria-label="Suskleisti pratimą" onclick="collapseActiveExercise(event)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></button>` : ''}
           </div>
         </div>
@@ -7016,30 +7593,37 @@
             ${prog.btnLabel ? `<button type="button" class="btn btn-sm btn-secondary" style="flex-shrink:0;" onclick="applySuggestedWeight('${exId}', ${prog.suggestedWeight})">${prog.btnLabel}</button>` : ''}
           </div>` : ''}
 
-        <!-- v10 Sec 7: Collapsible Technique · Previous · Warmup Block (Hidden by Default -> Saves ~270px!) -->
-        <button id="ex-info-btn-${exId}" type="button" class="ex-info-toggle ${isInfoOpen ? 'open' : ''}" onclick="toggleExInfoDrawer('${exId}')">
-          <span style="display:inline-flex;align-items:center;gap:6px;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">
-            <span>ℹ️ Technika · Praeitą kartą${warmupHtml ? ' · Apšilimas' : ''}</span>
-          </span>
-          <span class="ex-info-chev">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
-          </span>
-        </button>
+        <!-- v10+: 14 p. #1 (A) Single Morphing Card with 3 Subpixel WAAPI FLIP Icons (↗ / ◎ / ⚠) -->
+        <div class="ex-info-wrap ${isInfoOpen ? 'open' : ''}" id="ex-info-wrap-${exId}">
+          <div class="ex-info-bar-wrap">
+            <button id="ex-info-btn-${exId}" type="button" class="ex-info-toggle" aria-label="Technika ir praeitas kartas" aria-expanded="${isInfoOpen ? 'true' : 'false'}" onclick="toggleExInfoDrawer('${exId}')">
+              <span class="ex-info-dock">
+                <span class="qc-ico dir" data-d="0" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M7 17 17 7"/><path d="M8 7h9v9"/></svg></span>
+                <span class="qc-ico feel" data-d="1" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="4.5"/><circle cx="12" cy="12" r="1.2" fill="currentColor" stroke="none"/></svg></span>
+                <span class="qc-ico stop" data-d="2" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0Z"/><path d="M12 9v4"/><path d="M12 17h.01"/></svg></span>
+              </span>
+              <span class="ex-info-chev">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+              </span>
+            </button>
+          </div>
 
-        <div id="ex-info-collapse-${exId}" class="collapsible ${isInfoOpen ? '' : 'collapsed'}">
-          <div class="collapsible-inner">
-            <div class="quick-cues anim-s1" style="margin-top:2px;">
+          <div class="ex-info-body">
+            <div class="quick-cues anim-s1">
               <div class="qc-item">
-                <span class="qc-ico dir" aria-hidden="true">
+                <span class="qc-ico dir qc-fly-t" data-t="0" aria-hidden="true">
                   <svg viewBox="0 0 24 24"><path d="M7 17 17 7"/><path d="M8 7h9v9"/></svg>
                 </span>
                 <div class="qc-body">
                   <span class="qc-k qc-dir">Kaip atlikti</span>
                   <span class="qc-txt">${ex.dir || ''}</span>
                 </div>
+                <button type="button" class="ex-merge-close" title="Suskleisti techniką" aria-label="Suskleisti techniką" onclick="toggleExInfoDrawer('${exId}')">
+                  <svg viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></svg>
+                </button>
               </div>
               <div class="qc-item">
-                <span class="qc-ico feel" aria-hidden="true">
+                <span class="qc-ico feel qc-fly-t" data-t="1" aria-hidden="true">
                   <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="4.5"/><circle cx="12" cy="12" r="1.2" fill="currentColor" stroke="none"/></svg>
                 </span>
                 <div class="qc-body">
@@ -7048,7 +7632,7 @@
                 </div>
               </div>
               <div class="qc-item qc-stop-row">
-                <span class="qc-ico stop" aria-hidden="true">
+                <span class="qc-ico stop qc-fly-t" data-t="2" aria-hidden="true">
                   <svg viewBox="0 0 24 24"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0Z"/><path d="M12 9v4"/><path d="M12 17h.01"/></svg>
                 </span>
                 <div class="qc-body">
@@ -7062,9 +7646,12 @@
               <div style="flex:1;min-width:0;">${prevHtml}</div>
               ${prevLog ? `<button class="btn btn-sm btn-ghost" style="min-height:30px;padding:3px 10px;" onclick="copyPreviousSets('${exId}')">Perimti</button>` : ''}
             </div>
-            ${warmupHtml}
+            ${warmupInsideUndoHtml}
           </div>
         </div>
+
+        <!-- Always-Visible Glowing Exercise Warmup Bar (Stays Visible Even When Tech Collapsed Until Marked Done) -->
+        ${warmupOuterHtml}
 
         <div class="sets-list anim-s2">${setsHtml}</div>
 
@@ -7151,17 +7738,23 @@
       return { infoBtn, noteBtn };
     }
 
+    function buildPlanBIconSvg(isSwapped) {
+      return isSwapped
+        ? '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 14 4 9l5-5"/><path d="M20 20v-7a4 4 0 0 0-4-4H4"/></svg>'
+        : '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M16 3l4 4-4 4"/><path d="M20 7H4"/><path d="M8 21l-4-4 4-4"/><path d="M4 17h16"/></svg>';
+    }
+
     function buildJointHintHtml(exId, comfort, slotKey) {
       if (comfort === 'yellow') {
         return `<div class="joint-action-hint y">
           <span style="flex:1;min-width:180px;"><strong style="color:var(--yellow);">Sąnario / sausgyslės įtampa:</strong> sumažink svorį 10–15 %, sulėtink tempą arba pabandyk palengvinimą.</span>
-          <button type="button" class="btn btn-sm btn-amber-ghost" style="min-height:30px;padding:4px 9px;font-size:11.5px;" onclick="openPlanBModal('${exId}', '${slotKey || ''}')">⚡ Planas B</button>
+          <button type="button" class="btn btn-sm planb-btn btn-amber-ghost" style="min-height:30px;padding:4px 9px;font-size:11.5px;" onclick="openPlanBModal('${exId}', '${slotKey || ''}')">${buildPlanBIconSvg(false)}<span>Planas B</span></button>
         </div>`;
       }
       if (comfort === 'red') {
         return `<div class="joint-action-hint r">
           <span style="flex:1;min-width:180px;"><strong style="color:var(--red);">Aštrus skausmas – sustok čia ir dabar!</strong> Pasižymėk vietą žemiau ir pakeisk pratimą.</span>
-          <button type="button" class="btn btn-sm btn-danger" style="min-height:30px;padding:4px 9px;font-size:11.5px;font-weight:800;" onclick="openPlanBModal('${exId}', '${slotKey || ''}')">⚡ Planas B</button>
+          <button type="button" class="btn btn-sm planb-btn btn-danger" style="min-height:30px;padding:4px 9px;font-size:11.5px;font-weight:800;border-color:transparent;" onclick="openPlanBModal('${exId}', '${slotKey || ''}')">${buildPlanBIconSvg(false)}<span>Planas B</span></button>
         </div>`;
       }
       return '';
@@ -7291,11 +7884,26 @@
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
       ctx.clearRect(0, 0, w, h);
 
-      const topY = 18, leftX = w * 0.28, rightX = w * 0.72;
-      const handTravel = 44;
-      const handY = 50 + phase * handTravel;
+      const topY = 17, leftX = w * 0.28, rightX = w * 0.72;
+      const safeBottom = h - 24; // Clean clearance above bottom numbers (h - 7)
+      const plateH = 25; // 3 plates: i=0..2 * 9 - 2
+      const stackBaseY = safeBottom - plateH;
+      const handStartY = topY + 15;
+      const maxHandRoom = Math.max(36, safeBottom - 4 - handStartY);
+      const maxStackRoom = Math.max(36, stackBaseY - (topY + 15));
+      const handTravel = Math.min(maxHandRoom, maxStackRoom);
+      const handY = handStartY + phase * handTravel;
       const stackTravel = mode === '1:1' ? handTravel : handTravel * 0.5;
-      const stackTopY = (h - 38) - phase * stackTravel;
+      const stackTopY = stackBaseY - phase * stackTravel;
+
+      // Subtle dashed max-height reference line showing 1:1 full rise vs 2:1 half rise
+      const peakY = stackBaseY - stackTravel;
+      ctx.save();
+      ctx.setLineDash([3, 3]);
+      ctx.strokeStyle = mode === '1:1' ? 'rgba(245, 158, 11, 0.28)' : 'rgba(34, 197, 94, 0.32)';
+      ctx.lineWidth = 1;
+      ctx.beginPath(); ctx.moveTo(rightX - 24, peakY); ctx.lineTo(rightX + 24, peakY); ctx.stroke();
+      ctx.restore();
 
       ctx.strokeStyle = '#334155'; ctx.lineWidth = 4.5; ctx.lineCap = 'round';
       ctx.beginPath(); ctx.moveTo(12, topY - 7); ctx.lineTo(w - 12, topY - 7); ctx.stroke();
@@ -7334,9 +7942,9 @@
       }
 
       ctx.font = '700 9.5px ui-monospace, monospace'; ctx.textAlign = 'center';
-      ctx.fillStyle = '#e2e8f0'; ctx.fillText('↓ 20 cm', leftX, h - 8);
+      ctx.fillStyle = '#e2e8f0'; ctx.fillText('↓ 20 cm', leftX, h - 7);
       ctx.fillStyle = mode === '1:1' ? '#f59e0b' : '#22c55e';
-      ctx.fillText(mode === '1:1' ? '↑ 20 cm' : '↑ 10 cm', rightX, h - 8);
+      ctx.fillText(mode === '1:1' ? '↑ 20 cm' : '↑ 10 cm', rightX, h - 7);
     }
 
     function startCableGuideAnim() {
@@ -7374,7 +7982,7 @@
       const isSwapped = !!(origSlotId && origSlotId !== exId);
       const targetId = isSwapped ? origSlotId : ex.altId;
       const altEx = targetId ? getExercise(targetId) : null;
-      document.getElementById('planb-title').textContent = isSwapped ? `↩ ${ex.name} (Planas B)` : `⚡ ${ex.name}`;
+      document.getElementById('planb-title').textContent = isSwapped ? `${ex.name} (Planas B)` : `${ex.name} · Planas B`;
       const tips = ex.planBTips || ['Sumažink svorį 15–20 % ir sulėtink tempą.'];
       let html = `
         <div style="padding:12px;border-radius:14px;background:var(--accent-soft);border-left:3px solid var(--accent);font-size:13.5px;margin-bottom:13px;">
@@ -7465,7 +8073,28 @@
       if (sBar) sBar.classList.remove('visible');
       const card = document.getElementById('active-ex-' + curId);
       if (card && state.cardAnim !== '0') {
+        cancelExInfoFlight(curId);
+        card.classList.remove('anim-enter');
+        const startH = card.offsetHeight;
+        const refStrip = document.querySelector('#exercises-container .ex-strip');
+        const targetH = refStrip ? refStrip.offsetHeight : 58;
+        const spd = Math.max(0.4, Math.min(2.2, Number(state.cardAnimSpeed) || 1.0));
+        const durMs = Math.max(155, Math.min(420, Math.round(275 / spd)));
+
+        // Inject exact compact strip ghost so height + content crossfade with ZERO pixel jump
+        const exIds = state.draft ? getSlotExerciseIds(state.draft.type) : [];
+        const dNum = Math.max(1, exIds.indexOf(curId) + 1);
+        const ghostStrip = buildCompactExerciseStrip(curId, dNum);
+        const ghost = document.createElement('div');
+        ghost.className = 'collapse-strip-ghost';
+        ghost.innerHTML = ghostStrip.innerHTML;
+        card.appendChild(ghost);
+
+        card.style.boxSizing = 'border-box';
+        card.style.height = startH + 'px';
+        void card.offsetHeight;
         card.classList.add('collapsing-out');
+        card.style.height = targetH + 'px';
         clearTimeout(collapseAnimTimerId);
         collapseAnimTimerId = setTimeout(() => {
           collapseAnimTimerId = null;
@@ -7473,7 +8102,7 @@
           userCollapsedAll = true;
           activeExId = null;
           renderWorkoutView();
-        }, 165);
+        }, durMs);
         return;
       }
       userCollapsedAll = true;
@@ -7481,13 +8110,212 @@
       renderWorkoutView();
     }
 
+    function toggleExerciseWarmupDone(exId, doneVal) {
+      const entry = state.draft?.entries?.[exId];
+      if (!entry) return;
+      entry.warmupDone = !!doneVal;
+      saveState();
+      const wrap = document.getElementById('warmup-ex-wrap-' + exId);
+      const bar = document.getElementById('warmup-ex-bar-' + exId);
+      const undoEl = document.getElementById('warmup-undo-' + exId);
+      if (doneVal) {
+        vibrateDevice(14);
+        if (bar) {
+          bar.classList.add('flash-ok');
+          const chk = bar.querySelector('.warmup-ex-check');
+          if (chk) chk.textContent = '✓ Atlikta';
+        }
+        setTimeout(() => {
+          if (wrap) wrap.classList.add('is-done');
+          if (undoEl) {
+            undoEl.className = 'warmup-done-undo';
+            undoEl.style.display = '';
+            undoEl.innerHTML = `<span>✓ Apšilimo serijos atliktos</span><button type="button" class="btn btn-sm btn-ghost" style="min-height:26px;padding:2px 8px;font-size:11px;" onclick="toggleExerciseWarmupDone('${exId}', false)">Rodyti vėl</button>`;
+          }
+        }, 160);
+      } else {
+        if (bar) {
+          bar.classList.remove('flash-ok');
+          const chk = bar.querySelector('.warmup-ex-check');
+          if (chk) chk.textContent = '○ Atlikta';
+        }
+        if (wrap) wrap.classList.remove('is-done');
+        if (undoEl) { undoEl.style.display = 'none'; undoEl.innerHTML = ''; }
+      }
+    }
+
+    function cancelExInfoFlight(exId) {
+      const st = exInfoFlightState.get(exId);
+      if (!st) return;
+      st.cancelled = true;
+      (st.anims || []).forEach(a => { try { a.cancel(); } catch (_) {} });
+      (st.clones || []).forEach(c => c.remove());
+      if (st.wrap) {
+        st.wrap.classList.remove('is-flying', 'no-trans');
+        st.wrap.style.height = '';
+      }
+      exInfoFlightState.delete(exId);
+    }
+
     function toggleExInfoDrawer(exId) {
       const willOpen = !openExInfo.has(exId);
       if (willOpen) openExInfo.add(exId);
       else openExInfo.delete(exId);
+
+      const wrap = document.getElementById('ex-info-wrap-' + exId);
       const btn = document.getElementById('ex-info-btn-' + exId);
-      if (btn) btn.classList.toggle('open', willOpen);
-      applyCollapsibleState('ex-info-collapse-' + exId, willOpen);
+      if (!wrap) return;
+
+      cancelExInfoFlight(exId);
+      if (btn) btn.setAttribute('aria-expanded', willOpen ? 'true' : 'false');
+
+      if (state.cardAnim === '0') {
+        wrap.classList.toggle('open', willOpen);
+        return;
+      }
+
+      const docks = [0, 1, 2].map(i => wrap.querySelector(`[data-d="${i}"]`));
+      const targets = [0, 1, 2].map(i => wrap.querySelector(`[data-t="${i}"]`));
+      if (docks.some(x => !x) || targets.some(x => !x)) {
+        wrap.classList.toggle('open', willOpen);
+        return;
+      }
+
+      const relRect = (el, base) => {
+        const r = el.getBoundingClientRect();
+        return {
+          x: r.left - base.left - (wrap.clientLeft || 0),
+          y: r.top - base.top - (wrap.clientTop || 0)
+        };
+      };
+
+      // 1) Measure START positions & height
+      const baseStart = wrap.getBoundingClientRect();
+      const startH = baseStart.height;
+      const fromPts = (willOpen ? docks : targets).map(el => relRect(el, baseStart));
+
+      // 2) Synchronous 0-ms pre-layout pass to measure EXACT subpixel END positions & height
+      wrap.classList.add('no-trans');
+      wrap.style.height = '';
+      wrap.classList.toggle('open', willOpen);
+      void wrap.offsetHeight;
+      const baseEnd = wrap.getBoundingClientRect();
+      const endH = baseEnd.height;
+      const toPts = (willOpen ? targets : docks).map(el => relRect(el, baseEnd));
+
+      // 3) Lock height at startH inside target DOM layout and remove no-trans
+      wrap.style.height = startH + 'px';
+      void wrap.offsetHeight;
+      wrap.classList.remove('no-trans');
+
+      // 4) Spawn GPU clones with fill:'both' + exact border-adjusted coordinates
+      const clones = [];
+      const anims = [];
+      wrap.classList.add('is-flying');
+      const dur = willOpen ? 340 : 300;
+
+      for (let i = 0; i < 3; i++) {
+        const clone = targets[i].cloneNode(true);
+        clone.removeAttribute('data-t');
+        clone.classList.remove('qc-fly-t');
+        clone.classList.add('ex-fly-clone');
+        const from = fromPts[i], to = toPts[i];
+        clone.style.transform = `translate3d(${from.x.toFixed(2)}px, ${from.y.toFixed(2)}px, 0) scale(1)`;
+        wrap.appendChild(clone);
+        clones.push(clone);
+
+        const anim = clone.animate([
+          { transform: `translate3d(${from.x.toFixed(2)}px, ${from.y.toFixed(2)}px, 0) scale(1)`, boxShadow: '0 0 0 rgba(0,0,0,0)' },
+          { transform: `translate3d(${((from.x + to.x) * 0.5).toFixed(2)}px, ${((from.y + to.y) * 0.5).toFixed(2)}px, 0) scale(1.05)`, boxShadow: '0 6px 14px rgba(0,0,0,0.22)', offset: 0.45 },
+          { transform: `translate3d(${to.x.toFixed(2)}px, ${to.y.toFixed(2)}px, 0) scale(1)`, boxShadow: '0 0 0 rgba(0,0,0,0)' }
+        ], {
+          duration: dur,
+          delay: willOpen ? i * 18 : (2 - i) * 16,
+          easing: 'cubic-bezier(0.22, 1, 0.36, 1)',
+          fill: 'both'
+        });
+        anims.push(anim);
+      }
+
+      if (willOpen) {
+        wrap.querySelectorAll('.qc-body, .ex-prev-line').forEach((b, idx) => {
+          b.animate([
+            { opacity: 0, transform: 'translate3d(0, 6px, 0)' },
+            { opacity: 1, transform: 'translate3d(0, 0, 0)' }
+          ], { duration: 230, delay: 60 + idx * 26, easing: 'cubic-bezier(0.22, 1, 0.36, 1)', fill: 'both' });
+        });
+      }
+
+      requestAnimationFrame(() => { wrap.style.height = endH + 'px'; });
+
+      const rec = { wrap, clones, anims, cancelled: false };
+      exInfoFlightState.set(exId, rec);
+
+      Promise.all(anims.map(a => a.finished.catch(() => {}))).then(() => {
+        if (rec.cancelled) return;
+        // Reveal real icons FIRST (0-frame gap), then remove clones on next frame
+        wrap.classList.remove('is-flying');
+        wrap.style.height = '';
+        requestAnimationFrame(() => {
+          if (rec.cancelled) return;
+          clones.forEach(c => c.remove());
+          if (exInfoFlightState.get(exId) === rec) exInfoFlightState.delete(exId);
+        });
+      });
+    }
+
+    /* In-Place Completed Set Editor (Edit Weight / Reps / RIR without unmarking or losing timestamp) */
+    function toggleDoneSetEditor(exId, setIdx) {
+      const key = `${exId}:${setIdx}`;
+      const willOpen = !editingDoneSets.has(key);
+      if (willOpen) editingDoneSets.add(key);
+      else editingDoneSets.delete(key);
+      const row = document.getElementById(`setrow-${exId}-${setIdx}`);
+      if (row) row.classList.toggle('is-editing', willOpen);
+      applyCollapsibleState(`done-edit-${exId}-${setIdx}`, willOpen);
+    }
+
+    function syncDoneSetRowInPlace(exId, setIdx) {
+      const ex = getExercise(exId);
+      const s = state.draft?.entries?.[exId]?.sets?.[setIdx];
+      if (!ex || !s) return;
+      const isTimeOnly = ex.weightLabel === 'Sekundės';
+      const ro = document.getElementById(`done-readout-${exId}-${setIdx}`);
+      if (ro) ro.textContent = isTimeOnly ? `${s.reps} sek.` : `${s.weight} kg × ${s.reps}`;
+      const meta = document.getElementById(`done-meta-${exId}-${setIdx}`);
+      const tsTxt = s.doneAt ? formatClockHM(s.doneAt) : '';
+      if (meta) meta.textContent = `RIR ${s.rir}${tsTxt ? ' · ' + tsTxt : ''}`;
+      const rBtn = document.getElementById(`done-rir-btn-${exId}-${setIdx}`);
+      if (rBtn) rBtn.textContent = `RIR ${s.rir} ↻`;
+      if (setIdx === 0) updateWarmupCalcInPlace(exId);
+      saveState();
+      updateWorkoutProgressStats();
+    }
+
+    function stepDoneSetValue(exId, setIdx, field, delta) {
+      const s = state.draft?.entries?.[exId]?.sets?.[setIdx];
+      if (!s) return;
+      const cur = Number(s[field]) || 0;
+      const next = Math.max(0, +(cur + delta).toFixed(2));
+      s[field] = next;
+      const inp = document.getElementById(`done-inp-${field === 'weight' ? 'w' : 'r'}-${exId}-${setIdx}`);
+      if (inp) inp.value = next;
+      syncDoneSetRowInPlace(exId, setIdx);
+    }
+
+    function updateDoneSetField(exId, setIdx, field, val) {
+      const s = state.draft?.entries?.[exId]?.sets?.[setIdx];
+      if (!s) return;
+      s[field] = Math.max(0, Number(val) || 0);
+      syncDoneSetRowInPlace(exId, setIdx);
+    }
+
+    function cycleDoneSetRir(exId, setIdx) {
+      const s = state.draft?.entries?.[exId]?.sets?.[setIdx];
+      if (!s) return;
+      const order = ['3', '2', '1', '0', '4+'];
+      s.rir = order[(order.indexOf(String(s.rir)) + 1) % order.length];
+      syncDoneSetRowInPlace(exId, setIdx);
     }
 
     function toggleTechDrawer(exId) {
@@ -7718,6 +8546,7 @@
       } else {
         delete s.doneAt;
         delete s.intervalSec;
+        editingDoneSets.delete(`${exId}:${setIdx}`);
       }
 
       // Sync weight down to next uncompleted set (works for both 2-set Adaptation and 3-set Working mode)
@@ -7904,7 +8733,7 @@
     function confirmResetDraft() {
       askConfirm('Išvalyti treniruotės juodraštį?', 'Visos nebaigtos treniruotės serijos bus atstatytos.', () => {
         const t = state.draft ? state.draft.type : 'A';
-        openNotes.clear(); closedNotes.clear();
+        openNotes.clear(); closedNotes.clear(); editingDoneSets.clear();
         state.draft = null; ensureDraft(t); stopRestTimer(); renderWorkoutView();
         showToast('Juodraštis išvalytas');
       }, true);
@@ -7989,6 +8818,7 @@
       state.draft = null;
       openNotes.clear();
       closedNotes.clear();
+      editingDoneSets.clear();
       warmupChecked.clear();
       openWarmupGuides.clear();
       stopWarmupTimer(true);
@@ -10771,7 +11601,7 @@
               if (prevRaw) localStorage.setItem(MIGRATION_BACKUP_KEY, prevRaw);
             } catch (e) {}
             state = mergeLoadedState(parsed);
-            openNotes.clear(); closedNotes.clear(); openDrawers.clear(); openExInfo.clear();
+            openNotes.clear(); closedNotes.clear(); openDrawers.clear(); openExInfo.clear(); editingDoneSets.clear();
             document.getElementById('brand-height-badge').textContent = state.profile.height || 193;
             saveState(); setTheme(state.theme, true);
             applyCardFrameSettings(); applyCardAnimSettings(); applyAppearanceSettings(); renderWorkoutFlowControls();
@@ -10807,7 +11637,7 @@
     function confirmClearAllData() {
       askConfirm('Ištrinti VISUS duomenis?', 'Bus ištrinta visa treniruočių istorija, svoris ir apimtys.', () => {
         localStorage.removeItem(STORAGE_KEY); state = getDefaultState(); saveState();
-        openNotes.clear(); closedNotes.clear(); openDrawers.clear(); openExInfo.clear();
+        openNotes.clear(); closedNotes.clear(); openDrawers.clear(); openExInfo.clear(); editingDoneSets.clear();
         setTheme('obsidian', true); stopRestTimer();
         applyCardFrameSettings(); applyCardAnimSettings(); applyAppearanceSettings(); renderWorkoutFlowControls();
         renderWorkoutView(); renderSettingsTab(); checkBackupReminder(); renderStorageQuota();
@@ -10831,7 +11661,7 @@
       const idx = Math.max(0, NAV_TAB_ORDER.indexOf(tabName));
       const navInner = document.getElementById('bottom-nav-inner');
       if (navInner) navInner.style.setProperty('--nav-idx', String(idx));
-      document.querySelectorAll('.nav-item').forEach(btn => {
+      document.querySelectorAll('#bottom-nav-inner .nav-item').forEach(btn => {
         const isAct = btn.dataset.tab === tabName;
         btn.classList.toggle('active', isAct);
         if (isAct) replayActiveNavPop(btn);
@@ -10876,7 +11706,8 @@
 
     function applyCardFrameSettings() {
       const id = String(state.cardFrame || '9');
-      document.documentElement.setAttribute('data-card-frame', id);
+      document.getElementById('app-shell')?.setAttribute('data-card-frame', id);
+      document.getElementById('cf-pane-single')?.setAttribute('data-card-frame', id);
       const item = CARD_FRAME_LIST.find(x => x.id === id) || CARD_FRAME_LIST[8];
       const sum = document.getElementById('settings-frame-summary');
       if (sum) sum.textContent = item.title;
@@ -10890,10 +11721,12 @@
           `<button type="button" class="anim-pick-btn ${f.id === id ? 'active' : ''}" onclick="pickCardFrame('${f.id}')">${f.short}</button>`
         ).join('');
       }
+      document.querySelectorAll('#cf-pane-all .mview-all-card').forEach(el => el.classList.toggle('picked', el.dataset.optId === id));
     }
 
     function openCardFrameModal() {
       applyCardFrameSettings();
+      if (document.getElementById('modal-card-frame')?.getAttribute('data-view') === 'all') renderCardFrameAllGallery();
       openModal('modal-card-frame');
     }
 
@@ -10921,7 +11754,8 @@
     function applyCardAnimSettings() {
       const id = String(state.cardAnim ?? '10');
       const spd = Math.max(0.4, Math.min(2.2, Number(state.cardAnimSpeed) || 1.0));
-      document.documentElement.setAttribute('data-card-anim', id);
+      document.getElementById('app-shell')?.setAttribute('data-card-anim', id);
+      document.getElementById('ca-pane-single')?.setAttribute('data-card-anim', id);
       document.documentElement.style.setProperty('--anim-spd', String(+(1 / spd).toFixed(3)));
       const item = CARD_ANIM_LIST.find(x => x.id === id) || CARD_ANIM_LIST[10];
       const sum = document.getElementById('settings-anim-summary');
@@ -10940,10 +11774,12 @@
           `<button type="button" class="anim-pick-btn ${a.id === id ? 'active' : ''}" onclick="pickCardAnim('${a.id}')">${a.short}</button>`
         ).join('');
       }
+      document.querySelectorAll('#ca-pane-all .mview-all-card').forEach(el => el.classList.toggle('picked', el.dataset.optId === id));
     }
 
     function openCardAnimModal() {
       applyCardAnimSettings();
+      if (document.getElementById('modal-card-anim')?.getAttribute('data-view') === 'all') renderCardAnimAllGallery();
       openModal('modal-card-anim');
       setTimeout(replayCardAnimDemo, 60);
     }
@@ -10963,6 +11799,15 @@
     }
 
     function replayCardAnimDemo() {
+      const modal = document.getElementById('modal-card-anim');
+      if (modal && modal.getAttribute('data-view') === 'all') {
+        modal.querySelectorAll('#ca-pane-all .anim-demo-card').forEach(card => {
+          card.classList.remove('anim-enter');
+          void card.offsetWidth;
+          card.classList.add('anim-enter');
+        });
+        return;
+      }
       const stage = document.getElementById('anim-demo-stage');
       if (!stage) return;
       stage.classList.remove('anim-enter');
@@ -11074,32 +11919,377 @@
     ];
 
     const JOINT_STYLE_LIST = [
-      { id: '1', short: '#1', name: '#1 Slenkanti kapsulė' },
-      { id: '2', short: '#2', name: '#2 Vientisas kanalas' },
-      { id: '3', short: '#3', name: '#3 3D brangakmeniai' },
-      { id: '4', short: '#4', name: '#4 Minimalus žiedas' }
+      { id: '1', short: '#1', name: '#1 Slenkanti kapsulė', desc: 'Atskiri apvalūs burbuliukai, kurie paspaudus sklandžiai išsiskleidžia į kapsulę su žodžiu.' },
+      { id: '2', short: '#2', name: '#2 Vientisas kanalas', desc: 'Standartinis · Visi 3 burbuliukai viename įgilintame kanale; paspaudus išsiskleidžia žodis.' },
+      { id: '3', short: '#3', name: '#3 3D brangakmeniai', desc: 'Blizgūs 3D stiklo burbuliukai su gylio atspindžiu ir minkštu švytėjimu.' },
+      { id: '4', short: '#4', name: '#4 Minimalus žiedas', desc: 'Itin švarus dizainas be fono rėmelio – tik gyvi taškeliai ir aktyvus švytintis žiedas.' }
     ];
 
     const JOINT_BTN_LIST = [
-      { id: '2d', short: '#2D', name: '#2D Apvalūs dvyniai' },
-      { id: '2a', short: '#2A', name: '#2A Paprasti apvalūs' },
-      { id: '2b', short: '#2B', name: '#2B Stiklo ikonos' },
-      { id: '2c', short: '#2C', name: '#2C #8.4 ikonos' },
-      { id: '2e', short: '#2E', name: '#2E Švarios ikonos' },
-      { id: '2f', short: '#2F', name: '#2F Žymeklių ikonos' },
-      { id: '1', short: '#1', name: '#1 Minimalios kapsulės' },
-      { id: '3', short: '#3', name: '#3 Stikliniai mygtukai' },
-      { id: '4', short: '#4', name: '#4 Švarus kontrastas' },
-      { id: '5', short: '#5', name: '#5 #8.4 gradientas' },
-      { id: '6', short: '#6', name: '#6 Žymeklių kortelės' }
+      { id: '2d', short: '#2D', name: '#2D Apvalūs dvyniai', desc: 'Standartinis · Apvalios monochrominės ikonos su ryškiu temos akcentu aktyvioje būsenoje.' },
+      { id: '2a', short: '#2A', name: '#2A Paprasti apvalūs', desc: 'Subtilūs apvalūs kontūrai be užpildo su švelniu akcento kraštu.' },
+      { id: '2b', short: '#2B', name: '#2B Stiklo ikonos', desc: 'Matinio stiklo kvadratėliai su viršutiniu šviesos atspindžiu.' },
+      { id: '2c', short: '#2C', name: '#2C #8.4 ikonos', desc: 'Firminis žalias → akcento gradientas, kaip tavo LeverLab ikonoje.' },
+      { id: '2e', short: '#2E', name: '#2E Švarios ikonos', desc: 'Minimalistinės ikonos be rėmelio – fonas atsiranda tik paspaudus.' },
+      { id: '2f', short: '#2F', name: '#2F Žymeklių ikonos', desc: 'Punktyrinis rėmelis, kuris paspaudus pavirsta ištisiniu akcento rėmeliu.' },
+      { id: '1', short: '#1', name: '#1 Minimalios kapsulės', desc: 'Kompaktiški mygtukai su aiškiais pavadinimais ir plonomis SVG ikonomis.' },
+      { id: '3', short: '#3', name: '#3 Stikliniai mygtukai', desc: 'Stiklo sluoksnio mygtukai su tekstu ir subtiliu vidiniu atspindžiu.' },
+      { id: '4', short: '#4', name: '#4 Švarus kontrastas', desc: 'Tyliausias „Ką reiškia?“ tekstas ir ryški kontrastinė „Pastaba“ kapsulė.' },
+      { id: '5', short: '#5', name: '#5 #8.4 gradientas', desc: 'Mygtukai su tekstu ir firminiu žaliu → akcento gradiento atspalviu.' },
+      { id: '6', short: '#6', name: '#6 Žymeklių kortelės', desc: 'Kompaktiškos taktinės kortelės su punktyriniu „Pastaba“ kraštu.' }
     ];
+
+    let navDemoTourTimer = null;
+    let navDemoCurIdx = 0;
+    let jbDemoInfoOn = false;
+    let jbDemoNoteOn = false;
+    let jbDemoHasNote = false;
+
+    /* Unified 1-Variant <-> All-Live Gallery Controller Across All Appearance Modals */
+    function setModalGalleryView(modalId, view) {
+      const modal = document.getElementById(modalId);
+      if (!modal) return;
+      const v = view === 'all' ? 'all' : 'single';
+      modal.setAttribute('data-view', v);
+      modal.querySelectorAll('.mview-btn').forEach(b => b.classList.toggle('active', b.dataset.mv === v));
+      if (v === 'all') {
+        if (modalId === 'modal-card-frame') renderCardFrameAllGallery();
+        else if (modalId === 'modal-card-anim') { renderCardAnimAllGallery(); setTimeout(replayCardAnimDemo, 40); }
+        else if (modalId === 'modal-edge-glow') renderEdgeGlowAllGallery();
+        else if (modalId === 'modal-nav-anim') renderNavAnimAllGallery();
+        else if (modalId === 'modal-joint-style') renderJointStyleAllGallery();
+        else if (modalId === 'modal-joint-btn') renderJointBtnAllGallery();
+        else if (modalId === 'modal-anim-pin') renderAnimPinAllGallery();
+        else if (modalId === 'modal-plate-icon') renderPlateIconAllGallery();
+      } else {
+        if (modalId === 'modal-card-anim') setTimeout(replayCardAnimDemo, 40);
+        else if (modalId === 'modal-edge-glow') requestAnimationFrame(updateEdgeDemoScroll);
+        else if (modalId === 'modal-anim-pin') renderAnimPinSingleDemo();
+        else if (modalId === 'modal-plate-icon') renderPlateIconSingleDemo();
+      }
+    }
+
+    function renderCardFrameAllGallery() {
+      const box = document.getElementById('cf-pane-all');
+      if (!box) return;
+      const cur = String(state.cardFrame || '9');
+      box.innerHTML = CARD_FRAME_LIST.map(f => `
+        <div class="mview-all-card ${f.id === cur ? 'picked' : ''}" data-opt-id="${f.id}" data-card-frame="${f.id}" onclick="pickCardFrame('${f.id}')">
+          <div class="mview-all-hd">
+            <span class="mview-all-name"><b>#${f.id}</b>${f.title.replace(/^#\d+\s*/, '')}</span>
+            <button type="button" class="mview-zoom" onclick="event.stopPropagation();pickCardFrame('${f.id}');setModalGalleryView('modal-card-frame','single')">1 var.</button>
+          </div>
+          <div class="frame-demo-box" style="margin:0;padding:9px 10px;">
+            <div class="row-between">
+              <span class="pill pill-accent" style="font-size:9.5px;font-family:var(--font-mono);font-weight:900;">SERIJA 1 IŠ 2</span>
+              <span style="font-size:12px;font-weight:900;font-family:var(--font-mono);">60 kg × 10</span>
+              <span class="pill" style="font-size:9.5px;font-family:var(--font-mono);">RIR 3</span>
+            </div>
+          </div>
+        </div>`).join('');
+    }
+
+    function renderCardAnimAllGallery() {
+      const box = document.getElementById('ca-pane-all');
+      if (!box) return;
+      const cur = String(state.cardAnim ?? '10');
+      box.innerHTML = CARD_ANIM_LIST.filter(a => a.id !== '0').map(a => `
+        <div class="mview-all-card ${a.id === cur ? 'picked' : ''}" data-opt-id="${a.id}" data-card-anim="${a.id}" onclick="pickCardAnim('${a.id}')">
+          <div class="mview-all-hd">
+            <span class="mview-all-name"><b>#${a.id}</b>${a.title.replace(/^#\d+\s*/, '')}</span>
+            <button type="button" class="mview-zoom" onclick="event.stopPropagation();pickCardAnim('${a.id}');setModalGalleryView('modal-card-anim','single')">1 var.</button>
+          </div>
+          <div class="anim-demo-card anim-enter" style="margin:0;padding:9px 10px;" onclick="event.stopPropagation();pickCardAnim('${a.id}');this.classList.remove('anim-enter');void this.offsetWidth;this.classList.add('anim-enter');">
+            <div class="anim-pad">
+              <div class="anim-demo-s anim-s1" style="border-left:3px solid var(--accent);padding:4px 8px;font-size:11px;"><strong>Hack Squat</strong> · Kryptis</div>
+              <div class="anim-demo-s anim-s2" style="padding:4px 8px;font-size:11px;"><strong>60 kg × 10</strong> · RIR 3</div>
+              <div class="anim-demo-s anim-s3" style="padding:4px 8px;font-size:11px;text-align:center;font-weight:900;background:var(--accent-grad);color:var(--accent-text);">✓ Užbaigti seriją</div>
+            </div>
+          </div>
+        </div>`).join('');
+    }
+
+    function renderEdgeGlowAllGallery() {
+      const box = document.getElementById('eg-pane-all');
+      if (!box) return;
+      const cur = String(state.scrollEdgeStyle !== undefined ? state.scrollEdgeStyle : '1');
+      box.innerHTML = SCROLL_EDGE_LIST.filter(e => e.id !== '0').map(e => `
+        <div class="mview-all-card ${e.id === cur ? 'picked' : ''}" data-opt-id="${e.id}" onclick="pickScrollEdgeStyle('${e.id}')">
+          <div class="mview-all-hd">
+            <span class="mview-all-name"><b>#${e.id}</b>${e.name.replace(/^#\d+\s*/, '')}</span>
+            <button type="button" class="mview-zoom" onclick="event.stopPropagation();pickScrollEdgeStyle('${e.id}');setModalGalleryView('modal-edge-glow','single')">1 var.</button>
+          </div>
+          <div class="eg-all-strip">
+            <div class="edge-glow-top is-at-edge" data-edge-style="${e.id}" style="--scroll-p:0.65;"><div class="edge-fx-depth"></div><div class="edge-fx-bloom"></div><div class="edge-fx-line"></div><div class="edge-fx-notch"></div></div>
+            <span>LeverLab 193</span><span style="color:var(--accent);font-family:var(--font-mono);font-size:10px;">0% / 100%</span>
+            <div class="edge-glow-bot is-at-edge" data-edge-style="${e.id}"><div class="edge-fx-depth"></div><div class="edge-fx-bloom"></div><div class="edge-fx-line"></div><div class="edge-fx-notch"></div></div>
+          </div>
+        </div>`).join('');
+    }
+
+    function renderNavAnimAllGallery() {
+      const box = document.getElementById('na-pane-all');
+      if (!box) return;
+      const cur = String(state.navAnimStyle !== undefined ? state.navAnimStyle : '1');
+      const tabsHtml = (id) => [
+        { i: 0, cls: 'nv-ico-w', lbl: 'Trenir.', svg: '<path d="M6 5v14M18 5v14M2 9v6M22 9v6M6 12h12"/>' },
+        { i: 1, cls: 'nv-ico-p', lbl: 'Progres.', svg: '<path d="M3 3v18h18"/><path class="nv-line" pathLength="100" d="m19 9-5 5-4-4-3 3"/>' },
+        { i: 2, cls: 'nv-ico-b', lbl: 'Kūnas', svg: '<circle cx="12" cy="5" r="3"/><path d="M12 8v8M8 12h8M9 21l3-5 3 5"/>' },
+        { i: 3, cls: 'nv-ico-s', lbl: 'Nustat.', svg: '<circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l-.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9c.26.6.85 1 1.51 1H21a2 2 0 1 1 0 4h-.09c-.66 0-1.25.4-1.51 1Z"/>' }
+      ].map(t => `<button type="button" class="nav-item ${t.i === navDemoCurIdx ? 'active' : ''}" onclick="event.stopPropagation();pickNavAnimStyle('${id}');tapNavDemoTab(${t.i})"><span class="nav-ico-wrap"><svg class="${t.cls}" viewBox="0 0 24 24">${t.svg}</svg></span><span>${t.lbl}</span></button>`).join('');
+      box.innerHTML = NAV_ANIM_LIST.filter(n => n.id !== '0').map(n => `
+        <div class="mview-all-card ${n.id === cur ? 'picked' : ''}" data-opt-id="${n.id}" onclick="pickNavAnimStyle('${n.id}')">
+          <div class="mview-all-hd">
+            <span class="mview-all-name"><b>#${n.id}</b>${n.name.replace(/^#\d+\s*/, '')}</span>
+            <button type="button" class="mview-zoom" onclick="event.stopPropagation();pickNavAnimStyle('${n.id}');setModalGalleryView('modal-nav-anim','single')">1 var.</button>
+          </div>
+          <div class="nav-demo-shell" data-nav-anim="${n.id}">
+            <div class="bottom-nav-inner na-all-inner" style="--nav-idx:${navDemoCurIdx};">
+              <div class="nav-slide-ind" aria-hidden="true"></div>
+              ${tabsHtml(n.id)}
+            </div>
+          </div>
+        </div>`).join('');
+    }
+
+    function renderJointStyleAllGallery() {
+      const box = document.getElementById('js-pane-all');
+      if (!box) return;
+      const cur = String(state.jointStyle || '2');
+      box.innerHTML = JOINT_STYLE_LIST.map(j => `
+        <div class="mview-all-card ${j.id === cur ? 'picked' : ''}" data-opt-id="${j.id}" data-joint-style="${j.id}" onclick="pickJointStyle('${j.id}')">
+          <div class="mview-all-hd">
+            <span class="mview-all-name"><b>#${j.id}</b>${j.name.replace(/^#\d+\s*/, '')}</span>
+            <button type="button" class="mview-zoom" onclick="event.stopPropagation();pickJointStyle('${j.id}');setModalGalleryView('modal-joint-style','single')">1 var.</button>
+          </div>
+          <div class="joint-dots morph" id="js-all-dots-${j.id}">
+            <button type="button" class="j-dot g active" data-c="green" onclick="event.stopPropagation();tapJointStyleAllCard('${j.id}','green')"><span class="j-orb"></span><span class="j-txt">Laisvai</span></button>
+            <button type="button" class="j-dot y" data-c="yellow" onclick="event.stopPropagation();tapJointStyleAllCard('${j.id}','yellow')"><span class="j-orb"></span><span class="j-txt">Įtampa</span></button>
+            <button type="button" class="j-dot r" data-c="red" onclick="event.stopPropagation();tapJointStyleAllCard('${j.id}','red')"><span class="j-orb"></span><span class="j-txt">Skausmas</span></button>
+          </div>
+        </div>`).join('');
+    }
+
+    function tapJointStyleAllCard(styleId, status) {
+      const grp = document.getElementById('js-all-dots-' + styleId);
+      if (grp) grp.querySelectorAll('.j-dot').forEach(b => b.classList.toggle('active', b.dataset.c === status));
+      pickJointStyle(styleId);
+    }
+
+    function renderJointBtnAllGallery() {
+      const box = document.getElementById('jb-pane-all');
+      if (!box) return;
+      const cur = String(state.jointBtnStyle || '2d');
+      box.innerHTML = JOINT_BTN_LIST.map(j => `
+        <div class="mview-all-card ${j.id === cur ? 'picked' : ''}" data-opt-id="${j.id}" onclick="pickJointBtnStyle('${j.id}')">
+          <div class="mview-all-hd">
+            <span class="mview-all-name"><b>${j.short}</b>${j.name.replace(/^#[0-9A-Z]+\s*/, '')}</span>
+            <button type="button" class="mview-zoom" onclick="event.stopPropagation();pickJointBtnStyle('${j.id}');setModalGalleryView('modal-joint-btn','single')">1 var.</button>
+          </div>
+          <div class="row-between" style="gap:8px;">
+            ${buildDemoJointButtonHtml(j.id, 'info', false, false, `event.stopPropagation();this.classList.toggle('on');pickJointBtnStyle('${j.id}')`)}
+            ${buildDemoJointButtonHtml(j.id, 'note', false, jbDemoHasNote, `event.stopPropagation();this.classList.toggle('on');pickJointBtnStyle('${j.id}')`)}
+          </div>
+        </div>`).join('');
+    }
+
+    function buildAnimPinDemoRowHtml(m, onClickFn) {
+      return `
+        <div class="ap-dual-row" style="margin:0;">
+          <button type="button" class="ap-btn ${m.cls}" onclick="${onClickFn}">
+            ${m.ico}<span class="ap-sep"></span>${m.pin}
+            <svg class="ap-chev-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+          </button>
+          <button type="button" class="yt-ico-btn ${m.ytCls}" onclick="event.stopPropagation();showToast('YouTube nuoroda pratime')">
+            <svg class="yt-svg" viewBox="0 0 28 20" fill="none"><rect width="28" height="20" rx="5.5" fill="#ef4444"/><path d="M11.4 6.2 18.2 10l-6.8 3.8V6.2Z" fill="#fff"/></svg>
+          </button>
+        </div>`;
+    }
+
+    function toggleApDemoBtn(btn, styleId) {
+      if (!btn) return;
+      const willOpen = !btn.classList.contains('open');
+      btn.classList.remove('closing');
+      btn.classList.toggle('open', willOpen);
+      if (!willOpen) { void btn.offsetWidth; btn.classList.add('closing'); }
+      if (styleId && String(state.animPinStyle) !== String(styleId)) pickAnimPinStyle(styleId);
+    }
+
+    function renderAnimPinSingleDemo() {
+      const stage = document.getElementById('ap-demo-single-stage');
+      if (!stage) return;
+      const m = ANIM_PIN_LIST.find(x => x.id === String(state.animPinStyle || '5')) || ANIM_PIN_LIST[4];
+      stage.innerHTML = buildAnimPinDemoRowHtml(m, `toggleApDemoBtn(this, '${m.id}')`);
+    }
+
+    function renderAnimPinAllGallery() {
+      const box = document.getElementById('ap-pane-all');
+      if (!box) return;
+      const cur = String(state.animPinStyle || '5');
+      box.innerHTML = ANIM_PIN_LIST.map(m => `
+        <div class="mview-all-card ${m.id === cur ? 'picked' : ''}" data-opt-id="${m.id}" onclick="pickAnimPinStyle('${m.id}')">
+          <div class="mview-all-hd">
+            <span class="mview-all-name"><b>#${m.id}</b>${m.name.replace(/^#\d+\s*/, '')}</span>
+            <button type="button" class="mview-zoom" onclick="event.stopPropagation();pickAnimPinStyle('${m.id}');setModalGalleryView('modal-anim-pin','single')">1 var.</button>
+          </div>
+          <div style="display:flex;justify-content:center;">${buildAnimPinDemoRowHtml(m, `event.stopPropagation();toggleApDemoBtn(this, '${m.id}')`)}</div>
+        </div>`).join('');
+    }
+
+    function openAnimPinModal() {
+      applyAppearanceSettings();
+      renderAnimPinSingleDemo();
+      if (document.getElementById('modal-anim-pin')?.getAttribute('data-view') === 'all') renderAnimPinAllGallery();
+      openModal('modal-anim-pin');
+    }
+
+    function triggerPlateIconDemoBtn(btn, id) {
+      const meta = getPlateIconMeta(id);
+      if (!btn || !meta) return;
+      btn.classList.remove('anim-spin','anim-tri','anim-pump','anim-split','anim-pro','anim-brand','glowing');
+      void btn.offsetWidth;
+      btn.classList.add(meta.anim, 'glowing');
+      setTimeout(() => btn.classList.remove(meta.anim, 'glowing'), 680);
+    }
+
+    function renderPlateIconSingleDemo() {
+      const btn = document.getElementById('pi-demo-live-btn');
+      if (!btn) return;
+      const meta = getPlateIconMeta(state.plateIconStyle || '6');
+      btn.innerHTML = meta.svg;
+    }
+
+    function renderPlateIconAllGallery() {
+      const box = document.getElementById('pi-pane-all');
+      if (!box) return;
+      const cur = String(state.plateIconStyle || '6');
+      box.innerHTML = PLATE_ICON_LIST.map(p => `
+        <div class="mview-all-card ${p.id === cur ? 'picked' : ''}" data-opt-id="${p.id}" onclick="pickPlateIconStyle('${p.id}')">
+          <div class="mview-all-hd">
+            <span class="mview-all-name"><b>#${p.id}</b>${p.name.replace(/^#\d+\s*/, '')}</span>
+            <button type="button" class="mview-zoom" onclick="event.stopPropagation();pickPlateIconStyle('${p.id}');setModalGalleryView('modal-plate-icon','single')">1 var.</button>
+          </div>
+          <div class="pi-demo-hdr">
+            <span class="set-num-pill">SERIJA 1 IŠ 2</span>
+            <div class="row" style="gap:6px;">
+              <button type="button" class="plate-ico-btn" onclick="event.stopPropagation();pickPlateIconStyle('${p.id}');triggerPlateIconDemoBtn(this,'${p.id}')">${p.svg}</button>
+              <span class="rir-single-btn">RIR 3 ↻</span>
+            </div>
+          </div>
+        </div>`).join('');
+    }
+
+    function openPlateIconModal() {
+      applyAppearanceSettings();
+      renderPlateIconSingleDemo();
+      if (document.getElementById('modal-plate-icon')?.getAttribute('data-view') === 'all') renderPlateIconAllGallery();
+      openModal('modal-plate-icon');
+    }
+
+    function stopNavDemoTour() {
+      if (navDemoTourTimer) { clearInterval(navDemoTourTimer); navDemoTourTimer = null; }
+    }
+
+    function openNavAnimModal() {
+      applyAppearanceSettings();
+      if (document.getElementById('modal-nav-anim')?.getAttribute('data-view') === 'all') renderNavAnimAllGallery();
+      openModal('modal-nav-anim');
+      tapNavDemoTab(navDemoCurIdx);
+    }
+
+    function closeNavAnimModal() {
+      stopNavDemoTour();
+      closeModal('modal-nav-anim');
+    }
+
+    function tapNavDemoTab(idx) {
+      navDemoCurIdx = Math.max(0, Math.min(3, Number(idx) || 0));
+      const targets = [document.getElementById('nav-demo-inner'), ...document.querySelectorAll('#na-pane-all .na-all-inner')].filter(Boolean);
+      targets.forEach(inner => {
+        inner.style.setProperty('--nav-idx', String(navDemoCurIdx));
+        inner.querySelectorAll('.nav-item').forEach((btn, i) => {
+          const isAct = i === navDemoCurIdx;
+          btn.classList.toggle('active', isAct);
+          if (isAct) {
+            btn.classList.remove('anim-pop');
+            void btn.offsetWidth;
+            btn.classList.add('anim-pop');
+          } else btn.classList.remove('anim-pop');
+        });
+      });
+    }
+
+    function playNavDemoTour() {
+      stopNavDemoTour();
+      let step = (navDemoCurIdx + 1) % 4;
+      let count = 0;
+      tapNavDemoTab(step);
+      navDemoTourTimer = setInterval(() => {
+        count++;
+        if (count >= 3 || !document.getElementById('modal-nav-anim')?.classList.contains('open')) {
+          stopNavDemoTour();
+          return;
+        }
+        step = (step + 1) % 4;
+        tapNavDemoTab(step);
+      }, 620);
+    }
 
     function pickNavAnimStyle(id) {
       state.navAnimStyle = String(id);
       saveState();
       applyAppearanceSettings();
-      const activeNav = document.querySelector('.nav-item.active');
+      const activeNav = document.querySelector('#bottom-nav-inner .nav-item.active');
       if (activeNav) replayActiveNavPop(activeNav);
+      if (document.getElementById('modal-nav-anim')?.classList.contains('open') && document.getElementById('modal-nav-anim')?.getAttribute('data-view') !== 'all') {
+        tapNavDemoTab((navDemoCurIdx + 1) % 4);
+      }
+    }
+
+    function buildDemoJointButtonHtml(st, kind, isOn, hasNote, onclickExpr) {
+      const isIconOnly = String(st).startsWith('2');
+      const infoSvg = '<svg class="ico-info" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9.5"/><path d="M12 16v-4.5"/><circle cx="12" cy="8.2" r="0.6" fill="currentColor" stroke="none"/></svg>';
+      const penSvg = '<svg class="ico-pen" viewBox="0 0 24 24"><path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 1 1 3 3L7 19l-4 1 1-4Z"/></svg>';
+      const chevSvg = '<svg class="ico-chev" style="width:11px;height:11px;" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></svg>';
+      if (kind === 'info') {
+        const inner = isIconOnly ? infoSvg : (st === '4' ? `${infoSvg}<span>Ką reiškia?</span>` : `${infoSvg}<span>Ką reiškia?</span>${chevSvg}`);
+        return `<button type="button" class="j-act-btn jb-${st}-i ${isOn ? 'on' : ''}" onclick="${onclickExpr}">${inner}</button>`;
+      }
+      const inner = isIconOnly ? penSvg : `${penSvg}<span>Pastaba</span>`;
+      return `<button type="button" class="j-act-btn jb-${st}-n ${isOn ? 'on' : ''} ${hasNote ? 'has-note-dot' : ''}" onclick="${onclickExpr}">${inner}</button>`;
+    }
+
+    function renderJointDemoPreviews() {
+      const st = String(state.jointBtnStyle || '2d');
+      const jsInfo = document.getElementById('js-demo-info-slot');
+      const jsNote = document.getElementById('js-demo-note-slot');
+      if (jsInfo) jsInfo.innerHTML = buildDemoJointButtonHtml(st, 'info', false, false, '');
+      if (jsNote) jsNote.innerHTML = buildDemoJointButtonHtml(st, 'note', false, false, '');
+
+      const jbInfo = document.getElementById('jb-demo-info-slot');
+      const jbNote = document.getElementById('jb-demo-note-slot');
+      if (jbInfo) jbInfo.innerHTML = buildDemoJointButtonHtml(st, 'info', jbDemoInfoOn, false, 'toggleJointBtnDemoInfo()');
+      if (jbNote) jbNote.innerHTML = buildDemoJointButtonHtml(st, 'note', jbDemoNoteOn, jbDemoHasNote, 'toggleJointBtnDemoNote()');
+      const dotChip = document.getElementById('jb-demo-dot-btn');
+      if (dotChip) dotChip.classList.toggle('on', jbDemoHasNote);
+    }
+
+    function openJointStyleModal() {
+      applyAppearanceSettings();
+      renderJointDemoPreviews();
+      if (document.getElementById('modal-joint-style')?.getAttribute('data-view') === 'all') renderJointStyleAllGallery();
+      openModal('modal-joint-style');
+    }
+
+    function tapJointStyleDemo(status) {
+      const wrap = document.getElementById('js-demo-dots');
+      if (wrap) wrap.querySelectorAll('.j-dot').forEach(b => b.classList.toggle('active', b.dataset.c === status));
+      const fb = document.getElementById('js-demo-status');
+      if (fb) {
+        if (status === 'yellow') fb.innerHTML = '<strong style="color:var(--yellow);">Įtampa:</strong> lengvas maudimas sąnaryje – sumažink svorį 10–15 % arba naudok Planą B.';
+        else if (status === 'red') fb.innerHTML = '<strong style="color:var(--red);">Skausmas:</strong> aštrus dūris ar kirtimas – iškart sustok ir pakeisk pratimą.';
+        else fb.innerHTML = '<strong style="color:var(--green);">Laisvai:</strong> dirba tik raumuo – nieko spausti nereikia.';
+      }
     }
 
     function pickJointStyle(id) {
@@ -11108,15 +12298,55 @@
       applyAppearanceSettings();
     }
 
+    function openJointBtnModal() {
+      jbDemoInfoOn = false;
+      jbDemoNoteOn = false;
+      jbDemoHasNote = false;
+      applyAppearanceSettings();
+      renderJointDemoPreviews();
+      if (document.getElementById('modal-joint-btn')?.getAttribute('data-view') === 'all') renderJointBtnAllGallery();
+      openModal('modal-joint-btn');
+    }
+
+    function tapJointBtnDemoColor(status) {
+      const wrap = document.getElementById('jb-demo-dots');
+      if (wrap) wrap.querySelectorAll('.j-dot').forEach(b => b.classList.toggle('active', b.dataset.c === status));
+    }
+
+    function toggleJointBtnDemoInfo() {
+      jbDemoInfoOn = !jbDemoInfoOn;
+      renderJointDemoPreviews();
+      const fb = document.getElementById('jb-demo-feedback');
+      if (fb) fb.innerHTML = jbDemoInfoOn
+        ? '<strong style="color:var(--accent);">Ką reiškia? (atidaryta):</strong> parodo šviesoforo paaiškinimą po antrašte.'
+        : 'Spustelk <strong>Ką reiškia?</strong> arba <strong>Pastaba</strong> mygtukus kortelėje viršuje.';
+    }
+
+    function toggleJointBtnDemoNote() {
+      jbDemoNoteOn = !jbDemoNoteOn;
+      renderJointDemoPreviews();
+      const fb = document.getElementById('jb-demo-feedback');
+      if (fb) fb.innerHTML = jbDemoNoteOn
+        ? '<strong style="color:var(--accent);">Pastaba (atidaryta):</strong> čia įrašai pastabą, o švytintis taškelis rodo, kad tekstas išsaugotas.'
+        : 'Spustelk <strong>Ką reiškia?</strong> arba <strong>Pastaba</strong> mygtukus kortelėje viršuje.';
+    }
+
+    function toggleJointBtnDemoHasNote() {
+      jbDemoHasNote = !jbDemoHasNote;
+      renderJointDemoPreviews();
+    }
+
     function pickJointBtnStyle(id) {
       state.jointBtnStyle = String(id);
       saveState();
       applyAppearanceSettings();
+      renderJointDemoPreviews();
       renderWorkoutView();
     }
 
     function openEdgeGlowModal() {
       applyAppearanceSettings();
+      if (document.getElementById('modal-edge-glow')?.getAttribute('data-view') === 'all') renderEdgeGlowAllGallery();
       openModal('modal-edge-glow');
       const sc = document.getElementById('eg-demo-scroll');
       if (sc) sc.scrollTop = 0;
@@ -11198,6 +12428,9 @@
       const apLbl = document.getElementById('app-animpin-lbl');
       const apMeta = ANIM_PIN_LIST.find(x => x.id === apId) || ANIM_PIN_LIST[4];
       if (apLbl) apLbl.textContent = apMeta.name;
+      const wLblMap = { sm: 'Siauri', md: 'Vidutiniai', lg: 'Platūs' };
+      const apSum = document.getElementById('settings-animpin-summary');
+      if (apSum) apSum.textContent = `${apMeta.name} · ${h} px · ${wLblMap[wMode] || 'Vidutiniai'}`;
 
       const hRow = document.getElementById('app-aph-row');
       if (hRow) hRow.innerHTML = [34, 40, 46, 52, 60, 70].map(v => `<button type="button" class="app-pill-btn ${v === h ? 'active' : ''}" onclick="setAnimPinHeight(${v})">${v} px</button>`).join('');
@@ -11213,11 +12446,19 @@
       const egDesc = document.getElementById('eg-pick-desc');
       if (egTitle) egTitle.textContent = egMeta.name;
       if (egDesc) egDesc.textContent = egMeta.desc;
+      document.querySelectorAll('#eg-pane-all .mview-all-card').forEach(el => el.classList.toggle('picked', el.dataset.optId === egId));
 
       const piGrid = document.getElementById('app-plateico-grid');
       if (piGrid) piGrid.innerHTML = PLATE_ICON_LIST.map(p => `<button type="button" class="app-pick-card ${p.id === piId ? 'active' : ''}" onclick="pickPlateIconStyle('${p.id}')">${p.svg}<span>${p.name}</span></button>`).join('');
       const piLbl = document.getElementById('app-plateico-lbl');
-      if (piLbl) piLbl.textContent = getPlateIconMeta(piId).name;
+      const piName = getPlateIconMeta(piId).name;
+      if (piLbl) piLbl.textContent = piName;
+      const piSum = document.getElementById('settings-plateico-summary');
+      if (piSum) piSum.textContent = piName;
+      renderPlateIconSingleDemo();
+      document.querySelectorAll('#pi-pane-all .mview-all-card').forEach(el => el.classList.toggle('picked', el.dataset.optId === piId));
+      document.querySelectorAll('#ap-pane-all .mview-all-card').forEach(el => el.classList.toggle('picked', el.dataset.optId === apId));
+      if (document.getElementById('modal-anim-pin')?.classList.contains('open')) renderAnimPinSingleDemo();
 
       const rtMeta = REST_BAR_LIST.find(x => x.id === rtId) || REST_BAR_LIST[3];
       const rtSum = document.getElementById('settings-rtbar-summary');
@@ -11229,36 +12470,49 @@
       if (rtTitleEl) rtTitleEl.textContent = rtMeta.title;
       if (rtDescEl) rtDescEl.textContent = rtMeta.desc;
 
-      const pmRow = document.getElementById('app-platemax-row');
-      if (pmRow) pmRow.innerHTML = [80, 100, 140, 180, 220, 260].map(v => `<button type="button" class="app-pill-btn ${v === pMax ? 'active' : ''}" onclick="setPlateCalcMaxSetting(${v})">${v} kg</button>`).join('');
-      const pmLbl = document.getElementById('app-platemax-lbl');
-      if (pmLbl) pmLbl.textContent = pMax + ' kg';
-
       const naId = String(state.navAnimStyle !== undefined ? state.navAnimStyle : '1');
       const jsId = String(state.jointStyle || '2');
       const jbId = String(state.jointBtnStyle || '2d');
-      document.documentElement.setAttribute('data-nav-anim', naId);
-      document.documentElement.setAttribute('data-joint-style', jsId);
+      document.getElementById('bottom-nav')?.setAttribute('data-nav-anim', naId);
+      document.getElementById('nav-demo-shell')?.setAttribute('data-nav-anim', naId);
+      document.getElementById('app-shell')?.setAttribute('data-joint-style', jsId);
+      document.getElementById('js-pane-single')?.setAttribute('data-joint-style', jsId);
+      document.getElementById('jb-pane-single')?.setAttribute('data-joint-style', jsId);
 
       const naMeta = NAV_ANIM_LIST.find(x => x.id === naId) || NAV_ANIM_LIST[1];
-      const naRow = document.getElementById('app-navanim-row');
-      if (naRow) naRow.innerHTML = NAV_ANIM_LIST.map(n => `<button type="button" class="app-pill-btn ${n.id === naId ? 'active' : ''}" onclick="pickNavAnimStyle('${n.id}')">${n.short}</button>`).join('');
-      const naLbl = document.getElementById('app-navanim-lbl');
-      if (naLbl) naLbl.textContent = naMeta.name;
-      const naDesc = document.getElementById('app-navanim-desc');
+      const naSum = document.getElementById('settings-navanim-summary');
+      if (naSum) naSum.textContent = naMeta.name;
+      const naGrid = document.getElementById('navanim-pick-grid');
+      if (naGrid) naGrid.innerHTML = NAV_ANIM_LIST.map(n => `<button type="button" class="anim-pick-btn ${n.id === naId ? 'active' : ''}" onclick="pickNavAnimStyle('${n.id}')">${n.short}</button>`).join('');
+      const naTitle = document.getElementById('navanim-pick-title');
+      const naDesc = document.getElementById('navanim-pick-desc');
+      if (naTitle) naTitle.textContent = naMeta.name;
       if (naDesc) naDesc.textContent = naMeta.desc;
+      document.querySelectorAll('#na-pane-all .mview-all-card').forEach(el => el.classList.toggle('picked', el.dataset.optId === naId));
 
       const jsMeta = JOINT_STYLE_LIST.find(x => x.id === jsId) || JOINT_STYLE_LIST[1];
-      const jsRow = document.getElementById('app-jointstyle-row');
-      if (jsRow) jsRow.innerHTML = JOINT_STYLE_LIST.map(j => `<button type="button" class="app-pill-btn ${j.id === jsId ? 'active' : ''}" onclick="pickJointStyle('${j.id}')">${j.short}</button>`).join('');
-      const jsLbl = document.getElementById('app-jointstyle-lbl');
-      if (jsLbl) jsLbl.textContent = jsMeta.name;
+      const jsSum = document.getElementById('settings-jointstyle-summary');
+      if (jsSum) jsSum.textContent = jsMeta.name;
+      const jsGrid = document.getElementById('jointstyle-pick-grid');
+      if (jsGrid) jsGrid.innerHTML = JOINT_STYLE_LIST.map(j => `<button type="button" class="app-pill-btn ${j.id === jsId ? 'active' : ''}" onclick="pickJointStyle('${j.id}')">${j.short}</button>`).join('');
+      const jsTitle = document.getElementById('jointstyle-pick-title');
+      const jsDesc = document.getElementById('jointstyle-pick-desc');
+      if (jsTitle) jsTitle.textContent = jsMeta.name;
+      if (jsDesc) jsDesc.textContent = jsMeta.desc;
+      document.querySelectorAll('#js-pane-all .mview-all-card').forEach(el => el.classList.toggle('picked', el.dataset.optId === jsId));
 
       const jbMeta = JOINT_BTN_LIST.find(x => x.id === jbId) || JOINT_BTN_LIST[0];
-      const jbRow = document.getElementById('app-jointbtn-row');
-      if (jbRow) jbRow.innerHTML = JOINT_BTN_LIST.map(j => `<button type="button" class="app-pill-btn ${j.id === jbId ? 'active' : ''}" onclick="pickJointBtnStyle('${j.id}')">${j.short}</button>`).join('');
-      const jbLbl = document.getElementById('app-jointbtn-lbl');
-      if (jbLbl) jbLbl.textContent = jbMeta.name;
+      const jbSum = document.getElementById('settings-jointbtn-summary');
+      if (jbSum) jbSum.textContent = jbMeta.name;
+      const jbIcoGrid = document.getElementById('jointbtn-pick-icons');
+      if (jbIcoGrid) jbIcoGrid.innerHTML = JOINT_BTN_LIST.filter(j => j.id.startsWith('2')).map(j => `<button type="button" class="app-pill-btn ${j.id === jbId ? 'active' : ''}" onclick="pickJointBtnStyle('${j.id}')">${j.short}</button>`).join('');
+      const jbTxtGrid = document.getElementById('jointbtn-pick-text');
+      if (jbTxtGrid) jbTxtGrid.innerHTML = JOINT_BTN_LIST.filter(j => !j.id.startsWith('2')).map(j => `<button type="button" class="app-pill-btn ${j.id === jbId ? 'active' : ''}" onclick="pickJointBtnStyle('${j.id}')">${j.short}</button>`).join('');
+      const jbTitle = document.getElementById('jointbtn-pick-title');
+      const jbDesc = document.getElementById('jointbtn-pick-desc');
+      if (jbTitle) jbTitle.textContent = jbMeta.name;
+      if (jbDesc) jbDesc.textContent = jbMeta.desc;
+      document.querySelectorAll('#jb-pane-all .mview-all-card').forEach(el => el.classList.toggle('picked', el.dataset.optId === jbId));
     }
 
     function openAppearanceModal() {
@@ -11294,6 +12548,9 @@
         void card.offsetWidth;
         card.classList.add(meta.anim);
         setTimeout(() => card.classList.remove(meta.anim), 680);
+      }
+      if (document.getElementById('modal-plate-icon')?.classList.contains('open')) {
+        triggerPlateIconDemoBtn(document.getElementById('pi-demo-live-btn'), id);
       }
     }
     function pickRestBarStyle(id) {
@@ -11906,25 +13163,27 @@
     }
 
     function initPwaManifest() {
-      if ('serviceWorker' in navigator && (location.protocol === 'https:' || location.hostname === 'localhost')) {
-        let refreshing = false;
-        navigator.serviceWorker.addEventListener('controllerchange', () => {
-          if (refreshing) return;
-          refreshing = true;
-          location.reload();
-        });
-        navigator.serviceWorker.register('./sw.js').then(reg => {
-          if (reg.waiting) showPwaUpdateBanner(reg.waiting);
-          reg.addEventListener('updatefound', () => {
-            const nw = reg.installing;
-            if (!nw) return;
-            nw.addEventListener('statechange', () => {
-              if (nw.state === 'installed' && navigator.serviceWorker.controller) {
-                showPwaUpdateBanner(nw);
-              }
+      if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+          navigator.serviceWorker.register('./sw.js').then(reg => {
+            if (reg.waiting) reg.waiting.postMessage({ type: 'SKIP_WAITING' });
+            reg.addEventListener('updatefound', () => {
+              const nw = reg.installing;
+              if (!nw) return;
+              nw.addEventListener('statechange', () => {
+                if (nw.state === 'installed' && navigator.serviceWorker.controller) {
+                  nw.postMessage({ type: 'SKIP_WAITING' });
+                }
+              });
             });
-          });
-        }).catch(() => {});
+          }).catch(() => {});
+        });
+        let swReloaded = false;
+        navigator.serviceWorker.addEventListener('controllerchange', () => {
+          if (swReloaded) return;
+          swReloaded = true;
+          window.location.reload();
+        });
       }
     }
 
@@ -11952,6 +13211,13 @@
           if (document.getElementById('modal-rir-guide')?.classList.contains('open')) closeModal('modal-rir-guide');
           else if (document.getElementById('modal-edge-glow')?.classList.contains('open')) closeModal('modal-edge-glow');
           else if (document.getElementById('modal-rest-bar')?.classList.contains('open')) closeRestBarModal();
+          else if (document.getElementById('modal-nav-anim')?.classList.contains('open')) closeNavAnimModal();
+          else if (document.getElementById('modal-joint-style')?.classList.contains('open')) closeModal('modal-joint-style');
+          else if (document.getElementById('modal-joint-btn')?.classList.contains('open')) closeModal('modal-joint-btn');
+          else if (document.getElementById('modal-anim-pin')?.classList.contains('open')) closeModal('modal-anim-pin');
+          else if (document.getElementById('modal-plate-icon')?.classList.contains('open')) closeModal('modal-plate-icon');
+          else if (document.getElementById('modal-card-frame')?.classList.contains('open')) closeModal('modal-card-frame');
+          else if (document.getElementById('modal-card-anim')?.classList.contains('open')) closeModal('modal-card-anim');
         }
       });
       checkBackupReminder();
